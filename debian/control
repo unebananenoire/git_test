@@ -1,0 +1,19 @@
+Source: maas
+Section: net
+Priority: optional
+Maintainer: Maas Developers <maas-devel@lists.launchpad.net>
+Build-Depends: debhelper (>= 8.0.0), python-support, python (>= 2.7), postgresql-9.1
+Standards-Version: 3.9.2
+Homepage: https://launchpad.net/maas
+#Vcs-Git: git://git.debian.org/collab-maint/maas.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/maas.git;a=summary
+
+Package: maas
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-django, python-django-piston, python-django-south, python-django-debug-toolbar, postgresql-9.1
+Description: Treat a group of physical servers as a cloud-like resource to be allocated on demand.
+ Each physical server (“node”) will be commissioned automatically on first boot.
+ During the commissioning process administrators are able to configure hardware
+ settings manually before an automated smoke test and burn-in test are done.
+ Once commissioned, a node can be deployed on demand by name, or allocated to a
+ queue for dynamic allocation to services being deployed on this MAAS.
