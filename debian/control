@@ -8,7 +8,7 @@ Homepage: https://launchpad.net/maas
 
 Package: maas
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-django, python-django-piston, python-django-south, python-django-debug-toolbar (= 0.9.1), python-sphinx, postgresql-9.1, psycopg2 (= 2.4.1), python-twisted, python-zope.interface, python-setproctitle, rabbitmq-server
+Depends: ${misc:Depends}, ${python:Depends}, python-django, python-django-piston, python-django-south, python-sphinx, postgresql-9.1, psycopg2 (= 2.4.1), python-twisted, python-zope.interface, python-setproctitle, rabbitmq-server
 Description: Treat a group of physical servers as a cloud-like resource to be allocated on demand.
  Each physical server (“node”) will be commissioned automatically on first boot.
  During the commissioning process administrators are able to configure hardware
