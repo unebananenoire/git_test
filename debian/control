@@ -2,8 +2,9 @@ Source: maas
 Section: net
 Priority: optional
 Maintainer: Maas Developers <maas-devel@lists.launchpad.net>
-Build-Depends: debhelper (>= 8.0.0), python-distribute, python-support, python (>= 2.7)
+Build-Depends: debhelper (>= 8.0.0), python-distribute, python-all (>= 2.7)
 Standards-Version: 3.9.2
+X-Python-Version: >= 2.7
 Homepage: https://launchpad.net/maas
 
 Package: maas
