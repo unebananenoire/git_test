@@ -9,6 +9,6 @@ Homepage: https://launchpad.net/maas
 
 Package: maas
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-django, python-django-piston, python-django-south, python-sphinx, postgresql-9.1, psycopg2 (= 2.4.1), python-twisted, python-zope.interface, python-setproctitle, rabbitmq-server
+Depends: ${misc:Depends}, ${python:Depends}, python-django, python-django-piston, python-django-south, python-sphinx, postgresql-9.1, psycopg2 (= 2.4.1), python-twisted, python-zope.interface
 Description: MAAS is the next step in the development of orchestra.
  It provides an easy to use UI to provision your Ubuntu servers.
