@@ -1,14 +1,25 @@
 Source: maas
 Section: net
 Priority: optional
-Maintainer: Maas Developers <maas-devel@lists.launchpad.net>
-Build-Depends: debhelper (>= 8.0.0), python-distribute, python-all (>= 2.7)
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Build-Depends: debhelper (>= 8), python-all (>= 2.7), python-distribute
 Standards-Version: 3.9.2
 X-Python-Version: >= 2.7
 Homepage: https://launchpad.net/maas
 
 Package: maas
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-django, python-django-piston, python-django-south, python-sphinx, postgresql-9.1, psycopg2 (= 2.4.1), python-twisted, python-zope.interface
-Description: MAAS is the next step in the development of orchestra.
+Depends: postgresql-9.1,
+         psycopg2 (= 2.4.1),
+         python-django,
+         python-django-piston,
+         python-django-south,
+         python-setproctitle,
+         python-sphinx,
+         python-twisted,
+         python-zope.interface,
+         rabbitmq-server,
+         ${misc:Depends},
+         ${python:Depends}
+Description: The next step in the development of orchestra.
  It provides an easy to use UI to provision your Ubuntu servers.

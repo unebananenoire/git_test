@@ -1,5 +1,5 @@
-maas (0.1-0ubuntu1) precise; urgency=low
+maas (0.1~bzr146+dfsg-0ubuntu1) precise; urgency=low
 
   * Initial release
 
- -- Julian Edwards <julian.edwards@canonical.com>  Tue, 17 Jan 2012 15:29:07 +0000
+ -- Julian Edwards <julian.edwards@canonical.com>  Thu, 16 Jan 2012 15:29:07 +0000
