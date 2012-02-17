@@ -10,7 +10,7 @@ Homepage: https://launchpad.net/maas
 Package: maas
 Architecture: all
 Depends: postgresql-9.1,
-         psycopg2 (= 2.4.1),
+         psycopg2,
          python-django,
          python-django-piston,
          python-django-south,
