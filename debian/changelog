@@ -1,5 +1,6 @@
-maas (0.1~bzr146+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr147+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
+  * New upstream snapshot, post 0.1 release.
   * debian/control: Drop depends on rabbitmq-server, no longer required.
   * debian/watch: Introduced watch file.
 
