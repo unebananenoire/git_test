@@ -3,10 +3,11 @@ maas (0.1+bzr147+dfsg-0ubuntu1) UNRELEASED; urgency=low
   * New upstream snapshot, post 0.1 release.
   * debian/control: 
     - Drop depends on rabbitmq-server, no longer required.
-    - Drop versioning of depends psycopg2, no longer required.
+    - Changed depends from psycopg2 to python-psycopg2 and dropped versioning.
+      - LP: #937982
   * debian/watch: Introduced watch file.
 
- -- Dave Walker (Daviey) <DaveWalker@ubuntu.com>  Fri, 17 Feb 2012 15:25:14 +0000
+ -- Dave Walker (Daviey) <DaveWalker@ubuntu.com>  Thu, 23 Feb 2012 13:08:12 +0000
 
 maas (0.1~bzr146+dfsg-0ubuntu1) precise; urgency=low
 
