@@ -1,4 +1,10 @@
-maas (0.1+bzr147+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr172+dfsg-0ubuntu1) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 23 Feb 2012 11:59:05 -0500
+
+maas (0.1+bzr171+dfsg-0ubuntu1) precise; urgency=low
 
   * New upstream snapshot, post 0.1 release.
   * debian/control: 
