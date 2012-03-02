@@ -18,6 +18,7 @@ Depends: postgresql-9.1,
          python-sphinx,
          python-twisted,
          python-zope.interface,
+         squid3,
          ${misc:Depends},
          ${python:Depends}
 Description: The next step in the development of orchestra.

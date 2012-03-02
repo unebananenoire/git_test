@@ -1,0 +1,5 @@
+etc/maas/import_isos
+etc/cron.d/maas-import-isos
+scripts/maas-import-isos usr/sbin
+man/maas-import-isos.8 usr/share/man/man8
+debian/extras/squid.conf usr/share/maas/conf

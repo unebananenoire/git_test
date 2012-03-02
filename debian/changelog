@@ -1,12 +1,22 @@
-maas (0.1+bzr176+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr204+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * UNRELEASED
   * New upstream snapshot.
+
+  [ Dave Walker ]
   * debian/control:
     - Changed depends from psycopg2 to python-psycopg2 and dropped versioning.
       - LP: #937982 
 
- -- Dave Walker (Daviey) <DaveWalker@ubuntu.com>  Sun, 26 Feb 2012 21:34:34 +0000
+  [ Andres Rodriguez ]
+  * debian/maas.install: Install maas-import-isos and related files.
+  * Integrate squid3 as proxy solution:
+    - debian/extras/squid.conf: Added
+    - debian/control: Depend on squid3.
+    - debian/maas.{postinst,postrm}: Handle installation/removal of custom
+      squid config file.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 01 Mar 2012 18:23:56 -0500
 
 maas (0.1+bzr171+dfsg-0ubuntu1) precise; urgency=low
 
