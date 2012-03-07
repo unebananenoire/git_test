@@ -1,0 +1,3 @@
+debian/tmp/usr/lib/python*/dist-packages/maasserver
+debian/tmp/usr/lib/python*/dist-packages/metadataserver
+debian/tmp/usr/lib/python*/dist-packages/provisioningserver

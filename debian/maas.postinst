@@ -2,6 +2,18 @@
 
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
 
+	# handle apache
+	if [ -e /etc/maas/maas-http.conf -a \
+		! -e /etc/apache2/conf.d/maas-http.conf ]; then
+		ln -sf /etc/maas/maas-http.conf /etc/apache2/conf.d/maas-http.conf
+	fi
+
+	# enable apache modules needed
+	a2enmod expires
+
+	# restart apache
+	invoke-rc.d apache2 restart
+
 	# Handle squid integration
 	if [ -e /etc/squid3/squid.conf ] ; then
 		cp /etc/squid3/squid.conf /etc/squid3/squid.conf.orig

@@ -1,6 +1,11 @@
-maas (0.1+bzr204+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr233+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 07 Mar 2012 12:51:12 -0500
+
+maas (0.1+bzr232+dfsg-0ubuntu1) precise; urgency=low
+
   * New upstream snapshot.
 
   [ Dave Walker ]
@@ -15,8 +20,10 @@ maas (0.1+bzr204+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - debian/control: Depend on squid3.
     - debian/maas.{postinst,postrm}: Handle installation/removal of custom
       squid config file.
+  * Split into different binary packages (maas,python-django-maas).
+    - debian/maas.postinst: Handle the apache2 configuration.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 01 Mar 2012 18:23:56 -0500
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 07 Mar 2012 12:46:17 -0500
 
 maas (0.1+bzr171+dfsg-0ubuntu1) precise; urgency=low
 

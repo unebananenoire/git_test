@@ -1,5 +1,24 @@
-etc/maas/import_isos
-etc/cron.d/maas-import-isos
-scripts/maas-import-isos usr/sbin
-man/maas-import-isos.8 usr/share/man/man8
+# Install project
+debian/tmp/usr/lib/python*/dist-packages/maas/__init__.py usr/share/maas/maas
+debian/tmp/usr/lib/python*/dist-packages/maas/demo.py usr/share/maas/maas
+debian/tmp/usr/lib/python*/dist-packages/maas/development.py usr/share/maas/maas
+debian/tmp/usr/lib/python*/dist-packages/maas/production.py usr/share/maas/maas
+debian/tmp/usr/lib/python*/dist-packages/maas/settings.py usr/share/maas/maas
+debian/tmp/usr/lib/python*/dist-packages/maas/urls.py usr/share/maas/maas
+
+# Install Apache Config
+contrib/maas-http.conf etc/maas
+
+# Install MaaS local settings
+debian/tmp/usr/share/maas/maas_local_settings.py
+
+# Install WSGI
+contrib/wsgi.py usr/share/maas
+
+# Install all other stuff
 debian/extras/squid.conf usr/share/maas/conf
+etc/cron.d/maas-import-isos
+etc/maas/import_isos
+man/maas-import-isos.8 usr/share/man/man8
+scripts/maas-import-isos usr/sbin
+
