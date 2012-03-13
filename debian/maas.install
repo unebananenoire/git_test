@@ -1,10 +1,10 @@
 # Install project
-debian/tmp/usr/lib/python*/dist-packages/maas/__init__.py usr/share/maas/maas
-debian/tmp/usr/lib/python*/dist-packages/maas/demo.py usr/share/maas/maas
-debian/tmp/usr/lib/python*/dist-packages/maas/development.py usr/share/maas/maas
-debian/tmp/usr/lib/python*/dist-packages/maas/production.py usr/share/maas/maas
-debian/tmp/usr/lib/python*/dist-packages/maas/settings.py usr/share/maas/maas
-debian/tmp/usr/lib/python*/dist-packages/maas/urls.py usr/share/maas/maas
+debian/tmp/usr/lib/python*/dist-packages/maas usr/share/maas
+twisted/plugins/maasps.py usr/share/pyshared/twisted/plugins
+etc/pserv.yaml etc/maas
+
+# Install static files
+debian/tmp/usr/share/maas/web/static
 
 # Install Apache Config
 contrib/maas-http.conf etc/maas
@@ -16,9 +16,8 @@ debian/tmp/usr/share/maas/maas_local_settings.py
 contrib/wsgi.py usr/share/maas
 
 # Install all other stuff
-debian/extras/squid.conf usr/share/maas/conf
 etc/cron.d/maas-import-isos
 etc/maas/import_isos
 man/maas-import-isos.8 usr/share/man/man8
 scripts/maas-import-isos usr/sbin
-
+debian/extras/maas usr/bin

@@ -1,18 +1,10 @@
-#!/bin/sh -e
+#!/bin/sh
 
-if [ "$1" = "remove" ] || [ "$1" = "purge" ] ; then
+set -e
 
-	# Handle custom squid removal
-	if [ -e /etc/squid3/squid.conf.orig ] ; then
-		if [ -h /etc/squid3/squid.conf ]; then
-			rm -f /etc/squid3/squid.conf
-		fi
-		cp /etc/squid3/squid.conf.orig /etc/squid3/squid.conf
-	fi
-
-	invoke-rc.d squid3 restart
-
-fi
+. /usr/share/debconf/confmodule
+. /usr/share/dbconfig-common/dpkg/postrm.pgsql
+dbc_go maas $@
 
 #DEBHELPER#
-exit 0
+

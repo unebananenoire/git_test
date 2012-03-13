@@ -1,0 +1,12 @@
+Template: maas/maas_admin_user
+Type: string
+Default: admin
+_Description: Create administrator username for MaaS:
+ MaaS requires to set an administrative user in order to
+ be able to gain access to the MaaS management WebUI.
+
+Template: maas/maas_admin_pass
+Type: password
+_Description: Set password for the administrator username:
+ It is highly recommendaed that you set a password for the
+ administrative user that has just been created.

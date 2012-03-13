@@ -1,0 +1,12 @@
+Index: maas-0.1+bzr259+dfsg.orig/etc/pserv.yaml
+===================================================================
+--- maas-0.1+bzr259+dfsg.orig.orig/etc/pserv.yaml	2012-03-13 00:56:24.000000000 -0400
++++ maas-0.1+bzr259+dfsg.orig/etc/pserv.yaml	2012-03-13 10:38:19.502618329 -0400
+@@ -35,6 +35,6 @@
+   # password: "test"
+ 
+   # vdenv specific; see vdenv/README.txt.
+-  url: http://local.cobbler.dev/cobbler_api
++  url: http://localhost/cobbler_api
+   username: cobbler
+   password: xcobbler

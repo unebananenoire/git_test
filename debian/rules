@@ -11,6 +11,11 @@ override_dh_auto_install:
 	cp $(CURDIR)/contrib/maas_local_settings_sample.py \
                 $(CURDIR)/debian/tmp/usr/share/maas/maas_local_settings.py
 
+	# Move static files
+	install -d -m 755  $(CURDIR)/debian/tmp/usr/share/maas/web/static
+	mv $(CURDIR)/debian/tmp/usr/lib/python*/*-packages/maasserver/static \
+                $(CURDIR)/debian/tmp/usr/share/maas/web/
+
 	dh_install --list-missing
 
 DEB_DEBIAN_DIR=$(dir $(firstword $(MAKEFILE_LIST)))
@@ -24,8 +29,8 @@ get-orig-source:
 	rm -rf maas-$(VER)
 	tar -xf maas_$(VER).orig.tar.gz
 	rm maas_$(VER).orig.tar.gz
-	rm maas-$(VER).orig/src/maasserver/static/js/yui/3.4.1/uploader/assets/uploader.swf
-	rm maas-$(VER).orig/src/maasserver/static/js/yui/3.4.1/io-xdr/io.swf
+	rm maas-$(VER).orig/src/maasserver/static/jslibs/yui/3.4.1/build/uploader/assets/uploader.swf
+	rm maas-$(VER).orig/src/maasserver/static/jslibs/yui/3.4.1/build/io-xdr/io.swf
 	GZIP=--best tar -cz --owner root --group root --mode a+rX \
                         -f maas_$(VER).orig.tar.gz \
                         maas-$(VER).orig

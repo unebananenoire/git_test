@@ -1,5 +1,10 @@
 #!/bin/sh -e
 
+. /usr/share/debconf/confmodule
+db_version 2.0
+
+. /usr/share/dbconfig-common/dpkg/postinst.pgsql
+
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
 
 	# handle apache
@@ -10,22 +15,31 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
 
 	# enable apache modules needed
 	a2enmod expires
+	a2enmod wsgi
 
 	# restart apache
-	invoke-rc.d apache2 restart
+	apache2ctl restart || true
 
-	# Handle squid integration
-	if [ -e /etc/squid3/squid.conf ] ; then
-		cp /etc/squid3/squid.conf /etc/squid3/squid.conf.orig
+	# Obtain 'cobbler' user password to autoconfigure
+	db_get cobbler/password || true
+	cblr_pass="$RET"
+	if grep -qs "^\ \{1,\}password: [a-zA-Z0-9]\{1,\}$" /etc/maas/pserv.yaml; then
+		sed -i "s/^\ \{1,\}password: [a-zA-Z0-9]\{1,\}$/  password: "$cblr_pass"/" /etc/maas/pserv.yaml
 	fi
-	ln -sf /usr/share/maas/conf/squid.conf /etc/squid3/squid.conf
 
-	# stop squid3 if its running else dir structrue will not be created
-	# per new config file, and later restart will fail if cache_dir is
-	# not populated 
-	invoke-rc.d squid3 stop
-	squid3 -z
-	invoke-rc.d squid3 restart
+	# Give appropriate permissions
+	if [ -f /var/log/maas/maas.log ]; then
+		chown www-data:www-data /var/log/maas/maas.log
+	fi
+	
+	# Configure database
+	dbc_go maas $@
+	if grep -qs "^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$" /usr/share/maas/maas_local_settings.py; then
+		sed -i "s/^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$/        'PASSWORD': '"$dbc_dbpass"',/" \
+                       /usr/share/maas/maas_local_settings.py
+	fi
+
+	maas syncdb --noinput
 fi
 
 #DEBHELPER#

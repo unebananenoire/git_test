@@ -1,0 +1,4 @@
+#!/bin/bash -eu
+export PYTHONPATH="/usr/share/maas${PYTHONPATH:+}${PYTHONPATH:-}"
+export DJANGO_SETTINGS_MODULE="maas.settings"
+exec /usr/bin/django-admin $@

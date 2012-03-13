@@ -2,8 +2,8 @@ Source: maas
 Section: net
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-Build-Depends: debhelper (>= 8), python-dev (>= 2.7), python-distribute
-Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 8), python (>= 2.7), python-distribute, po-debconf
+Standards-Version: 3.9.3
 X-Python-Version: >= 2.7
 Homepage: https://launchpad.net/maas
 
@@ -12,12 +12,16 @@ Architecture: all
 Depends: ${misc:Depends},
          ${python:Depends},
          apache2,
+         cobbler,
+         libapache2-mod-wsgi,
          postgresql-9.1,
          python-django,
          python-django-maas (>= ${binary:Version}),
          python-django-piston,
          python-django-south,
-         squid3
+         pwgen,
+         squid-deb-proxy,
+         dbconfig-common
 Description: The next step in the development of orchestra.
  It provides an easy to use UI to provision your Ubuntu servers.
 
@@ -25,6 +29,7 @@ Package: python-django-maas
 Architecture: all
 Depends: ${misc:Depends},
          ${python:Depends},
+         python-convoy,
          python-oops,
          python-oops-amqp,
          python-oops-datedir-repo,
