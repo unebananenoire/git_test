@@ -1,7 +1,7 @@
-Index: maas-0.1+bzr281+dfsg.orig/contrib/maas_local_settings_sample.py
+Index: maas-0.1+bzr291+dfsg.orig/contrib/maas_local_settings_sample.py
 ===================================================================
---- maas-0.1+bzr281+dfsg.orig.orig/contrib/maas_local_settings_sample.py	2012-03-14 14:29:12.145287076 -0400
-+++ maas-0.1+bzr281+dfsg.orig/contrib/maas_local_settings_sample.py	2012-03-14 14:29:16.421288467 -0400
+--- maas-0.1+bzr291+dfsg.orig.orig/contrib/maas_local_settings_sample.py	2012-03-15 14:07:36.830510908 -0400
++++ maas-0.1+bzr291+dfsg.orig/contrib/maas_local_settings_sample.py	2012-03-15 14:07:39.286510367 -0400
 @@ -7,7 +7,7 @@
  DEFAULT_MAAS_URL = "http://maas.internal.example.com/"
  
@@ -9,7 +9,7 @@ Index: maas-0.1+bzr281+dfsg.orig/contrib/maas_local_settings_sample.py
 -STATIC_ROOT = '/var/lib/maas/static/'
 +STATIC_ROOT = '/usr/share/maas/web/static/'
  
- # Prefix to use for MaaS's urls.
+ # Prefix to use for MAAS's urls.
  # If FORCE_SCRIPT_NAME is None (the default), all the urls will start with
 @@ -56,9 +56,9 @@
      'default': {

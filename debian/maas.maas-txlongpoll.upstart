@@ -1,8 +1,8 @@
 # maas - txlongpoll service
 #
-# MaaS Provisioning Service txlongpoll
+# MAAS Provisioning Service txlongpoll
 
-description     "MaaS"
+description     "MAAS txlongpoll"
 author "Andres Rodriguez <andres.rodriguez@canonical.com>"
 
 start on filesystem and net-device-up

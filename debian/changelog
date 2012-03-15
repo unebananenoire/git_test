@@ -1,4 +1,4 @@
-maas (0.1+bzr283+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr295+dfsg-0ubuntu1) precise; urgency=low
 
   * debian/maas.upstart: Specify pidfile and conffile.
   * debian/maas.postinst:
@@ -14,8 +14,14 @@ maas (0.1+bzr283+dfsg-0ubuntu1) UNRELEASED; urgency=low
   * debian/maas.postinst: Touch logfile to set correct permissions (LP: #955400)
   * debian/maas.logrotate: Add.
   * debian/patches/03-txlongpoll-config.patch: Add default settings.
+  * debian/maas.config: Only run dbconfig-common on configure/reconfigure.
+  * Install maas_local_settings.py in /etc/maas and symlink to usr/share/maas
+  * Update references from MaaS to MAAS.
+  * Remove podebconf as templates no longer exist.
+    - debian/po: Remove.
+    - debian/control: Drop Build-Depends on po-debconf
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 14 Mar 2012 18:27:31 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 15 Mar 2012 15:28:14 -0400
 
 maas (0.1+bzr266+dfsg-0ubuntu1) precise; urgency=low
 

@@ -35,16 +35,16 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
 	# Give appropriate permissions
 	if [ ! -f /var/log/maas/maas.log ]; then
 		touch /var/log/maas/maas.log
-		chown -R root:www-data /var/log/maas
-		chmod 620 /var/log/maas/maas.log
-		chmod -R 775 /var/log/maas/oops
 	fi
+	chown -R root:www-data /var/log/maas
+	chmod 620 /var/log/maas/maas.log
+	chmod -R 775 /var/log/maas/oops
 	
 	# Configure database
 	dbc_go maas $@
-	if grep -qs "^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$" /usr/share/maas/maas_local_settings.py; then
+	if grep -qs "^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$" /etc/maas/maas_local_settings.py; then
 		sed -i "s/^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$/        'PASSWORD': '"$dbc_dbpass"',/" \
-                       /usr/share/maas/maas_local_settings.py
+                       /etc/maas/maas_local_settings.py
 	fi
 	if $syncdb; then
 		maas syncdb --noinput

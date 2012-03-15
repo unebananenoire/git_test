@@ -10,8 +10,8 @@ debian/tmp/usr/share/maas/web/static
 # Install Apache Config
 contrib/maas-http.conf etc/maas
 
-# Install MaaS local settings
-debian/tmp/usr/share/maas/maas_local_settings.py
+# Install MAAS local settings
+debian/tmp/etc/maas/maas_local_settings.py
 
 # Install WSGI
 contrib/wsgi.py usr/share/maas
