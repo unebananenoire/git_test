@@ -3,7 +3,12 @@
 . /usr/share/debconf/confmodule
 db_version 2.0
 
-. /usr/share/dbconfig-common/dpkg/postinst.pgsql
+sync_db=true
+if [ -f /usr/share/dbconfig-common/dpkg/postinst.pgsql ]; then
+	. /usr/share/dbconfig-common/dpkg/postinst.pgsql
+else
+	sync_db=false
+fi
 
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
 
@@ -28,8 +33,11 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
 	fi
 
 	# Give appropriate permissions
-	if [ -f /var/log/maas/maas.log ]; then
-		chown www-data:www-data /var/log/maas/maas.log
+	if [ ! -f /var/log/maas/maas.log ]; then
+		touch /var/log/maas/maas.log
+		chown -R root:www-data /var/log/maas
+		chmod 620 /var/log/maas/maas.log
+		chmod -R 775 /var/log/maas/oops
 	fi
 	
 	# Configure database
@@ -38,8 +46,9 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
 		sed -i "s/^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$/        'PASSWORD': '"$dbc_dbpass"',/" \
                        /usr/share/maas/maas_local_settings.py
 	fi
-
-	maas syncdb --noinput
+	if $syncdb; then
+		maas syncdb --noinput
+	fi
 fi
 
 #DEBHELPER#

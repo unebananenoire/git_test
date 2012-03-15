@@ -1,0 +1,9 @@
+/var/log/maas/maas.log {
+ rotate 5
+ weekly
+ compress
+ copytruncate
+ missingok
+ #create 620 root www-data
+}
+

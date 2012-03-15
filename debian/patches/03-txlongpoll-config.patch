@@ -1,0 +1,19 @@
+Index: maas-0.1+bzr283+dfsg.orig/etc/txlongpoll.yaml
+===================================================================
+--- maas-0.1+bzr283+dfsg.orig.orig/etc/txlongpoll.yaml	2012-03-14 17:07:57.000000000 -0400
++++ maas-0.1+bzr283+dfsg.orig/etc/txlongpoll.yaml	2012-03-14 17:34:05.767900696 -0400
+@@ -15,7 +15,7 @@
+ oops:
+   ## Directory in which to place OOPS reports.
+   # directory: ""
+-  directory: "logs"
++  directory: "/var/log/maas/oops"
+   ## The reporter used when generating OOPS reports.
+   # reporter: "LONGPOLL"
+   reporter: "maas-txlongpoll"
+@@ -33,4 +33,4 @@
+ ## running server.
+ #
+ # logfile: "txlongpoll.log"
+-logfile: "logs/txlongpoll.log"
++logfile: "/var/log/maas/txlongpoll.log"

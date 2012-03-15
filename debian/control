@@ -40,6 +40,7 @@ Depends: ${misc:Depends},
          python-sphinx,
          python-twisted,
          python-txamqp,
+         python-txlongpoll,
          python-zope.interface
 Description: The next step in the development of Orchestra.
  It provides an easy to use UI to provision your Ubuntu servers.

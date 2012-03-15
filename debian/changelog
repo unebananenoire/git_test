@@ -1,8 +1,21 @@
-maas (0.1+bzr266+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr283+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  * debian/maas.upstart: Specify pidfile and conffile.
+  * debian/maas.postinst:
+    - Only run syncdb if dbconfig postinst file exists.
+    - Fix file permissions.
+  * debian/maas.{postrm,prerm}: Add dbconfig-common support.
+  * Add txlongpoll support for packaging:
+    - debian/control: Depends on python-txlongpoll.
+    - debian/maas.maas-longpoll.upstart: Added to start txlongpoll.
+    - debian/maas.install: Install txlongpoll.yaml
+  * debian/extras/maas: Improvements.
+  * debian/maas.maas.upstart: Moved from debian/maas.upstart.
+  * debian/maas.postinst: Touch logfile to set correct permissions (LP: #955400)
+  * debian/maas.logrotate: Add.
+  * debian/patches/03-txlongpoll-config.patch: Add default settings.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 13 Mar 2012 14:34:41 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 14 Mar 2012 18:27:31 -0400
 
 maas (0.1+bzr266+dfsg-0ubuntu1) precise; urgency=low
 

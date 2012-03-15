@@ -3,8 +3,21 @@
 set -e
 
 . /usr/share/debconf/confmodule
-. /usr/share/dbconfig-common/dpkg/postrm.pgsql
-dbc_go maas $@
+
+if [ -f /usr/share/dbconfig-common/dpkg/postrm ]; then
+	. /usr/share/dbconfig-common/dpkg/postrm.pgsql
+	dbc_go maas $@
+fi
+
+case "$1" in
+	purge)
+		rm -rf /var/log/maas
+		if [ -h /etc/apache2/conf.d/maas-http.conf ]; then
+			rm -rf /etc/apache2/conf.d/maas-http.conf
+		fi
+
+esac
 
 #DEBHELPER#
 
+exit 0

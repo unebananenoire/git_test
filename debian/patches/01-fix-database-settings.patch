@@ -1,9 +1,9 @@
-Index: maas-0.1+bzr259+dfsg.orig/contrib/maas_local_settings_sample.py
+Index: maas-0.1+bzr281+dfsg.orig/contrib/maas_local_settings_sample.py
 ===================================================================
---- maas-0.1+bzr259+dfsg.orig.orig/contrib/maas_local_settings_sample.py	2012-03-13 10:38:48.251620276 -0400
-+++ maas-0.1+bzr259+dfsg.orig/contrib/maas_local_settings_sample.py	2012-03-13 10:39:05.362341275 -0400
-@@ -2,7 +2,7 @@
- DEBUG = False
+--- maas-0.1+bzr281+dfsg.orig.orig/contrib/maas_local_settings_sample.py	2012-03-14 14:29:12.145287076 -0400
++++ maas-0.1+bzr281+dfsg.orig/contrib/maas_local_settings_sample.py	2012-03-14 14:29:16.421288467 -0400
+@@ -7,7 +7,7 @@
+ DEFAULT_MAAS_URL = "http://maas.internal.example.com/"
  
  # Absolute path to the directory static files should be collected to.
 -STATIC_ROOT = '/var/lib/maas/static/'
@@ -11,7 +11,7 @@ Index: maas-0.1+bzr259+dfsg.orig/contrib/maas_local_settings_sample.py
  
  # Prefix to use for MaaS's urls.
  # If FORCE_SCRIPT_NAME is None (the default), all the urls will start with
-@@ -51,9 +51,9 @@
+@@ -56,9 +56,9 @@
      'default': {
          # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' etc.
          'ENGINE': 'django.db.backends.postgresql_psycopg2',

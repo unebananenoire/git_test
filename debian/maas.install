@@ -2,6 +2,7 @@
 debian/tmp/usr/lib/python*/dist-packages/maas usr/share/maas
 twisted/plugins/maasps.py usr/share/pyshared/twisted/plugins
 etc/pserv.yaml etc/maas
+etc/txlongpoll.yaml etc/maas
 
 # Install static files
 debian/tmp/usr/share/maas/web/static
