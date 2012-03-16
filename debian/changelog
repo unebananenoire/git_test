@@ -1,3 +1,13 @@
+maas (0.1+bzr295+dfsg-0ubuntu2) precise; urgency=low
+
+  * debian/patches:
+    - 01-fix-database-settings.patch: Update to set PSERV_URL.
+    - 02-pserv-config.patch: Set port to 8001.
+  * debian/maas.postinst: Run maas-import-isos on install.
+  * debian/control: Depends on rabbitmq-server.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 15 Mar 2012 18:14:08 -0400
+
 maas (0.1+bzr295+dfsg-0ubuntu1) precise; urgency=low
 
   * debian/maas.upstart: Specify pidfile and conffile.

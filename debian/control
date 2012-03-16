@@ -20,6 +20,8 @@ Depends: ${misc:Depends},
          python-django-piston,
          python-django-south,
          pwgen,
+         rabbitmq-server,
+         run-one,
          squid-deb-proxy,
          dbconfig-common
 Description: The next step in the development of orchestra.
