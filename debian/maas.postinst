@@ -27,11 +27,31 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
 	# restart apache
 	apache2ctl restart || true
 
-	# Obtain 'cobbler' user password to autoconfigure
-	db_get cobbler/password || true
-	cblr_pass="$RET"
+	# Create 'maas' user and password to autoconfigure
+	cblr_pass=`pwgen`
+	hash=$(printf "maas:Cobbler:$cblr_pass" | md5sum | awk '{print $1}')
+	[ -e /etc/cobbler/users.digest ] || install -o root -g root -m 0600 /dev/null /etc/cobbler/users.digest
+	htpasswd -D /etc/cobbler/users.digest "maas" || true
+	printf "maas:Cobbler:$hash\n" >> /etc/cobbler/users.digest
+
 	if grep -qs "^\ \{1,\}password: [a-zA-Z0-9]\{1,\}$" /etc/maas/pserv.yaml; then
 		sed -i "s/^\ \{1,\}password: [a-zA-Z0-9]\{1,\}$/  password: "$cblr_pass"/" /etc/maas/pserv.yaml
+	fi
+
+	# Obtain IP address of default route and change DEFAULT_MAAS_URL.
+	while read Iface Destination Gateway Flags RefCnt Use Metric Mask MTU Window IRTT; do
+		[ "$Mask" = "00000000" ] && break
+	done < /proc/net/route
+	interface="$Iface"
+	ipaddr=$(LC_ALL=C /sbin/ip -4 addr list dev "$interface" scope global)
+	ipaddr=${ipaddr#* inet }
+	ipaddr=${ipaddr%%/*}
+	# Set the IP address of the interface with default route
+	if [ "$ipaddr" ]; then
+		if grep -qs "^DEFAULT_MAAS_URL\ \= \"[a-zA-Z0-9:/.]\{0,\}\"$" /etc/maas/maas_local_settings.py; then
+			sed -i "s/^DEFAULT_MAAS_URL\ \= \"[a-zA-Z0-9:/.]\{0,\}\"$/DEFAULT_MAAS_URL = \"http:\/\/"$ipaddr"\/\"/" \
+                               /etc/maas/maas_local_settings.py
+		fi
 	fi
 
 	# Give appropriate permissions

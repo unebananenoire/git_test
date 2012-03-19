@@ -1,7 +1,7 @@
-Index: maas-0.1+bzr283+dfsg.orig/etc/txlongpoll.yaml
+Index: maas-0.1+bzr296+dfsg.orig/etc/txlongpoll.yaml
 ===================================================================
---- maas-0.1+bzr283+dfsg.orig.orig/etc/txlongpoll.yaml	2012-03-14 17:07:57.000000000 -0400
-+++ maas-0.1+bzr283+dfsg.orig/etc/txlongpoll.yaml	2012-03-14 17:34:05.767900696 -0400
+--- maas-0.1+bzr296+dfsg.orig.orig/etc/txlongpoll.yaml	2012-03-15 20:39:01.511610287 -0400
++++ maas-0.1+bzr296+dfsg.orig/etc/txlongpoll.yaml	2012-03-15 20:39:20.003606136 -0400
 @@ -15,7 +15,7 @@
  oops:
    ## Directory in which to place OOPS reports.

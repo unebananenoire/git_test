@@ -1,13 +1,13 @@
-Index: maas-0.1+bzr295+dfsg.orig/etc/pserv.yaml
+Index: maas-0.1+bzr299+dfsg.orig/etc/pserv.yaml
 ===================================================================
---- maas-0.1+bzr295+dfsg.orig.orig/etc/pserv.yaml	2012-03-15 16:14:14.886749982 -0400
-+++ maas-0.1+bzr295+dfsg.orig/etc/pserv.yaml	2012-03-15 16:32:44.038922566 -0400
+--- maas-0.1+bzr299+dfsg.orig.orig/etc/pserv.yaml	2012-03-16 13:43:29.783587215 -0400
++++ maas-0.1+bzr299+dfsg.orig/etc/pserv.yaml	2012-03-16 13:45:47.211610720 -0400
 @@ -4,19 +4,19 @@
  
  ## The port on which the Provisioning API will be made available.
  #
--# port: 8001
-+port: 8001
+-# port: 5241
++port: 5241
  
  ## Where to log. This log can be rotated by sending SIGUSR1 to the
  ## running server.
@@ -30,6 +30,7 @@ Index: maas-0.1+bzr295+dfsg.orig/etc/pserv.yaml
  
    # vdenv specific; see vdenv/README.txt.
 -  url: http://local.cobbler.dev/cobbler_api
+-  username: cobbler
 +  url: http://localhost/cobbler_api
-   username: cobbler
++  username: maas
    password: xcobbler

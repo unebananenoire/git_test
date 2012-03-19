@@ -1,3 +1,16 @@
+maas (0.1+bzr300+dfsg-0ubuntu1) precise; urgency=low
+
+  * debian/patches:
+    - 01-fix-database-settings.patch: Update PSERV_URL port.
+    - 02-pserv-config.patch: Update, and set 'maas' as username.
+    - 03-longpoll-config.patch: Update.
+  * debian/maas.install: Install preseeds and snippets.
+  * debian/maas.postinst: 
+    - Set password for 'maas' cobbler username (in pserv and cobbler).
+    - Set DEFAULT_MAAS_URL to IP of interface with default gateway.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 16 Mar 2012 14:59:16 -0400
+
 maas (0.1+bzr295+dfsg-0ubuntu2) precise; urgency=low
 
   * debian/patches:
