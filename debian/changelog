@@ -1,3 +1,12 @@
+maas (0.1+bzr308+dfsg-0ubuntu1) UNRELEASED; urgency=low
+
+  * New upstream snapshot.
+  * debian/maas.postinst: Do not import ISO's at install time.
+  * debian/control: Drop run-one, it's not a requirement and
+    currently in universe. 
+
+ -- Dave Walker (Daviey) <DaveWalker@ubuntu.com>  Mon, 19 Mar 2012 18:07:20 +0000
+
 maas (0.1+bzr300+dfsg-0ubuntu1) precise; urgency=low
 
   * debian/patches:

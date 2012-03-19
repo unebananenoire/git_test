@@ -10,8 +10,6 @@ else
 	sync_db=false
 fi
 
-run-one maas-import-isos </dev/null >/dev/null 2>&1 &
-
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
 
 	# handle apache
