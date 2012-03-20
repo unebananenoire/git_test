@@ -30,7 +30,9 @@ Package: python-django-maas
 Architecture: all
 Depends: ${misc:Depends},
          ${python:Depends},
+         python-avahi,
          python-convoy,
+         python-dbus,
          python-oops,
          python-oops-amqp,
          python-oops-datedir-repo,

@@ -1,12 +1,22 @@
 maas (0.1+bzr308+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream snapshot.
+
+  [ Dave Walker ]
   * debian/maas.postinst: Do not import ISO's at install time.
   * debian/control: 
     - Drop run-one, it's not a requirement and currently in universe.
     - Drop python-setproctitle, no longer required.
 
- -- Dave Walker (Daviey) <DaveWalker@ubuntu.com>  Mon, 19 Mar 2012 23:55:11 +0000
+  [ Andres Rodriguez ]
+  * debian/control: Depends on python-avahi and python-dbus
+  * debian/maas.postinst:
+    - Only syncdb if dbconfig db creation was selected.
+    - Set rabbitmq/longpoll settings
+  * debian/patches/03-txlongpoll-config.patch: Updated broker settings for
+    rabbitmq.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 20 Mar 2012 10:05:38 -0400
 
 maas (0.1+bzr300+dfsg-0ubuntu1) precise; urgency=low
 

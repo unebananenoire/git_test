@@ -1,7 +1,7 @@
-Index: maas-0.1+bzr296+dfsg.orig/etc/txlongpoll.yaml
+Index: maas-0.1+bzr309+dfsg.orig/etc/txlongpoll.yaml
 ===================================================================
---- maas-0.1+bzr296+dfsg.orig.orig/etc/txlongpoll.yaml	2012-03-15 20:39:01.511610287 -0400
-+++ maas-0.1+bzr296+dfsg.orig/etc/txlongpoll.yaml	2012-03-15 20:39:20.003606136 -0400
+--- maas-0.1+bzr309+dfsg.orig.orig/etc/txlongpoll.yaml	2012-03-19 15:25:52.594756038 -0400
++++ maas-0.1+bzr309+dfsg.orig/etc/txlongpoll.yaml	2012-03-19 15:28:35.342888977 -0400
 @@ -15,7 +15,7 @@
  oops:
    ## Directory in which to place OOPS reports.
@@ -11,7 +11,22 @@ Index: maas-0.1+bzr296+dfsg.orig/etc/txlongpoll.yaml
    ## The reporter used when generating OOPS reports.
    # reporter: "LONGPOLL"
    reporter: "maas-txlongpoll"
-@@ -33,4 +33,4 @@
+@@ -23,14 +23,14 @@
+ ## Message broker configuration.
+ #
+ broker:
+-  # host: "localhost"
+-  # port: 5672
+-  # username: "guest"
+-  # password: "guest"
+-  # vhost: "/"
++  host: "localhost"
++  port: 5672
++  username: "mass_longpoll"
++  password: "maas_longpoll"
++  vhost: "/maas_longpoll"
+ 
+ ## Where to log. This log can be rotated by sending SIGUSR1 to the
  ## running server.
  #
  # logfile: "txlongpoll.log"

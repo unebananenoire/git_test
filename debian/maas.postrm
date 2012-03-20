@@ -16,6 +16,11 @@ case "$1" in
 			rm -rf /etc/apache2/conf.d/maas-http.conf
 		fi
 
+		# Remove rabbitmq/longpoll
+		longpoll_user="maas_longpoll"
+		longpoll_vhost="/maas_longpoll"
+		rabbitmqctl delete_vhost "$longpoll_vhost" || true
+		rabbitmqctl delete_user "$longpoll_user" || true
 esac
 
 #DEBHELPER#
