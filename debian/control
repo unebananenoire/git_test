@@ -12,6 +12,7 @@ Architecture: all
 Depends: ${misc:Depends},
          ${python:Depends},
          apache2,
+         avahi-daemon,
          cobbler,
          libapache2-mod-wsgi,
          postgresql-9.1,

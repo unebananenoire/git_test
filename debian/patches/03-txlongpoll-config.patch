@@ -1,7 +1,7 @@
-Index: maas-0.1+bzr309+dfsg.orig/etc/txlongpoll.yaml
+Index: maas-0.1+bzr315+dfsg.orig/etc/txlongpoll.yaml
 ===================================================================
---- maas-0.1+bzr309+dfsg.orig.orig/etc/txlongpoll.yaml	2012-03-19 15:25:52.594756038 -0400
-+++ maas-0.1+bzr309+dfsg.orig/etc/txlongpoll.yaml	2012-03-19 15:28:35.342888977 -0400
+--- maas-0.1+bzr315+dfsg.orig.orig/etc/txlongpoll.yaml	2012-03-20 20:19:23.000000000 -0400
++++ maas-0.1+bzr315+dfsg.orig/etc/txlongpoll.yaml	2012-03-20 20:27:53.016027137 -0400
 @@ -15,7 +15,7 @@
  oops:
    ## Directory in which to place OOPS reports.
@@ -23,7 +23,7 @@ Index: maas-0.1+bzr309+dfsg.orig/etc/txlongpoll.yaml
 +  host: "localhost"
 +  port: 5672
 +  username: "mass_longpoll"
-+  password: "maas_longpoll"
++  password: "maaslongpoll"
 +  vhost: "/maas_longpoll"
  
  ## Where to log. This log can be rotated by sending SIGUSR1 to the
