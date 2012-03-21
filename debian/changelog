@@ -2,7 +2,11 @@ maas (0.1+bzr315+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 20 Mar 2012 20:40:20 -0400
+  [ Dave Walker (Daviey) ]
+  * d/patches/03-txlongpoll-config.patch: Resolve typo error from prior patch.
+    - LP: #961031
+
+ -- Dave Walker (Daviey) <DaveWalker@ubuntu.com>  Wed, 21 Mar 2012 14:32:40 +0000
 
 maas (0.1+bzr315+dfsg-0ubuntu1) precise; urgency=low
 

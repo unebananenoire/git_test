@@ -22,7 +22,7 @@ Index: maas-0.1+bzr315+dfsg.orig/etc/txlongpoll.yaml
 -  # vhost: "/"
 +  host: "localhost"
 +  port: 5672
-+  username: "mass_longpoll"
++  username: "maas_longpoll"
 +  password: "maaslongpoll"
 +  vhost: "/maas_longpoll"
  
