@@ -1,12 +1,24 @@
-maas (0.1+bzr315+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr347+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 23 Mar 2012 17:13:41 -0400
+
+maas (0.1+bzr338+dfsg-0ubuntu1) precise; urgency=low
 
   [ Dave Walker (Daviey) ]
   * d/patches/03-txlongpoll-config.patch: Resolve typo error from prior patch.
     - LP: #961031
 
- -- Dave Walker (Daviey) <DaveWalker@ubuntu.com>  Wed, 21 Mar 2012 14:32:40 +0000
+  [ Andres Rodriguez ]
+  * debian/maas.config: Don't allow reconfigure.
+  * debian/maas.postinst: Don't allow reconfigure. Run sync/migrate db on
+    all upgrades.
+
+  [ Scott Moser ]
+  * add rsylog config for logging node boots (LP: 960149)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 22 Mar 2012 10:56:58 -0400
 
 maas (0.1+bzr315+dfsg-0ubuntu1) precise; urgency=low
 
