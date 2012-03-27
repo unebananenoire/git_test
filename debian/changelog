@@ -1,8 +1,9 @@
 maas (0.1+bzr347+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  [ Dave Walker (Daviey) ]
+  * debian/control: Add openssh-server as a Recommends, and wrap-and-sort. 
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 23 Mar 2012 17:13:41 -0400
+ -- Dave Walker (Daviey) <DaveWalker@ubuntu.com>  Tue, 27 Mar 2012 11:25:46 +0100
 
 maas (0.1+bzr338+dfsg-0ubuntu1) precise; urgency=low
 

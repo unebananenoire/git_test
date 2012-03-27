@@ -9,30 +9,29 @@ Homepage: https://launchpad.net/maas
 
 Package: maas
 Architecture: all
-Depends: ${misc:Depends},
-         ${python:Depends},
-         apache2,
+Depends: apache2,
          avahi-daemon,
          cobbler,
+         dbconfig-common,
          libapache2-mod-wsgi,
          postgresql-9.1,
+         pwgen,
          python-django,
          python-django-maas (>= ${binary:Version}),
          python-django-piston,
          python-django-south,
-         pwgen,
          rabbitmq-server,
          rsyslog,
          squid-deb-proxy,
-         dbconfig-common
+         ${misc:Depends},
+         ${python:Depends}
+Recommends: openssh-server
 Description: The next step in the development of orchestra.
  It provides an easy to use UI to provision your Ubuntu servers.
 
 Package: python-django-maas
 Architecture: all
-Depends: ${misc:Depends},
-         ${python:Depends},
-         python-avahi,
+Depends: python-avahi,
          python-convoy,
          python-dbus,
          python-oops,
@@ -45,6 +44,8 @@ Depends: ${misc:Depends},
          python-twisted,
          python-txamqp,
          python-txlongpoll,
-         python-zope.interface
+         python-zope.interface,
+         ${misc:Depends},
+         ${python:Depends}
 Description: The next step in the development of Orchestra.
  It provides an easy to use UI to provision your Ubuntu servers.
