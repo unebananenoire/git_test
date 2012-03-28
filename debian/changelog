@@ -1,9 +1,29 @@
-maas (0.1+bzr347+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr363+dfsg-0ubuntu2) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 27 Mar 2012 16:00:07 -0400
+
+maas (0.1+bzr363+dfsg-0ubuntu1) precise; urgency=low
 
   [ Dave Walker (Daviey) ]
   * debian/control: Add openssh-server as a Recommends, and wrap-and-sort. 
 
- -- Dave Walker (Daviey) <DaveWalker@ubuntu.com>  Tue, 27 Mar 2012 11:25:46 +0100
+  [ Andres Rodriguez ]
+  * debian/maas.postinst:
+    - Do not start apache with apache2ctl. Use invoke-rc.d instead to not
+      fail in the installer.
+    - For start of postgresql before creating the DB, otherwise it will
+      fail in the installer.
+    - Add check of invoke-rc.d for syslog.
+    - Add check of invoke-rc.d for rabbitmq-server; Add check for rabbitmqctl
+    - Add db_stop, in case invoke-rc.d fails.
+  * debian/control: Tight python-django-maas dependency.
+  * debian/postrm: Add check for rabbitmqctl.
+  * debian/maas.maas-txlongpoll.upstart: Create rabbitmq longpoll user/vhost
+    and set permissions if they don't exist. Start on rabbitmq-server-running.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 27 Mar 2012 14:49:56 -0400
 
 maas (0.1+bzr338+dfsg-0ubuntu1) precise; urgency=low
 

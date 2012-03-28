@@ -15,7 +15,10 @@ fi
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 
-	# handle apache
+	#########################################################
+	################  Configure Apache2  ####################
+	#########################################################
+	# handle apache configs
 	if [ -e /etc/maas/maas-http.conf -a \
 		! -e /etc/apache2/conf.d/maas-http.conf ]; then
 		ln -sf /etc/maas/maas-http.conf /etc/apache2/conf.d/maas-http.conf
@@ -25,8 +28,16 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	a2enmod expires
 	a2enmod wsgi
 
-	# restart apache
-	apache2ctl restart || true
+	# Need to restart apache to pickup web configs
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d apache2 restart || true
+	else
+		/etc/init.d/apache2 restart || true
+	fi
+
+	#########################################################
+	########### Configure maas user for Cobbler #############
+	#########################################################
 
 	# Create 'maas' user and password to autoconfigure
 	cblr_pass=`pwgen`
@@ -39,22 +50,9 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 		sed -i "s/^\ \{1,\}password: [a-zA-Z0-9]\{1,\}$/  password: "$cblr_pass"/" /etc/maas/pserv.yaml
 	fi
 
-	# Handle longpoll/rabbitmq publishing
-	longpoll_user="maas_longpoll"
-	longpoll_pass=`pwgen`
-	longpoll_vhost="/maas_longpoll"
-	rabbitmqctl add_user "$longpoll_user" "$longpoll_pass" || true
-	rabbitmqctl add_vhost "$longpoll_vhost" || true
-	rabbitmqctl set_permissions -p "$longpoll_vhost" "$longpoll_user" ".*" ".*" ".*" || true
-
-	if grep -qs "^\ \{1,\}password: \"[a-zA-Z0-9]\{0,\}\"$" /etc/maas/txlongpoll.yaml; then
-		sed -i "s/^\ \{1,\}password: \"[a-zA-Z0-9]\{0,\}\"$/  password: \""$longpoll_pass"\"/" \
-                       /etc/maas/txlongpoll.yaml
-	fi
-	if grep -qs "^RABBITMQ_PASSWORD\ \= '[a-zA-Z0-9]\{0,\}'$" /etc/maas/maas_local_settings.py; then
-		sed -i "s/^RABBITMQ_PASSWORD\ \= '[a-zA-Z0-9]\{0,\}'$/RABBITMQ_PASSWORD = '"$longpoll_pass"'/" \
-                       /etc/maas/maas_local_settings.py
-	fi
+	#########################################################
+	##########  Configure DEFAULT_MAAS_URL  #################
+	#########################################################
 
 	# Obtain IP address of default route and change DEFAULT_MAAS_URL.
 	while read Iface Destination Gateway Flags RefCnt Use Metric Mask MTU Window IRTT; do
@@ -72,6 +70,10 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 		fi
 	fi
 
+	#########################################################
+	################  Configure Logging  ####################
+	#########################################################
+
 	# Give appropriate permissions
 	if [ ! -f /var/log/maas/maas.log ]; then
 		touch /var/log/maas/maas.log
@@ -79,8 +81,54 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	chown -R root:www-data /var/log/maas
 	chmod 620 /var/log/maas/maas.log
 	chmod -R 775 /var/log/maas/oops
+
+	# Create log directory base
+	mkdir -p /var/log/maas/rsyslog
+	chown -R syslog:syslog /var/log/maas/rsyslog
+	# Make sure rsyslog reads our config
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d rsyslog restart
+	fi
 	
-	# Configure database
+	#########################################################
+	########## Configure longpoll rabbitmq config ###########
+	#########################################################
+
+	# Handle longpoll/rabbitmq publishing
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d rabbitmq-server restart || true
+	else
+		/etc/init.d/rabbitmq-server restart || true
+	fi
+	longpoll_user="maas_longpoll"
+	longpoll_pass=`pwgen`
+	longpoll_vhost="/maas_longpoll"
+	if [ -x /usr/sbin/rabbitmqctl ]; then
+		/usr/sbin/rabbitmqctl add_user "$longpoll_user" "$longpoll_pass" || true
+		/usr/sbin/rabbitmqctl add_vhost "$longpoll_vhost" || true
+		/usr/sbin/rabbitmqctl set_permissions -p "$longpoll_vhost" "$longpoll_user" ".*" ".*" ".*" || true
+	fi
+
+	if grep -qs "^\ \{1,\}password: \"[a-zA-Z0-9]\{0,\}\"$" /etc/maas/txlongpoll.yaml; then
+		sed -i "s/^\ \{1,\}password: \"[a-zA-Z0-9]\{0,\}\"$/  password: \""$longpoll_pass"\"/" \
+                       /etc/maas/txlongpoll.yaml
+	fi
+	if grep -qs "^RABBITMQ_PASSWORD\ \= '[a-zA-Z0-9]\{0,\}'$" /etc/maas/maas_local_settings.py; then
+		sed -i "s/^RABBITMQ_PASSWORD\ \= '[a-zA-Z0-9]\{0,\}'$/RABBITMQ_PASSWORD = '"$longpoll_pass"'/" \
+                       /etc/maas/maas_local_settings.py
+	fi
+
+	#########################################################
+	################  Configure Database  ###################
+	#########################################################
+
+	# Need to for postgresql start so it doesn't fail on the installer
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d --force postgresql restart || true
+	else
+		/etc/init.d/postgresql restart || true
+	fi
+	# Create the database
 	dbc_go maas $@
 	if grep -qs "^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$" /etc/maas/maas_local_settings.py; then
 		sed -i "s/^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$/        'PASSWORD': '"$dbc_dbpass"',/" \
@@ -92,16 +140,13 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 		maas_sync_migrate_db
 	fi
 
-	# Create log directory base
-	mkdir -p /var/log/maas/rsyslog
-	chown -R syslog:syslog /var/log/maas/rsyslog
-	# Make sure rsyslog reads our config
-	invoke-rc.d rsyslog restart
-
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
 	# If upgrading to any later package version, then upgrade db.
 	maas_sync_migrate_db
 fi
 
+db_stop
+
 #DEBHELPER#
+
 exit 0

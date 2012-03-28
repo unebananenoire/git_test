@@ -19,8 +19,10 @@ case "$1" in
 		# Remove rabbitmq/longpoll
 		longpoll_user="maas_longpoll"
 		longpoll_vhost="/maas_longpoll"
-		rabbitmqctl delete_vhost "$longpoll_vhost" || true
-		rabbitmqctl delete_user "$longpoll_user" || true
+		if [ -x /usr/sbin/rabbitmqctl ]; then
+			rabbitmqctl delete_vhost "$longpoll_vhost" || true
+			rabbitmqctl delete_user "$longpoll_user" || true
+		fi
 esac
 
 #DEBHELPER#
