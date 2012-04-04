@@ -1,8 +1,8 @@
-Index: maas-0.1+bzr299+dfsg.orig/etc/pserv.yaml
+Index: maas-0.1+bzr398+dfsg.orig/etc/pserv.yaml
 ===================================================================
---- maas-0.1+bzr299+dfsg.orig.orig/etc/pserv.yaml	2012-03-16 13:43:29.783587215 -0400
-+++ maas-0.1+bzr299+dfsg.orig/etc/pserv.yaml	2012-03-16 13:45:47.211610720 -0400
-@@ -4,19 +4,19 @@
+--- maas-0.1+bzr398+dfsg.orig.orig/etc/pserv.yaml	2012-04-03 09:49:48.153428333 -0400
++++ maas-0.1+bzr398+dfsg.orig/etc/pserv.yaml	2012-04-03 09:51:53.719228342 -0400
+@@ -4,13 +4,13 @@
  
  ## The port on which the Provisioning API will be made available.
  #
@@ -18,14 +18,16 @@ Index: maas-0.1+bzr299+dfsg.orig/etc/pserv.yaml
  
  ## OOPS configuration (optional).
  #
- oops:
+@@ -19,7 +19,7 @@
+   # or directories other than what the oops machinery creates there.
+   #
    # directory:
--  directory: "logs"
+-  directory: "logs/oops"
 +  directory: "/var/log/maas/oops"
    # reporter:
    reporter: "maas-pserv"
  
-@@ -38,6 +38,6 @@
+@@ -41,6 +41,6 @@
    # password: "test"
  
    # vdenv specific; see vdenv/README.txt.

@@ -2,7 +2,7 @@ Source: maas
 Section: net
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-Build-Depends: debhelper (>= 8), python (>= 2.7), python-distribute
+Build-Depends: debhelper (>= 8), python (>= 2.7), python-distribute, dh-apport
 Standards-Version: 3.9.3
 X-Python-Version: >= 2.7
 Homepage: https://launchpad.net/maas

@@ -18,6 +18,7 @@ contrib/wsgi.py usr/share/maas
 
 # Install all other stuff
 etc/cron.d/maas-import-isos
+etc/cron.d/maas-gc
 etc/maas/import_isos
 man/maas-import-isos.8 usr/share/man/man8
 scripts/maas-import-isos usr/sbin

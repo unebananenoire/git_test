@@ -1,8 +1,23 @@
-maas (0.1+bzr378+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr400+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 29 Mar 2012 19:33:34 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 03 Apr 2012 19:56:27 -0400
+
+maas (0.1+bzr400+dfsg-0ubuntu1) precise; urgency=low
+
+  * debian/patches/{02-pserv-config,03-txlongpoll-config}.patch: Refreshed.
+  * debian/maas.install: Install maas-gc cronjob.
+  * Add apport hook.
+    - debian/maas.apport: Add hook.
+    - debian/rules: Install with apport.
+  * debian/maas.logrotate: Add logrotate for txlongpoll and pserv logs.
+  * Create 'var/lib/media/maas/storage' on postinst to have right permissions.
+    - debian/maas.dirs: Drop dir creation.
+    - debian/maas.postinst: Create dir with correct permissions.
+    - debian/maas.postrm: Remove dir on purge.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 03 Apr 2012 14:50:34 -0400
 
 maas (0.1+bzr378+dfsg-0ubuntu1) precise; urgency=low
 

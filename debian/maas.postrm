@@ -12,6 +12,7 @@ fi
 case "$1" in
 	purge)
 		rm -rf /var/log/maas
+		rm -rf /var/lib/maas
 		if [ -h /etc/apache2/conf.d/maas-http.conf ]; then
 			rm -rf /etc/apache2/conf.d/maas-http.conf
 		fi
