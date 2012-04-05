@@ -1,0 +1,26 @@
+Template: maas-dhcp/dnsmasq-dhcp-range
+Type: string
+_Description: Set the network range for DHCP Clients:
+ Ubuntu MAAS Server can manage DHCP for address allocation for
+ the provisioned systems.  If the network range for the DHCP is
+ different from the default (192.168.1.5,192.168.1.200), you
+ should set it here.
+ .
+ An example of how a network range should be specified is:
+ .
+ 10.10.10.2,10.10.10.254
+
+Template: maas-dhcp/dnsmasq-default-gateway
+Type: string
+_Description: Set default Gateway for DHCP Clients:
+ Ubuntu MAAS Server can manage DHCP for address allocation for
+ the provisioned systems.  If the Ubuntu MAAS Server is NOT the
+ default Gateway for the provisioned systems, you should set the
+ default Gateway here, otherwise leave this blank.
+
+Template: maas-dhcp/dnsmasq-domain-name
+Type: string
+_Description: Set the domain name for DHCP Clients:
+ Ubuntu MAAS Server can manage DHCP for address allocation for
+ the provisioned systems. If these systems are required to be
+ under a domain, you should enter it here.

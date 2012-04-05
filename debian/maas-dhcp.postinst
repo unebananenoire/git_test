@@ -1,0 +1,50 @@
+#!/bin/sh -e
+
+. /usr/share/debconf/confmodule
+db_version 2.0
+
+if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
+
+	# Setup dnsmasq
+	sed -i -e "s/^manage_dns:.*$/manage_dns: 1/" \
+	       -e "s/^manage_dhcp:.*$/manage_dhcp: 1/" /etc/cobbler/settings
+	sed -i -e "s/^module = manage_bind/module = manage_dnsmasq/" \
+	       -e "s/^module = manage_isc/module = manage_dnsmasq/" /etc/cobbler/modules.conf
+
+	# Set the DHCP range
+	db_get maas-dhcp/dnsmasq-dhcp-range || true
+	range="$RET"
+	if [ -n "$range" ]; then
+		sed -i -e "s/^dhcp-range=.*$/dhcp-range=$range/" /etc/cobbler/dnsmasq.template
+	fi
+
+	# Setup Default Gateway
+	db_get maas-dhcp/dnsmasq-default-gateway || true
+	ipaddr="$RET"
+	if [ -n "$ipaddr" ]; then
+		# If template has $next_server as default gateway, set it to $ipaddr
+		if grep -qs "^dhcp-option=.*$" /etc/cobbler/dnsmasq.template; then
+			sed -i -e "s/^dhcp-option=.*$/dhcp-option=3,$ipaddr/" /etc/cobbler/dnsmasq.template
+		fi
+	fi
+
+	# Setup Domain Name
+	db_get maas-dhcp/dnsmasq-domain-name || true
+	domain="$RET"
+	if [ -n "$domain" ]; then
+		# if the domain hasn't been set, set it to $domain
+		if grep -qs "^#domain=.*$" /etc/cobbler/dnsmasq.template; then
+			sed -i -e "s/^#domain=.*/domain=$domain/" /etc/cobbler/dnsmasq.template
+		# if the domain has been set, change it to $domain
+		elif grep -qs "^domain=.*$" /etc/cobbler/dnsmasq.template; then
+			sed -i -e "s/^domain=.*$/domain=$domain/" /etc/cobbler/dnsmasq.template
+		fi
+	fi
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+                invoke-rc.d cobbler restart || true
+	fi
+
+fi
+
+#DEBHELPER#
+exit 0

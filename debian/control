@@ -2,7 +2,7 @@ Source: maas
 Section: net
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-Build-Depends: debhelper (>= 8), python (>= 2.7), python-distribute, dh-apport
+Build-Depends: debhelper (>= 8), python (>= 2.7), python-distribute, dh-apport, po-debconf
 Standards-Version: 3.9.3
 X-Python-Version: >= 2.7
 Homepage: https://launchpad.net/maas
@@ -26,8 +26,17 @@ Depends: apache2,
          ${misc:Depends},
          ${python:Depends}
 Recommends: openssh-server
-Description: The next step in the development of orchestra.
- It provides an easy to use UI to provision your Ubuntu servers.
+Suggests: maas-dhcp
+Description: Ubuntu MAAS Server
+ Ubuntu MAAS Server is the successor to Orchestra. It offers a
+ nice UI to provision your Ubuntu servers. Each physical server
+ (“node”) will be commissioned automatically on first boot.
+ During the commissioning process administrators are able to
+ configure hardware settings manually before an automated smoke
+ test and burn-in test are done. Once commissioned, a node can
+ be deployed on demand by name, or allocated to a queue for
+ dynamic allocation to services being deployed on this MAAS.
+
 
 Package: python-django-maas
 Architecture: all
@@ -47,5 +56,29 @@ Depends: python-avahi,
          python-zope.interface,
          ${misc:Depends},
          ${python:Depends}
-Description: The next step in the development of Orchestra.
- It provides an easy to use UI to provision your Ubuntu servers.
+Description: Ubuntu MAAS Server - (django files)
+ Ubuntu MAAS Server is the successor to Orchestra. It offers a
+ nice UI to provision your Ubuntu servers. Each physical server
+ (“node”) will be commissioned automatically on first boot.
+ During the commissioning process administrators are able to
+ configure hardware settings manually before an automated smoke
+ test and burn-in test are done. Once commissioned, a node can
+ be deployed on demand by name, or allocated to a queue for
+ dynamic allocation to services being deployed on this MAAS.
+ .
+ This package contains the Django files.
+
+Package: maas-dhcp
+Architecture: all
+Depends: dnsmasq
+Description: Ubuntu MAAS Server - DHCP configuration
+ Ubuntu MAAS Server is the successor to Orchestra. It offers a
+ nice UI to provision your Ubuntu servers. Each physical server
+ (“node”) will be commissioned automatically on first boot.
+ During the commissioning process administrators are able to
+ configure hardware settings manually before an automated smoke
+ test and burn-in test are done. Once commissioned, a node can
+ be deployed on demand by name, or allocated to a queue for
+ dynamic allocation to services being deployed on this MAAS.
+ .
+ This package configures a DHCP that can be used with MAAS.

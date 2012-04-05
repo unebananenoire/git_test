@@ -1,8 +1,25 @@
-maas (0.1+bzr400+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr415+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 03 Apr 2012 19:56:27 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 04 Apr 2012 19:17:42 -0400
+
+maas (0.1+bzr415+dfsg-0ubuntu1) precise; urgency=low
+
+  * debian/control: Update package descriptions; Suggests maas-dhcp for maas
+    and add a maas-dhcp binary.
+  * Add maas-dhcp package to configure a DHCP server.
+    - debian/maas-dhcp.config: Add to ask debconf questions about range,
+      gateway, and domain.
+    - debian/maas-dhcp.postinst: Handle update of config values.
+    - debian/maas-dhcp.templates: Debconf questions.
+  * debian/po: Update for templates.
+  * Add message telling MAAS URL after installation.
+    - debian/maas.templates: Add message.
+    - debian/maas.postinst: Display message.
+  * debian/maas.config: Hide dbconfig-install question.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 04 Apr 2012 14:47:13 -0400
 
 maas (0.1+bzr400+dfsg-0ubuntu1) precise; urgency=low
 
