@@ -1,8 +1,8 @@
 maas (0.1+bzr415+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  * add dependency on distro-info (LP: #949442)
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 04 Apr 2012 19:17:42 -0400
+ -- Scott Moser <smoser@ubuntu.com>  Mon, 09 Apr 2012 22:19:51 -0400
 
 maas (0.1+bzr415+dfsg-0ubuntu1) precise; urgency=low
 
