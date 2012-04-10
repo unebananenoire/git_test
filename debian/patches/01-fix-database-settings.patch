@@ -1,3 +1,9 @@
+Description: Use default settings for MAAS
+ Use default settings for MAAS to work out of the box.
+ These include setting PSERV_URL, STATIC_ROOT, and the
+ configuration for the database.
+Author: Andres Rodriguez <andreserl@ubuntu.com>
+
 Index: maas-0.1+bzr309+dfsg.orig/contrib/maas_local_settings_sample.py
 ===================================================================
 --- maas-0.1+bzr309+dfsg.orig.orig/contrib/maas_local_settings_sample.py	2012-03-19 14:56:36.884477638 -0400

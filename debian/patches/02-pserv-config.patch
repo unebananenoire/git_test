@@ -1,3 +1,8 @@
+Description: Use default settings for MAAS PSERV
+ Use default settings for MAAS pserv. These default settings
+ include port, logfile, oops directory, cobbler url and username
+Author: Andres Rodriguez <andreserl@ubuntu.com>
+
 Index: maas-0.1+bzr398+dfsg.orig/etc/pserv.yaml
 ===================================================================
 --- maas-0.1+bzr398+dfsg.orig.orig/etc/pserv.yaml	2012-04-03 09:49:48.153428333 -0400

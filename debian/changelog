@@ -1,8 +1,20 @@
 maas (0.1+bzr415+dfsg-0ubuntu3) UNRELEASED; urgency=low
 
+  [ Scott Moser ]
   * add dependency on distro-info (LP: #949442)
 
- -- Scott Moser <smoser@ubuntu.com>  Mon, 09 Apr 2012 22:19:51 -0400
+  [ Andres Rodriguez ]
+  * Make package lintian clean:
+    - maas{-dhcp}.lintian-overrides: Add to make lintian clean.
+    - debian/control: Add missing dependencies; correct section and desc.
+    - debian/maas.postinst: Do not use absolute path for rabbitmqctl.
+    - debian/patches: Add headers to all patches.
+  * debian/maas-dhcp.postrm: Added to disable dnsmasq in cobbler on removal.
+  * debian/maas.config: Do not set a password with pwgen as it is not an
+    essential package; allow dbconfig-common to create a password instead by
+    creating an empty question. (LP: #977475)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 10 Apr 2012 14:55:32 -0400
 
 maas (0.1+bzr415+dfsg-0ubuntu2) precise; urgency=low
 

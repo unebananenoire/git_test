@@ -115,9 +115,9 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	longpoll_pass=`pwgen`
 	longpoll_vhost="/maas_longpoll"
 	if [ -x /usr/sbin/rabbitmqctl ]; then
-		/usr/sbin/rabbitmqctl add_user "$longpoll_user" "$longpoll_pass" || true
-		/usr/sbin/rabbitmqctl add_vhost "$longpoll_vhost" || true
-		/usr/sbin/rabbitmqctl set_permissions -p "$longpoll_vhost" "$longpoll_user" ".*" ".*" ".*" || true
+		rabbitmqctl add_user "$longpoll_user" "$longpoll_pass" || true
+		rabbitmqctl add_vhost "$longpoll_vhost" || true
+		rabbitmqctl set_permissions -p "$longpoll_vhost" "$longpoll_user" ".*" ".*" ".*" || true
 	fi
 
 	if grep -qs "^\ \{1,\}password: \"[a-zA-Z0-9]\{0,\}\"$" /etc/maas/txlongpoll.yaml; then

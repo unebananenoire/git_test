@@ -1,3 +1,8 @@
+Description: Use default settings for MAAS txlongpoll
+ Use default settings for MAAS txlongpoll. These default settings
+ include  oops directory, Message broker configuration, logfile.
+Author: Andres Rodriguez <andreserl@ubuntu.com>
+
 Index: maas-0.1+bzr398+dfsg.orig/etc/txlongpoll.yaml
 ===================================================================
 --- maas-0.1+bzr398+dfsg.orig.orig/etc/txlongpoll.yaml	2012-04-03 09:49:48.109427702 -0400

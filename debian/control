@@ -40,6 +40,7 @@ Description: Ubuntu MAAS Server
 
 
 Package: python-django-maas
+Section: python
 Architecture: all
 Depends: python-avahi,
          python-convoy,
@@ -71,8 +72,8 @@ Description: Ubuntu MAAS Server - (django files)
 
 Package: maas-dhcp
 Architecture: all
-Depends: maas, dnsmasq
-Description: Ubuntu MAAS Server - DHCP configuration
+Depends: ${misc:Depends}, maas, debconf, dnsmasq
+Description: Ubuntu MAAS Server - DHCP configuration (metapackage)
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
  (“node”) will be commissioned automatically on first boot.
