@@ -1,8 +1,17 @@
-maas (0.1+bzr415+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr415+dfsg-0ubuntu3) UNRELEASED; urgency=low
 
   * add dependency on distro-info (LP: #949442)
 
  -- Scott Moser <smoser@ubuntu.com>  Mon, 09 Apr 2012 22:19:51 -0400
+
+maas (0.1+bzr415+dfsg-0ubuntu2) precise; urgency=low
+
+  * debian/maas-dhcp.{config,postinst}:
+    - Fix not setting new values on fresh install. (LP: #975321)
+    - Fix unsetting domain, otherwise, even if disabled, it will always be set.
+  * debian/control: Depends on maas for maas-dhcp.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 06 Apr 2012 15:30:44 -0400
 
 maas (0.1+bzr415+dfsg-0ubuntu1) precise; urgency=low
 

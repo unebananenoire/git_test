@@ -71,7 +71,7 @@ Description: Ubuntu MAAS Server - (django files)
 
 Package: maas-dhcp
 Architecture: all
-Depends: dnsmasq
+Depends: maas, dnsmasq
 Description: Ubuntu MAAS Server - DHCP configuration
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
