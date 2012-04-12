@@ -24,6 +24,7 @@ Depends: apache2,
          rabbitmq-server,
          rsyslog,
          squid-deb-proxy,
+         tgt,
          ${misc:Depends},
          ${python:Depends}
 Recommends: openssh-server

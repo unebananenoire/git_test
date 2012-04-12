@@ -2,6 +2,7 @@ maas (0.1+bzr445+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   [ Scott Moser ]
   * add dependency on distro-info (LP: #949442)
+  * debian/control: add dependency on tgt for ephemeral iscsi environment
 
   [ Andres Rodriguez ]
   * Make package lintian clean:
@@ -31,7 +32,7 @@ maas (0.1+bzr445+dfsg-0ubuntu1) UNRELEASED; urgency=low
   * debian/maas.postinst: Update pserv.yaml and maas_local_settings.py to use
     password.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 11 Apr 2012 20:06:12 -0400
+ -- Scott Moser <smoser@ubuntu.com>  Wed, 11 Apr 2012 21:05:59 -0400
 
 maas (0.1+bzr415+dfsg-0ubuntu2) precise; urgency=low
 
