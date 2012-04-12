@@ -24,4 +24,4 @@ pre-start script
 end script
 
 # To add options to your daemon, edit the line below:
-exec /usr/bin/twistd -n --pidfile=/run/maas-txlongpoll.pid --logfile=/dev/null txlongpoll --config-file=/etc/maas/txlongpoll.yaml
+exec /usr/bin/twistd -n --uid=maas --gid=maas --pidfile=/run/maas-txlongpoll.pid --logfile=/dev/null txlongpoll --config-file=/etc/maas/txlongpoll.yaml

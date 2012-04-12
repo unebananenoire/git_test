@@ -17,6 +17,18 @@ case "$1" in
 			rm -rf /etc/apache2/conf.d/maas-http.conf
 		fi
 
+		# Restarting apache2
+		if [ -x /usr/sbin/invoke-rc.d ]; then
+			invoke-rc.d apache2 restart || true
+		else
+			/etc/init.d/apache2 restart || true
+		fi
+
+		# Deleting user/group
+		if getent passwd maas >/dev/null; then
+			deluser maas || true
+		fi
+
 		# Remove rabbitmq/longpoll
 		longpoll_user="maas_longpoll"
 		longpoll_vhost="/maas_longpoll"
@@ -27,5 +39,7 @@ case "$1" in
 esac
 
 #DEBHELPER#
+
+db_stop
 
 exit 0

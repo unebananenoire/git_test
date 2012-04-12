@@ -11,4 +11,4 @@ stop on runlevel [016]
 respawn
 
 # To add options to your daemon, edit the line below:
-exec /usr/bin/twistd -n --pidfile=/run/maas-pserv.pid --logfile=/dev/null maas-pserv --config-file=/etc/maas/pserv.yaml
+exec /usr/bin/twistd -n --uid=maas --gid=maas --pidfile=/run/maas-pserv.pid --logfile=/dev/null maas-pserv --config-file=/etc/maas/pserv.yaml

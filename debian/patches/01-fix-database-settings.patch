@@ -4,24 +4,20 @@ Description: Use default settings for MAAS
  configuration for the database.
 Author: Andres Rodriguez <andreserl@ubuntu.com>
 
-Index: maas-0.1+bzr309+dfsg.orig/contrib/maas_local_settings_sample.py
+Index: maas-0.1+bzr445+dfsg.orig/contrib/maas_local_settings_sample.py
 ===================================================================
---- maas-0.1+bzr309+dfsg.orig.orig/contrib/maas_local_settings_sample.py	2012-03-19 14:56:36.884477638 -0400
-+++ maas-0.1+bzr309+dfsg.orig/contrib/maas_local_settings_sample.py	2012-03-19 14:56:47.004477016 -0400
-@@ -6,8 +6,11 @@
- # override this.
+--- maas-0.1+bzr445+dfsg.orig.orig/contrib/maas_local_settings_sample.py	2012-04-11 11:59:20.402953927 -0400
++++ maas-0.1+bzr445+dfsg.orig/contrib/maas_local_settings_sample.py	2012-04-11 12:14:10.379958510 -0400
+@@ -7,7 +7,7 @@
  DEFAULT_MAAS_URL = "http://maas.internal.example.com/"
  
-+# Default URL specifying provisioning server URL.
-+PSERV_URL = "http://localhost:5241/api"
-+
  # Absolute path to the directory static files should be collected to.
 -STATIC_ROOT = '/var/lib/maas/static/'
 +STATIC_ROOT = '/usr/share/maas/web/static/'
  
  # Prefix to use for MAAS's urls.
  # If FORCE_SCRIPT_NAME is None (the default), all the urls will start with
-@@ -62,9 +65,9 @@
+@@ -62,9 +62,9 @@
      'default': {
          # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' etc.
          'ENGINE': 'django.db.backends.postgresql_psycopg2',

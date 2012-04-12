@@ -3,6 +3,10 @@
 . /usr/share/debconf/confmodule
 db_version 2.0
 
+if [ -f /usr/share/dbconfig-common/dpkg/postinst.pgsql ]; then
+	. /usr/share/dbconfig-common/dpkg/postinst.pgsql
+fi
+
 maas_sync_migrate_db(){
 	maas syncdb --noinput
 	maas migrate maasserver --noinput
@@ -17,17 +21,87 @@ restart_apache2(){
 	fi
 }
 
-if [ -f /usr/share/dbconfig-common/dpkg/postinst.pgsql ]; then
-	. /usr/share/dbconfig-common/dpkg/postinst.pgsql
-fi
+add_user_group(){
+	user="maas"
+	group="maas"
+	if ! getent group "$group" >/dev/null; then
+		addgroup --quiet --system "$group" || true
+	fi
+	if ! getent passwd "$user" > /dev/null 2>&1; then
+		adduser --quiet \
+                    --system \
+                    --group \
+                    --no-create-home \
+                    "$user" || true
+	fi
+}
+
+configure_maas_cobbler_user() {
+	# Create 'maas' user and password to autoconfigure
+	cblr_pass="$(pwgen -s 20)"
+	hash=$(printf "maas:Cobbler:$cblr_pass" | md5sum | awk '{print $1}')
+	[ -e /etc/cobbler/users.digest ] || install -o root -g root -m 0600 /dev/null /etc/cobbler/users.digest
+	htpasswd -D /etc/cobbler/users.digest "maas" || true
+	printf "maas:Cobbler:$hash\n" >> /etc/cobbler/users.digest
+
+	if grep -qs "^\ \{1,\}password: [a-zA-Z0-9]\{1,\}$" /etc/maas/pserv.yaml; then
+		sed -i "s/^\ \{1,\}password: [a-zA-Z0-9]\{1,\}$/  password: "$cblr_pass"/" /etc/maas/pserv.yaml
+	fi
+}
+
+configure_maas_pserv_user() {
+	pserv_pass="$(pwgen -s 20)"
+	if grep -qs "^password: \"test\"" /etc/maas/pserv.yaml; then
+		sed -i '/^password:/s/"test"/"'"${pserv_pass}"'"/' /etc/maas/pserv.yaml
+	fi
+	if grep -qs "^PSERV_URL\ =\ " /etc/maas/maas_local_settings.py; then
+		sed -i '/^PSERV_URL[ =]/s/:password@/:'"${pserv_pass}"'@/' /etc/maas/maas_local_settings.py
+	fi
+}
+
+configure_maas_txlongpoll_rabbitmq_user() {
+	longpoll_user="maas_longpoll"
+	longpoll_pass="$(pwgen -s 20)"
+	longpoll_vhost="/maas_longpoll"
+	if [ -x /usr/sbin/rabbitmqctl ]; then
+		if ! rabbitmqctl list_users | grep -qs "$longpoll_user"; then
+			rabbitmqctl add_user "$longpoll_user" "$longpoll_pass" || true
+			rabbitmqctl add_vhost "$longpoll_vhost" || true
+			rabbitmqctl set_permissions -p "$longpoll_vhost" "$longpoll_user" ".*" ".*" ".*" || true
+		else
+			rabbitmqctl change_password "$longpoll_user" "$longpoll_pass" || true
+		fi
+	fi
+
+	if grep -qs "^\ \{1,\}password: \"[a-zA-Z0-9]\{0,\}\"$" /etc/maas/txlongpoll.yaml; then
+		sed -i "s/^\ \{1,\}password: \"[a-zA-Z0-9]\{0,\}\"$/  password: \""$longpoll_pass"\"/" \
+                       /etc/maas/txlongpoll.yaml
+	fi
+	if grep -qs "^RABBITMQ_PASSWORD\ \= '[a-zA-Z0-9]\{0,\}'$" /etc/maas/maas_local_settings.py; then
+		sed -i "s/^RABBITMQ_PASSWORD\ \= '[a-zA-Z0-9]\{0,\}'$/RABBITMQ_PASSWORD = '"$longpoll_pass"'/" \
+                       /etc/maas/maas_local_settings.py
+	fi
+}
+
+configure_maas_database() {
+	dbc_dbpass="$1"
+	if grep -qs "^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$" /etc/maas/maas_local_settings.py; then
+		sed -i "s/^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$/        'PASSWORD': '"$dbc_dbpass"',/" \
+                       /etc/maas/maas_local_settings.py
+	fi
+}
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
+	#########################################################
+	################ User/Group Creatiion  ##################
+	#########################################################
+	add_user_group
 
 	#########################################################
 	################ Folder Permissions  ####################
 	#########################################################
 	mkdir -p /var/lib/maas/media/storage
-	chown -R www-data:www-data /var/lib/maas/
+	chown -R maas:maas /var/lib/maas/
 
 	#########################################################
 	################  Configure Apache2  ####################
@@ -49,16 +123,13 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	########### Configure maas user for Cobbler #############
 	#########################################################
 
-	# Create 'maas' user and password to autoconfigure
-	cblr_pass=`pwgen`
-	hash=$(printf "maas:Cobbler:$cblr_pass" | md5sum | awk '{print $1}')
-	[ -e /etc/cobbler/users.digest ] || install -o root -g root -m 0600 /dev/null /etc/cobbler/users.digest
-	htpasswd -D /etc/cobbler/users.digest "maas" || true
-	printf "maas:Cobbler:$hash\n" >> /etc/cobbler/users.digest
+	configure_maas_cobbler_user
 
-	if grep -qs "^\ \{1,\}password: [a-zA-Z0-9]\{1,\}$" /etc/maas/pserv.yaml; then
-		sed -i "s/^\ \{1,\}password: [a-zA-Z0-9]\{1,\}$/  password: "$cblr_pass"/" /etc/maas/pserv.yaml
-	fi
+	#########################################################
+	############ Configure maas user for pserv ##############
+	#########################################################
+
+	configure_maas_pserv_user
 
 	#########################################################
 	##########  Configure DEFAULT_MAAS_URL  #################
@@ -89,7 +160,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	if [ ! -f /var/log/maas/maas.log ]; then
 		touch /var/log/maas/maas.log
 	fi
-	chown -R root:www-data /var/log/maas
+	chown -R maas:maas /var/log/maas
 	chmod 620 /var/log/maas/maas.log
 	chmod -R 775 /var/log/maas/oops
 
@@ -100,7 +171,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	if [ -x /usr/sbin/invoke-rc.d ]; then
 		invoke-rc.d rsyslog restart
 	fi
-	
+
 	#########################################################
 	########## Configure longpoll rabbitmq config ###########
 	#########################################################
@@ -111,23 +182,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	else
 		/etc/init.d/rabbitmq-server restart || true
 	fi
-	longpoll_user="maas_longpoll"
-	longpoll_pass=`pwgen`
-	longpoll_vhost="/maas_longpoll"
-	if [ -x /usr/sbin/rabbitmqctl ]; then
-		rabbitmqctl add_user "$longpoll_user" "$longpoll_pass" || true
-		rabbitmqctl add_vhost "$longpoll_vhost" || true
-		rabbitmqctl set_permissions -p "$longpoll_vhost" "$longpoll_user" ".*" ".*" ".*" || true
-	fi
-
-	if grep -qs "^\ \{1,\}password: \"[a-zA-Z0-9]\{0,\}\"$" /etc/maas/txlongpoll.yaml; then
-		sed -i "s/^\ \{1,\}password: \"[a-zA-Z0-9]\{0,\}\"$/  password: \""$longpoll_pass"\"/" \
-                       /etc/maas/txlongpoll.yaml
-	fi
-	if grep -qs "^RABBITMQ_PASSWORD\ \= '[a-zA-Z0-9]\{0,\}'$" /etc/maas/maas_local_settings.py; then
-		sed -i "s/^RABBITMQ_PASSWORD\ \= '[a-zA-Z0-9]\{0,\}'$/RABBITMQ_PASSWORD = '"$longpoll_pass"'/" \
-                       /etc/maas/maas_local_settings.py
-	fi
+	configure_maas_txlongpoll_rabbitmq_user
 
 	#########################################################
 	################  Configure Database  ###################
@@ -139,12 +194,11 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	else
 		/etc/init.d/postgresql restart || true
 	fi
+
 	# Create the database
 	dbc_go maas $@
-	if grep -qs "^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$" /etc/maas/maas_local_settings.py; then
-		sed -i "s/^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$/        'PASSWORD': '"$dbc_dbpass"',/" \
-                       /etc/maas/maas_local_settings.py
-	fi
+	configure_maas_database "$dbc_dbpass"
+
 	# Only syncdb if we have selected to install it with dbconfig-common.
 	db_get maas/dbconfig-install
 	if [ "$RET" = "true" ]; then
@@ -160,6 +214,21 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 	if [ -x /usr/sbin/invoke-rc.d ]; then
 		invoke-rc.d apache2 stop || true
 	fi
+
+	# If upgrading from any version lower than 0.1+bzr445+dfsg-0ubuntu1
+	# we need to update the user/group.
+	if dpkg --compare-versions "$2" lt 0.1+bzr445+dfsg-0ubuntu1; then
+		add_user_group
+		chown -R maas:maas /var/lib/maas/
+		chown -R maas:maas /var/log/maas
+		chown -R syslog:syslog /var/log/maas/rsyslog
+		configure_maas_cobbler_user
+		configure_maas_pserv_user
+		configure_maas_txlongpoll_rabbitmq_user
+		dbc_go maas $@
+		configure_maas_database "$dbc_dbpass"
+	fi
+
 	maas_sync_migrate_db
 	restart_apache2
 fi

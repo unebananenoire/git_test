@@ -1,4 +1,4 @@
-maas (0.1+bzr440+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr445+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   [ Scott Moser ]
   * add dependency on distro-info (LP: #949442)
@@ -13,11 +13,25 @@ maas (0.1+bzr440+dfsg-0ubuntu1) UNRELEASED; urgency=low
   * debian/maas.config: Do not set a password with pwgen as it is not an
     essential package; allow dbconfig-common to create a password instead by
     creating an empty question. (LP: #977475)
+  * Run MAAS, pserv, txlongpoll as non-root user. (LP: #975436)
+    - debian/maas.postinst: Create user/group; set correct permissions for
+      directories.
+    - debian/maas.postrm: Remove user/group; restart apache2.
+    - debian/maas.maas-{pserv,txlongpoll}.upstart: Update to run as non-root
+      'maas' user.
+    - debian/patches/04-run-wsgi-as-user.patch: Run maas-http.conf as 'maas'.
+  * debian/patches/01-fix-database-settings.patch: Remove adding of PSERV_URL.
+  * debian/maas.postinst: Handle config file upgrade from versions lower than
+    0.1+bzr445+dfsg-0ubuntu1, by creating new passwords and updating accordingly.
 
   [ Dave Walker (Daviey) ]
-  * debian/patches/02-pserv-config.patch: Refreshed to apply to updated config. 
+  * debian/patches/02-pserv-config.patch: Refreshed to apply to updated config.
 
- -- Dave Walker (Daviey) <DaveWalker@ubuntu.com>  Wed, 11 Apr 2012 12:08:55 +0100
+  [ Gavin Panella ]
+  * debian/maas.postinst: Update pserv.yaml and maas_local_settings.py to use
+    password.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 11 Apr 2012 20:06:12 -0400
 
 maas (0.1+bzr415+dfsg-0ubuntu2) precise; urgency=low
 
