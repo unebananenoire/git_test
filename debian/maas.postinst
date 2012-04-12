@@ -22,8 +22,8 @@ restart_apache2(){
 }
 
 add_user_group(){
-	user="maas"
-	group="maas"
+	local user="maas"
+	local group="maas"
 	if ! getent group "$group" >/dev/null; then
 		addgroup --quiet --system "$group" || true
 	fi
@@ -38,8 +38,8 @@ add_user_group(){
 
 configure_maas_cobbler_user() {
 	# Create 'maas' user and password to autoconfigure
-	cblr_pass="$(pwgen -s 20)"
-	hash=$(printf "maas:Cobbler:$cblr_pass" | md5sum | awk '{print $1}')
+	local cblr_pass="$(pwgen -s 20)"
+	local hash=$(printf "maas:Cobbler:$cblr_pass" | md5sum | awk '{print $1}')
 	[ -e /etc/cobbler/users.digest ] || install -o root -g root -m 0600 /dev/null /etc/cobbler/users.digest
 	htpasswd -D /etc/cobbler/users.digest "maas" || true
 	printf "maas:Cobbler:$hash\n" >> /etc/cobbler/users.digest
@@ -50,7 +50,7 @@ configure_maas_cobbler_user() {
 }
 
 configure_maas_pserv_user() {
-	pserv_pass="$(pwgen -s 20)"
+	local pserv_pass="$(pwgen -s 20)"
 	if grep -qs "^password: \"test\"" /etc/maas/pserv.yaml; then
 		sed -i '/^password:/s/"test"/"'"${pserv_pass}"'"/' /etc/maas/pserv.yaml
 	fi
@@ -60,9 +60,9 @@ configure_maas_pserv_user() {
 }
 
 configure_maas_txlongpoll_rabbitmq_user() {
-	longpoll_user="maas_longpoll"
-	longpoll_pass="$(pwgen -s 20)"
-	longpoll_vhost="/maas_longpoll"
+	local longpoll_user="maas_longpoll"
+	local longpoll_pass="$(pwgen -s 20)"
+	local longpoll_vhost="/maas_longpoll"
 	if [ -x /usr/sbin/rabbitmqctl ]; then
 		if ! rabbitmqctl list_users | grep -qs "$longpoll_user"; then
 			rabbitmqctl add_user "$longpoll_user" "$longpoll_pass" || true
@@ -84,7 +84,7 @@ configure_maas_txlongpoll_rabbitmq_user() {
 }
 
 configure_maas_database() {
-	dbc_dbpass="$1"
+	local dbc_dbpass="$1"
 	if grep -qs "^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$" /etc/maas/maas_local_settings.py; then
 		sed -i "s/^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$/        'PASSWORD': '"$dbc_dbpass"',/" \
                        /etc/maas/maas_local_settings.py
@@ -170,6 +170,14 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	# Make sure rsyslog reads our config
 	if [ -x /usr/sbin/invoke-rc.d ]; then
 		invoke-rc.d rsyslog restart
+	fi
+
+	#########################################################
+	################### Squid-deb-proxy  ####################
+	#########################################################
+	# Make sure squid-deb-proxy reads our config (99-maas)
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d squid-deb-proxy restart
 	fi
 
 	#########################################################

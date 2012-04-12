@@ -1,4 +1,4 @@
-maas (0.1+bzr445+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr448+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   [ Scott Moser ]
   * add dependency on distro-info (LP: #949442)
@@ -23,7 +23,9 @@ maas (0.1+bzr445+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - debian/patches/04-run-wsgi-as-user.patch: Run maas-http.conf as 'maas'.
   * debian/patches/01-fix-database-settings.patch: Remove adding of PSERV_URL.
   * debian/maas.postinst: Handle config file upgrade from versions lower than
-    0.1+bzr445+dfsg-0ubuntu1, by creating new passwords and updating accordingly.
+    0.1+bzr445+dfsg-0ubuntu1, by creating new passwords and updating accordingly;
+    use local variables in functions.
+  * debian/extras/99-maas: Add squid-deb-proxy file to enable PPAs. (LP: #979383)
 
   [ Dave Walker (Daviey) ]
   * debian/patches/02-pserv-config.patch: Refreshed to apply to updated config.
@@ -32,7 +34,7 @@ maas (0.1+bzr445+dfsg-0ubuntu1) UNRELEASED; urgency=low
   * debian/maas.postinst: Update pserv.yaml and maas_local_settings.py to use
     password.
 
- -- Scott Moser <smoser@ubuntu.com>  Wed, 11 Apr 2012 21:05:59 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 11 Apr 2012 23:44:10 -0400
 
 maas (0.1+bzr415+dfsg-0ubuntu2) precise; urgency=low
 
