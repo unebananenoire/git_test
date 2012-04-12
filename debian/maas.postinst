@@ -38,8 +38,10 @@ add_user_group(){
 
 configure_maas_cobbler_user() {
 	# Create 'maas' user and password to autoconfigure
-	local cblr_pass="$(pwgen -s 20)"
-	local hash=$(printf "maas:Cobbler:$cblr_pass" | md5sum | awk '{print $1}')
+	local cblr_pass=
+	local hash=
+	cblr_pass="$(pwgen -s 20)"
+	hash=$(printf "maas:Cobbler:$cblr_pass" | md5sum | awk '{print $1}')
 	[ -e /etc/cobbler/users.digest ] || install -o root -g root -m 0600 /dev/null /etc/cobbler/users.digest
 	htpasswd -D /etc/cobbler/users.digest "maas" || true
 	printf "maas:Cobbler:$hash\n" >> /etc/cobbler/users.digest
@@ -50,7 +52,8 @@ configure_maas_cobbler_user() {
 }
 
 configure_maas_pserv_user() {
-	local pserv_pass="$(pwgen -s 20)"
+	local pserv_pass=
+	pserv_pass="$(pwgen -s 20)"
 	if grep -qs "^password: \"test\"" /etc/maas/pserv.yaml; then
 		sed -i '/^password:/s/"test"/"'"${pserv_pass}"'"/' /etc/maas/pserv.yaml
 	fi
@@ -61,8 +64,9 @@ configure_maas_pserv_user() {
 
 configure_maas_txlongpoll_rabbitmq_user() {
 	local longpoll_user="maas_longpoll"
-	local longpoll_pass="$(pwgen -s 20)"
+	local longpoll_pass=
 	local longpoll_vhost="/maas_longpoll"
+	longpoll_pass="$(pwgen -s 20)"
 	if [ -x /usr/sbin/rabbitmqctl ]; then
 		if ! rabbitmqctl list_users | grep -qs "$longpoll_user"; then
 			rabbitmqctl add_user "$longpoll_user" "$longpoll_pass" || true
@@ -89,6 +93,14 @@ configure_maas_database() {
 		sed -i "s/^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$/        'PASSWORD': '"$dbc_dbpass"',/" \
                        /etc/maas/maas_local_settings.py
 	fi
+}
+
+configure_maas_tgt(){
+	local tgtcfg="/etc/tgt/targets.conf"
+	[ -d /etc/tgt/conf.d/ ] || 
+	   echo "Warning! $tgtcfg did not exist" 1>&2;
+	mkdir -p /etc/tgt/conf.d/ /var/lib/maas/ephemeral/
+	ln -sf /var/lib/maas/ephemeral/tgt.conf /etc/tgt/conf.d/maas.conf
 }
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
@@ -195,12 +207,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	#########################################################
 	######## add maas.conf to tgt conf.d ####################
 	#########################################################
-	tgtcfg="/etc/tgt/targets.conf"
-	added="0"
-	[ -d /etc/tgt/conf.d/ ] || 
-	   echo "Warning! $tgtcfg did not exist" 1>&2;
-	mkdir -p /etc/tgt/conf.d/ /var/lib/maas/ephemeral/
-	ln -sf /var/lib/maas/ephemeral/tgt.conf /etc/tgt/conf.d/maas.conf
+	configure_maas_tgt
 
 	#########################################################
 	################  Configure Database  ###################
@@ -245,6 +252,9 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 		configure_maas_txlongpoll_rabbitmq_user
 		dbc_go maas $@
 		configure_maas_database "$dbc_dbpass"
+	fi
+	if dpkg --compare-versions "$2" lt 0.1+bzr459+dfsg-0ubuntu1; then
+		configure_maas_tgt
 	fi
 
 	maas_sync_migrate_db
