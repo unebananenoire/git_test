@@ -1,4 +1,4 @@
-maas (0.1+bzr459+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr462+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release
 
@@ -22,7 +22,6 @@ maas (0.1+bzr459+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - debian/maas.postrm: Remove user/group; restart apache2.
     - debian/maas.maas-{pserv,txlongpoll}.upstart: Update to run as non-root
       'maas' user.
-    - debian/patches/04-run-wsgi-as-user.patch: Run maas-http.conf as 'maas'.
   * debian/patches/01-fix-database-settings.patch: Remove adding of PSERV_URL.
   * debian/maas.postinst:
     - Handle config file upgrade from versions lower than 0.1+bzr445+dfsg-0ubuntu1,
@@ -38,10 +37,6 @@ maas (0.1+bzr459+dfsg-0ubuntu1) UNRELEASED; urgency=low
   [ Gavin Panella ]
   * debian/maas.postinst: Update pserv.yaml and maas_local_settings.py to use
     password.
-
-  [ Raphael Badin ]
-  * debian/patches/04-run-wsgi-as-user.patch: Fix to only run MAAS code as
-    the 'maas' user (LP: #979899)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 12 Apr 2012 13:35:30 -0400
 
