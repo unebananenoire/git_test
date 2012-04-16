@@ -1,6 +1,12 @@
-maas (0.1+bzr462+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr462+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
-  * New upstream release
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 13 Apr 2012 09:55:41 -0400
+
+maas (0.1+bzr462+dfsg-0ubuntu1) precise; urgency=low
+
+  * New upstream release (LP: #980240)
 
   [ Scott Moser ]
   * add dependency on distro-info (LP: #949442)
@@ -38,7 +44,7 @@ maas (0.1+bzr462+dfsg-0ubuntu1) UNRELEASED; urgency=low
   * debian/maas.postinst: Update pserv.yaml and maas_local_settings.py to use
     password.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 12 Apr 2012 13:35:30 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 12 Apr 2012 16:37:53 -0400
 
 maas (0.1+bzr415+dfsg-0ubuntu2) precise; urgency=low
 
