@@ -1,8 +1,24 @@
-maas (0.1+bzr462+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr473+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  * New upstream release (Fixes LP: #981103)
+  * debian/maas.postinst:
+    - Make sure rabbitmq and postgresql are started on upgrade (LP: #981282)
+    - Handle upgrades from any lower than 0.1+bzr462+dfsg-0ubuntu1 to
+      correctly re-generate passwords, and not have db sync/migrate issues
+      as config has changed upstream.
+    - Correctly set Passwords for PSERV, otherwise it won't set new passwords.
+  * Allow MAAS_DEFAULT_URL reconfiguration. (LP: #980970)
+    - debian/maas.config: Add reconfigure validation to correctly allow it,
+      and ask a question.
+    - debian/maas.postinst: Reconfigure DEFAULT_MAAS_URL as well as cobbler
+      server and next_server for PXE/Provisioning.
+    - debian/maas.templates: Add debconf question and update info.
+  * Do not lose MAAS_DEFAULT_URL settings on upgrade (LP: #984309)
+  * debian/maas.postinst:
+    - Set cobbler password in between quotes (LP: #984427)
+    - Do not change permissions to maas.log (LP: #980915)
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 13 Apr 2012 09:55:41 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 17 Apr 2012 23:44:46 -0700
 
 maas (0.1+bzr462+dfsg-0ubuntu1) precise; urgency=low
 

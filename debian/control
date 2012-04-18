@@ -11,7 +11,7 @@ Package: maas
 Architecture: all
 Depends: apache2,
          avahi-daemon,
-         cobbler,
+         maas-provision (>= 2.2.2),
          dbconfig-common,
          distro-info,
          libapache2-mod-wsgi,
