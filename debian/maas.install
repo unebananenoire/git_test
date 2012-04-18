@@ -25,7 +25,6 @@ etc/maas/commissioning-user-data
 man/maas-import-isos.8 usr/share/man/man8
 scripts/maas-import-isos usr/sbin
 scripts/maas-import-ephemerals usr/sbin
-scripts/maas-cloudimg2ephemeral usr/sbin
 debian/extras/maas usr/bin
 debian/extras/20-maas.conf etc/rsyslog.d
 debian/extras/maas_remote_syslog_compress etc/cron.d

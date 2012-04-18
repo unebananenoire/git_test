@@ -17,6 +17,8 @@ maas (0.1+bzr473+dfsg-0ubuntu1) UNRELEASED; urgency=low
   * debian/maas.postinst:
     - Set cobbler password in between quotes (LP: #984427)
     - Do not change permissions to maas.log (LP: #980915)
+  * no longer use maas-cloudimg2ephemeral, but rather use premade images 
+    at http://maas.ubuntu.com
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 17 Apr 2012 23:44:46 -0700
 
