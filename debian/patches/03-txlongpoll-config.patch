@@ -35,5 +35,5 @@ Index: maas-0.1+bzr398+dfsg.orig/etc/txlongpoll.yaml
  ## running server.
  #
  # logfile: "txlongpoll.log"
--logfile: "logs/txlongpoll.log"
+-logfile: "/dev/null"
 +logfile: "/var/log/maas/txlongpoll.log"

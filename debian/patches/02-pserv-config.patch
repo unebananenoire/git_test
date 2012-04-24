@@ -26,7 +26,7 @@ Index: maas-0.1+bzr445+dfsg.orig/etc/pserv.yaml
  ## running server.
  #
  # logfile: "pserv.log"
--logfile: "logs/pserv.log"
+-logfile: "/dev/null"
 +logfile: "/var/log/maas/pserv.log"
  
  ## OOPS configuration (optional).
