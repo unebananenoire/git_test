@@ -1,4 +1,10 @@
-maas (0.1+bzr473+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr482+dfsg-0ubuntu2) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 18 Apr 2012 21:23:43 -0700
+
+maas (0.1+bzr482+dfsg-0ubuntu1) precise; urgency=low
 
   * New upstream release (Fixes LP: #981103)
   * debian/maas.postinst:
