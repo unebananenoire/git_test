@@ -13,6 +13,7 @@ respawn
 setuid maas
 setgid maas
 
+env PYTHONPATH="/usr/share/maas/"
 # To add options to your daemon, edit the line below:
 # NOTE: Config is picked up from PYTHONPATH.
 #       In this case is picked up from /usr/share/maas/celeryconfig.py,

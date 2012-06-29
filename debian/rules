@@ -11,11 +11,6 @@ override_dh_installinit:
 override_dh_auto_install:
 	dh_auto_install
 
-	# Copy the local config file
-	install -d -m 755  $(CURDIR)/debian/tmp/etc/maas
-	cp $(CURDIR)/contrib/maas_local_settings_sample.py \
-                $(CURDIR)/debian/tmp/etc/maas/maas_local_settings.py
-
 	# Move static files
 	install -d -m 755  $(CURDIR)/debian/tmp/usr/share/maas/web/static
 	mv $(CURDIR)/debian/tmp/usr/lib/python*/*-packages/maasserver/static \

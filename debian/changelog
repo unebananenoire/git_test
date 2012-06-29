@@ -1,23 +1,27 @@
-maas (0.1+bzr697+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr704+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New Upstream release
   * debian/control:
     - Depends on python-celery, python-tempita, libjs-yui3-{full,min},
       libjs-raphael
-  * debian/maas.install: Install apiclient, celeryconfig.py,
-    maas-import-pxe-files, preseeds_v2.
+  * debian/maas.install:
+    - Install apiclient, celeryconfig.py, maas-import-pxe-files, preseeds_v2.
+    - Update to install various files from chroot, rather tha manually copy
+      them from the source.
   * debian/maas.links: symlink celeryconfig.py
   * debian/maas.maas-celery.upstart: Add job.
   * debian/rules:
     - Install celery upstart job.
     - Do not install jslibs as packages are now used.
+    - Drop copying of maas_local_settings_sample.py as source now ships
+      a maas_local_settings.py
   * debian/patches:
-    - 04-maas-http-fix.patch: Correct maas-http.conf wsgi options.
+    - 04-maas-http-fix.patch: Drop. Merged upstream.
     - 01-fix-database-settings.patch: Refreshed.
     - 99_enums_js.patch: Added until creation of enum.js / build process
       is fixed.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 28 Jun 2012 16:40:12 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 29 Jun 2012 15:43:57 -0400
 
 maas (0.1+bzr482+dfsg-0ubuntu1) precise; urgency=low
 
