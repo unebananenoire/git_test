@@ -1,1 +1,2 @@
 etc/maas/maas_local_settings.py usr/share/maas/maas_local_settings.py
+etc/maas/celeryconfig.py usr/share/maas/celeryconfig.py

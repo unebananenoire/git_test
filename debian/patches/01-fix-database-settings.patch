@@ -4,10 +4,10 @@ Description: Use default settings for MAAS
  configuration for the database.
 Author: Andres Rodriguez <andreserl@ubuntu.com>
 
-Index: maas-0.1+bzr445+dfsg.orig/contrib/maas_local_settings_sample.py
+Index: maas-0.1+bzr691+dfsg.orig/contrib/maas_local_settings_sample.py
 ===================================================================
---- maas-0.1+bzr445+dfsg.orig.orig/contrib/maas_local_settings_sample.py	2012-04-11 11:59:20.402953927 -0400
-+++ maas-0.1+bzr445+dfsg.orig/contrib/maas_local_settings_sample.py	2012-04-11 12:14:10.379958510 -0400
+--- maas-0.1+bzr691+dfsg.orig.orig/contrib/maas_local_settings_sample.py	2012-06-27 16:26:44.332832028 -0400
++++ maas-0.1+bzr691+dfsg.orig/contrib/maas_local_settings_sample.py	2012-06-27 16:26:53.240832257 -0400
 @@ -7,7 +7,7 @@
  DEFAULT_MAAS_URL = "http://maas.internal.example.com/"
  
@@ -17,7 +17,7 @@ Index: maas-0.1+bzr445+dfsg.orig/contrib/maas_local_settings_sample.py
  
  # Prefix to use for MAAS's urls.
  # If FORCE_SCRIPT_NAME is None (the default), all the urls will start with
-@@ -62,9 +62,9 @@
+@@ -68,9 +68,9 @@
      'default': {
          # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' etc.
          'ENGINE': 'django.db.backends.postgresql_psycopg2',

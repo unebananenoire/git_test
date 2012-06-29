@@ -1,6 +1,7 @@
 # Install project
 debian/tmp/usr/lib/python*/dist-packages/maas usr/share/maas
 twisted/plugins/maasps.py usr/share/pyshared/twisted/plugins
+debian/tmp/usr/lib/python*/dist-packages/apiclient usr/share/maas
 etc/pserv.yaml etc/maas
 etc/txlongpoll.yaml etc/maas
 
@@ -16,6 +17,9 @@ debian/tmp/etc/maas/maas_local_settings.py
 # Install WSGI
 contrib/wsgi.py usr/share/maas
 
+# Install Celery Config
+etc/celeryconfig.py etc/maas
+
 # Install all other stuff
 etc/cron.d/maas-import-isos
 etc/cron.d/maas-gc
@@ -25,6 +29,7 @@ etc/maas/commissioning-user-data
 man/maas-import-isos.8 usr/share/man/man8
 scripts/maas-import-isos usr/sbin
 scripts/maas-import-ephemerals usr/sbin
+scripts/maas-import-pxe-files usr/sbin
 debian/extras/maas usr/bin
 debian/extras/20-maas.conf etc/rsyslog.d
 debian/extras/maas_remote_syslog_compress etc/cron.d
@@ -33,3 +38,4 @@ debian/extras/99-maas etc/squid-deb-proxy/mirror-dstdomain.acl.d
 # Install preseeds/snippets
 contrib/preseeds/* var/lib/cobbler/kickstarts
 contrib/snippets/* var/lib/cobbler/snippets
+contrib/preseeds_v2/* usr/share/maas/preseeds

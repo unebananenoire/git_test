@@ -1,3 +1,5 @@
 01-fix-database-settings.patch
 02-pserv-config.patch
 03-txlongpoll-config.patch
+04-maas-http-fix.patch
+99_enums_js.patch
