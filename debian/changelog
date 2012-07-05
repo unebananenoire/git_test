@@ -1,4 +1,10 @@
-maas (0.1+bzr704+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr711+dfsg-0ubuntu1) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 03 Jul 2012 17:54:49 -0400
+
+maas (0.1+bzr709+dfsg-0ubuntu1) quantal; urgency=low
 
   * New Upstream release
   * debian/control:
@@ -20,8 +26,9 @@ maas (0.1+bzr704+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - 01-fix-database-settings.patch: Refreshed.
     - 99_enums_js.patch: Added until creation of enum.js / build process
       is fixed.
+  * debian/maas.postinst: Update bzr version to correctly handle upgrades.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 29 Jun 2012 15:43:57 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 03 Jul 2012 17:42:37 -0400
 
 maas (0.1+bzr482+dfsg-0ubuntu1) precise; urgency=low
 
