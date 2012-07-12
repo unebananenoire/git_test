@@ -3,10 +3,10 @@ Description: Use default settings for MAAS PSERV
  include port, logfile, oops directory, cobbler url and username
 Author: Andres Rodriguez <andreserl@ubuntu.com>
 
-Index: maas-0.1+bzr445+dfsg.orig/etc/pserv.yaml
+Index: maas-0.1+bzr734+dfsg.orig/etc/pserv.yaml
 ===================================================================
---- maas-0.1+bzr445+dfsg.orig.orig/etc/pserv.yaml	2012-04-11 13:11:30.827410133 -0400
-+++ maas-0.1+bzr445+dfsg.orig/etc/pserv.yaml	2012-04-11 13:11:46.007415852 -0400
+--- maas-0.1+bzr734+dfsg.orig.orig/etc/pserv.yaml	2012-07-11 12:09:18.400599486 -0400
++++ maas-0.1+bzr734+dfsg.orig/etc/pserv.yaml	2012-07-11 12:09:20.952599551 -0400
 @@ -4,12 +4,13 @@
  
  ## The port on which the Provisioning API will be made available.
@@ -40,7 +40,7 @@ Index: maas-0.1+bzr445+dfsg.orig/etc/pserv.yaml
    # reporter:
    reporter: "maas-pserv"
  
-@@ -53,6 +54,6 @@
+@@ -53,8 +54,8 @@
    # password: "test"
  
    # vdenv specific; see vdenv/README.txt.
@@ -49,3 +49,5 @@ Index: maas-0.1+bzr445+dfsg.orig/etc/pserv.yaml
 +  url: http://localhost/cobbler_api
 +  username: maas
    password: xcobbler
+ 
+ ## TFTP configuration.

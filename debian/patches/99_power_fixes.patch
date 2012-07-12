@@ -1,0 +1,124 @@
+Index: maas-0.1+bzr734+dfsg.orig/src/maasserver/power_parameters.py
+===================================================================
+--- maas-0.1+bzr734+dfsg.orig.orig/src/maasserver/power_parameters.py	2012-07-11 12:48:52.016660262 -0400
++++ maas-0.1+bzr734+dfsg.orig/src/maasserver/power_parameters.py	2012-07-11 12:48:54.948660337 -0400
+@@ -68,10 +68,10 @@
+             [
+                 (
+                     'power_address',
+-                    forms.CharField(label="Address", required=False)),
++                    forms.CharField(label="IP Address or Hostname", required=False)),
+                 (
+                     'power_user',
+-                    forms.CharField(label="User", required=False)),
++                    forms.CharField(label="Username", required=False)),
+                 (
+                     'power_pass',
+                     forms.CharField(label="Password", required=False)),
+@@ -82,14 +82,14 @@
+         DictCharField(
+             [
+                 (
++                    'power_address',
++                    forms.CharField(label="IP Address or Hostname", required=False)),
++                (
+                     'power_user',
+-                    forms.CharField(label="User", required=False)),
++                    forms.CharField(label="Username", required=False)),
+                 (
+                     'power_pass',
+                     forms.CharField(label="Password", required=False)),
+-                (
+-                    'power_id',
+-                    forms.CharField(label="Power ID", required=False)),
+             ],
+             required=False,
+             skip_check=True),
+Index: maas-0.1+bzr734+dfsg.orig/src/provisioningserver/power/templates/ipmitool.template
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ maas-0.1+bzr734+dfsg.orig/src/provisioningserver/power/templates/ipmitool.template	2012-07-11 12:48:54.948660337 -0400
+@@ -0,0 +1,39 @@
++# -*- mode: shell-script -*-
++#
++# Control a system via ipmitool
++#
++
++# Parameters.
++power_change={{power_change}}
++power_address={{power_address}}
++power_user={{power_user}}
++power_pass={{power_pass}}
++
++
++formulate_power_state() {
++    case $1 in
++    'Chassis Power is on') echo 'on' ;;
++    'Chassis Power is off') echo 'off' ;;
++    *)
++        echo "Got unknown power state from ipmitool: '$1'" >&2
++        exit 1
++    esac
++}
++
++# Issue command to ipmitool, for the given system.
++issue_ipmi_command() {
++    /usr/bin/ipmitool -H ${power_address} -U ${power_user} -P ${power_pass} power $1
++}
++
++
++# Get the given system's power state: 'on' or 'off'.
++get_power_state() {
++    ipmi_state=$(issue_ipmi_command status)
++    formulate_power_state ${ipmi_state}
++}
++
++
++if [ "$(get_power_state)" != "${power_change}" ]
++then
++    issue_ipmi_command ${power_change}
++fi
+Index: maas-0.1+bzr734+dfsg.orig/src/provisioningserver/power/templates/ipmilan.template
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ maas-0.1+bzr734+dfsg.orig/src/provisioningserver/power/templates/ipmilan.template	2012-07-11 12:49:37.016661414 -0400
+@@ -0,0 +1,39 @@
++# -*- mode: shell-script -*-
++#
++# Control a system via ipmitool LAN
++#
++
++# Parameters.
++power_change={{power_change}}
++power_address={{power_address}}
++power_user={{power_user}}
++power_pass={{power_pass}}
++
++
++formulate_power_state() {
++    case $1 in
++    'Chassis Power is on') echo 'on' ;;
++    'Chassis Power is off') echo 'off' ;;
++    *)
++        echo "Got unknown power state from ipmitool: '$1'" >&2
++        exit 1
++    esac
++}
++
++# Issue command to ipmitool, for the given system.
++issue_ipmi_command() {
++    /usr/bin/ipmitool -I lan -H ${power_address} -U ${power_user} -P ${power_pass} power $1
++}
++
++
++# Get the given system's power state: 'on' or 'off'.
++get_power_state() {
++    ipmi_state=$(issue_ipmi_command status)
++    formulate_power_state ${ipmi_state}
++}
++
++
++if [ "$(get_power_state)" != "${power_change}" ]
++then
++    issue_ipmi_command ${power_change}
++fi

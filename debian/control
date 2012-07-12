@@ -61,6 +61,7 @@ Depends: python-avahi,
          python-twisted,
          python-txamqp,
          python-txlongpoll,
+         python-txtftp,
          python-zope.interface,
          ${misc:Depends},
          ${python:Depends}

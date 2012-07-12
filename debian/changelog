@@ -1,6 +1,21 @@
-maas (0.1+bzr711+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr740+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 12 Jul 2012 16:34:11 -0400
+
+maas (0.1+bzr740+dfsg-0ubuntu1) quantal; urgency=low
+
+  * New upstream release
+  * debian/control: Depends on python-txtftp.
+  * debian/rules: Do not ship python-tx-tftp.
+  * debian/maas.postinst: Update version to upgrade successfully.
+  * debian/patches:
+    - 02-pserv-config.patch: Refreshed.
+    - 99_enums_js.patch: Updated.
+    - 99_power_fixes.patch: Added temporarily to enable IPMI
+    - 99_temporary_fix_path.patch: Added temporarily to not fail when
+      importing celeryconfig
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 03 Jul 2012 17:54:49 -0400
 
