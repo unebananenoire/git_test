@@ -1,6 +1,4 @@
 01-fix-database-settings.patch
 02-pserv-config.patch
 03-txlongpoll-config.patch
-99_enums_js.patch
-99_power_fixes.patch
 99_temporary_fix_path.patch

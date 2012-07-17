@@ -1,5 +1,10 @@
 #!/usr/bin/make -f
 
+BUILDHOME = $(CURDIR)/debian/build
+PYTHON = $(shell pyversions -d)
+# Python enum modules.
+py_enums := $(wildcard src/*/enum.py)
+
 %:
 	dh $@ --with python2,apport --buildsystem=python_distutils
 
@@ -7,6 +12,14 @@ override_dh_installinit:
 	dh_installinit --name maas-pserv
 	dh_installinit --name maas-txlongpoll
 	dh_installinit --name maas-celery
+
+override_dh_auto_build:
+	dh_auto_build
+
+	mkdir -p $(BUILDHOME)
+	HOME=$(BUILDHOME) PYTHONPATH=$(CURDIR)/src/ $(PYTHON)	\
+		$(CURDIR)/src/maasserver/utils/jsenums.py	\
+		$(py_enums) > $(BUILDHOME)/enums.js
 
 override_dh_auto_install:
 	dh_auto_install
@@ -16,7 +29,15 @@ override_dh_auto_install:
 	mv $(CURDIR)/debian/tmp/usr/lib/python*/*-packages/maasserver/static \
                 $(CURDIR)/debian/tmp/usr/share/maas/web/
 
+	# Install built enums.js file.
+	cp $(BUILDHOME)/enums.js $(CURDIR)/debian/tmp/usr/share/maas/web/static/js/
+
 	dh_install --list-missing
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf $(BUILDHOME)
+	rm -rf src/*.egg-info
 
 DEB_DEBIAN_DIR=$(dir $(firstword $(MAKEFILE_LIST)))
 REV=$(shell dpkg-parsechangelog -l$(DEB_DEBIAN_DIR)/changelog \

@@ -1,6 +1,19 @@
-maas (0.1+bzr740+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr745+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 16 Jul 2012 21:03:57 -0400
+
+maas (0.1+bzr745+dfsg-0ubuntu1) quantal; urgency=low
+
+  * New Upstream Release
+  * debian/patches:
+    - 99_power_fixes.patch: Dropped. Merged Upstream.
+    - 99_enums_js.patch: Dropped. No longer needed.
+  * Automatically build enums.js:
+    - debian/control: Build-Depends on python-django-configglue
+    - debian/rules: Build and install enums.js.
+  * debian/maas.postinst: Update version to handle upgrades
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 12 Jul 2012 16:34:11 -0400
 
