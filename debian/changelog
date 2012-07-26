@@ -1,8 +1,24 @@
-maas (0.1+bzr745+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr777+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  * New upstream release
+  * Only run 'maas' command as root. (LP: #974046)
+    - debian/extras/maas: Check id.
+    - debian/maas.install: Install in 'sbin'.
+  * debian/maas.postinst:
+    - restart apache2 after everything gets processed.
+    - Update version to handle upgrades.
+  * debian/extras/maas-provision: Add wrapper to access 'maasprovisiong'
+    command line.
+  * debian/patches/99_temporary_fix_path.patch: Dropped. No longer needed.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 16 Jul 2012 21:03:57 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 17 Jul 2012 08:28:36 -0400
+
+maas (0.1+bzr745+dfsg-0ubuntu2) quantal; urgency=low
+
+  * debian/control: Build-Dep on python-django instead of
+    python-django-configglue
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 17 Jul 2012 08:24:25 -0400
 
 maas (0.1+bzr745+dfsg-0ubuntu1) quantal; urgency=low
 

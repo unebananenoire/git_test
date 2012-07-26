@@ -169,9 +169,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	a2enmod expires
 	a2enmod wsgi
 
-	# Need to restart apache to pickup web configs
-	restart_apache2
-
 	#########################################################
 	########### Configure maas user for Cobbler #############
 	#########################################################
@@ -260,6 +257,9 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 		maas_sync_migrate_db
 	fi
 
+	# Need to restart apache to pickup web configs
+	restart_apache2
+
 	# Display installation note
 	db_input high maas/installation-note || true
 	db_go
@@ -296,9 +296,9 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 	if dpkg --compare-versions "$2" lt 0.1+bzr459+dfsg-0ubuntu1; then
 		configure_maas_tgt
 	fi
-	# If upgrading from any version lower than 0.1+bzr745+dfsg-0ubuntu1
+	# If upgrading from any version lower than 0.1+bzr777+dfsg-0ubuntu1
 	# we need to regenerate the passwords and update configs.
-	if dpkg --compare-versions "$2" lt 0.1+bzr745+dfsg-0ubuntu1; then
+	if dpkg --compare-versions "$2" lt 0.1+bzr777+dfsg-0ubuntu1; then
 		# configure maas user for cobbler
 		configure_maas_cobbler_user
 		# configure pserv user for cobbler
