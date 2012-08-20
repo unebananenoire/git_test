@@ -1,4 +1,14 @@
-maas (0.1+bzr777+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr865+dfsg-0ubuntu1) UNRELEASED; urgency=low
+
+  * New upstream release
+  * debian/maas.postinst:
+    - include '/MAAS' for DEFAULT_MAAS_URL.(LP: #1033956)
+    - Update bzr version to safely upgrade.
+  * Add maas-dns package that configures DNS in MAAS (LP: #1030860)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 02 Aug 2012 09:01:43 -0400
+
+maas (0.1+bzr777+dfsg-0ubuntu1) quantal-proposed; urgency=low
 
   * New upstream release
   * Only run 'maas' command as root. (LP: #974046)

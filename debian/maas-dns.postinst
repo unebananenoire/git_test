@@ -1,0 +1,25 @@
+#!/bin/sh -e
+
+if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
+	# If /etc/bind/maas is empty, set_up_dns.
+	if [ ! "$(ls -A /etc/bind/maas)" ]; then
+		maas set_up_dns
+	fi
+	# fix permissions
+	if [ -f /etc/bind/maas/named.conf.maas ]; then
+		chmod 644 /etc/bind/maas/named.conf.maas
+	fi
+	# add the required line to "/etc/bind/named.conf.local"
+	if ! grep -qs "^include.*\/etc\/bind\/maas\;$" /etc/bind/maas.conf.local; then
+		include_path=$(maas get_named_conf | grep "include\ [a-z\"\/\.]\+;")
+		sed -i "\$a $include_path" \
+			/etc/bind/named.conf.local
+	fi
+
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d bind9 restart || true
+	fi
+fi
+
+#DEBHELPER#
+exit 0
