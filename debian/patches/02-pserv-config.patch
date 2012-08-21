@@ -3,26 +3,11 @@ Description: Use default settings for MAAS PSERV
  include port, logfile, oops directory, cobbler url and username
 Author: Andres Rodriguez <andreserl@ubuntu.com>
 
-Index: maas-0.1+bzr734+dfsg.orig/etc/pserv.yaml
+Index: maas-0.1+bzr908+dfsg.orig/etc/pserv.yaml
 ===================================================================
---- maas-0.1+bzr734+dfsg.orig.orig/etc/pserv.yaml	2012-07-11 12:09:18.400599486 -0400
-+++ maas-0.1+bzr734+dfsg.orig/etc/pserv.yaml	2012-07-11 12:09:20.952599551 -0400
-@@ -4,12 +4,13 @@
- 
- ## The port on which the Provisioning API will be made available.
- #
--# port: 5241
-+port: 5241
- 
- ## The credentials which the Provisioning API will require.
- #
- # username: <current user>
- # password:
-+username: maas
- password: "test"
- 
- ## Network interface to bind the service on.
-@@ -22,7 +23,7 @@
+--- maas-0.1+bzr908+dfsg.orig.orig/etc/pserv.yaml	2012-08-21 11:41:04.000000000 -0400
++++ maas-0.1+bzr908+dfsg.orig/etc/pserv.yaml	2012-08-21 11:47:54.529807736 -0400
+@@ -6,7 +6,7 @@
  ## running server.
  #
  # logfile: "pserv.log"
@@ -31,7 +16,7 @@ Index: maas-0.1+bzr734+dfsg.orig/etc/pserv.yaml
  
  ## OOPS configuration (optional).
  #
-@@ -31,7 +32,7 @@
+@@ -15,7 +15,7 @@
    # or directories other than what the oops machinery creates there.
    #
    # directory:
@@ -40,14 +25,3 @@ Index: maas-0.1+bzr734+dfsg.orig/etc/pserv.yaml
    # reporter:
    reporter: "maas-pserv"
  
-@@ -53,8 +54,8 @@
-   # password: "test"
- 
-   # vdenv specific; see vdenv/README.txt.
--  url: http://local.cobbler.dev/cobbler_api
--  username: cobbler
-+  url: http://localhost/cobbler_api
-+  username: maas
-   password: xcobbler
- 
- ## TFTP configuration.

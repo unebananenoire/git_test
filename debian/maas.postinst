@@ -37,14 +37,6 @@ restart_postgresql(){
 	fi
 }
 
-restart_cobbler(){
-	if [ -x /usr/sbin/invoke-rc.d ]; then
-		invoke-rc.d cobbler restart || true
-	else
-		/etc/init.d/cobbler restart || true
-	fi
-}
-
 add_user_group(){
 	local user="maas"
 	local group="maas"
@@ -57,32 +49,6 @@ add_user_group(){
                     --group \
                     --no-create-home \
                     "$user" || true
-	fi
-}
-
-configure_maas_cobbler_user() {
-	# Create 'maas' user and password to autoconfigure
-	local cblr_pass=
-	local hash=
-	cblr_pass="$(pwgen -s 20)"
-	hash=$(printf "maas:Cobbler:$cblr_pass" | md5sum | awk '{print $1}')
-	[ -e /etc/cobbler/users.digest ] || install -o root -g root -m 0600 /dev/null /etc/cobbler/users.digest
-	htpasswd -D /etc/cobbler/users.digest "maas" || true
-	printf "maas:Cobbler:$hash\n" >> /etc/cobbler/users.digest
-
-	if grep -qs "^\ \{1,\}password:.*$" /etc/maas/pserv.yaml; then
-		sed -i "s/^\ \{1,\}password:.*$/  password: \""$cblr_pass"\"/" /etc/maas/pserv.yaml
-	fi
-}
-
-configure_maas_pserv_user() {
-	local pserv_pass=
-	pserv_pass="$(pwgen -s 20)"
-	if grep -qs "^password: \".*\"$" /etc/maas/pserv.yaml; then
-		sed -i '/^password:/s/".*"$/"'"${pserv_pass}"'"/' /etc/maas/pserv.yaml
-	fi
-	if grep -qs "^PSERV_URL\ =\ " /etc/maas/maas_local_settings.py; then
-		sed -i '/^PSERV_URL[ =]/s/maas:.*@/'"maas:${pserv_pass}"'@/' /etc/maas/maas_local_settings.py
 	fi
 }
 
@@ -134,14 +100,6 @@ configure_maas_default_url() {
 		sed -i "s/^DEFAULT_MAAS_URL\ \= \"[a-zA-Z0-9:/.]\{0,\}\"$/DEFAULT_MAAS_URL = \"http:\/\/"$ipaddr"\/MAAS\"/" \
                     /etc/maas/maas_local_settings.py
 	fi
-
-	# Replace for PXE
-	if grep -qs "^next_server:.*$" /etc/cobbler/settings; then
-		sed -i "s/^next_server:.*$/next_server: $ipaddr/" /etc/cobbler/settings
-	fi
-	if grep -qs "^server:.*$" /etc/cobbler/settings; then
-		sed -i "s/^server:.*$/server: $ipaddr/" /etc/cobbler/settings
-	fi
 }
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
@@ -168,18 +126,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	# enable apache modules needed
 	a2enmod expires
 	a2enmod wsgi
-
-	#########################################################
-	########### Configure maas user for Cobbler #############
-	#########################################################
-
-	configure_maas_cobbler_user
-
-	#########################################################
-	############ Configure maas user for pserv ##############
-	#########################################################
-
-	configure_maas_pserv_user
 
 	#########################################################
 	##########  Configure DEFAULT_MAAS_URL  #################
@@ -272,7 +218,6 @@ elif [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
 	if [ -n "$ipaddr" ]; then
 		configure_maas_default_url "$ipaddr"
 	fi
-	restart_cobbler
 
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
 	# If upgrading to any later package version, then upgrade db.
@@ -296,22 +241,12 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 	if dpkg --compare-versions "$2" lt 0.1+bzr459+dfsg-0ubuntu1; then
 		configure_maas_tgt
 	fi
-	# If upgrading from any version lower than 0.1+bzr865+dfsg-0ubuntu1
+	# If upgrading from any version lower than 0.1+bzr908+dfsg-0ubuntu1
 	# we need to regenerate the passwords and update configs.
-	if dpkg --compare-versions "$2" lt 0.1+bzr865+dfsg-0ubuntu1; then
-		# configure maas user for cobbler
-		configure_maas_cobbler_user
-		# configure pserv user for cobbler
-		configure_maas_pserv_user
+	if dpkg --compare-versions "$2" lt 0.1+bzr908+dfsg-0ubuntu1; then
 		# configure maas default url
 		db_get maas/default-maas-url
 		ipaddr="$RET"
-		# If nothing in the database, obtain the IP from cobbler settings
-		# which is the same as MAAS_DEFAULT_URL
-		if [ -z "$ipaddr" ]; then
-			ipaddr=$(awk '$1 == "server:" { print $2 }' /etc/cobbler/settings)
-			db_set maas/default-maas-url "$ipaddr"
-		fi
 		configure_maas_default_url "$ipaddr"
 		# make sure rabbitmq is running
 		restart_rabbitmq

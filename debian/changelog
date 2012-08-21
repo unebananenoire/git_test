@@ -1,10 +1,19 @@
-maas (0.1+bzr865+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr908+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release
   * debian/maas.postinst:
     - include '/MAAS' for DEFAULT_MAAS_URL.(LP: #1033956)
     - Update bzr version to safely upgrade.
   * Add maas-dns package that configures DNS in MAAS (LP: #1030860)
+  * Remove cobbler related bits
+    - drop maas-dhcp packaging but leave as transitional package.
+    - debian/maas.postinst: Drop cobbler configuration
+    - debian/maas.install: Drop installation of snippets/preseeds.
+    - debian/control: Drop Depends on maas-provision. Depends on bind9utils.
+    - debian/patches:
+      + 02-pserv-config.patch: Updated. Do not patch cobbler related bits.
+      + 99-dnssec-keygen-path.patch: Added to add full path of dnssec-keygen
+        or otherwise it will fail to run.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 02 Aug 2012 09:01:43 -0400
 
