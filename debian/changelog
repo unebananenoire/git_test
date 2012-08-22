@@ -1,4 +1,4 @@
-maas (0.1+bzr908+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr911+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release
   * debian/maas.postinst:
@@ -12,8 +12,6 @@ maas (0.1+bzr908+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - debian/control: Drop Depends on maas-provision. Depends on bind9utils.
     - debian/patches:
       + 02-pserv-config.patch: Updated. Do not patch cobbler related bits.
-      + 99-dnssec-keygen-path.patch: Added to add full path of dnssec-keygen
-        or otherwise it will fail to run.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 02 Aug 2012 09:01:43 -0400
 
