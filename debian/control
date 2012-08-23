@@ -30,11 +30,12 @@ Depends: apache2,
          rsyslog,
          squid-deb-proxy,
          tgt,
+         wget,
          ${misc:Depends},
          ${python:Depends}
-Recommends: openssh-server, maas-dns
-Conflicts: maas-provision
-Replaces: maas-provision
+Recommends: openssh-server, maas-dns, maas-dhcp
+Conflicts: maas-provision, maas-provision-common, python-maas-provision, tftpd-hpa, dnsmasq
+Replaces: maas-provision, maas-provision-common, python-maas-provision
 Description: Ubuntu MAAS Server
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
@@ -84,10 +85,10 @@ Description: Ubuntu MAAS Server - (django files)
 
 Package: maas-dhcp
 Architecture: all
-Depends: maas, maas-dns
+Depends: maas (= ${binary:Version}), isc-dhcp-server
 Conflicts: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
-Description: Ubuntu MAAS Server (transitional package)
+Description: Ubuntu MAAS Server - DHCP Configuration (meta-package)
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
  (“node”) will be commissioned automatically on first boot.
@@ -97,11 +98,11 @@ Description: Ubuntu MAAS Server (transitional package)
  be deployed on demand by name, or allocated to a queue for
  dynamic allocation to services being deployed on this MAAS.
  .
- This package is a transitional package.
+ This package configures a DHCP that can be used with MAAS.
 
 Package: maas-dns
 Architecture: all
-Depends: ${misc:Depends}, maas (= ${binary:Version}), bind9, isc-dhcp-server
+Depends: ${misc:Depends}, maas (= ${binary:Version}), bind9
 Conflicts: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Description: Ubuntu MAAS Server - DNS configuration (metapackage)

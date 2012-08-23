@@ -4,4 +4,4 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 export PYTHONPATH="/usr/share/maas${PYTHONPATH:+:}${PYTHONPATH}"
-exec /usr/bin/python -m provisioningserver $@
+exec /usr/bin/python -m provisioningserver "$@"

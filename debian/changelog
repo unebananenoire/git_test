@@ -1,4 +1,4 @@
-maas (0.1+bzr916+dfsg-0ubuntu1~ppa2) quantal; urgency=low
+maas (0.1+bzr917+dfsg-0ubuntu1~ppa2) quantal; urgency=low
 
   * New upstream release
   * debian/maas.postinst:
@@ -10,10 +10,12 @@ maas (0.1+bzr916+dfsg-0ubuntu1~ppa2) quantal; urgency=low
     - debian/maas.postinst: Drop cobbler configuration
     - debian/maas.install: Drop installation of snippets/preseeds.
     - debian/control: Drop Depends on maas-provision. Depends on bind9utils.
-      Add necessary Conflicts/Replaces.
-    - debian/extras/maas-provision: Add missing arg.
+      Add necessary Conflicts/Replaces. Add conflicts to tftpd-hpa and dnsmasq.
+      Depends on isc-dhcp-server for maas-dhcp.
+    - debian/extras/maas-provision: Add missing "$@" (LP: #1040462)
     - debian/patches:
       + 02-pserv-config.patch: Updated. Do not patch cobbler related bits.
+        patch tftp config to default.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 02 Aug 2012 09:01:43 -0400
 
