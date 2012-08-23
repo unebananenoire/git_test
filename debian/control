@@ -33,6 +33,8 @@ Depends: apache2,
          ${misc:Depends},
          ${python:Depends}
 Recommends: openssh-server, maas-dns
+Conflicts: maas-provision
+Replaces: maas-provision
 Description: Ubuntu MAAS Server
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
@@ -83,6 +85,8 @@ Description: Ubuntu MAAS Server - (django files)
 Package: maas-dhcp
 Architecture: all
 Depends: maas, maas-dns
+Conflicts: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
+Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Description: Ubuntu MAAS Server (transitional package)
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server

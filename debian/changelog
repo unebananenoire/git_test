@@ -1,4 +1,4 @@
-maas (0.1+bzr911+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr916+dfsg-0ubuntu1~ppa2) quantal; urgency=low
 
   * New upstream release
   * debian/maas.postinst:
@@ -10,6 +10,8 @@ maas (0.1+bzr911+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - debian/maas.postinst: Drop cobbler configuration
     - debian/maas.install: Drop installation of snippets/preseeds.
     - debian/control: Drop Depends on maas-provision. Depends on bind9utils.
+      Add necessary Conflicts/Replaces.
+    - debian/extras/maas-provision: Add missing arg.
     - debian/patches:
       + 02-pserv-config.patch: Updated. Do not patch cobbler related bits.
 
