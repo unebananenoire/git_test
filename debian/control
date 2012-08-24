@@ -29,13 +29,14 @@ Depends: apache2,
          rabbitmq-server,
          rsyslog,
          squid-deb-proxy,
+         syslinux-common,
          tgt,
          wget,
          ${misc:Depends},
          ${python:Depends}
 Recommends: openssh-server, maas-dns, maas-dhcp
-Conflicts: maas-provision, maas-provision-common, python-maas-provision, tftpd-hpa, dnsmasq
-Replaces: maas-provision, maas-provision-common, python-maas-provision
+Conflicts: maas-provision, tftpd-hpa, dnsmasq
+Replaces: maas-provision
 Description: Ubuntu MAAS Server
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
