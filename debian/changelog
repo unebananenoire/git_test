@@ -16,6 +16,9 @@ maas (0.1+bzr936+dfsg-0ubuntu1) quantal; urgency=low
       + 02-pserv-config.patch: Updated. Do not patch cobbler related bits.
         patch tftp config to default.
   * maas-dhcp: Re-add to handle initial configuration of MAAS DHCP server.
+  * Allow restart of 'isc-dhcp-server' by adding a sudoers file:
+    - debian/extras/99-maas-sudoers: Added.
+    - debian/maas.install: Install 99-maas-sudoers
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 02 Aug 2012 09:01:43 -0400
 

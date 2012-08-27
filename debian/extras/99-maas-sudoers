@@ -1,0 +1,1 @@
+maas ALL= NOPASSWD: /usr/sbin/service isc-dhcp-server restart
