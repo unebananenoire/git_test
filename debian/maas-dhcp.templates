@@ -1,0 +1,40 @@
+Template: maas-dhcp/maas-dhcp-range
+Type: string
+Default: 192.168.1.5,192.168.1.200
+_Description: Set the network range for DHCP Clients:
+ Ubuntu MAAS Server can manage DHCP for address allocation for
+ the provisioned systems.  If the network range for the DHCP is
+ different from the default (192.168.1.5,192.168.1.200), you
+ should set it here.
+ .
+ An example of how a network range should be specified is:
+ .
+ 192.168.1.5,192.168.1.200
+
+Template: maas-dhcp/maas-dhcp-gateway
+Type: string
+Default: 192.168.1.1
+_Description: Set default Gateway for DHCP Clients:
+ Ubuntu MAAS Server can manage DHCP for address allocation for
+ the provisioned systems.  If the Ubuntu MAAS Server Gateway
+ address is not the default address (192.168.1.1), you must set
+ it here.
+
+Template: maas-dhcp/maas-dhcp-netmask
+Type: string
+Default: 255.255.255.0
+_Description: Set the Netmask for the DHCP Network Range:
+ Ubuntu MAAS Server can manage DHCP for address allocation for
+ the provisioned systems. The DHCP requires you to set the
+ network mask address for the IP address range. If the Netmask
+ address is different from the default (255.255.255.0) you must
+ set it here.
+
+Template: maas-dhcp/maas-dhcp-broadcast
+Type: string
+Default: 192.168.1.255
+_Description: Set the Broadcast IP address for the DHCP Network Range:
+ Ubuntu MAAS Server can manage DHCP for address allocation for
+ the provisioned systems. The DHCP server requires you to set the
+ broadcast IP address. If the broadcast IP address is different
+ from the default (192.168.1.255), you must set it here.

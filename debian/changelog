@@ -1,4 +1,4 @@
-maas (0.1+bzr928+dfsg-0ubuntu1) quantal; urgency=low
+maas (0.1+bzr936+dfsg-0ubuntu1) quantal; urgency=low
 
   * New upstream release
   * debian/maas.postinst:
@@ -6,7 +6,6 @@ maas (0.1+bzr928+dfsg-0ubuntu1) quantal; urgency=low
     - Update bzr version to safely upgrade.
   * Add maas-dns package that configures DNS in MAAS (LP: #1030860)
   * Remove cobbler related bits
-    - drop maas-dhcp packaging but leave as transitional package.
     - debian/maas.postinst: Drop cobbler configuration
     - debian/maas.install: Drop installation of snippets/preseeds.
     - debian/control: Drop Depends on maas-provision. Depends on bind9utils.
@@ -16,6 +15,7 @@ maas (0.1+bzr928+dfsg-0ubuntu1) quantal; urgency=low
     - debian/patches:
       + 02-pserv-config.patch: Updated. Do not patch cobbler related bits.
         patch tftp config to default.
+  * maas-dhcp: Re-add to handle initial configuration of MAAS DHCP server.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 02 Aug 2012 09:01:43 -0400
 
