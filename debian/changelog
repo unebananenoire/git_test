@@ -1,4 +1,4 @@
-maas (0.1+bzr936+dfsg-0ubuntu1) quantal; urgency=low
+maas (0.1+bzr937+dfsg-0ubuntu1) quantal; urgency=low
 
   * New upstream release
   * debian/maas.postinst:
@@ -19,6 +19,9 @@ maas (0.1+bzr936+dfsg-0ubuntu1) quantal; urgency=low
   * Allow restart of 'isc-dhcp-server' by adding a sudoers file:
     - debian/extras/99-maas-sudoers: Added.
     - debian/maas.install: Install 99-maas-sudoers
+  * Minor improvements on dbconfig-common handling:
+    - debian/maas.config: Only call dbc_go when scripts present.
+    - debian/maas.postrm: Only call dbc_go when config file exists.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 02 Aug 2012 09:01:43 -0400
 

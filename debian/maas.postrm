@@ -4,9 +4,11 @@ set -e
 
 . /usr/share/debconf/confmodule
 
-if [ -f /usr/share/dbconfig-common/dpkg/postrm ]; then
-	. /usr/share/dbconfig-common/dpkg/postrm.pgsql
-	dbc_go maas $@
+if [ -f /etc/dbconfig-common/maas.conf ]; then
+	if [ -f /usr/share/dbconfig-common/dpkg/postrm ]; then
+		. /usr/share/dbconfig-common/dpkg/postrm.pgsql
+		dbc_go maas $@
+	fi
 fi
 
 case "$1" in

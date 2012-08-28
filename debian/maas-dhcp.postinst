@@ -18,7 +18,7 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
 	db_get maas-dhcp/maas-dhcp-broadcast || true
 	broadcast="$RET"
 
-	# Obtain the netmask
+	# Obtain the gateway
 	db_get maas-dhcp/maas-dhcp-gateway || true
 	gateway="$RET"
 
