@@ -50,8 +50,8 @@ get-orig-source:
 	rm -rf maas-$(VER)
 	tar -xf maas_$(VER).orig.tar.gz
 	rm maas_$(VER).orig.tar.gz
-	rm -rf maas-$(VER).orig/src/maasserver/static/jslibs/
-	rm -rf maas-$(VER).orig/contrib/python-tx-tftp
+	rm maas-$(VER).orig/src/maasserver/static/jslibs/yui/uploader/assets/flashuploader.swf
+	rm maas-$(VER).orig/src/maasserver/static/jslibs/yui/io-xdr/io.swf
 	GZIP=--best tar -cz --owner root --group root --mode a+rX \
                         -f maas_$(VER).orig.tar.gz \
                         maas-$(VER).orig
