@@ -1,4 +1,4 @@
-maas (0.1+bzr940+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr941+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release
   * debian/maas.postinst:
