@@ -18,4 +18,4 @@ env PYTHONPATH="/usr/share/maas/"
 # NOTE: Config is picked up from PYTHONPATH.
 #       In this case is picked up from /usr/share/maas/celeryconfig.py,
 #       which is a symlink to /etc/maas/celeryconfig.py
-exec /usr/bin/celeryd --logfile=/var/log/maas/celery.log --loglevel=INFO
+exec /usr/bin/celeryd --logfile=/var/log/maas/celery.log --loglevel=INFO --beat --schedule=/var/lib/maas/celerybeat-schedule

@@ -1,4 +1,4 @@
-maas (0.1+bzr937+dfsg-0ubuntu1) quantal; urgency=low
+maas (0.1+bzr940+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release
   * debian/maas.postinst:
@@ -22,6 +22,7 @@ maas (0.1+bzr937+dfsg-0ubuntu1) quantal; urgency=low
   * Minor improvements on dbconfig-common handling:
     - debian/maas.config: Only call dbc_go when scripts present.
     - debian/maas.postrm: Only call dbc_go when config file exists.
+  * debian/maas.maas-celery.upstart: Enable Beat and set scheduler db file.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 02 Aug 2012 09:01:43 -0400
 
