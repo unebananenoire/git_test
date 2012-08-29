@@ -1,9 +1,3 @@
-maas (0.1+bzr937+dfsg-0ubuntu1~precise1) precise; urgency=low
-
-  * New upstream release for Precise
-
- -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 27 Aug 2012 16:12:34 -0400
-
 maas (0.1+bzr937+dfsg-0ubuntu1) quantal; urgency=low
 
   * New upstream release
