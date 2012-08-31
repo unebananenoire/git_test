@@ -1,13 +1,11 @@
-maas (0.1+bzr950+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr956+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release
+
+  [ Julian Edwards ]
   * Fix 02-pserv-config.patch to handle new default tftp directory 
 
- -- Julian Edwards <julian.edwards@canonical.com>  Fri, 31 Aug 2012 11:41:21 +1000
-
-maas (0.1+bzr941+dfsg-0ubuntu1) UNRELEASED; urgency=low
-
-  * New upstream release
+  [ Andres Rodriguez ]
   * debian/maas.postinst:
     - include '/MAAS' for DEFAULT_MAAS_URL.(LP: #1033956)
     - Update bzr version to safely upgrade.
@@ -30,6 +28,7 @@ maas (0.1+bzr941+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - debian/maas.config: Only call dbc_go when scripts present.
     - debian/maas.postrm: Only call dbc_go when config file exists.
   * debian/maas.maas-celery.upstart: Enable Beat and set scheduler db file.
+  * debian/maas-dns.postinst: Set correct permissions.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 02 Aug 2012 09:01:43 -0400
 
