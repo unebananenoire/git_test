@@ -27,7 +27,7 @@ Index: maas-0.1+bzr917+dfsg.orig/etc/pserv.yaml
  
 @@ -33,10 +33,8 @@
  tftp:
-   # root: /var/lib/tftpboot
+   # root: /var/lib/maas/tftp
    # port: 69
 -  port: 5244
    ## The URL to be contacted to generate PXE configurations.
