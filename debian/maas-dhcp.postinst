@@ -24,8 +24,13 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
 		db_get maas-dhcp/maas-dhcp-gateway || true
 		gateway="$RET"
 
+		# Obtain the interfaces
+		db_get maas-dhcp/maas-dhcp-interfaces || true
+		interfaces="$RET"
+
 		maas config_master_dhcp --ip-range-low="$range_low" --ip-range-high="$range_high" \
-				--router-ip="$gateway" --subnet-mask="$netmask" --broadcast-ip="$broadcast"
+				--router-ip="$gateway" --subnet-mask="$netmask" --broadcast-ip="$broadcast" \
+				--dhcp-interfaces="$interfaces"
 	fi
 
 fi

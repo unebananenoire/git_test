@@ -1,4 +1,4 @@
-maas (0.1+bzr957+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr971+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release
 
@@ -29,7 +29,9 @@ maas (0.1+bzr957+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - debian/maas.postrm: Only call dbc_go when config file exists.
   * debian/maas.maas-celery.upstart: Enable Beat and set scheduler db file.
   * debian/maas-dns.postinst: Set correct permissions. (LP: #1042868)
-  * debian/maas-dhcp.config: Ask whether we want to enable DHCP (LP: #1044229)
+  * debian/maas-dhcp.config:
+    - Ask whether we want to enable DHCP (LP: #1044229)
+    - Add debconf question for network interfaces
   * debian/maas.prerm: Stop services before removing database (LP: #1044559)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 02 Aug 2012 09:01:43 -0400

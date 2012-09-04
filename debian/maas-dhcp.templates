@@ -46,3 +46,16 @@ _Description: Set the Broadcast IP address for the DHCP Network Range:
  the provisioned systems. The DHCP server requires you to set the
  broadcast IP address. If the broadcast IP address is different
  from the default (192.168.1.255), you must set it here.
+
+Template: maas-dhcp/maas-dhcp-interfaces
+Type: string
+Default: eth0
+_Description: Set the Broadcast IP address for the DHCP Network Range:
+ Ubuntu MAAS Server can manage DHCP for address allocation for
+ the provisioned systems. The DHCP server requires you to set one or
+ a list of space-separated network interfaces on which DHCP will serve
+ IP addresses. The default is eth0.
+ .
+ An example of how a network interfaces should be specified is:
+ .
+ eth0 eth1 eth2
