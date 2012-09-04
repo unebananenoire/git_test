@@ -1,3 +1,11 @@
+Template: maas-dhcp/maas-dhcp-enabled
+Type: boolean
+Default: true
+_Description: Enable Ubuntu MAAS Server managed DHCP:
+ Ubuntu MAAS Server can manage DHCP for address allocation for
+ the provisioned systems.  If you manage your DHCP elsewhere,
+ you should disable this option.
+
 Template: maas-dhcp/maas-dhcp-range
 Type: string
 Default: 192.168.1.5,192.168.1.200

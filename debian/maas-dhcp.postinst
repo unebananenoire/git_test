@@ -4,26 +4,29 @@
 db_version 2.0
 
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
-	# Obtain the DHCP range
-	db_get maas-dhcp/maas-dhcp-range || true
-	range="$RET"
-	range_low=$(echo $range | cut -f1 -d",")
-	range_high=$(echo $range | cut -f2 -d",")
+	db_get maas-dhcp/maas-dhcp-enabled || true
+	if [ "$RET" = "true" ]; then
+		# Obtain the DHCP range
+		db_get maas-dhcp/maas-dhcp-range || true
+		range="$RET"
+		range_low=$(echo $range | cut -f1 -d",")
+		range_high=$(echo $range | cut -f2 -d",")
 
-	# Obtain the netmask
-	db_get maas-dhcp/maas-dhcp-netmask || true
-	netmask="$RET"
+		# Obtain the netmask
+		db_get maas-dhcp/maas-dhcp-netmask || true
+		netmask="$RET"
 
-	# Obtain the broadcast
-	db_get maas-dhcp/maas-dhcp-broadcast || true
-	broadcast="$RET"
+		# Obtain the broadcast
+		db_get maas-dhcp/maas-dhcp-broadcast || true
+		broadcast="$RET"
 
-	# Obtain the gateway
-	db_get maas-dhcp/maas-dhcp-gateway || true
-	gateway="$RET"
+		# Obtain the gateway
+		db_get maas-dhcp/maas-dhcp-gateway || true
+		gateway="$RET"
 
-	maas config_master_dhcp --ip-range-low="$range_low" --ip-range-high="$range_high" \
+		maas config_master_dhcp --ip-range-low="$range_low" --ip-range-high="$range_high" \
 				--router-ip="$gateway" --subnet-mask="$netmask" --broadcast-ip="$broadcast"
+	fi
 
 fi
 
