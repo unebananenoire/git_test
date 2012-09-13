@@ -6,6 +6,7 @@ Build-Depends: debhelper (>= 8), python (>= 2.7), python-distribute, dh-apport, 
  python-django
 Standards-Version: 3.9.3
 X-Python-Version: >= 2.7
+XS-Testsuite: autopkgtest
 Homepage: https://launchpad.net/maas
 
 Package: maas

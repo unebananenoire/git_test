@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e -u
+exec 2>&1
+pip install sst
+nosetests tests/maas-integration.py
