@@ -32,6 +32,11 @@ override_dh_auto_install:
 	# Install built enums.js file.
 	cp $(BUILDHOME)/enums.js $(CURDIR)/debian/tmp/usr/share/maas/web/static/js/
 
+	# install the apparmor profile
+	install -d -m 755 $(CURDIR)/debian/tmp/etc/apparmor.d/dhcpd.d
+	install -m 644 $(CURDIR)/debian/maas-dhcp.apparmor \
+	    $(CURDIR)/debian/tmp/etc/apparmor.d/dhcpd.d/maas
+
 	dh_install --list-missing
 
 override_dh_auto_clean:

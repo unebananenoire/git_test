@@ -1,0 +1,7 @@
+/run/maas/dhcp/ r,
+/run/maas/dhcp/** r,
+/run/maas/dhcp/*.pid lrw,
+/run/maas/dhcp/*.trace lrw,
+/run/maas/dhcp/*.leases* lrw,
+/var/lib/maas/dhcpd/*.leases* lrw,
+/etc/maas/dhcpd.conf r,

@@ -1,8 +1,10 @@
-maas (0.1+bzr971+dfsg-0ubuntu3) UNRELEASED; urgency=low
+maas (0.1+bzr971+dfsg-0ubuntu4) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  [ Scott Moser ]
+  * debian/maas-dhcp.{install,apparmor} install apparmor profile into
+    /etc/apparmor.d/dhcpd.d (LP: #1049177)
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 05 Sep 2012 12:40:20 -0400
+ -- Scott Moser <smoser@ubuntu.com>  Wed, 12 Sep 2012 20:10:13 -0400
 
 maas (0.1+bzr971+dfsg-0ubuntu2) quantal; urgency=low
 
