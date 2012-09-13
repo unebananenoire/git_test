@@ -1,8 +1,18 @@
-maas (0.1+bzr971+dfsg-0ubuntu4) UNRELEASED; urgency=low
+maas (0.1+bzr987+dfsg-0ubuntu3) UNRELEASED; urgency=low
 
   [ Scott Moser ]
   * debian/maas-dhcp.{install,apparmor} install apparmor profile into
     /etc/apparmor.d/dhcpd.d (LP: #1049177)
+
+  [ Andres Rodriguez ]
+  * debian/maas.postinst: Always restart apache2.
+
+  [ Diogo Matsubara ]
+  * Add initial tests to be run by autotests:
+    - debian/control: XS-Testsuite: autopkgtest
+    - debian/tests/control: Add
+    - debian/tests/maas-package-test: Add
+    - tests/maas-integration.py: Add
 
  -- Scott Moser <smoser@ubuntu.com>  Wed, 12 Sep 2012 20:10:13 -0400
 
