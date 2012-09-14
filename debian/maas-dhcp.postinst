@@ -28,9 +28,20 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
 		db_get maas-dhcp/maas-dhcp-interface || true
 		interface="$RET"
 
+		# Obtain the interfaces
+		db_get maas-dhcp/maas-dhcp-addr || true
+		addr="$RET"
+
+		if [ -z "$addr" ]; then
+			addr=$(ifconfig "$interface" |
+			       awk '$1 == "inet" { sub("addr:","",$2); print $2 }')
+			[ -n "$addr" ] ||
+				{ echo "failed to get ip for $interface" 1>&2; exit 1; }
+		fi
+
 		maas config_master_dhcp --ip-range-low="$range_low" --ip-range-high="$range_high" \
 				--router-ip="$gateway" --subnet-mask="$netmask" --broadcast-ip="$broadcast" \
-				--interface="$interface"
+				--interface="$interface" --ip="$addr"
 	fi
 
 fi

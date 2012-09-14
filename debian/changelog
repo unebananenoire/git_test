@@ -1,9 +1,10 @@
-maas (0.1+bzr987+dfsg-0ubuntu3) UNRELEASED; urgency=low
+maas (0.1+bzr1001+dfsg-0ubuntu3) UNRELEASED; urgency=low
 
   [ Scott Moser ]
   * debian/maas-dhcp.{install,apparmor,postrm} install apparmor profile into
     /etc/apparmor.d/dhcpd.d (LP: #1049177), and update apparmor profile for
     /usr/sbin/dhcpd on install/remove
+  * get the ip address for the dhcp server in config
 
   [ Andres Rodriguez ]
   * debian/maas.postinst: Always restart apache2.

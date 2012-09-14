@@ -7,3 +7,5 @@ if [ "$1" = "remove" -o "$1" = "purge" ]; then
       apparmor_parser --replace --write-cache --skip-read-cache "${dhcpd_prof}"
    fi
 fi
+
+#DEBHELPER#

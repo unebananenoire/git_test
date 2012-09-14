@@ -54,3 +54,12 @@ _Description: Set the network interface that DHCP should listen on.
  Ubuntu MAAS Server can manage DHCP for address allocation for
  the provisioned systems. The DHCP server requires you to set a network
  interface on which DHCP will serve IP addresses. The default is eth0.
+
+Template: maas-dhcp/maas-dhcp-addr
+Type: string
+Default:
+_Description: The IP address at which nodes can reach the DHCP server
+ Ubuntu MAAS Server can manage DHCP for address allocation for
+ the provisioned systems. The DHCP server requires you to set an IP
+ address at which nodes can reach the DHCP server. If left blank
+ then the ip address of the dhcp-interface will be used.
