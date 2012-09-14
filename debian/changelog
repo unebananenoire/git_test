@@ -1,4 +1,4 @@
-maas (0.1+bzr1001+dfsg-0ubuntu3) UNRELEASED; urgency=low
+maas (0.1+bzr1002+dfsg-0ubuntu3) UNRELEASED; urgency=low
 
   [ Scott Moser ]
   * debian/maas-dhcp.{install,apparmor,postrm} install apparmor profile into
