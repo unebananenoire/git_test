@@ -35,5 +35,13 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
 
 fi
 
+if [ "$1" = "configure" ]; then
+   dhcpd_prof="/etc/apparmor.d/usr.sbin.dhcpd"
+   if [ -f "${dhcpd_prof}" ] &&
+      command -v apparmor_parser >/dev/null 2>&1; then
+      apparmor_parser --replace --write-cache --skip-read-cache "${dhcpd_prof}"
+   fi
+fi
+
 #DEBHELPER#
 exit 0
