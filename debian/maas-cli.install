@@ -1,0 +1,3 @@
+debian/extras/maas-cli usr/bin
+debian/tmp/usr/lib/python*/dist-packages/maascli
+debian/tmp/usr/lib/python*/dist-packages/apiclient

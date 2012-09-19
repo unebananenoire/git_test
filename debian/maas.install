@@ -1,7 +1,6 @@
 # Install project
 debian/tmp/usr/lib/python*/dist-packages/maas usr/share/maas
 twisted/plugins/maasps.py usr/share/pyshared/twisted/plugins
-debian/tmp/usr/lib/python*/dist-packages/apiclient usr/share/maas
 
 # Install static files
 debian/tmp/usr/share/maas/web/static
