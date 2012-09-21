@@ -77,6 +77,29 @@ configure_maas_txlongpoll_rabbitmq_user() {
 	fi
 }
 
+configure_maas_workers_rabbitmq_user() {
+	local workers_user="maas_workers"
+	local workers_pass="$(pwgen -s 20)"
+	local workers_vhost="/maas_workers"
+	local amqp_host="localhost"
+	local amqp_port="5672"
+	if [ -x /usr/sbin/rabbitmqctl ]; then
+		if ! rabbitmqctl list_users | grep -qs "$workers_user"; then
+			rabbitmqctl add_user "$workers_user" "$workers_pass" || true
+			rabbitmqctl add_vhost "$workers_vhost" || true
+			rabbitmqctl set_permissions -p "$workers_vhost" "$workers_user" ".*" ".*" ".*" || true
+		else
+			rabbitmqctl change_password "$workers_user" "$workers_pass" || true
+		fi
+	fi
+
+	if grep -qs "^BROKER_URL\ \= '.*'$" /etc/maas/maas_local_celeryconfig.py; then
+		local broker_url="amqp://$workers_user:$workers_pass@$amqp_host:$amqp_port/$workers_vhost"
+		sed -i "s|^BROKER_URL\ \= '.*'$|BROKER_URL = '"$broker_url"'|" \
+                       /etc/maas/maas_local_celeryconfig.py
+	fi
+}
+
 configure_maas_database() {
 	local dbc_dbpass="$1"
 	if grep -qs "^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$" /etc/maas/maas_local_settings.py; then
@@ -180,6 +203,13 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	# Handle longpoll/rabbitmq publishing
 	restart_rabbitmq
 	configure_maas_txlongpoll_rabbitmq_user
+
+	#########################################################
+	########## Configure worker rabbitmq config ###########
+	#########################################################
+
+	# Handle celery/rabbitmq publishing
+	configure_maas_workers_rabbitmq_user
 
 	#########################################################
 	######## add maas.conf to tgt conf.d ####################

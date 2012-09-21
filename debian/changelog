@@ -26,6 +26,12 @@ maas (0.1+bzr1030+dfsg-0ubuntu1) UNRELEASED; urgency=low
       Depend on it.
   * debian/rules: Install maas-dhcp-server upstart job.
 
+  [ Raphael Badin ]
+  * Install maas_local_celeryconfig.py in /etc/maas and symlink to
+    /usr/share/maas.
+  * debian/maas.postinst: Create rabbitmq celery user/vhost.
+  * debian/maas.postinst: Update BROKER_URL in maas_local_celeryconfig.py.
+
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 19 Sep 2012 14:47:04 -0400
 
 maas (0.1+bzr971+dfsg-0ubuntu2) quantal; urgency=low
