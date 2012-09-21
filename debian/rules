@@ -12,6 +12,7 @@ override_dh_installinit:
 	dh_installinit --name maas-pserv
 	dh_installinit --name maas-txlongpoll
 	dh_installinit --name maas-celery
+	dh_installinit --name maas-dhcp-server
 
 override_dh_auto_build:
 	dh_auto_build

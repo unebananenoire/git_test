@@ -24,6 +24,7 @@ maas (0.1+bzr1030+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - debian/python-maas-client: Add. Install 'apiclient' python module.
     - debian/control: Add package. python-django-maas and maas-cli now
       Depend on it.
+  * debian/rules: Install maas-dhcp-server upstart job.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 19 Sep 2012 14:47:04 -0400
 
