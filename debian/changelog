@@ -1,4 +1,6 @@
-maas (0.1+bzr1030+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr1049+dfsg-0ubuntu1) UNRELEASED; urgency=low
+
+  * New upstream release
 
   [ Scott Moser ]
   * debian/maas-dhcp.{install,apparmor,postrm} install apparmor profile into
@@ -14,17 +16,23 @@ maas (0.1+bzr1030+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - tests/maas-integration.py: Add
 
   [ Andres Rodriguez ]
-  * debian/maas.postinst: Always restart apache2.
+  * debian/maas.postinst:
+    - Always restart apache2.
+    - Handle upgrades for new upstream release.
+    - Handle upgrades for celery rabbitmq worker.
   * Add binary package to install client tool.
     - debian/extras/maas-cli: Add binary.
     - debian/maas-cli.install: Add. Install maascli and apiclient.
     - debian/control: Add binary package.
-  * debian/control: Depends on freeipmi-tools instead of ipmitool.
+  * debian/control:
+    - Depends on freeipmi-tools instead of ipmitool.
+    - Conflicts/Replaces on maas for python-maas-client
   * Add python-maas-client binary package:
     - debian/python-maas-client: Add. Install 'apiclient' python module.
     - debian/control: Add package. python-django-maas and maas-cli now
       Depend on it.
   * debian/rules: Install maas-dhcp-server upstart job.
+  * debian/maas.postrm: Remove celery worker rabbitmq user and host.
 
   [ Raphael Badin ]
   * Install maas_local_celeryconfig.py in /etc/maas and symlink to

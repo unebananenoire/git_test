@@ -31,12 +31,17 @@ case "$1" in
 			deluser maas || true
 		fi
 
-		# Remove rabbitmq/longpoll
+		# Remove rabbitmq/longpoll/celery
 		longpoll_user="maas_longpoll"
 		longpoll_vhost="/maas_longpoll"
+		workers_user="maas_workers"
+		workers_vhost="/maas_workers"
 		if [ -x /usr/sbin/rabbitmqctl ]; then
 			rabbitmqctl delete_vhost "$longpoll_vhost" || true
 			rabbitmqctl delete_user "$longpoll_user" || true
+
+			rabbitmqctl delete_vhost "$workers_vhost" || true
+			rabbitmqctl delete_user "$workers_user" || true
 		fi
 esac
 

@@ -73,6 +73,8 @@ Architecture: all
 Depends: python-oauth,
          ${misc:Depends},
          ${python:Depends}
+Conflicts: maas (<= 0.1+bzr971+dfsg-0ubuntu2 )
+Replaces: maas (<= 0.1+bzr971+dfsg-0ubuntu2 )
 Description: Ubuntu MAAS API Client - (python files)
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
