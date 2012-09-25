@@ -1,4 +1,4 @@
-maas (0.1+bzr1049+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr1063+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release
 
@@ -33,6 +33,8 @@ maas (0.1+bzr1049+dfsg-0ubuntu1) UNRELEASED; urgency=low
       Depend on it.
   * debian/rules: Install maas-dhcp-server upstart job.
   * debian/maas.postrm: Remove celery worker rabbitmq user and host.
+  * debian/extras/99-maas-sudoers: Add for maas-dhcp-server upstart job
+    instead of isc-dhcp-server (LP: #1055951)
 
   [ Raphael Badin ]
   * Install maas_local_celeryconfig.py in /etc/maas and symlink to

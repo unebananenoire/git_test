@@ -268,9 +268,9 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 	if dpkg --compare-versions "$2" lt 0.1+bzr459+dfsg-0ubuntu1; then
 		configure_maas_tgt
 	fi
-	# If upgrading from any version lower than 0.1+bzr1049+dfsg-0ubuntu1
+	# If upgrading from any version lower than 0.1+bzr1063+dfsg-0ubuntu1
 	# we need to regenerate the passwords and update configs.
-	if dpkg --compare-versions "$2" lt 0.1+bzr1049+dfsg-0ubuntu1; then
+	if dpkg --compare-versions "$2" lt 0.1+bzr1063+dfsg-0ubuntu1; then
 		# configure maas default url
 		db_get maas/default-maas-url
 		ipaddr="$RET"

@@ -1,2 +1,2 @@
-maas ALL= NOPASSWD: /usr/sbin/service isc-dhcp-server restart
+maas ALL= NOPASSWD: /usr/sbin/service maas-dhcp-server restart
 maas ALL= NOPASSWD: /usr/sbin/maas-provision
