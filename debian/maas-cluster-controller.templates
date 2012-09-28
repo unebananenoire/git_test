@@ -1,0 +1,6 @@
+Template: maas-cluster-controller/maas-url
+Type: string
+Default: http://<MAAS host>/MAAS
+_Description: Ubuntu MAAS API address:
+ The MAAS Cluster Controller needs to contact the MAAS server to
+ register its presence.  Set the URL to the MAAS API here.

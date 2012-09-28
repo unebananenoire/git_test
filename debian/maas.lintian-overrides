@@ -1,7 +1,0 @@
-maas: embedded-javascript-library usr/share/maas/web/static/jslibs/yui/3.4.1/build/yui/yui-min.js
-maas: extra-license-file usr/share/maas/web/static/jslibs/yui/3.4.1/docs/assets/panel/vendor/prettify/COPYING
-maas: extra-license-file usr/share/maas/web/static/jslibs/yui/3.4.1/docs/assets/vendor/prettify/COPYING
-maas: script-not-executable usr/share/maas/web/static/jslibs/yui/3.4.1/tests/loader/tests/server/server.js
-maas: unusual-interpreter usr/share/maas/web/static/jslibs/yui/3.4.1/tests/loader/tests/server/server.js #!node
-maas: postinst-uses-db-input
-maas: binary-without-manpage usr/bin/maas

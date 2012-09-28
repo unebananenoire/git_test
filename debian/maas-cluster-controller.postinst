@@ -1,0 +1,38 @@
+#!/bin/sh -e
+
+. /usr/share/debconf/confmodule
+db_version 2.0
+
+add_user_group(){
+    local user="maas"
+    local group="maas"
+    if ! getent group "$group" >/dev/null; then
+        addgroup --quiet --system "$group" || true
+    fi
+    if ! getent passwd "$user" > /dev/null 2>&1; then
+        adduser --quiet \
+                    --system \
+                    --group \
+                    --no-create-home \
+                    "$user" || true
+    fi
+}
+
+if [ "$1" = "configure" ] && [ -z "$2" ]; then
+    add_user_group
+
+    if grep -qs "^CLUSTER_UUID\ \= None$" /etc/maas/maas_local_celeryconfig.py; then
+        local uuid="$(uuidgen)"
+        sed -i "s|^CLUSTER_UUID\ \= None$|CLUSTER_UUID = '"$uuid"'|" \
+                       /etc/maas/maas_local_celeryconfig.py
+    fi
+fi
+
+if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
+    # Get the MAAS_URL on configure/reconfigure and write it to the conf file.
+    db_get maas-cluster-controller/maas-url || true
+    sed -i "s|MAAS_URL=.*|MAAS_URL="$RET"|" /etc/maas/maas_cluster.conf
+fi
+
+#DEBHELPER#
+exit 0

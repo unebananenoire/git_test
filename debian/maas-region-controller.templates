@@ -10,7 +10,7 @@ _Description: Ubuntu MAAS Server
  If the automatically detected address above is not in the same
  network as the MAAS clients, you need to reconfigure it:
  .
-    sudo dpkg-reconfigure maas
+    sudo dpkg-reconfigure maas-region-controller
 
 Template: maas/default-maas-url
 Type: string

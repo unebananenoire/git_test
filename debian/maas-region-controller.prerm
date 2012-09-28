@@ -13,6 +13,6 @@ else
 fi
 
 . /usr/share/dbconfig-common/dpkg/prerm.pgsql
-dbc_go maas $@
+dbc_go maas-region-controller $@
 
 exit 0

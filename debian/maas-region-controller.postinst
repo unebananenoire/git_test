@@ -98,12 +98,6 @@ configure_maas_workers_rabbitmq_user() {
 		sed -i "s|^BROKER_URL\ \= '.*'$|BROKER_URL = '"$broker_url"'|" \
                        /etc/maas/maas_local_celeryconfig.py
 	fi
-
-	if grep -qs "^CLUSTER_UUID\ \= None$" /etc/maas/maas_local_celeryconfig.py; then
-		local uuid="$(uuidgen)"
-		sed -i "s|^CLUSTER_UUID\ \= None$|CLUSTER_UUID = '"$uuid"'|" \
-                       /etc/maas/maas_local_celeryconfig.py
-	fi
 }
 
 configure_maas_database() {
@@ -230,11 +224,11 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	restart_postgresql
 
 	# Create the database
-	dbc_go maas $@
+	dbc_go maas-region-controller $@
 	configure_maas_database "$dbc_dbpass"
 
 	# Only syncdb if we have selected to install it with dbconfig-common.
-	db_get maas/dbconfig-install
+	db_get maas-region-controller/dbconfig-install
 	if [ "$RET" = "true" ]; then
 		maas_sync_migrate_db
 	fi
@@ -287,7 +281,7 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 		# Handle celery/rabbitmq publishing
 		configure_maas_workers_rabbitmq_user
 		# handle database upgrade
-		dbc_go maas $@
+		dbc_go maas-region-controller $@
 		configure_maas_database "$dbc_dbpass"
 	fi
 

@@ -7,7 +7,7 @@ set -e
 if [ -f /etc/dbconfig-common/maas.conf ]; then
 	if [ -f /usr/share/dbconfig-common/dpkg/postrm ]; then
 		. /usr/share/dbconfig-common/dpkg/postrm.pgsql
-		dbc_go maas $@
+		dbc_go maas-region-controller $@
 	fi
 fi
 

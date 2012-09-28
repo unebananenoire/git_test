@@ -1,0 +1,9 @@
+/var/log/maas/pserv.log {
+ rotate 5
+ weekly
+ compress
+ missingok
+ postrotate
+  [ -r /var/run/maas-pserv.pid ] && kill -s USR2 $(cat /var/run/maas-pserv.pid) || true
+ endscript
+}
