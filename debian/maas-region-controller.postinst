@@ -255,19 +255,6 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 	# make sure postgresql is running
 	restart_postgresql
 
-	# If upgrading from any version lower than 0.1+bzr445+dfsg-0ubuntu1
-	# we need to update the user/group.
-	if dpkg --compare-versions "$2" lt 0.1+bzr445+dfsg-0ubuntu1; then
-		# add user/group
-		add_user_group
-		# set correct permissions
-		chown -R maas:maas /var/lib/maas/
-		chown -R maas:maas /var/log/maas
-		chown -R syslog:syslog /var/log/maas/rsyslog
-	fi
-	if dpkg --compare-versions "$2" lt 0.1+bzr459+dfsg-0ubuntu1; then
-		configure_maas_tgt
-	fi
 	# If upgrading from any version lower than 0.1+bzr1063+dfsg-0ubuntu1
 	# we need to regenerate the passwords and update configs.
 	if dpkg --compare-versions "$2" lt 0.1+bzr1063+dfsg-0ubuntu1; then

@@ -1,4 +1,21 @@
-maas (0.1+bzr1063+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr1109+dfsg-0ubuntu1) quantal; urgency=low
+
+  * New Upstream Release
+
+  [ Julian Edwards ]
+  * Split packaging of 'maas' into maas-{region,cluster}-controller
+    - debian/control: Update accordingly.
+    - debian/*.install: Move files accordingly
+    - debian/*.{postinst,postrm,preinst}: Move files accordingly.
+
+  [ Andres Rodriguez ]
+  * debian/maas-region-controller.postinst: Cleanup upgrade rules.
+  * debian/maas-cluster-controller.postinst: Fix 'local' usage.
+  * debian/maas-common.install: Install celeryconfig in appropriate location.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 28 Sep 2012 16:54:28 -0400
+
+maas (0.1+bzr1063+dfsg-0ubuntu1) quantal; urgency=low
 
   * New upstream release
 
