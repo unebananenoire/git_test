@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+. /usr/share/debconf/confmodule
+
+case "$1" in
+        purge)
+                # Deleting user/group
+                if getent passwd maas >/dev/null; then
+                        deluser maas || true
+                fi
+esac
+
+#DEBHELPER#
+
+exit 0

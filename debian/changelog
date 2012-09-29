@@ -12,6 +12,7 @@ maas (0.1+bzr1109+dfsg-0ubuntu1) quantal; urgency=low
   * debian/maas-region-controller.postinst: Cleanup upgrade rules.
   * debian/maas-cluster-controller.postinst: Fix 'local' usage.
   * debian/maas-common.install: Install celeryconfig in appropriate location.
+  * debian/maas-cluster-controller.postrm: Add and delete maas user.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 28 Sep 2012 16:54:28 -0400
 
