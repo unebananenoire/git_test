@@ -1,3 +1,9 @@
+maas (0.1+bzr1116+dfsg-0ubuntu1) quantal; urgency=low
+
+  * New upstream release.
+
+ -- Julian Edwards <julian.edwards@canonical.com>  Mon, 01 Oct 2012 17:13:57 +1000
+
 maas (0.1+bzr1110+dfsg-0ubuntu1) quantal; urgency=low
 
   * New Upstream Release
