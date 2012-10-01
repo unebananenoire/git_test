@@ -137,6 +137,11 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	mkdir -p /var/lib/maas/media/storage
 	chown -R maas:maas /var/lib/maas/
 
+	# Local celery config may contain credentials, so should be readable
+	# by the application but nobody else.
+	chown root:maas /etc/maas/maas_local_celeryconfig.py
+	chmod 0640 /etc/maas/maas_local_celeryconfig.py
+
 	#########################################################
 	################  Configure Apache2  ####################
 	#########################################################
