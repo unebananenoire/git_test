@@ -11,6 +11,8 @@ setuid maas
 setgid maas
 
 env CONFIG_FILE=/etc/maas/maas_cluster.conf
+# Use cluster config.
+env CELERY_CONFIG_MODULE="celeryconfig_cluster"
 
 pre-start script
     if [ ! -f $CONFIG_FILE ]; then
@@ -22,6 +24,5 @@ end script
 
 script
     . $CONFIG_FILE  # sets MAAS_URL
-    export CELERY_CONFIG_MODULE="celeryconfig_cluster" # use cluster config.
     exec /usr/sbin/maas-provision start-cluster-controller $MAAS_URL
 end script
