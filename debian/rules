@@ -11,6 +11,7 @@ py_enums := $(wildcard src/*/enum.py)
 override_dh_installinit:
 	dh_installinit --name maas-pserv
 	dh_installinit --name maas-txlongpoll
+	dh_installinit --name maas-region-celery
 	dh_installinit --name maas-cluster-celery
 	dh_installinit --name maas-dhcp-server
 

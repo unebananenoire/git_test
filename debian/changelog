@@ -15,6 +15,8 @@ maas (0.1+bzr1110+dfsg-0ubuntu1) quantal; urgency=low
   * debian/maas-cluster-controller.postrm: Add and delete maas user.
 
   [ Raphael Badin ]
+  * debian/maas-region-controller.maas-region-celery.upstart: Add region
+    worker upstart script.
   * Rename cluster worker upstart script into
     maas-cluster-controller.maas-clluster-celery.upstart.
   * maas-cluster-controller.maas-celery.upstart: use "celeryconfig_cluster"

@@ -1,0 +1,20 @@
+# maas-celery - celery daemon for the region controller
+#
+# MAAS Region Controller Celery Daemon
+
+description     "MAAS"
+author "Raphael Badin <raphael.badin@canonical.com>"
+
+start on filesystem and net-device-up
+stop on runlevel [016]
+
+respawn
+
+setuid maas
+setgid maas
+
+env PYTHONPATH="/usr/share/maas/"
+# To add options to your daemon, edit the line below:
+# NOTE: Config is picked up from PYTHONPATH.
+#       In this case is picked up from /usr/share/maas/celeryconfig.py.
+exec /usr/bin/celeryd --logfile=/var/log/maas/celery-region.log --loglevel=INFO --beat --schedule=/var/lib/maas/celerybeat-region-schedule -Q celery,master
