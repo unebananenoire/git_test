@@ -1,3 +1,2 @@
 # Install Celery Config
 debian/tmp/usr/share/maas/celeryconfig_common.py
-debian/tmp/etc/maas/maas_local_celeryconfig.py
