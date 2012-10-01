@@ -1,4 +1,4 @@
-maas (0.1+bzr1109+dfsg-0ubuntu1) quantal; urgency=low
+maas (0.1+bzr1110+dfsg-0ubuntu1) quantal; urgency=low
 
   * New Upstream Release
 
@@ -13,6 +13,15 @@ maas (0.1+bzr1109+dfsg-0ubuntu1) quantal; urgency=low
   * debian/maas-cluster-controller.postinst: Fix 'local' usage.
   * debian/maas-common.install: Install celeryconfig in appropriate location.
   * debian/maas-cluster-controller.postrm: Add and delete maas user.
+
+  [ Raphael Badin ]
+  * Rename cluster worker upstart script into
+    maas-cluster-controller.maas-clluster-celery.upstart.
+  * maas-cluster-controller.maas-celery.upstart: use "celeryconfig_cluster"
+    as the Celery config module.
+  * debian/maas-common.install: Install celeryconfig_common.py.
+  * debian/maas-cluster-controller.install: Install celeryconfig_cluster.py.
+  * debian/maas-region-controller.install: Install celeryconfig.py.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 28 Sep 2012 16:54:28 -0400
 

@@ -20,5 +20,6 @@ end script
 
 script
     . $CONFIG_FILE  # sets MAAS_URL
+    export CELERY_CONFIG_MODULE="celeryconfig_cluster" # use cluster config.
     exec /usr/sbin/maas-provision start-cluster-controller $MAAS_URL
 end script
