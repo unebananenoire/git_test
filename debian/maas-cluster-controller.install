@@ -16,3 +16,4 @@ debian/tmp/etc/maas/maas_local_celeryconfig_cluster.py
 # Install all other stuff
 debian/extras/99-maas-sudoers etc/sudoers.d
 debian/extras/maas-provision usr/sbin
+debian/extras/isc-dhcp-server.override etc/init
