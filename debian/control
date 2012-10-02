@@ -2,8 +2,12 @@ Source: maas
 Section: net
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-Build-Depends: debhelper (>= 8), python (>= 2.7), python-distribute, dh-apport, po-debconf,
- python-django
+Build-Depends: debhelper (>= 8),
+               dh-apport,
+               po-debconf,
+               python (>= 2.7),
+               python-distribute,
+               python-django
 Standards-Version: 3.9.3
 X-Python-Version: >= 2.7
 XS-Testsuite: autopkgtest
@@ -11,8 +15,8 @@ Homepage: https://launchpad.net/maas
 
 Package: maas
 Architecture: all
-Depends: python-django-maas, maas-region-controller, maas-cluster-controller
-Conflicts: maas-provision, tftpd-hpa, dnsmasq
+Depends: maas-cluster-controller, maas-region-controller, python-django-maas
+Conflicts: dnsmasq, maas-provision, tftpd-hpa
 Replaces: maas-provision
 Description: Ubuntu MAAS Server
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
@@ -84,8 +88,7 @@ Description: Ubuntu MAAS Server
 
 Package: python-maas-provisioningserver
 Architecture: all
-Depends: ${misc:Depends},
-         ${python:Depends}
+Depends: python-netifaces, ${misc:Depends}, ${python:Depends}
 Conflicts: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Replaces: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Description: Ubuntu MAAS Server
@@ -122,9 +125,7 @@ Description: Ubuntu MAAS Client Tool
 
 Package: python-maas-client
 Architecture: all
-Depends: python-oauth,
-         ${misc:Depends},
-         ${python:Depends}
+Depends: python-oauth, ${misc:Depends}, ${python:Depends}
 Conflicts: maas (<= 0.1+bzr971+dfsg-0ubuntu2 )
 Replaces: maas (<= 0.1+bzr971+dfsg-0ubuntu2 )
 Description: Ubuntu MAAS API Client - (python files)
@@ -218,7 +219,7 @@ Description: Ubuntu MAAS Server - (django files)
 
 Package: maas-dhcp
 Architecture: all
-Depends: ${misc:Depends}, isc-dhcp-server
+Depends: isc-dhcp-server, ${misc:Depends}
 Conflicts: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Description: Ubuntu MAAS Server - DHCP Configuration (meta-package)
@@ -235,7 +236,7 @@ Description: Ubuntu MAAS Server - DHCP Configuration (meta-package)
 
 Package: maas-dns
 Architecture: all
-Depends: ${misc:Depends}, maas-dhcp (= ${binary:Version}), bind9
+Depends: bind9, maas-dhcp (= ${binary:Version}), ${misc:Depends}
 Conflicts: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Description: Ubuntu MAAS Server - DNS configuration (metapackage)

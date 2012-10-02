@@ -27,8 +27,10 @@ debian/tmp/usr/sbin/maas-import-pxe-files
 
 # Install maas-import-pxe-files and related files
 etc/cron.d/maas-import-pxe-files
-etc/maas/import_pxe_files
 man/maas-import-pxe-files.8 usr/share/man/man8
+debian/tmp/etc/maas/import_pxe_files
+debian/tmp/usr/sbin/maas-import-squashfs
+debian/tmp/etc/maas/import_squashfs
 debian/tmp/usr/sbin/maas-import-ephemerals
 debian/tmp/etc/maas/import_ephemerals
 debian/tmp/etc/maas/commissioning-user-data

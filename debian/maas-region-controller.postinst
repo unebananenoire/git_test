@@ -264,22 +264,18 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 	# make sure postgresql is running
 	restart_postgresql
 
-	# If upgrading from any version lower than 0.1+bzr1063+dfsg-0ubuntu1
 	# we need to regenerate the passwords and update configs.
-	if dpkg --compare-versions "$2" lt 0.1+bzr1063+dfsg-0ubuntu1; then
-		# configure maas default url
-		db_get maas/default-maas-url
-		ipaddr="$RET"
-		configure_maas_default_url "$ipaddr"
-		# make sure rabbitmq is running
-		restart_rabbitmq
-		configure_maas_txlongpoll_rabbitmq_user
-		# Handle celery/rabbitmq publishing
-		configure_maas_workers_rabbitmq_user
-		# handle database upgrade
-		dbc_go maas-region-controller $@
-		configure_maas_database "$dbc_dbpass"
-	fi
+	db_get maas/default-maas-url
+	ipaddr="$RET"
+	configure_maas_default_url "$ipaddr"
+	# make sure rabbitmq is running
+	restart_rabbitmq
+	configure_maas_txlongpoll_rabbitmq_user
+	# Handle celery/rabbitmq publishing
+	configure_maas_workers_rabbitmq_user
+	# handle database upgrade
+	dbc_go maas-region-controller $@
+	configure_maas_database "$dbc_dbpass"
 
 	maas_sync_migrate_db
 

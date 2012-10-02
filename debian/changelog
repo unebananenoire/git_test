@@ -1,10 +1,10 @@
-maas (0.1+bzr1122+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr1134+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * New upstream release.
 
   [ Julian Edwards ]
   * Ensure isc-dhcp-server is disabled when installing maas-dhcp.
-  
+
   [ Raphaël Badin ]
   * Split celery config into cluster and region configs.
   * Add region celeryd upstart config.
@@ -17,7 +17,15 @@ maas (0.1+bzr1122+dfsg-0ubuntu1) UNRELEASED; urgency=low
   * Set root:maas ownership of local cluster config only *after*
     the maas user/group have been created
 
- -- Julian Edwards <julian.edwards@canonical.com>  Mon, 01 Oct 2012 17:13:57 +1000
+  [ Andres Rodriguez ]
+  * debian/maas-dhcp.postinst: Stop isc-dhcp-server not isc_dhcp_server.
+  * debian/maas-region-controller.postinst: Always update passwords
+    on upgrade. No longer check versioning. (LP: #1060094).
+  * debian/maas-cluster-controller.maas-cluster-celery.upstart: Remove set{uid/gid}.
+  * debian/control: Depends on python-netifaces.
+  * debian/maas-region-controller: Install maas-import-squashfs
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 02 Oct 2012 13:39:47 -0400
 
 maas (0.1+bzr1110+dfsg-0ubuntu1) quantal; urgency=low
 

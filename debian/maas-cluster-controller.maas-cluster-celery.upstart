@@ -7,8 +7,6 @@ author "Julian Edwards <julian.edwards@canonical.com>"
 
 start on filesystem and net-device-up
 stop on runlevel [016]
-setuid maas
-setgid maas
 
 env CONFIG_FILE=/etc/maas/maas_cluster.conf
 # Use cluster config.
