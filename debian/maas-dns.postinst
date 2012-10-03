@@ -1,32 +1,49 @@
 #!/bin/sh -e
 
+add_user_group(){
+    local user="maas"
+    local group="maas"
+    if ! getent group "$group" >/dev/null; then
+        addgroup --quiet --system "$group" || true
+    fi
+    if ! getent passwd "$user" > /dev/null 2>&1; then
+        adduser --quiet \
+                    --system \
+                    --group \
+                    --no-create-home \
+                    "$user" || true
+    fi
+}
+
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
-	# If /etc/bind/maas is empty, set_up_dns.
-	if [ ! "$(ls -A /etc/bind/maas)" ]; then
-		maas set_up_dns
-	fi
+    add_user_group
 
-	# fix permissions
-	if [ -d /etc/bind/maas ]; then
-		chown -R maas:root /etc/bind/maas
-	fi
-	if [ -f /etc/bind/maas/named.conf.maas ]; then
-		chmod 644 /etc/bind/maas/named.conf.maas
-	fi
-	if [ -f /etc/bind/maas/rndc.conf.maas ]; then
-		chmod 600 /etc/bind/maas/rndc.conf.maas
-	fi
+    # If /etc/bind/maas is empty, set_up_dns.
+    if [ ! "$(ls -A /etc/bind/maas)" ]; then
+        maas set_up_dns
+    fi
 
-	# add the required line to "/etc/bind/named.conf.local"
-	if ! grep -qs "^include.*\/etc\/bind\/maas\;$" /etc/bind/maas.conf.local; then
-		include_path=$(maas get_named_conf | grep "include\ [a-z\"\/\.]\+;")
-		sed -i "\$a $include_path" \
-			/etc/bind/named.conf.local
-	fi
+    # fix permissions
+    if [ -d /etc/bind/maas ]; then
+        chown -R maas:root /etc/bind/maas
+    fi
+    if [ -f /etc/bind/maas/named.conf.maas ]; then
+        chmod 644 /etc/bind/maas/named.conf.maas
+    fi
+    if [ -f /etc/bind/maas/rndc.conf.maas ]; then
+        chmod 600 /etc/bind/maas/rndc.conf.maas
+    fi
 
-	if [ -x /usr/sbin/invoke-rc.d ]; then
-		invoke-rc.d bind9 restart || true
-	fi
+    # add the required line to "/etc/bind/named.conf.local"
+    if ! grep -qs "^include.*\/etc\/bind\/maas\;$" /etc/bind/maas.conf.local; then
+        include_path=$(maas get_named_conf | grep "include\ [a-z\"\/\.]\+;")
+        sed -i "\$a $include_path" \
+            /etc/bind/named.conf.local
+    fi
+
+    if [ -x /usr/sbin/invoke-rc.d ]; then
+        invoke-rc.d bind9 restart || true
+    fi
 fi
 
 #DEBHELPER#
