@@ -1,10 +1,14 @@
-maas (0.1+bzr1137+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr1139+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * New upstream release.
 
   [ Julian Edwards ]
   * Ensure isc-dhcp-server is disabled when installing maas-dhcp.
   * Ensure maas-dns creates the maas user before trying to chown files.
+  * Make maas-cluster-controller autoconfigure itself when upgrading from the
+    old maas package. (LP: #1059416)
+  * Add missing prerm file for maas-cluster-controller so that .pyc files
+    are cleaned up. (LP: #1059973)
 
   [ Raphaël Badin ]
   * Split celery config into cluster and region configs.
@@ -26,7 +30,7 @@ maas (0.1+bzr1137+dfsg-0ubuntu2) UNRELEASED; urgency=low
   * debian/control: Depends on python-netifaces.
   * debian/maas-region-controller: Install maas-import-squashfs
 
- -- Julian Edwards <julian.edwards@canonical.com>  Wed, 03 Oct 2012 11:26:05 +1000
+ -- Julian Edwards <julian.edwards@canonical.com>  Wed, 03 Oct 2012 16:49:24 +1000
 
 maas (0.1+bzr1110+dfsg-0ubuntu1) quantal; urgency=low
 
