@@ -22,5 +22,5 @@ end script
 
 script
     . $CONFIG_FILE  # sets MAAS_URL
-    exec /usr/sbin/maas-provision start-cluster-controller $MAAS_URL
+    exec /usr/sbin/maas-provision start-cluster-controller $MAAS_URL -u maas -g maas
 end script
