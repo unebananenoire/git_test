@@ -1,4 +1,4 @@
-maas (0.1+bzr1139+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr1170+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release.
 
@@ -24,13 +24,22 @@ maas (0.1+bzr1139+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   [ Andres Rodriguez ]
   * debian/maas-dhcp.postinst: Stop isc-dhcp-server not isc_dhcp_server.
-  * debian/maas-region-controller.postinst: Always update passwords
-    on upgrade. No longer check versioning. (LP: #1060094).
+  * debian/maas-region-controller.postinst:
+    - Always update passwords on upgrade. No longer check versioning. (LP: #1060094).
+    - Add MAAS server to allowed mirror in squid-deb-proxy
+    - Source dbconfig conf file for maas-region-controller on upgrade because
+      it writes a new config file and no longer preservers the previous password.
   * debian/maas-cluster-controller.maas-cluster-celery.upstart: Remove set{uid/gid}.
-  * debian/control: Depends on python-netifaces.
+  * debian/control: Depends on python-netifaces, python-lxml.
   * debian/maas-region-controller: Install maas-import-squashfs
+  * Handle removal of non existant files (LP: #1059556):
+    - debian/maintscript: Added to handle removal of conffiles.
+    - debian/control: Add Pre-depends and bump debhelper version.
+  * update po files for the templates.
+  * debian/extras/99-maas: Install in usr/share/maas/conf and symlink to the
+    appropriate etc dir.
 
- -- Julian Edwards <julian.edwards@canonical.com>  Wed, 03 Oct 2012 16:49:24 +1000
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 04 Oct 2012 13:34:12 -0400
 
 maas (0.1+bzr1110+dfsg-0ubuntu1) quantal; urgency=low
 

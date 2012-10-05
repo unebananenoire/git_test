@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maas\n"
 "Report-Msgid-Bugs-To: maas@packages.debian.org\n"
-"POT-Creation-Date: 2012-04-04 14:45-0400\n"
+"POT-Creation-Date: 2012-10-04 13:40-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,73 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Type: string
-#. Description
-#: ../maas-dhcp.templates:1001
-msgid "Set the network range for DHCP Clients:"
-msgstr ""
-
-#. Type: string
-#. Description
-#: ../maas-dhcp.templates:1001
-msgid ""
-"Ubuntu MAAS Server can manage DHCP for address allocation for the "
-"provisioned systems.  If the network range for the DHCP is different from "
-"the default (192.168.1.5,192.168.1.200), you should set it here."
-msgstr ""
-
-#. Type: string
-#. Description
-#: ../maas-dhcp.templates:1001
-msgid "An example of how a network range should be specified is:"
-msgstr ""
-
-#. Type: string
-#. Description
-#: ../maas-dhcp.templates:1001
-msgid "10.10.10.2,10.10.10.254"
-msgstr ""
-
-#. Type: string
-#. Description
-#: ../maas-dhcp.templates:2001
-msgid "Set default Gateway for DHCP Clients:"
-msgstr ""
-
-#. Type: string
-#. Description
-#: ../maas-dhcp.templates:2001
-msgid ""
-"Ubuntu MAAS Server can manage DHCP for address allocation for the "
-"provisioned systems.  If the Ubuntu MAAS Server is NOT the default Gateway "
-"for the provisioned systems, you should set the default Gateway here, "
-"otherwise leave this blank."
-msgstr ""
-
-#. Type: string
-#. Description
-#: ../maas-dhcp.templates:3001
-msgid "Set the domain name for DHCP Clients:"
-msgstr ""
-
-#. Type: string
-#. Description
-#: ../maas-dhcp.templates:3001
-msgid ""
-"Ubuntu MAAS Server can manage DHCP for address allocation for the "
-"provisioned systems. If these systems are required to be under a domain, you "
-"should enter it here."
-msgstr ""
-
 #. Type: note
 #. Description
-#: ../maas.templates:1001
+#: ../maas-region-controller.templates:1001
 msgid "Ubuntu MAAS Server"
 msgstr ""
 
 #. Type: note
 #. Description
-#: ../maas.templates:1001
+#: ../maas-region-controller.templates:1001
 msgid ""
 "The Ubuntu MAAS Server has been installed in your system. You can access the "
 "MAAS Web interface here:"
@@ -91,6 +33,50 @@ msgstr ""
 
 #. Type: note
 #. Description
-#: ../maas.templates:1001
+#: ../maas-region-controller.templates:1001
 msgid "   http://${MAAS_URL}/MAAS"
+msgstr ""
+
+#. Type: note
+#. Description
+#: ../maas-region-controller.templates:1001
+msgid ""
+"If the automatically detected address above is not in the same network as "
+"the MAAS clients, you need to reconfigure it:"
+msgstr ""
+
+#. Type: note
+#. Description
+#: ../maas-region-controller.templates:1001
+msgid "   sudo dpkg-reconfigure maas-region-controller"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../maas-region-controller.templates:2001
+msgid "Ubuntu MAAS PXE/Provisioning network address:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../maas-region-controller.templates:2001
+msgid ""
+"The Ubuntu MAAS Server automatically detects the IP address that is used for "
+"PXE and provisioning. However, it needs to be in the same network as the "
+"clients. If the automatically detected address is not in the same network as "
+"the clients, it must be changed."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../maas-cluster-controller.templates:1001
+msgid "Ubuntu MAAS API address:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../maas-cluster-controller.templates:1001
+msgid ""
+"The MAAS Cluster Controller needs to contact the MAAS server to register its "
+"presence.  Set the URL to the MAAS API here, e.g. http://192.168.1.1/MAAS"
 msgstr ""

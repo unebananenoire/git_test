@@ -37,6 +37,14 @@ restart_postgresql(){
 	fi
 }
 
+restart_squid_deb_proxy() {
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d squid-deb-proxy restart || true
+	else
+		/etc/init.d/squid-deb-proxy restart || true
+	fi
+}
+
 add_user_group(){
 	local user="maas"
 	local group="maas"
@@ -125,6 +133,19 @@ configure_maas_default_url() {
 	fi
 }
 
+configure_maas_squid_deb_proxy() {
+	local ipaddr="$1"
+
+	if [ -e /usr/share/maas/conf/99-maas -a \
+	     ! -L /etc/squid-deb-proxy/mirror-dstdomain.acl.d/99-maas ]; then
+		ln -sf /usr/share/maas/conf/99-maas \
+		       /etc/squid-deb-proxy/mirror-dstdomain.acl.d/99-maas
+	fi
+
+	sed -i "s/\(^[a-zA-Z0-9\.\-].*\) # maasurl$/$ipaddr # maasurl/" \
+             /usr/share/maas/conf/99-maas
+}
+
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	#########################################################
 	################ User/Group Creatiion  ##################
@@ -174,6 +195,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	# Set the IP address of the interface with default route
 	if [ -n "$ipaddr" ]; then
 		configure_maas_default_url "$ipaddr"
+		configure_maas_squid_deb_proxy "$ipaddr"
 		db_subst maas/installation-note MAAS_URL "$ipaddr"
 		db_set maas/default-maas-url "$ipaddr"
 	fi
@@ -253,6 +275,7 @@ elif [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
 	db_set maas/default-maas-url "$ipaddr"
 	if [ -n "$ipaddr" ]; then
 		configure_maas_default_url "$ipaddr"
+		configure_maas_squid_deb_proxy "$ipaddr"
 	fi
 
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
@@ -268,13 +291,21 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 	db_get maas/default-maas-url
 	ipaddr="$RET"
 	configure_maas_default_url "$ipaddr"
+	configure_maas_squid_deb_proxy "$ipaddr"
 	# make sure rabbitmq is running
 	restart_rabbitmq
 	configure_maas_txlongpoll_rabbitmq_user
 	# Handle celery/rabbitmq publishing
 	configure_maas_workers_rabbitmq_user
 	# handle database upgrade
-	dbc_go maas-region-controller $@
+	if [ -f /etc/dbconfig-common/maas-region-controller.conf ]; then
+		# source dbconfig-common db config for maas-region-controller
+		# before upgrading database, otherwise a new config is written
+		# but the password is no longer preserved.
+		. /etc/dbconfig-common/maas-region-controller.conf
+	else
+		dbc_go maas-region-controller $@
+	fi
 	configure_maas_database "$dbc_dbpass"
 
 	maas_sync_migrate_db
@@ -282,6 +313,8 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 fi
 
 restart_apache2
+
+restart_squid_deb_proxy
 
 db_stop
 

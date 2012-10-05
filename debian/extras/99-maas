@@ -2,3 +2,6 @@
 # 
 # Enable launchpad personal package archives for squid-deb-proxy
 ppa.launchpad.net
+# Enable access to MAAS server HTTP to allow squashfs download
+# during install
+maas.internal.example.com # maasurl
