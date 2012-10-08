@@ -1,8 +1,12 @@
-maas (0.1+bzr1223+dfsg-0ubuntu1~ppa1) quantal; urgency=low
+maas (0.1+bzr1223+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release. (LP: #1062518)
 
   [ Julian Edwards ]
+  * Split packaging of 'maas' into maas-{region,cluster}-controller
+    - debian/control: Update accordingly.
+    - debian/*.install: Move files accordingly
+    - debian/*.{postinst,postrm,preinst}: Move files accordingly.
   * Ensure isc-dhcp-server is disabled when installing maas-dhcp.
   * Ensure maas-dns creates the maas user before trying to chown files.
   * Make maas-cluster-controller autoconfigure itself when upgrading from the
@@ -11,6 +15,21 @@ maas (0.1+bzr1223+dfsg-0ubuntu1~ppa1) quantal; urgency=low
     are cleaned up. (LP: #1059973)
 
   [ Raphaël Badin ]
+  * Install maas_local_celeryconfig.py in /etc/maas and symlink to
+    /usr/share/maas.
+  * debian/maas.postinst: Create rabbitmq celery user/vhost.
+  * debian/maas.postinst: Update BROKER_URL in maas_local_celeryconfig.py.
+  * Use maas_local_celeryconfig_cluster.py as the local celery
+    configuration file for the cluster worker.
+  * debian/maas-region-controller.maas-region-celery.upstart: Add region
+    worker upstart script.
+  * Rename cluster worker upstart script into
+    maas-cluster-controller.maas-clluster-celery.upstart.
+  * maas-cluster-controller.maas-celery.upstart: use "celeryconfig_cluster"
+    as the Celery config module.
+  * debian/maas-common.install: Install celeryconfig_common.py.
+  * debian/maas-cluster-controller.install: Install celeryconfig_cluster.py.
+  * debian/maas-region-controller.install: Install celeryconfig.py.
   * Split celery config into cluster and region configs.
   * Add region celeryd upstart config.
   * Define CELERY_CONFIG_MODULE in
@@ -23,6 +42,30 @@ maas (0.1+bzr1223+dfsg-0ubuntu1~ppa1) quantal; urgency=low
     the maas user/group have been created
 
   [ Andres Rodriguez ]
+  * debian/maas.postinst:
+    - Always restart apache2.
+    - Handle upgrades for new upstream release.
+    - Handle upgrades for celery rabbitmq worker.
+  * Add binary package to install client tool.
+    - debian/extras/maas-cli: Add binary.
+    - debian/maas-cli.install: Add. Install maascli and apiclient.
+    - debian/control: Add binary package.
+  * debian/control:
+    - Depends on freeipmi-tools instead of ipmitool.
+    - Conflicts/Replaces on maas for python-maas-client.
+    - Depends on python-netifaces, python-lxml.
+  * Add python-maas-client binary package:
+    - debian/python-maas-client.install: Add. Install 'apiclient' python module.
+    - debian/control: Add package. python-django-maas and maas-cli now
+      Depend on it.
+  * debian/rules: Install maas-dhcp-server upstart job.
+  * debian/maas.postrm: Remove celery worker rabbitmq user and host.
+  * debian/extras/99-maas-sudoers: Add for maas-dhcp-server upstart job
+    instead of isc-dhcp-server (LP: #1055951)
+  * debian/maas-region-controller.postinst: Cleanup upgrade rules.
+  * debian/maas-cluster-controller.postinst: Fix 'local' usage.
+  * debian/maas-common.install: Install celeryconfig in appropriate location.
+  * debian/maas-cluster-controller.postrm: Add and delete maas user.
   * debian/maas-dhcp.postinst: Stop isc-dhcp-server not isc_dhcp_server.
   * debian/maas-region-controller.postinst:
     - Always update passwords on upgrade. No longer check versioning. (LP: #1060094).
@@ -30,8 +73,7 @@ maas (0.1+bzr1223+dfsg-0ubuntu1~ppa1) quantal; urgency=low
     - Source dbconfig conf file for maas-region-controller on upgrade because
       it writes a new config file and no longer preservers the previous password.
   * debian/maas-cluster-controller.maas-cluster-celery.upstart: Remove set{uid/gid}.
-  * debian/control: Depends on python-netifaces, python-lxml.
-  * debian/maas-region-controller: Install maas-import-squashfs
+  * debian/maas-region-controller.install: Install maas-import-squashfs
   * Handle removal of non existant files (LP: #1059556):
     - debian/maintscript: Added to handle removal of conffiles.
     - debian/control: Add Pre-depends and bump debhelper version.
@@ -40,48 +82,12 @@ maas (0.1+bzr1223+dfsg-0ubuntu1~ppa1) quantal; urgency=low
     appropriate etc dir.
   * debian/maas-cluster-controller.config: Source debconf at the beginning of the
     script. (LP: #1063857)
-  * debian/maas-cluster-controller.postinst: Only set URL if not empty.
+  * debian/patches/99-temporary-fix-constraints.patch: Fix constraints maaping
+    when deploying with juju. Temporary until it gets merged upstream
 
   [ Robie Basak ]
   * Add maas-cluster-controller dependency on uuid-runtime, needed for uuidgen
     by postinst.
-
- -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 08 Oct 2012 13:10:23 -0400
-
-maas (0.1+bzr1110+dfsg-0ubuntu1) quantal; urgency=low
-
-  * New Upstream Release
-
-  [ Julian Edwards ]
-  * Split packaging of 'maas' into maas-{region,cluster}-controller
-    - debian/control: Update accordingly.
-    - debian/*.install: Move files accordingly
-    - debian/*.{postinst,postrm,preinst}: Move files accordingly.
-
-  [ Andres Rodriguez ]
-  * debian/maas-region-controller.postinst: Cleanup upgrade rules.
-  * debian/maas-cluster-controller.postinst: Fix 'local' usage.
-  * debian/maas-common.install: Install celeryconfig in appropriate location.
-  * debian/maas-cluster-controller.postrm: Add and delete maas user.
-
-  [ Raphael Badin ]
-  * Use maas_local_celeryconfig_cluster.py as the local celery
-    configuration file for the cluster worker.
-  * debian/maas-region-controller.maas-region-celery.upstart: Add region
-    worker upstart script.
-  * Rename cluster worker upstart script into
-    maas-cluster-controller.maas-clluster-celery.upstart.
-  * maas-cluster-controller.maas-celery.upstart: use "celeryconfig_cluster"
-    as the Celery config module.
-  * debian/maas-common.install: Install celeryconfig_common.py.
-  * debian/maas-cluster-controller.install: Install celeryconfig_cluster.py.
-  * debian/maas-region-controller.install: Install celeryconfig.py.
-
- -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 28 Sep 2012 16:54:28 -0400
-
-maas (0.1+bzr1063+dfsg-0ubuntu1) quantal; urgency=low
-
-  * New upstream release
 
   [ Scott Moser ]
   * debian/maas-dhcp.{install,apparmor,postrm} install apparmor profile into
@@ -96,34 +102,7 @@ maas (0.1+bzr1063+dfsg-0ubuntu1) quantal; urgency=low
     - debian/tests/maas-package-test: Add
     - tests/maas-integration.py: Add
 
-  [ Andres Rodriguez ]
-  * debian/maas.postinst:
-    - Always restart apache2.
-    - Handle upgrades for new upstream release.
-    - Handle upgrades for celery rabbitmq worker.
-  * Add binary package to install client tool.
-    - debian/extras/maas-cli: Add binary.
-    - debian/maas-cli.install: Add. Install maascli and apiclient.
-    - debian/control: Add binary package.
-  * debian/control:
-    - Depends on freeipmi-tools instead of ipmitool.
-    - Conflicts/Replaces on maas for python-maas-client
-  * Add python-maas-client binary package:
-    - debian/python-maas-client: Add. Install 'apiclient' python module.
-    - debian/control: Add package. python-django-maas and maas-cli now
-      Depend on it.
-  * debian/rules: Install maas-dhcp-server upstart job.
-  * debian/maas.postrm: Remove celery worker rabbitmq user and host.
-  * debian/extras/99-maas-sudoers: Add for maas-dhcp-server upstart job
-    instead of isc-dhcp-server (LP: #1055951)
-
-  [ Raphael Badin ]
-  * Install maas_local_celeryconfig.py in /etc/maas and symlink to
-    /usr/share/maas.
-  * debian/maas.postinst: Create rabbitmq celery user/vhost.
-  * debian/maas.postinst: Update BROKER_URL in maas_local_celeryconfig.py.
-
- -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 19 Sep 2012 14:47:04 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 08 Oct 2012 13:10:23 -0400
 
 maas (0.1+bzr971+dfsg-0ubuntu2) quantal; urgency=low
 
