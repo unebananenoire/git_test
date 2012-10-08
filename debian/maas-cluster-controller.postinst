@@ -37,7 +37,9 @@ fi
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
     # Get the MAAS_URL on configure/reconfigure and write it to the conf file.
     db_get maas-cluster-controller/maas-url || true
-    sed -i "s|MAAS_URL=.*|MAAS_URL="$RET"|" /etc/maas/maas_cluster.conf
+    if [ -n "$RET" ]; then
+        sed -i "s|MAAS_URL=.*|MAAS_URL="$RET"|" /etc/maas/maas_cluster.conf
+    fi
 fi
 
 #DEBHELPER#

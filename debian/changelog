@@ -1,4 +1,4 @@
-maas (0.1+bzr1199+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr1223+dfsg-0ubuntu1~ppa1) quantal; urgency=low
 
   * New upstream release. (LP: #1062518)
 
@@ -40,6 +40,7 @@ maas (0.1+bzr1199+dfsg-0ubuntu1) UNRELEASED; urgency=low
     appropriate etc dir.
   * debian/maas-cluster-controller.config: Source debconf at the beginning of the
     script. (LP: #1063857)
+  * debian/maas-cluster-controller.postinst: Only set URL if not empty.
 
   [ Robie Basak ]
   * Add maas-cluster-controller dependency on uuid-runtime, needed for uuidgen
