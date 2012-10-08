@@ -39,7 +39,11 @@ maas (0.1+bzr1170+dfsg-0ubuntu1) UNRELEASED; urgency=low
   * debian/extras/99-maas: Install in usr/share/maas/conf and symlink to the
     appropriate etc dir.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 04 Oct 2012 13:34:12 -0400
+  [ Robie Basak ]
+  * Add maas-cluster-controller dependency on uuid-runtime, needed for uuidgen
+    by postinst.
+
+ -- Robie Basak <robie.basak@ubuntu.com>  Fri, 05 Oct 2012 11:35:25 +0100
 
 maas (0.1+bzr1110+dfsg-0ubuntu1) quantal; urgency=low
 
