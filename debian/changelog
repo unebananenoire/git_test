@@ -1,6 +1,6 @@
-maas (0.1+bzr1170+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr1199+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
-  * New upstream release.
+  * New upstream release. (LP: #1062518)
 
   [ Julian Edwards ]
   * Ensure isc-dhcp-server is disabled when installing maas-dhcp.
@@ -38,12 +38,14 @@ maas (0.1+bzr1170+dfsg-0ubuntu1) UNRELEASED; urgency=low
   * update po files for the templates.
   * debian/extras/99-maas: Install in usr/share/maas/conf and symlink to the
     appropriate etc dir.
+  * debian/maas-cluster-controller.config: Source debconf at the beginning of the
+    script. (LP: #1063857)
 
   [ Robie Basak ]
   * Add maas-cluster-controller dependency on uuid-runtime, needed for uuidgen
     by postinst.
 
- -- Robie Basak <robie.basak@ubuntu.com>  Fri, 05 Oct 2012 11:35:25 +0100
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 08 Oct 2012 13:10:23 -0400
 
 maas (0.1+bzr1110+dfsg-0ubuntu1) quantal; urgency=low
 
