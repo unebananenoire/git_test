@@ -1,4 +1,4 @@
-maas (0.1+bzr1223+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr1223+dfsg-0ubuntu1) quantal; urgency=low
 
   * New upstream release. (LP: #1062518)
 
