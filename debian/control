@@ -161,7 +161,7 @@ Depends: bind9utils,
          rsyslog,
          syslinux-common,
          tgt,
-         uuid-runtime
+         uuid-runtime,
          wget,
          ${misc:Depends},
          ${python:Depends}
