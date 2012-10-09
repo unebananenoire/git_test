@@ -1,4 +1,3 @@
 01-fix-database-settings.patch
 02-pserv-config.patch
 03-txlongpoll-config.patch
-99-temporary-fix-constraints.patch

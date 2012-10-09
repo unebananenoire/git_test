@@ -33,6 +33,7 @@ Description: Ubuntu MAAS Server
 
 Package: maas-common
 Architecture: all
+Depends: ${python:Depends}
 Conflicts: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Description: Ubuntu MAAS Server
