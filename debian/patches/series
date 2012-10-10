@@ -1,5 +1,4 @@
 01-fix-database-settings.patch
 02-pserv-config.patch
 03-txlongpoll-config.patch
-99-ipmi-user-too-long.patch
 04-fix-ipmi-enlistment.patch
