@@ -20,10 +20,14 @@ add_user_group(){
 
 create_log_dir() {
     # create log dir
+    if [ ! -d /var/lib/maas ]; then
+        mkdir -p /var/lib/maas
+    fi
     if [ ! -d /var/log/maas/oops ]; then
         mkdir -p /var/log/maas/oops
     fi
     # Give appropriate permissions
+    chown -R maas:maas /var/lib/maas/
     chown -R maas:maas /var/log/maas
     chmod -R 775 /var/log/maas/oops
 }

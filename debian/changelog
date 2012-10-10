@@ -2,6 +2,7 @@ maas (0.1+bzr1243+dfsg-0ubuntu4) UNRELEASED; urgency=low
 
   [ Raphaël Badin ]
   * debian/maas-region-controller.postinst: Enable proxy_http module.
+  * debian/maas-cluster-controller.postinst: Create /var/lib/maas. (LP: #1065062)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 10 Oct 2012 11:17:21 -0400
 

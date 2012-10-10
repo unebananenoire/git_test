@@ -15,6 +15,13 @@ case "$1" in
                 if [ -d /var/log/maas ]; then
                     rm -rf /var/log/maas
                 fi
+		# remove var directory
+		rm -rf /var/lib/maas/celerybeat-cluster-schedule
+		DIR=/var/lib/maas
+		if [ "$(ls -A $DIR 2> /dev/null)" = "" ]; then
+			rm -rf /var/lib/maas
+		fi
+
 esac
 
 #DEBHELPER#
