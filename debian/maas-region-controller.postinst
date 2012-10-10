@@ -177,6 +177,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	fi
 
 	# enable apache modules needed
+	a2enmod proxy_http
 	a2enmod expires
 	a2enmod wsgi
 
