@@ -11,6 +11,10 @@ case "$1" in
                 if getent passwd maas >/dev/null; then
                         deluser maas || true
                 fi
+                # remove log directory
+                if [ -d /var/log/maas ]; then
+                    rm -rf /var/log/maas
+                fi
 esac
 
 #DEBHELPER#

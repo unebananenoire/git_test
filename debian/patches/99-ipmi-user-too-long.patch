@@ -1,0 +1,18 @@
+Description: IPMI user created on enlistment is too long
+ The IPMI user created on enlistment is too long causing that
+ the user is not created. Additionally, this will cause maas
+ to fail to power_on a machine.
+Author: Andres Rodriguez <andreserl@ubuntu.com>
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1064832
+
+--- maas-0.1+bzr1243+dfsg.orig/contrib/preseeds_v2/enlist_userdata	2012-10-09 17:19:17.000000000 -0400
++++ maas-0.1+bzr1243+dfsg/contrib/preseeds_v2/enlist_userdata	2012-10-10 00:58:16.355424942 -0400
+@@ -143,7 +143,7 @@
+ 
+        # create user/pass
+        if args.commission_creds:
+-           IPMI_MAAS_USER="maas-commissioning"
++           IPMI_MAAS_USER="maas-commission"
+        else:
+            IPMI_MAAS_USER="maas"
+        IPMI_MAAS_PASSWORD=generate_random_password()

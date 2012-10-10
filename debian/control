@@ -90,7 +90,26 @@ Description: Ubuntu MAAS Server
 
 Package: python-maas-provisioningserver
 Architecture: all
-Depends: python-netifaces, ${misc:Depends}, ${python:Depends}
+Depends: python-celery,
+         python-formencode,
+         python-lockfile,
+         python-lxml,
+         python-maas-client,
+         python-netifaces,
+         python-oops,
+         python-oops-amqp,
+         python-oops-datedir-repo,
+         python-oops-twisted,
+         python-pyparsing,
+         python-tempita,
+         python-twisted-core,
+         python-twisted-web,
+         python-txamqp,
+         python-txtftp,
+         python-yaml,
+         python-zope.interface,
+         ${misc:Depends},
+         ${python:Depends}
 Conflicts: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Replaces: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Description: Ubuntu MAAS Server

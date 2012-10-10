@@ -18,8 +18,21 @@ add_user_group(){
     fi
 }
 
+create_log_dir() {
+    # create log dir
+    if [ ! -d /var/log/maas/oops ]; then
+        mkdir -p /var/log/maas/oops
+    fi
+    # Give appropriate permissions
+    chown -R maas:maas /var/log/maas
+    chmod -R 775 /var/log/maas/oops
+}
+
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     add_user_group
+
+    # logging
+    create_log_dir
 
     # The local celery config may contain a private cluster UUID.  Only
     # maas can read it; only root can write it.
@@ -35,6 +48,11 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 fi
 
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
+
+    if dpkg --compare-versions "$2" lt 0.1+bzr1239+dfsg-0ubuntu1; then
+        create_log_dir
+    fi
+
     # Get the MAAS_URL on configure/reconfigure and write it to the conf file.
     db_get maas-cluster-controller/maas-url || true
     if [ -n "$RET" ]; then
