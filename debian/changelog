@@ -1,3 +1,9 @@
+maas (0.1+bzr1264+dfsg-0ubuntu2) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 11 Oct 2012 17:38:08 -0400
+
 maas (0.1+bzr1264+dfsg-0ubuntu1) quantal; urgency=low
 
   * New upstream release.
