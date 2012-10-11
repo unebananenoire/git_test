@@ -26,11 +26,6 @@ case "$1" in
 			/etc/init.d/apache2 restart || true
 		fi
 
-		# Deleting user/group
-		if getent passwd maas >/dev/null; then
-			deluser maas || true
-		fi
-
 		# Delete symlink
 		if [ -L /etc/tgt/conf.d/maas.conf ]; then
 			rm -rf /etc/tgt/conf.d/maas.conf

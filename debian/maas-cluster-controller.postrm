@@ -7,10 +7,6 @@ db_version 2.0
 
 case "$1" in
         purge)
-                # Deleting user/group
-                if getent passwd maas >/dev/null; then
-                        deluser maas || true
-                fi
                 # remove log directory
                 if [ -d /var/log/maas ]; then
                     rm -rf /var/log/maas

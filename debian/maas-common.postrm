@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+        purge)
+                # Deleting user/group
+                if getent passwd maas >/dev/null; then
+                        deluser maas || true
+                fi
+esac
+
+#DEBHELPER#

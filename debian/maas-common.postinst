@@ -1,0 +1,22 @@
+#!/bin/sh -e
+
+add_user_group(){
+	local user="maas"
+	local group="maas"
+	if ! getent group "$group" >/dev/null; then
+		addgroup --quiet --system "$group" || true
+	fi
+	if ! getent passwd "$user" > /dev/null 2>&1; then
+		adduser --quiet \
+		    --system \
+		    --group \
+		    --no-create-home \
+		    "$user" || true
+	fi
+}
+
+if [ "$1" = "configure" ]; then
+	add_user_group
+fi
+
+#DEBHELPER#

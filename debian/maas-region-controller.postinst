@@ -45,21 +45,6 @@ restart_squid_deb_proxy() {
 	fi
 }
 
-add_user_group(){
-	local user="maas"
-	local group="maas"
-	if ! getent group "$group" >/dev/null; then
-		addgroup --quiet --system "$group" || true
-	fi
-	if ! getent passwd "$user" > /dev/null 2>&1; then
-		adduser --quiet \
-                    --system \
-                    --group \
-                    --no-create-home \
-                    "$user" || true
-	fi
-}
-
 configure_maas_txlongpoll_rabbitmq_user() {
 	local longpoll_user="maas_longpoll"
 	local longpoll_pass=
@@ -150,11 +135,6 @@ configure_maas_squid_deb_proxy() {
 }
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
-	#########################################################
-	################ User/Group Creatiion  ##################
-	#########################################################
-	add_user_group
-
 	#########################################################
 	################ Folder Permissions  ####################
 	#########################################################
