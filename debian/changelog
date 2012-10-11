@@ -1,8 +1,16 @@
-maas (0.1+bzr1243+dfsg-0ubuntu4) UNRELEASED; urgency=low
+maas (0.1+bzr1251+dfsg-0ubuntu1) UNRELEASED; urgency=low
+
+  * New upstream release.
 
   [ Raphaël Badin ]
   * debian/maas-region-controller.postinst: Enable proxy_http module.
   * debian/maas-cluster-controller.postinst: Create /var/lib/maas. (LP: #1065062)
+
+  [ Andres Rodriguez ]
+  * Install maas-provision with python-maas-provisioningserver (LP: #1065171):
+    - debian/python-maas-provisioningserver.install: Install
+    - debian/control: Add Conflicts/Replaces with maas-cluster-controller
+      to handle upgrades.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 10 Oct 2012 11:17:21 -0400
 

@@ -110,8 +110,8 @@ Depends: python-celery,
          python-zope.interface,
          ${misc:Depends},
          ${python:Depends}
-Conflicts: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
-Replaces: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
+Conflicts: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3)
+Replaces: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3)
 Description: Ubuntu MAAS Server
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
