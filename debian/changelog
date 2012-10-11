@@ -13,6 +13,8 @@ maas (0.1+bzr1263+dfsg-0ubuntu1) UNRELEASED; urgency=low
       to handle upgrades.
   * debian/patches/04-fix-ipmi-enlistment.patch: Drop. Merged Upstream.
   * debian/control: Depends on maas-region-controller for maas-dns.
+  * debian/maas-region-controller.postinst: Set the correct host for
+    BROKER_URL (LP: #1065080)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 10 Oct 2012 11:17:21 -0400
 

@@ -89,7 +89,10 @@ configure_maas_workers_rabbitmq_user() {
 	local workers_user="maas_workers"
 	local workers_pass="$(pwgen -s 20)"
 	local workers_vhost="/maas_workers"
-	local amqp_host="localhost"
+	local amqp_host=$1
+	if [ -z "$amqp_host" ]; then
+		amqp_host="localhost"
+	fi
 	local amqp_port="5672"
 	if [ -x /usr/sbin/rabbitmqctl ]; then
 		if ! rabbitmqctl list_users | grep -qs "$workers_user"; then
@@ -241,7 +244,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	#########################################################
 
 	# Handle celery/rabbitmq publishing
-	configure_maas_workers_rabbitmq_user
+	configure_maas_workers_rabbitmq_user "$ipaddr"
 
 	#########################################################
 	######## add maas.conf to tgt conf.d ####################
@@ -277,6 +280,7 @@ elif [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
 	if [ -n "$ipaddr" ]; then
 		configure_maas_default_url "$ipaddr"
 		configure_maas_squid_deb_proxy "$ipaddr"
+		configure_maas_workers_rabbitmq_user "$ipaddr"
 	fi
 
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
@@ -297,7 +301,7 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 	restart_rabbitmq
 	configure_maas_txlongpoll_rabbitmq_user
 	# Handle celery/rabbitmq publishing
-	configure_maas_workers_rabbitmq_user
+	configure_maas_workers_rabbitmq_user "$ipaddr"
 	# handle database upgrade
 	if [ -f /etc/dbconfig-common/maas-region-controller.conf ]; then
 		# source dbconfig-common db config for maas-region-controller
