@@ -259,7 +259,10 @@ Description: Ubuntu MAAS Server - DHCP Configuration (meta-package)
 
 Package: maas-dns
 Architecture: all
-Depends: bind9, maas-dhcp (= ${binary:Version}), ${misc:Depends}
+Depends: bind9,
+ maas-region-controller (= ${binary:Version}),
+ maas-dhcp (= ${binary:Version}),
+ ${misc:Depends}
 Conflicts: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Description: Ubuntu MAAS Server - DNS configuration (metapackage)
