@@ -1,6 +1,8 @@
 maas (0.1+bzr1264+dfsg-0ubuntu3) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  [ Gavin Panella ]
+  * debian/maas-dns.postinst: Remove MAAS-related include lines from named's
+    config before adding a new one (LP: #1066929)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 16 Oct 2012 10:31:37 -0400
 
