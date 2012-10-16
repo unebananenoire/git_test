@@ -1,0 +1,50 @@
+#!/usr/bin/python
+import os
+from grp import getgrnam
+from pwd import getpwnam
+
+def start_celery(args):
+    uid = getpwnam(args.user).pw_uid
+    gid = getgrnam(args.group).gr_gid
+
+    env = dict(os.environ, PYTHONPATH="/usr/share/maas")
+
+    command = [
+        'celeryd',
+        '--logfile=%s' % args.logfile,
+        '--schedule=%s' % args.schedule,
+        '--loglevel=INFO',
+        '--beat',
+        '-Q celery,master',
+        ]
+
+    # Change gid first, just in case changing the uid might deprive
+    # us of the privileges required to setgid.
+    os.setgid(gid)
+    os.setuid(uid)
+
+    os.execvpe(command[0], command, env=env)
+
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(
+           description='MAAS celery daemon config options')
+    parser.add_argument(
+        '--user', '-u', metavar='USER', default='maas',
+        help="System user identity that should run the cluster controller.")
+    parser.add_argument(
+        '--group', '-g', metavar='GROUP', default='maas',
+        help="System group that should run the cluster controller.")
+    parser.add_argument(
+        '--logfile', '-l', metavar='LOGFILE', default='/var/log/maas/celery-region.log',
+        help="Location of the logfile.")
+    parser.add_argument(
+        '--schedule', '-s', metavar='SCHEDULE', default='/var/lib/maas/celerybeat-region-schedule',
+        help="Location of the beat schedule file.")
+
+    args = args = parser.parse_args()
+
+    start_celery(args)
+
+if __name__ == '__main__':
+   main()

@@ -1,6 +1,18 @@
-maas (0.1+bzr1264+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr1264+dfsg-0ubuntu3) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 16 Oct 2012 10:31:37 -0400
+
+maas (0.1+bzr1264+dfsg-0ubuntu2) quantal; urgency=low
+
+  * Fix MAAS not working after CD/preseed install (LP: #1065763)
+    - debian/extras/maas-region-celeryd: Add wrapper to run celery from
+      the upstart job.
+    - debian/extras/maas-region-controller.maas-region-celery.upstart: Create
+      rabbitmq user if it does not exists.
+  * debian/control: Remove unneeded deps on python-txtftp for some binary pkgs.
+  * debian/maas-region-controller.postinst: Minor fix referencing variable.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 11 Oct 2012 17:38:08 -0400
 

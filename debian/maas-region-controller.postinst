@@ -74,7 +74,7 @@ configure_maas_workers_rabbitmq_user() {
 	local workers_user="maas_workers"
 	local workers_pass="$(pwgen -s 20)"
 	local workers_vhost="/maas_workers"
-	local amqp_host=$1
+	local amqp_host="$1"
 	if [ -z "$amqp_host" ]; then
 		amqp_host="localhost"
 	fi
