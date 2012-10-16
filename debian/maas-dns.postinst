@@ -17,12 +17,10 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
         chmod 600 /etc/bind/maas/rndc.conf.maas
     fi
 
-    # add the required line to "/etc/bind/named.conf.local"
-    if ! grep -qs "^include.*\/etc\/bind\/maas\;$" /etc/bind/maas.conf.local; then
-        include_path=$(maas get_named_conf | grep "include\ [a-z\"\/\.]\+;")
-        sed -i "\$a $include_path" \
-            /etc/bind/named.conf.local
-    fi
+    # remove any existing MAAS-related include line from
+    # /etc/bind/named.conf.local, then re-add it.
+    sed -i '/^include\s.*maas/d' /etc/bind/named.conf.local
+    maas get_named_conf --edit --config_path /etc/bind/named.conf.local
 
     if [ -x /usr/sbin/invoke-rc.d ]; then
         invoke-rc.d bind9 restart || true
