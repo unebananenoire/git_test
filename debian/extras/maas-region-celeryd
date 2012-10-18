@@ -15,7 +15,7 @@ def start_celery(args):
         '--schedule=%s' % args.schedule,
         '--loglevel=INFO',
         '--beat',
-        '-Q celery,master',
+        '--queues=celery,master',
         ]
 
     # Change gid first, just in case changing the uid might deprive

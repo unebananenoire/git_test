@@ -1,8 +1,28 @@
-maas (0.1+bzr1264+dfsg-0ubuntu3) UNRELEASED; urgency=low
+maas (0.1+bzr1269+dfsg-0ubuntu2) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 17 Oct 2012 20:12:59 -0400
+
+maas (0.1+bzr1269+dfsg-0ubuntu1) quantal-proposed; urgency=low
+
+  * New upstream bugfix release
+    - Fixes commissioning failing to set memory attribute. (LP: #1064638)
+    - Fixes node listing by adding pagination (LP: #1064672)
+    - Changes default bind rndc key which breaks initscripts (LP: #1066938)
+    - Fixes invalid DNS config once node is enlisted (LP: #1066958)
+    - Reference documentation link to correct URL (LP: #1067261)
+
+  [ Andres Rodriguez ]
+  * debian/rules: Change upstream branch.
 
   [ Gavin Panella ]
   * debian/maas-dns.postinst: Remove MAAS-related include lines from named's
     config before adding a new one (LP: #1066929)
+
+  [ Raphael Badin ]
+  * debian/extras/maas-region-celeryd: Remove whitespace that affects DNS
+    rabbitmq queue. (LP: #1067929)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 16 Oct 2012 10:31:37 -0400
 
