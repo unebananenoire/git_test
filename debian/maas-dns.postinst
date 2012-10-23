@@ -6,7 +6,7 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
         maas set_up_dns
     fi
 
-    # fix permissions
+    # Fix permissions.
     if [ -d /etc/bind/maas ]; then
         chown -R maas:root /etc/bind/maas
     fi
@@ -16,8 +16,12 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
     if [ -f /etc/bind/maas/rndc.conf.maas ]; then
         chmod 600 /etc/bind/maas/rndc.conf.maas
     fi
+    if [ -f /etc/bind/maas/named.conf.rndc.maas ]; then
+        chown maas:bind /etc/bind/maas/named.conf.rndc.maas
+        chmod 640 /etc/bind/maas/named.conf.rndc.maas
+    fi
 
-    # remove any existing MAAS-related include line from
+    # Remove any existing MAAS-related include line from
     # /etc/bind/named.conf.local, then re-add it.
     sed -i '/^include\s.*maas/d' /etc/bind/named.conf.local
     maas get_named_conf --edit --config_path /etc/bind/named.conf.local
