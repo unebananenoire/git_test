@@ -3,6 +3,8 @@ maas (0.1+bzr1269+dfsg-0ubuntu2) UNRELEASED; urgency=low
   [ Raphaël Badin ]
   * debian/maas-dns.postinst: fix permissions and group ownership of
     file /etc/bind/maas/named.conf.rndc.maas. (LP: #1066935)
+  * debian/control: Remove the dependency of maas-cluster-controller
+    on rabbitmq-server. (LP: #1072744)
 
   [ Julian Edwards ]
   * debian/maas-region-controller.install: Remove installation of maas-gc; it
