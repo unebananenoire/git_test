@@ -22,21 +22,6 @@ debian/tmp/usr/share/maas/wsgi.py
 # Install txlongpoll config file
 debian/tmp/etc/maas/txlongpoll.yaml
 
-# Install maas-import-pxe-files
-debian/tmp/usr/sbin/maas-import-pxe-files
-
-# Install maas-import-pxe-files and related files
-etc/cron.d/maas-import-pxe-files
-man/maas-import-pxe-files.8 usr/share/man/man8
-debian/tmp/etc/maas/import_pxe_files
-debian/tmp/usr/sbin/maas-import-squashfs
-debian/tmp/etc/maas/import_squashfs
-debian/tmp/usr/sbin/maas-import-ephemerals
-debian/tmp/etc/maas/import_ephemerals
-debian/tmp/etc/maas/commissioning-user-data
-# Obsolete, but still available for compatibility:
-scripts/maas-import-isos usr/sbin
-
 # Install new preseed files
 debian/tmp/usr/share/maas/preseeds
 

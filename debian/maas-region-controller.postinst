@@ -104,14 +104,6 @@ configure_maas_database() {
 	fi
 }
 
-configure_maas_tgt(){
-	local tgtcfg="/etc/tgt/targets.conf"
-	[ -d /etc/tgt/conf.d/ ] || 
-	   echo "Warning! $tgtcfg did not exist" 1>&2;
-	mkdir -p /etc/tgt/conf.d/ /var/lib/maas/ephemeral/
-	ln -sf /var/lib/maas/ephemeral/tgt.conf /etc/tgt/conf.d/maas.conf
-}
-
 configure_maas_default_url() {
 	local ipaddr="$1"
 
@@ -225,11 +217,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 
 	# Handle celery/rabbitmq publishing
 	configure_maas_workers_rabbitmq_user "$ipaddr"
-
-	#########################################################
-	######## add maas.conf to tgt conf.d ####################
-	#########################################################
-	configure_maas_tgt
 
 	#########################################################
 	################  Configure Database  ###################

@@ -18,6 +18,11 @@ case "$1" in
 			rm -rf /var/lib/maas
 		fi
 
+		# Delete symlink for iSCSI config.
+		if [ -L /etc/tgt/conf.d/maas.conf ]; then
+			rm -rf /etc/tgt/conf.d/maas.conf
+		fi
+
 esac
 
 #DEBHELPER#

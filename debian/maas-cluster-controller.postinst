@@ -17,6 +17,15 @@ create_log_dir() {
     chmod -R 775 /var/log/maas/oops
 }
 
+configure_maas_tgt(){
+	# Set up iSCSI: add maas.conf to tgt conf.d.
+	local tgtcfg="/etc/tgt/targets.conf"
+	[ -d /etc/tgt/conf.d/ ] || 
+	   echo "Warning! $tgtcfg did not exist" 1>&2;
+	mkdir -p /etc/tgt/conf.d/ /var/lib/maas/ephemeral/
+	ln -sf /var/lib/maas/ephemeral/tgt.conf /etc/tgt/conf.d/maas.conf
+}
+
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     # logging
     create_log_dir
@@ -32,6 +41,8 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
         sed -i "s|^CLUSTER_UUID\ \= None$|CLUSTER_UUID = '"$uuid"'|" \
                        /etc/maas/maas_local_celeryconfig_cluster.py
     fi
+
+    configure_maas_tgt
 fi
 
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then

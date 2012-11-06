@@ -13,6 +13,16 @@ maas (0.1+bzr1269+dfsg-0ubuntu2) UNRELEASED; urgency=low
     is no longer required as upstream no longer stores files in the filesystem.
     (LP: #1069734)
 
+  [ Jeroen Vermeulen ]
+  * debian/maas-cluster-controller.install: Install import scripts.
+  * debian/maas-cluster-controller.postinst: Configure tgt (the iSCSI server)
+    so the import script can install files to it.
+  * debian/maas-cluster-controller.postrm: Clean up tgt config.
+  * debian/maas-region-controller.install: Move import scripts out to the
+    cluster controller, and drop the maas-import-isos compatibility script.
+  * debian/maas-region-controller.postinst: Remove tgt config.
+  * debian/maas-region-controller.postrm: Remove tgt config cleanup.
+
  -- Julian Edwards <julian.edwards@canonical.com>  Fri, 26 Oct 2012 12:50:20 +0200
 
 maas (0.1+bzr1269+dfsg-0ubuntu1) quantal-proposed; urgency=low
