@@ -17,7 +17,7 @@ Package: maas
 Architecture: all
 Pre-Depends: ${misc:Pre-Depends}
 Depends: maas-cluster-controller, maas-region-controller, python-django-maas
-Conflicts: dnsmasq, maas-provision, tftpd-hpa
+Conflicts: maas-provision
 Replaces: maas-provision
 Description: Ubuntu MAAS Server
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
@@ -184,7 +184,7 @@ Depends: bind9utils,
          ${misc:Depends},
          ${python:Depends}
 Suggests: maas-dhcp (= ${binary:Version})
-Conflicts: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
+Conflicts: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), tftpd-hpa
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Description: Ubuntu MAAS Cluster Controller
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
@@ -260,7 +260,7 @@ Depends: bind9,
  maas-region-controller (= ${binary:Version}),
  maas-dhcp (= ${binary:Version}),
  ${misc:Depends}
-Conflicts: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
+Conflicts: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1), dnsmasq
 Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Description: Ubuntu MAAS Server - DNS configuration (metapackage)
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
