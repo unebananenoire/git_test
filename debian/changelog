@@ -1,6 +1,9 @@
 maas (0.1+bzr1269+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   [ Raphaël Badin ]
+  * debian/extras/99-maas-sudoers: Add 'SETENV:' to sudo rule
+    to allow preserving the environment when running
+    /usr/sbin/maas-import-pxe-files via sudo.
   * debian/maas-dns.postinst: fix permissions and group ownership of
     file /etc/bind/maas/named.conf.rndc.maas. (LP: #1066935)
   * debian/control: Remove the dependency of maas-cluster-controller
