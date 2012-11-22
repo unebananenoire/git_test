@@ -1,4 +1,4 @@
-maas (0.1+bzr1358+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr1366+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   [ Raphaël Badin ]
   * debian/extras/99-maas-sudoers: Add 'SETENV:' to sudo rule
@@ -15,8 +15,8 @@ maas (0.1+bzr1358+dfsg-0ubuntu2) UNRELEASED; urgency=low
   * debian/maas-region-controller.install: Remove installation of maas-gc; it
     is no longer required as upstream no longer stores files in the filesystem.
     (LP: #1069734)
-  * debian/maas-cluster-controller.install: maas-import-pxe-files.8 now lives
-    in docs/man in upstream source.
+  * debian/maas-cluster-controller.postinst: Ensure that /etc/maas/pserv.yaml
+    is updated when reconfiguring. (LP: #1081212)
 
   [ Jeroen Vermeulen ]
   * debian/maas-cluster-controller.install: Install import scripts.
