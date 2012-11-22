@@ -15,7 +15,6 @@ debian/tmp/etc/maas/maas_local_celeryconfig_cluster.py
 
 # Install maas-import-pxe-files and related files
 debian/tmp/usr/sbin/maas-import-pxe-files
-etc/cron.d/maas-import-pxe-files
 docs/man/maas-import-pxe-files.8 usr/share/man/man8
 debian/tmp/etc/maas/import_pxe_files
 debian/tmp/usr/sbin/maas-import-ephemerals
