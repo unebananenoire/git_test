@@ -1,6 +1,9 @@
 maas (0.1+bzr1366+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   [ Raphaël Badin ]
+  * debian/maas-cluster-controller.postinst: Fix the name of the config
+    file (/etc/maas/pserv.yaml and not /etc/maas/pserv.conf)
+    (LP: #1083542).
   * debian/extras/99-maas-sudoers: Add 'SETENV:' to sudo rule
     to allow preserving the environment when running
     /usr/sbin/maas-import-pxe-files via sudo.

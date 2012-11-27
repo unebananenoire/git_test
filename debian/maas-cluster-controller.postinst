@@ -59,7 +59,7 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
         HOSTPART=$(echo $RET|awk '{ split($0,array,"/")} END{print array[3] }')
         # And substitute it in-place in pserv.conf on an indented, non-commented
         # line.
-        sed -ri "s|^([[:space:]]+generator:[[:space:]]+https?://)[^:/]+|\1$HOSTPART|" /etc/maas/pserv.conf
+        sed -ri "s|^([[:space:]]+generator:[[:space:]]+https?://)[^:/]+|\1$HOSTPART|" /etc/maas/pserv.yaml
     fi
 fi
 
