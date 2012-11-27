@@ -37,6 +37,8 @@ maas (0.1+bzr1366+dfsg-0ubuntu2) UNRELEASED; urgency=low
     configuration file are no longer part of upstream.
   * debian/maas-cluster-controller.install: The maas-import-pxe-files cron
     task is no longer used.
+  * debian/maas-cluster-controller.postinst: Remove leading comment
+    markers from the 'generator' line in pserv.yaml.
 
   [ Andres Rodriguez ]
   * debian/control:
