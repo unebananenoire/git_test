@@ -44,6 +44,8 @@ maas (0.1+bzr1366+dfsg-0ubuntu2) UNRELEASED; urgency=low
   * debian/control:
     - maas-cluster-controller Conflicts with tftpd-hpa (LP: #1076028)
     - maas-dns: Conflicts with dnsmasq
+    - maas-cluster-controller Conflicts/Replaces maas-region-controller as import
+      scripts are no longer shipped in the region.
   * debian/maas-cluster-controller.config: If URL has been detected, add /MAAS if
     it doesn't contain it. This helps upgrades from versions where DEFAULT_MAAS_URL
     didn't use /MAAS.

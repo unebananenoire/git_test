@@ -184,8 +184,8 @@ Depends: bind9utils,
          ${misc:Depends},
          ${python:Depends}
 Suggests: maas-dhcp (= ${binary:Version})
-Conflicts: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), tftpd-hpa
-Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
+Conflicts: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 ), tftpd-hpa
+Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )
 Description: Ubuntu MAAS Cluster Controller
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
