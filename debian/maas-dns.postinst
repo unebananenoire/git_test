@@ -26,6 +26,8 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
     sed -i '/^include\s.*maas/d' /etc/bind/named.conf.local
     maas get_named_conf --edit --config_path /etc/bind/named.conf.local
 
+    maas write_dns_config
+
     if [ -x /usr/sbin/invoke-rc.d ]; then
         invoke-rc.d bind9 restart || true
     fi
