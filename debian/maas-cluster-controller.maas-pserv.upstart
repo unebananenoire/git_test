@@ -10,5 +10,19 @@ stop on runlevel [016]
 
 respawn
 
-# To add options to your daemon, edit the line below:
-exec /usr/bin/twistd -n --uid=maas --gid=maas --pidfile=/run/maas-pserv.pid --logfile=/dev/null maas-pserv --config-file=/etc/maas/pserv.yaml
+env CONFIG_FILE=/etc/maas/maas_cluster.conf
+
+pre-start script
+    if [ ! -f $CONFIG_FILE ]; then
+        echo "$CONFIG_FILE does not exist.  Aborting."
+        stop
+        exit 0
+    fi
+end script
+
+script
+    # Prepare settings.
+    . $CONFIG_FILE
+    # To add options to your daemon, edit the line below:
+    exec /usr/bin/twistd -n --uid=maas --gid=maas --pidfile=/run/maas-pserv.pid --logfile=/dev/null maas-pserv --config-file=/etc/maas/pserv.yaml
+end script

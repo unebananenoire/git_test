@@ -1,4 +1,4 @@
-maas (0.1+bzr1366+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (0.1+bzr1393+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   [ Raphaël Badin ]
   * debian/maas-dns.postinst: Call write_dns_config.
