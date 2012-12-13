@@ -23,6 +23,9 @@ end script
 script
     # Prepare settings.
     . $CONFIG_FILE
+    # Allow the tftpd process to read CLUSTER_UUID as set in that config
+    # file.
+    export CLUSTER_UUID
     # To add options to your daemon, edit the line below:
     exec /usr/bin/twistd -n --uid=maas --gid=maas --pidfile=/run/maas-pserv.pid --logfile=/dev/null maas-pserv --config-file=/etc/maas/pserv.yaml
 end script

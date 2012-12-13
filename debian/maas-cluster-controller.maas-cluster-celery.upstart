@@ -21,6 +21,10 @@ pre-start script
 end script
 
 script
-    . $CONFIG_FILE  # sets MAAS_URL
+    # Prepare settings.
+    . $CONFIG_FILE
+    # Allow the cluster-controller process to read CLUSTER_UUID as set
+    # in that config file.
+    export CLUSTER_UUID
     exec /usr/sbin/maas-provision start-cluster-controller $MAAS_URL -u maas -g maas
 end script
