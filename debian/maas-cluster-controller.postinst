@@ -30,9 +30,7 @@ extract_cluster_uuid(){
     # Extract ClUSTER_UUID setting from config file $1.  This will work
     # both the cluster celery config (which is python) and the cluster
     # config (which is shell).
-    local config_file="$1"
-    grep "^CLUSTER_UUID *= *[\"'][^\"']*[\"']" $config_file |
-        sed -e "s/^CLUSTER_UUID *= *\"\([^\"']*\)\".*/\1/"
+    sed -n -e "s/^CLUSTER_UUID *= *[\"']\([^\"']*\).*/\1/p" "$1"
 }
 
 configure_cluster_uuid(){
