@@ -69,12 +69,6 @@ configure_cluster_uuid(){
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     # logging
     create_log_dir
-
-    # The local celery config may contain a private cluster UUID.  Only
-    # maas can read it; only root can write it.
-    chown root:maas /etc/maas/maas_local_celeryconfig_cluster.py
-    chmod 0640 /etc/maas/maas_local_celeryconfig_cluster.py
-
     configure_maas_tgt
 fi
 
@@ -97,6 +91,15 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ "$1" = "reconfigure" ] || [ -n "
 fi
 
 if [ "$1" = "configure" ]; then
+    # These config files may contain a private cluster UUID.  Only maas
+    # can read them; only root can write them
+    chown root:maas \
+        /etc/maas/maas_local_celeryconfig_cluster.py \
+        /etc/maas/maas_cluster.conf
+    chmod 0640 \
+        /etc/maas/maas_local_celeryconfig_cluster.py \
+        /etc/maas/maas_cluster.conf
+
     configure_cluster_uuid
 fi
 
