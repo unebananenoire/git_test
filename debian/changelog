@@ -1,4 +1,4 @@
-maas (0.1+bzr1404+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (0.1+bzr1406+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   [ Raphaël Badin ]
   * debian/maas-dns.postinst: Call write_dns_config.
@@ -34,6 +34,7 @@ maas (0.1+bzr1404+dfsg-0ubuntu1) UNRELEASED; urgency=low
     cluster controller, and drop the maas-import-isos compatibility script.
   * debian/maas-region-controller.postinst: Remove tgt config.
   * debian/maas-region-controller.postrm: Remove tgt config cleanup.
+  * Bump code revision to include latest user_data.template fixes.
 
   [ Gavin Panella ]
   * debian/extras/99-maas: squashfs image download is no longer needed.
