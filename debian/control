@@ -52,6 +52,7 @@ Package: maas-region-controller
 Architecture: all
 Depends: apache2,
          avahi-daemon,
+         bind9utils,
          dbconfig-common,
          distro-info,
          libapache2-mod-wsgi,
