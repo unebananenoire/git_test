@@ -1,4 +1,4 @@
-maas (0.1+bzr1406+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (1.2+bzr1430+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   [ Raphaël Badin ]
   * debian/control: maas-region-controller depends on bind9utils.
