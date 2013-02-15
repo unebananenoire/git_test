@@ -1,5 +1,0 @@
-#!/bin/sh
-set -e -u
-exec 2>&1
-pip install sst
-nosetests debian/tests/maas-integration.py

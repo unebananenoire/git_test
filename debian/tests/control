@@ -1,2 +1,0 @@
-Tests: maas-package-test
-Depends: @, python-nose, xvfb, python-pip
