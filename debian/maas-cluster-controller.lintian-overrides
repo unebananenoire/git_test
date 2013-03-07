@@ -1,0 +1,2 @@
+maas-cluster-controller: binary-without-manpage usr/sbin/maas-import-ephemerals
+maas-cluster-controller: binary-without-manpage usr/sbin/maas-import-isos
