@@ -239,7 +239,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	db_input high maas/installation-note || true
 	db_go
 
-elif [ "$1" = "reconfigure" ] || [ -n "$DEBCONF_RECONFIGURE" ]; then
+elif [ -n "$DEBCONF_RECONFIGURE" ]; then
 	# Set the IP address of the interface with default route
 	db_get maas/default-maas-url
 	ipaddr="$RET"
