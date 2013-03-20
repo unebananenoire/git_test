@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh
+
+set -e
 
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; then
     # If /etc/bind/maas is empty, set_up_dns.
@@ -28,10 +30,7 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; the
 
     maas write_dns_config
 
-    if [ -x /usr/sbin/invoke-rc.d ]; then
-        invoke-rc.d bind9 restart || true
-    fi
+    invoke-rc.d bind9 restart || true
 fi
 
 #DEBHELPER#
-exit 0

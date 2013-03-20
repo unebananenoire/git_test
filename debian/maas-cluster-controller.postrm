@@ -2,15 +2,12 @@
 
 set -e
 
-. /usr/share/debconf/confmodule
-db_version 2.0
+#DEBHELPER#
 
 case "$1" in
         purge)
                 # remove log directory
-                if [ -d /var/log/maas ]; then
-                    rm -rf /var/log/maas
-                fi
+		rm -rf /var/log/maas
 		# remove var directory
 		rm -rf /var/lib/maas/celerybeat-cluster-schedule
 		DIR=/var/lib/maas
@@ -24,7 +21,3 @@ case "$1" in
 		fi
 
 esac
-
-#DEBHELPER#
-
-exit 0

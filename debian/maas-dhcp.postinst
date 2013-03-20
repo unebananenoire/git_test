@@ -1,22 +1,15 @@
-#!/bin/sh -e
+#!/bin/sh
 
-. /usr/share/debconf/confmodule
-db_version 2.0
-
-stop_isc_dhcp_server(){
-    invoke-rc.d isc-dhcp-server stop
-}
-
+set -e
 
 if [ "$1" = "configure" ]; then
-   stop_isc_dhcp_server
+   invoke-rc.d isc-dhcp-server stop
 
    dhcpd_prof="/etc/apparmor.d/usr.sbin.dhcpd"
-   if [ -f "${dhcpd_prof}" ] &&
-      command -v apparmor_parser >/dev/null 2>&1; then
+   if [ -f "${dhcpd_prof}" ] && command -v apparmor_parser >/dev/null 2>&1
+   then
       apparmor_parser --replace --write-cache --skip-read-cache "${dhcpd_prof}"
    fi
 fi
 
 #DEBHELPER#
-exit 0

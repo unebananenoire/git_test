@@ -5,6 +5,29 @@ maas (1.3+bzr1455+dfsg-0ubuntu1) UNRELEASED; urgency=low
   [ Steve Langasek ]
   * postinst scripts are never called with 'reconfigure' as the script
     argument.  Remove references to this (mythical) invocation.
+  * always call 'set -e' from maintainer scripts instead of passing 'sh -e'
+    as the interpreter, so that scripts will behave correctly when run via
+    'sh -x'.
+  * invoke-rc.d is never allowed to not exist - simplify scripts (and make
+    them better policy-compliant) by invoking unconditionally.  (The only
+    possible exception is in the postrm, where it's *theoretically* possible
+    for invoke-rc.d to be missing if the user has completely stripped
+    down their system; that's a fairly unreasonable corner case, but we
+    might as well be correct if it ever happens.)
+  * db_get+db_set is a no-op; don't call db_set to push back a value we just
+    got from db_get.
+  * Omit superfluous calls to 'exit 0' at the end of each script.
+  * Remove maas-cluster-controller prerm script, which called debconf for no
+    reason.
+  * Don't invoke debconf in the postrm script either, debhelper already does
+    this for us.
+  * Other miscellaneous maintainer script fixes
+  * debian/maas-common.postinst: call adduser and addgroup unconditionally;
+    the tools are already designed to DTRT, we don't need to check for the
+    user/group existence before calling them nor should we worry about
+    calling them only once on first install.
+  * debian/maas-common.postrm: delete the maas group, not just the user,
+    as the comment in the code implies we should do.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 19 Mar 2013 15:38:22 -0400
 

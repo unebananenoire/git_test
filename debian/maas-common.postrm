@@ -7,6 +7,7 @@ case "$1" in
                 # Deleting user/group
                 if getent passwd maas >/dev/null; then
                         deluser maas || true
+                        delgroup maas || true
                 fi
 esac
 

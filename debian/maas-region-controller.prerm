@@ -6,13 +6,7 @@ set -e
 
 #DEBHELPER#
 
-if [ -x /usr/sbin/invoke-rc.d ]; then
-	invoke-rc.d apache2 stop || true
-else
-	/etc/init.d/apache2 stop || true
-fi
+invoke-rc.d apache2 stop || true
 
 . /usr/share/dbconfig-common/dpkg/prerm.pgsql
 dbc_go maas-region-controller $@
-
-exit 0

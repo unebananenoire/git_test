@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh
+
+set -e
 
 . /usr/share/debconf/confmodule
 db_version 2.0
@@ -104,4 +106,3 @@ if [ "$1" = "configure" ]; then
 fi
 
 #DEBHELPER#
-exit 0

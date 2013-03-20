@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh
+
+set -e
 
 . /usr/share/debconf/confmodule
 db_version 2.0
@@ -13,36 +15,16 @@ maas_sync_migrate_db(){
 	maas migrate metadataserver --noinput
 }
 
-restart_apache2(){
-	if [ -x /usr/sbin/invoke-rc.d ]; then
-		invoke-rc.d apache2 restart || true
-	else
-		/etc/init.d/apache2 restart || true
-	fi
-}
-
 restart_rabbitmq(){
-	if [ -x /usr/sbin/invoke-rc.d ]; then
-		invoke-rc.d rabbitmq-server restart || true
-	else
-		/etc/init.d/rabbitmq-server restart || true
-	fi
+	invoke-rc.d rabbitmq-server restart || true
 }
 
 restart_postgresql(){
-	if [ -x /usr/sbin/invoke-rc.d ]; then
-		invoke-rc.d --force postgresql restart || true
-	else
-		/etc/init.d/postgresql restart || true
-	fi
+	invoke-rc.d --force postgresql restart || true
 }
 
 restart_squid_deb_proxy() {
-	if [ -x /usr/sbin/invoke-rc.d ]; then
-		invoke-rc.d squid-deb-proxy restart || true
-	else
-		/etc/init.d/squid-deb-proxy restart || true
-	fi
+	invoke-rc.d squid-deb-proxy restart || true
 }
 
 configure_maas_txlongpoll_rabbitmq_user() {
@@ -191,17 +173,13 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	mkdir -p /var/log/maas/rsyslog
 	chown -R syslog:syslog /var/log/maas/rsyslog
 	# Make sure rsyslog reads our config
-	if [ -x /usr/sbin/invoke-rc.d ]; then
-		invoke-rc.d rsyslog restart
-	fi
+	invoke-rc.d rsyslog restart
 
 	#########################################################
 	################### Squid-deb-proxy  ####################
 	#########################################################
 	# Make sure squid-deb-proxy reads our config (99-maas)
-	if [ -x /usr/sbin/invoke-rc.d ]; then
-		invoke-rc.d squid-deb-proxy restart
-	fi
+	invoke-rc.d squid-deb-proxy restart
 
 	#########################################################
 	########## Configure longpoll rabbitmq config ###########
@@ -243,7 +221,6 @@ elif [ -n "$DEBCONF_RECONFIGURE" ]; then
 	# Set the IP address of the interface with default route
 	db_get maas/default-maas-url
 	ipaddr="$RET"
-	db_set maas/default-maas-url "$ipaddr"
 	if [ -n "$ipaddr" ]; then
 		configure_maas_default_url "$ipaddr"
 		configure_maas_squid_deb_proxy "$ipaddr"
@@ -252,9 +229,7 @@ elif [ -n "$DEBCONF_RECONFIGURE" ]; then
 
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
 	# If upgrading to any later package version, then upgrade db.
-	if [ -x /usr/sbin/invoke-rc.d ]; then
-		invoke-rc.d apache2 stop || true
-	fi
+	invoke-rc.d apache2 stop || true
 
 	# make sure postgresql is running
 	restart_postgresql
@@ -284,12 +259,10 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 
 fi
 
-restart_apache2
+invoke-rc.d apache2 restart || true
 
 restart_squid_deb_proxy
 
 db_stop
 
 #DEBHELPER#
-
-exit 0

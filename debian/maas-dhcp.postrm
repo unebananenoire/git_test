@@ -1,6 +1,8 @@
-#!/bin/sh -e
+#!/bin/sh
 
-if [ "$1" = "remove" -o "$1" = "purge" ]; then
+set -e
+
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
    dhcpd_prof="/etc/apparmor.d/usr.sbin.dhcpd"
    if [ -f "${dhcpd_prof}" ] &&
       command -v apparmor_parser >/dev/null 2>&1; then

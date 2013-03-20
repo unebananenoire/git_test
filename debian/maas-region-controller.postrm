@@ -22,8 +22,6 @@ case "$1" in
 		# Restarting apache2
 		if [ -x /usr/sbin/invoke-rc.d ]; then
 			invoke-rc.d apache2 restart || true
-		else
-			/etc/init.d/apache2 restart || true
 		fi
 
 		# Delete symlink
@@ -48,5 +46,3 @@ esac
 #DEBHELPER#
 
 db_stop
-
-exit 0
