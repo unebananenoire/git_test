@@ -83,7 +83,7 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; the
     # Get the MAAS_URL on configure/reconfigure and write it to the conf files.
     db_get maas-cluster-controller/maas-url || true
     if [ -n "$RET" ]; then
-        sed -i "s|MAAS_URL=.*|MAAS_URL="$RET"|" /etc/maas/maas_cluster.conf
+        sed -i "s|MAAS_URL=.*|MAAS_URL='$RET'|" /etc/maas/maas_cluster.conf
         # Extract the hostname part.
         HOSTPART=$(echo $RET|awk '{ split($0,array,"/")} END{print array[3] }')
         # And substitute it in-place in pserv.yaml on an indented, non-commented
