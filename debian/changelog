@@ -1,4 +1,4 @@
-maas (1.4+bzr1473+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (1.4+bzr1475+dfsg-0ubuntu3) UNRELEASED; urgency=low
 
   * UNRELEASED
 
@@ -6,7 +6,12 @@ maas (1.4+bzr1473+dfsg-0ubuntu2) UNRELEASED; urgency=low
   * Add missing dependency on iproute to maas-region-controller, for use of
     /sbin/ip in postinst.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 20 Mar 2013 13:08:04 -0400
+  [ Julian Edwards ]
+  * debian/maas-dhcp.maas-dhcp-server.upstart:
+    - Detect 12.04 as the host OS and install with correct permissions. This
+      allows the same packaging to be used in the 12.04 backport.
+
+ -- Julian Edwards <julian.edwards@canonical.com>  Mon, 13 May 2013 12:42:59 +1000
 
 maas (1.3+bzr1455+dfsg-0ubuntu1) raring; urgency=low
 
