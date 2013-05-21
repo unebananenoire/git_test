@@ -48,7 +48,7 @@ script
     # the daemon will run under an unprivileged user).
     # In Precise, ownership was supposed to be dhcp:dhcp.
     mkdir -p $LEASES_DIR
-    if "$RELEASE" == "precise"; then
+    if [ "$RELEASE" == "precise" ]; then
         owner_group="dhcpd:dhcpd"
         dhcpd_owner_opts="-user dhcpd -group dhcpd"
     else
