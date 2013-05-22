@@ -67,6 +67,23 @@ configure_cluster_uuid(){
     echo "CLUSTER_UUID=\"$uuid\"" >>/etc/maas/maas_cluster.conf
 }
 
+configure_cluster_http(){
+    # handle apache configs
+    if [ -e /etc/maas/maas-cluster-http.conf -a \
+        ! -e /etc/apache2/conf.d/maas-cluster-http.conf ]; then
+        ln -sf /etc/maas/maas-cluster-http.conf /etc/apache2/conf.d/maas-cluster-http.conf
+    fi
+}
+
+restart_apache2(){
+    if [ -x /usr/sbin/invoke-rc.d ]; then
+        invoke-rc.d apache2 restart || true
+    else
+        /etc/init.d/apache2 restart || true
+    fi
+}
+
+
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     # logging
@@ -103,6 +120,10 @@ if [ "$1" = "configure" ]; then
         /etc/maas/maas_cluster.conf
 
     configure_cluster_uuid
+    configure_cluster_http
+    restart_apache2
 fi
+
+db_stop
 
 #DEBHELPER#

@@ -6,8 +6,12 @@ set -e
 
 case "$1" in
         purge)
-                # remove log directory
+		# remove log directory
 		rm -rf /var/log/maas
+		# remove apache2 config
+		if [ -h /etc/apache2/conf.d/maas-cluster-http.conf ]; then
+			rm -rf /etc/apache2/conf.d/maas-cluster-http.conf
+		fi
 		# remove var directory
 		rm -rf /var/lib/maas/celerybeat-cluster-schedule
 		DIR=/var/lib/maas

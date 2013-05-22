@@ -24,3 +24,4 @@ debian/tmp/usr/bin/uec2roottar
 # Install all other stuff
 debian/extras/99-maas-sudoers etc/sudoers.d
 debian/extras/isc-dhcp-server.override etc/init
+debian/tmp/etc/maas/maas-cluster-http.conf
