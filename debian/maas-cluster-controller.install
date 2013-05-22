@@ -19,6 +19,7 @@ man/maas-import-pxe-files.8 usr/share/man/man8
 debian/tmp/etc/maas/import_pxe_files
 debian/tmp/usr/sbin/maas-import-ephemerals
 debian/tmp/etc/maas/import_ephemerals
+debian/tmp/usr/bin/uec2roottar
 
 # Install all other stuff
 debian/extras/99-maas-sudoers etc/sudoers.d
