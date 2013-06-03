@@ -23,7 +23,7 @@ debian/tmp/usr/share/maas/wsgi.py
 debian/tmp/etc/maas/txlongpoll.yaml
 
 # Install new preseed files
-debian/tmp/usr/share/maas/preseeds
+debian/tmp/etc/maas/preseeds
 
 # Install all other stuff
 debian/extras/maas usr/sbin
