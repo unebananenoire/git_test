@@ -14,6 +14,7 @@ debian/tmp/usr/share/maas/celeryconfig_cluster.py
 debian/tmp/etc/maas/maas_local_celeryconfig_cluster.py
 
 # Install templates
+debian/tmp/etc/maas/templates/dhcp
 debian/tmp/etc/maas/templates/power
 debian/tmp/etc/maas/templates/pxe
 
