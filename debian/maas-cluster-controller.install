@@ -13,6 +13,9 @@ debian/tmp/usr/share/maas/celeryconfig_cluster.py
 # Install local celery cluster config file
 debian/tmp/etc/maas/maas_local_celeryconfig_cluster.py
 
+# Install PXE templates
+debian/tmp/etc/maas/templates/pxe
+
 # Install maas-import-pxe-files and related files
 debian/tmp/usr/sbin/maas-import-pxe-files
 man/maas-import-pxe-files.8 usr/share/man/man8

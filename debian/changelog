@@ -1,4 +1,4 @@
-maas (1.4+bzr1500+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (1.4+bzr1502+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * UNRELEASED
 
@@ -20,6 +20,7 @@ maas (1.4+bzr1500+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   [ Jeroen Vermeulen ]
   * In the source tree, /etc/maas/pserv.yaml has moved from etc/ to etc/maas/.
+  * Install PXE templates into /etc/maas/templates/pxe/.
 
  -- Julian Edwards <julian.edwards@canonical.com>  Tue, 28 May 2013 09:41:57 +1000
 
