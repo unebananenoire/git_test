@@ -25,6 +25,9 @@ debian/tmp/etc/maas/txlongpoll.yaml
 # Install new preseed files
 debian/tmp/etc/maas/preseeds
 
+# Install templates
+debian/tmp/etc/maas/templates/dns
+
 # Install all other stuff
 debian/extras/maas usr/sbin
 debian/extras/maas-region-celeryd usr/sbin
