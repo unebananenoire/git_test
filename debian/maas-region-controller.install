@@ -27,6 +27,7 @@ debian/tmp/etc/maas/preseeds
 
 # Install templates
 debian/tmp/etc/maas/templates/dns
+debian/tmp/etc/maas/templates/commissioning-user-data
 
 # Install all other stuff
 debian/extras/maas usr/sbin
