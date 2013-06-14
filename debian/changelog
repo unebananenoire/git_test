@@ -1,6 +1,14 @@
-maas (1.4+bzr1510+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (1.4+bzr1527+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 13 Jun 2013 20:06:35 -0400
+
+maas (1.4+bzr1527+dfsg-0ubuntu1) saucy; urgency=low
+
+  * debian/patches/04-setup-dont-user-list-snippets.patch: Drop importing
+    maasserver modules to list snippets in favor to using glob. Otherwise
+    we would have to add various non necessary Build-Dependencies.
 
   [ Jeroen Vermeulen ]
   * Install templates into /etc/maas/templates/.
