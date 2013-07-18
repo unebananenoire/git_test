@@ -1,6 +1,20 @@
-maas (1.4+bzr1538+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (1.4+bzr1539+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 18 Jul 2013 10:15:10 -0400
+
+maas (1.4+bzr1539+dfsg-0ubuntu1) saucy; urgency=low
+
+  * New upstream release
+  * Symlink apache2 config into /etc/apache2/conf-enabled/ instead of
+    /etc/apache2/conf.d as apache2.4 no longer supports the latter.
+    - debian/maas-cluster-controller.{postinst,postrm}
+    - debian/maas-region-controller.{postinst,postrm}
+  * debian/control: Bump Standards-Version to 3.9.4.
+  * debian/maas-cluster-controller.lintian-overrides: Remove unneeded
+    override and add a new one.
+  * debian/maas-region-controller.lintian-overrides: Add extra overrides.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 03 Jul 2013 17:11:02 -0400
 

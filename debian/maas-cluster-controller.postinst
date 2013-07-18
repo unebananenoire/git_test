@@ -70,8 +70,8 @@ configure_cluster_uuid(){
 configure_cluster_http(){
     # handle apache configs
     if [ -e /etc/maas/maas-cluster-http.conf -a \
-        ! -e /etc/apache2/conf.d/maas-cluster-http.conf ]; then
-        ln -sf /etc/maas/maas-cluster-http.conf /etc/apache2/conf.d/maas-cluster-http.conf
+        ! -e /etc/apache2/conf-enabled/maas-cluster-http.conf ]; then
+        ln -sf /etc/maas/maas-cluster-http.conf /etc/apache2/conf-enabled/maas-cluster-http.conf
     fi
 }
 
