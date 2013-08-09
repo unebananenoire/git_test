@@ -4,14 +4,25 @@ set -e
 
 #DEBHELPER#
 
+RELEASE=`lsb_release -rs` || RELEASE=""
+
 case "$1" in
         purge)
 		# remove log directory
 		rm -rf /var/log/maas
-		# remove apache2 config
-		if [ -h /etc/apache2/conf-enabled/maas-cluster-http.conf ]; then
-			rm -rf /etc/apache2/conf-enabled/maas-cluster-http.conf
-		fi
+		case $RELEASE in
+			12.04|12.10|13.04)
+				if [ -h /etc/apache2/conf.d/maas-cluster-http.conf ]; then
+					rm -rf /etc/apache2/conf.d/maas-cluster-http.conf
+				fi
+				;;
+			*)
+				# remove apache2 config
+				if [ -h /etc/apache2/conf-enabled/maas-cluster-http.conf ]; then
+					rm -rf /etc/apache2/conf-enabled/maas-cluster-http.conf
+				fi
+				;;
+		esac
 		# remove var directory
 		rm -rf /var/lib/maas/celerybeat-cluster-schedule
 		DIR=/var/lib/maas

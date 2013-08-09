@@ -5,6 +5,8 @@ set -e
 . /usr/share/debconf/confmodule
 db_version 2.0
 
+RELEASE=`lsb_release -rs` || RELEASE=""
+
 create_log_dir() {
     # create log dir
     if [ ! -d /var/lib/maas ]; then
@@ -20,12 +22,12 @@ create_log_dir() {
 }
 
 configure_maas_tgt(){
-	# Set up iSCSI: add maas.conf to tgt conf.d.
-	local tgtcfg="/etc/tgt/targets.conf"
-	[ -d /etc/tgt/conf.d/ ] || 
-	   echo "Warning! $tgtcfg did not exist" 1>&2;
-	mkdir -p /etc/tgt/conf.d/ /var/lib/maas/ephemeral/
-	ln -sf /var/lib/maas/ephemeral/tgt.conf /etc/tgt/conf.d/maas.conf
+    # Set up iSCSI: add maas.conf to tgt conf.d.
+    local tgtcfg="/etc/tgt/targets.conf"
+    [ -d /etc/tgt/conf.d/ ] || 
+        echo "Warning! $tgtcfg did not exist" 1>&2;
+    mkdir -p /etc/tgt/conf.d/ /var/lib/maas/ephemeral/
+    ln -sf /var/lib/maas/ephemeral/tgt.conf /etc/tgt/conf.d/maas.conf
 }
 
 extract_cluster_uuid(){
@@ -68,11 +70,21 @@ configure_cluster_uuid(){
 }
 
 configure_cluster_http(){
-    # handle apache configs
-    if [ -e /etc/maas/maas-cluster-http.conf -a \
-        ! -e /etc/apache2/conf-enabled/maas-cluster-http.conf ]; then
-        ln -sf /etc/maas/maas-cluster-http.conf /etc/apache2/conf-enabled/maas-cluster-http.conf
-    fi
+    case $RELEASE in
+        12.04|12.10|13.04)
+            if [ -e /etc/maas/maas-cluster-http.conf -a \
+                ! -e /etc/apache2/conf.d/maas-cluster-http.conf ]; then
+                ln -sf /etc/maas/maas-cluster-http.conf /etc/apache2/conf.d/maas-cluster-http.conf
+            fi
+            ;;
+        *)
+            # handle apache configs
+            if [ -e /etc/maas/maas-cluster-http.conf -a \
+                ! -e /etc/apache2/conf-enabled/maas-cluster-http.conf ]; then
+                ln -sf /etc/maas/maas-cluster-http.conf /etc/apache2/conf-enabled/maas-cluster-http.conf
+            fi
+            ;;
+    esac
 }
 
 restart_apache2(){

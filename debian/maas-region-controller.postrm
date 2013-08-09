@@ -4,6 +4,8 @@ set -e
 
 . /usr/share/debconf/confmodule
 
+RELEASE=`lsb_release -rs` ||  RELEASE=""
+
 if [ -f /etc/dbconfig-common/maas.conf ]; then
 	if [ -f /usr/share/dbconfig-common/dpkg/postrm ]; then
 		. /usr/share/dbconfig-common/dpkg/postrm.pgsql
@@ -15,9 +17,18 @@ case "$1" in
 	purge)
 		rm -rf /var/log/maas
 		rm -rf /var/lib/maas
-		if [ -h /etc/apache2/conf-enabled/maas-http.conf ]; then
-			rm -rf /etc/apache2/conf-enabled/maas-http.conf
-		fi
+		case $RELEASE in
+			12.04|12.10|13.04)
+				if [ -h /etc/apache2/conf.d/maas-http.conf ]; then
+					rm -rf /etc/apache2/conf.d/maas-http.conf
+				fi
+				;;
+			*)
+				if [ -h /etc/apache2/conf-enabled/maas-http.conf ]; then
+					rm -rf /etc/apache2/conf-enabled/maas-http.conf
+				fi
+				;;
+		esac
 
 		# Restarting apache2
 		if [ -x /usr/sbin/invoke-rc.d ]; then
