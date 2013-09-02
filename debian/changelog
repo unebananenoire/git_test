@@ -1,6 +1,12 @@
-maas (1.4+bzr1548+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (1.4+bzr1551+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 28 Aug 2013 11:17:44 -0400
+
+maas (1.4+bzr1551+dfsg-0ubuntu1) saucy; urgency=low
+
+  * New upstream release
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 15 Aug 2013 16:20:41 -0400
 
