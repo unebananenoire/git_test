@@ -1,6 +1,7 @@
-maas (1.4+bzr1551+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (1.4+bzr1589+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  * New Upstream release.
+  * debian/control: Depends on python-djorm-ext-pgarray
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 28 Aug 2013 11:17:44 -0400
 
