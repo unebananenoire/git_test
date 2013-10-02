@@ -1,6 +1,8 @@
-maas (1.4+bzr1655+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (1.4+bzr1656+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  * New upstream bugfix release.
+  * debian/control: Depends on ubuntu-cloudimage-keyring instead of
+    ubuntu-cloud-keyring; depends on python-distro-info.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 01 Oct 2013 15:26:34 -0400
 

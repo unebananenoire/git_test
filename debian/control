@@ -92,6 +92,7 @@ Package: python-maas-provisioningserver
 Section: python
 Architecture: all
 Depends: python-celery,
+         python-distro-info,
          python-formencode,
          python-lockfile,
          python-lxml,
@@ -185,7 +186,7 @@ Depends: apache2,
          rsyslog,
          syslinux-common,
          tgt,
-         ubuntu-cloud-keyring,
+         ubuntu-cloudimage-keyring,
          uuid-runtime,
          wget,
          ${misc:Depends},
