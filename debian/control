@@ -72,7 +72,6 @@ Depends: apache2,
          ${misc:Depends},
          ${python:Depends}
 Recommends: openssh-server
-Suggests: maas-dns
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Description: Ubuntu MAAS Server
@@ -191,7 +190,6 @@ Depends: apache2,
          wget,
          ${misc:Depends},
          ${python:Depends}
-Suggests: maas-dhcp (= ${binary:Version})
 Conflicts: tftpd-hpa
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )

@@ -1,8 +1,23 @@
-maas (1.4+bzr1656+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (1.4+bzr1656+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 03 Oct 2013 10:36:20 -0400
+
+maas (1.4+bzr1656+dfsg-0ubuntu1) saucy; urgency=low
+
+  [ Andres Rodriguez ]
   * New upstream bugfix release.
+    - Respect filters for ephemerals_script.py.
   * debian/control: Depends on ubuntu-cloudimage-keyring instead of
     ubuntu-cloud-keyring; depends on python-distro-info.
+  * debian/control: Remove suggests on maas-dhcp and maas-dns as they are
+    now dependencies.
+
+  [ Scott Moser ]
+  * debian/control: Bump depends on isc-dhcp-server to 4.2.4
+  * debian/maas-dhcp.maas-dhcp-server.upstart: Change ownership of leases
+    file to root:root, and run the daemon as dhcpd:dhcpd.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 01 Oct 2013 15:26:34 -0400
 
