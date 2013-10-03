@@ -249,7 +249,7 @@ Description: Ubuntu MAAS Server - (django files)
 
 Package: maas-dhcp
 Architecture: all
-Depends: isc-dhcp-server, ${misc:Depends}
+Depends: isc-dhcp-server (>= 4.2.4), ${misc:Depends}
 Breaks: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Description: Ubuntu MAAS Server - DHCP Configuration (meta-package)

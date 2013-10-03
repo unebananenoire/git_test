@@ -37,7 +37,6 @@ end script
 
 respawn
 script
-    RELEASE=`lsb_release --codename --short`
     INTERFACES=`cat "${INTERFACES_FILE}"`
 
     # Allow dhcp server to write lease and pid file.
@@ -47,22 +46,20 @@ script
     # As of Quantal, the leases file must be owned by root:root (even though
     # the daemon will run under an unprivileged user).
     # In Precise, ownership was supposed to be dhcpd:dhcpd.
+    #
+    # maas packages on saucy are only supported with newer isc-dhcp via
+    # the cloud-archive.  See bug 1231693 for more information, including
+    # a patch that would actually work to support all, but is complex.
+    
     mkdir -p $LEASES_DIR
-    if [ "$RELEASE" = "precise" ]; then
-        owner_group="dhcpd:dhcpd"
-        dhcpd_owner_opts=""
-    else
-        owner_group="root:root"
-        dhcpd_owner_opts="-user dhcpd -group dhcpd"
-    fi
-    chown $owner_group $LEASES_DIR
+    chown root:root $LEASES_DIR
     [ -e $LEASES_FILE ] || touch $LEASES_FILE
     for LFILE in $LEASES_FILE $LEASES_FILE~; do
         if [ -e $LFILE ]; then
-            chown $owner_group $LFILE
+            chown root:root $LFILE
             chmod a+r $LFILE
         fi
     done
 
-    exec /usr/sbin/dhcpd ${dhcpd_owner_opts} -f -q -4 -pf $PID_FILE -cf $CONFIG_FILE -lf $LEASES_FILE $INTERFACES
+    exec /usr/sbin/dhcpd -user dhcpd -group dhcpd -f -q -4 -pf $PID_FILE -cf $CONFIG_FILE -lf $LEASES_FILE $INTERFACES
 end script
