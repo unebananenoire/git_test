@@ -57,7 +57,6 @@ Depends: apache2,
          libjs-yui3-full,
          libjs-yui3-min,
          maas-common (= ${binary:Version}),
-         maas-dns (= ${binary:Version}),
          postgresql-9.1,
          pwgen,
          python-django,
@@ -71,7 +70,7 @@ Depends: apache2,
          squid-deb-proxy,
          ${misc:Depends},
          ${python:Depends}
-Recommends: openssh-server
+Recommends: openssh-server, maas-dns (= ${binary:Version})
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Description: Ubuntu MAAS Server
