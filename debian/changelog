@@ -1,5 +1,16 @@
-maas (1.4+bzr1676+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (1.4+bzr1693+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 10 Oct 2013 17:07:51 -0400
+
+maas (1.4+bzr1693+dfsg-0ubuntu1) saucy; urgency=low
+
+  * New Upstream Release (LP: #1218526)
+    - This new upstream release contains fixes and improvements of the
+      features approved by the FFe above.
+    - Fixes commissioning failure on Saucy with 'Failed Test' (LP: #1237364)
+    - Fixes access of static images over http  (LP: #1236544)
   * d/maas-cluster-controller.postinst: a2enmod version module (LP: #1236544)
   * d/control: Bump depends on python-django to 1.4. (LP: #1236572)
   * d/maas-dhcp.postinst: Fail gracefully if apparmor_parser fails, allowing
