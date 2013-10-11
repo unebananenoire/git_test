@@ -1,6 +1,9 @@
-maas (1.4+bzr1693+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (1.4+bzr1701+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+  [ Jeroen Vermeulen ]
+  * Keep legacy import_ephemerals config for now.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 10 Oct 2013 17:07:51 -0400
 
