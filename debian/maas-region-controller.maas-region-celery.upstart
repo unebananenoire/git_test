@@ -13,6 +13,7 @@ respawn
 env workers_user="maas_workers"
 env workers_pass=""
 env workers_vhost="/maas_workers"
+env DJANGO_SETTINGS_MODULE="maas.settings"
 
 pre-start script
 	if ! /usr/sbin/rabbitmqctl list_user_permissions $workers_user 1>/dev/null 2>&1; then
