@@ -5,6 +5,10 @@ maas (1.4+bzr1701+dfsg-0ubuntu2) UNRELEASED; urgency=low
   [ Jeroen Vermeulen ]
   * Keep legacy import_ephemerals config for now.
 
+  [ Andres Rodriguez ]
+  * debian/maas-region-controller.postinst: Allo default-maas-url debconf
+    option to be preseeded.
+
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 10 Oct 2013 17:07:51 -0400
 
 maas (1.4+bzr1693+dfsg-0ubuntu1) saucy; urgency=low
