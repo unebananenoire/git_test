@@ -166,6 +166,7 @@ Description: Ubuntu MAAS API Client - (python files)
 Package: maas-cluster-controller
 Architecture: all
 Depends: apache2,
+         authbind,
          bind9utils,
          distro-info,
          freeipmi-tools,

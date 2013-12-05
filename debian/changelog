@@ -1,4 +1,4 @@
-maas (1.4+bzr1701+dfsg-0ubuntu2) UNRELEASED; urgency=low
+maas (1.4+bzr1761+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * UNRELEASED
 
@@ -8,6 +8,10 @@ maas (1.4+bzr1701+dfsg-0ubuntu2) UNRELEASED; urgency=low
   [ Andres Rodriguez ]
   * debian/maas-region-controller.postinst: Allo default-maas-url debconf
     option to be preseeded.
+  * Make use of authbind to allow maas-cluster-celery bind port as non-root.
+    - debian/control: Depends on authbind for maas-cluster-controller.
+    - debian/maas-cluster-controller.{postinst,postrm}: Handle creation
+      and removal of required authbind file.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 10 Oct 2013 17:07:51 -0400
 

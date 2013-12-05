@@ -35,4 +35,9 @@ case "$1" in
 			rm -rf /etc/tgt/conf.d/maas.conf
 		fi
 
+		# Remove authbind
+		MAAS_UID="`id -u maas`"
+		if [ -f "/etc/authbind/byuid/$MAAS_UID" ]; then
+			rm -rf /etc/authbind/byuid/$MAAS_UID
+		fi
 esac
