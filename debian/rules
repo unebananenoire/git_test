@@ -9,9 +9,9 @@ py_enums := $(wildcard src/*/enum.py)
 	dh $@ --with python2,apport --buildsystem=python_distutils
 
 override_dh_installinit:
+	dh_installinit --name maas-txlongpoll --no-start
+	dh_installinit --name maas-region-celery --no-start
 	dh_installinit --name maas-pserv
-	dh_installinit --name maas-txlongpoll
-	dh_installinit --name maas-region-celery
 	dh_installinit --name maas-cluster-celery
 	dh_installinit --name maas-dhcp-server
 

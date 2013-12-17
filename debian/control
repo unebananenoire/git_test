@@ -45,7 +45,7 @@ Description: Ubuntu MAAS Server
  .
  This package contains common files
 
-Package: maas-region-controller
+Package: maas-region-controller-min
 Architecture: all
 Depends: apache2,
          avahi-daemon,
@@ -57,7 +57,6 @@ Depends: apache2,
          libjs-yui3-full,
          libjs-yui3-min,
          maas-common (= ${binary:Version}),
-         postgresql-9.1,
          pwgen,
          python-django (>= 1.4),
          python-django-maas (= ${binary:Version}),
@@ -65,14 +64,33 @@ Depends: apache2,
          python-django-south,
          python-maas-provisioningserver (= ${binary:Version}),
          python-djorm-ext-pgarray,
-         rabbitmq-server,
          rsyslog,
          squid-deb-proxy,
          ${misc:Depends},
          ${python:Depends}
+Breaks: maas-region-controller ( <= 1.4+bzr1693+dfsg-0ubuntu3 )
+Replaces: maas-region-controller ( <= 1.4+bzr1693+dfsg-0ubuntu3 )
+Description: Ubuntu MAAS Server
+ Ubuntu MAAS Server is the successor to Orchestra. It offers a
+ nice UI to provision your Ubuntu servers. Each physical server
+ (“node”) will be commissioned automatically on first boot.
+ During the commissioning process administrators are able to
+ configure hardware settings manually before an automated smoke
+ test and burn-in test are done. Once commissioned, a node can
+ be deployed on demand by name, or allocated to a queue for
+ dynamic allocation to services being deployed on this MAAS.
+ .
+ This package installs the region controller services: the web
+ UI.
+
+Package: maas-region-controller
+Architecture: all
+Depends: maas-region-controller-min (= ${binary:Version}),
+         postgresql (>= 9.1),
+         rabbitmq-server,
+         ${misc:Depends},
+         ${python:Depends}
 Recommends: openssh-server, maas-dns (= ${binary:Version})
-Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
-Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Description: Ubuntu MAAS Server
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
@@ -265,8 +283,7 @@ Description: Ubuntu MAAS Server - DHCP Configuration (meta-package)
 Package: maas-dns
 Architecture: all
 Depends: bind9,
- maas-region-controller (= ${binary:Version}),
- maas-dhcp (= ${binary:Version}),
+ maas-region-controller-min (= ${binary:Version}),
  ${misc:Depends}
 Conflicts: dnsmasq
 Breaks: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)

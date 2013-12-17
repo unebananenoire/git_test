@@ -1,4 +1,4 @@
-maas (1.4+bzr1761+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (1.4+bzr1765+dfsg-0ubuntu1) UNRELEASED; urgency=low
 
   * UNRELEASED
 
@@ -12,6 +12,11 @@ maas (1.4+bzr1761+dfsg-0ubuntu1) UNRELEASED; urgency=low
     - debian/control: Depends on authbind for maas-cluster-controller.
     - debian/maas-cluster-controller.{postinst,postrm}: Handle creation
       and removal of required authbind file.
+  * Split maas-region-controller into maas-region-controller-min.
+    - debian/maas-region-controller-min.{postinst,postrm,prerm}: Handle
+      basic configuration for rsyslogd, squid-deb-proxy, and maas-url.
+    - debian/control: Depends on maas-region-controller-min, postgresql
+      and rabbitmq-server for maas-region-controller.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 10 Oct 2013 17:07:51 -0400
 
