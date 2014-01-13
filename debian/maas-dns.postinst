@@ -28,8 +28,6 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; the
     sed -i '/^include\s.*maas/d' /etc/bind/named.conf.local
     maas get_named_conf --edit --config_path /etc/bind/named.conf.local
 
-    maas write_dns_config
-
     invoke-rc.d bind9 restart || true
 fi
 
