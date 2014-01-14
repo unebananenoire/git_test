@@ -1,0 +1,1 @@
+maas-dhcp: binary-without-manpage usr/bin/maas-probe-dhcp

@@ -7,8 +7,13 @@ maas (1.4+bzr1814+dfsg-0ubuntu1) UNRELEASED; urgency=low
     celery jobs.
   * debian/maas-region-controller.templates: Rename template to
     maas-region-controller-min.templates
+  [ Julian Edwards ]
+  * New maas-probe-dhcp script to detect DHCP servers
+    - debian/extras/maas-probe-dhcp: New script
+    - debian/maas-dhcp.install: Install new maas-probe-dhcp script
+    - maas-dhcp.lintian-overrides: New maas-probe-dhcp script has no manpage
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 24 Dec 2013 14:07:14 -0500
+ -- Julian Edwards <julian.edwards@canonical.com>  Tue, 14 Jan 2014 15:05:22 +1000
 
 maas (1.4+bzr1789+dfsg-0ubuntu1) trusty; urgency=low
 
