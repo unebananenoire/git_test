@@ -107,7 +107,8 @@ Description: Ubuntu MAAS Server
 Package: python-maas-provisioningserver
 Section: python
 Architecture: all
-Depends: python-celery,
+Depends: python-amqp,
+         python-celery,
          python-distro-info,
          python-formencode,
          python-lockfile,
@@ -131,6 +132,7 @@ Depends: python-celery,
          ${python:Depends}
 Breaks: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3)
 Replaces: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3)
+Conflicts: python-librabbitmq
 Description: Ubuntu MAAS Server
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
@@ -191,6 +193,7 @@ Depends: apache2,
          maas-cli (=${binary:Version}),
          maas-common (=${binary:Version}),
          maas-dhcp (=${binary:Version}),
+         python-amqp,
          python-celery,
          python-httplib2,
          python-lockfile,
@@ -208,7 +211,7 @@ Depends: apache2,
          wget,
          ${misc:Depends},
          ${python:Depends}
-Conflicts: tftpd-hpa
+Conflicts: tftpd-hpa, python-librabbitmq
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )
 Description: Ubuntu MAAS Cluster Controller
@@ -229,6 +232,7 @@ Package: python-django-maas
 Section: python
 Architecture: all
 Depends: python-avahi,
+         python-amqp,
          python-celery,
          python-convoy,
          python-curtin,
@@ -251,6 +255,7 @@ Depends: python-avahi,
          python-zope.interface,
          ${misc:Depends},
          ${python:Depends}
+Conflicts: python-librabbitmq
 Description: Ubuntu MAAS Server - (django files)
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server

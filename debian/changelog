@@ -1,19 +1,27 @@
-maas (1.4+bzr1814+dfsg-0ubuntu1) UNRELEASED; urgency=low
+maas (1.4+bzr1817+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 15 Jan 2014 00:24:58 -0500
+
+maas (1.4+bzr1817+dfsg-0ubuntu1) trusty; urgency=low
+
+  * New upstream release
 
   [ Andres Rodriguez ]
   * debian/maas-dns.postinst: Drop write_dns_config as this is run by
     celery jobs.
   * debian/maas-region-controller.templates: Rename template to
     maas-region-controller-min.templates
+  * debian/control: Depends on python-amqp; Conflicts on python-librabbitmq.
+
   [ Julian Edwards ]
   * New maas-probe-dhcp script to detect DHCP servers
     - debian/extras/maas-probe-dhcp: New script
     - debian/maas-dhcp.install: Install new maas-probe-dhcp script
     - maas-dhcp.lintian-overrides: New maas-probe-dhcp script has no manpage
 
- -- Julian Edwards <julian.edwards@canonical.com>  Tue, 14 Jan 2014 15:05:22 +1000
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 15 Jan 2014 00:23:44 -0500
 
 maas (1.4+bzr1789+dfsg-0ubuntu1) trusty; urgency=low
 
