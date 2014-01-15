@@ -2,6 +2,9 @@ maas (1.4+bzr1817+dfsg-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
 
+  [ Jeroen Vermeulen ]
+  * Move maas-probe-dhcp from maas-dhcp to python-maas-provisioningserver.
+
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 15 Jan 2014 00:24:58 -0500
 
 maas (1.4+bzr1817+dfsg-0ubuntu1) trusty; urgency=low

@@ -2,3 +2,4 @@ debian/tmp/usr/lib/python*/dist-packages/provisioningserver
 
 # Install other stuff
 debian/extras/maas-provision usr/sbin
+debian/extras/maas-probe-dhcp usr/sbin

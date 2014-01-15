@@ -1,1 +1,2 @@
 python-maas-provisioningserver: binary-without-manpage usr/sbin/maas-provision
+python-maas-provisioningserver: binary-without-manpage usr/sbin/maas-probe-dhcp
