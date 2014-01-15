@@ -156,9 +156,6 @@ invoke-rc.d apache2 restart || true
 
 restart_squid_deb_proxy
 
-invoke-rc.d maas-txlongpoll restart || true
-invoke-rc.d maas-region-celery restart || true
-
 db_stop
 
 #DEBHELPER#
