@@ -130,8 +130,8 @@ Depends: python-amqp,
          python-zope.interface,
          ${misc:Depends},
          ${python:Depends}
-Breaks: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3)
-Replaces: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3)
+Breaks: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3), maas-dhcp (<= 1.4+bzr1817+dfsg-0ubuntu1)
+Replaces: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3), maas-dhcp (<= 1.4+bzr1817+dfsg-0ubuntu1)
 Conflicts: python-librabbitmq
 Description: Ubuntu MAAS Server
  Ubuntu MAAS Server is the successor to Orchestra. It offers a

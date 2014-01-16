@@ -8,6 +8,8 @@ maas (1.4+bzr1817+dfsg-0ubuntu2) UNRELEASED; urgency=low
   [ Andres Rodriguez ]
   * debian/maas-region-controller.postinst: Make sure maas-txlongpoll and
     maas-region-celery get restarted.
+  * debian/control: python-maas-provisioningserver Breaks/Replaces for
+    maas-dhcp due to moving files around packages.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 15 Jan 2014 00:24:58 -0500
 
