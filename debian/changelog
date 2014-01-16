@@ -1,3 +1,9 @@
+maas (1.4+bzr1820+dfsg-0ubuntu2) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 16 Jan 2014 18:56:49 -0500
+
 maas (1.4+bzr1820+dfsg-0ubuntu1) trusty; urgency=low
 
   * New upstream Release.
