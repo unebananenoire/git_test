@@ -48,7 +48,6 @@ Description: Ubuntu MAAS Server
 Package: maas-region-controller-min
 Architecture: all
 Depends: apache2,
-         avahi-daemon,
          bind9utils,
          dbconfig-common,
          iproute,
@@ -232,12 +231,10 @@ Description: Ubuntu MAAS Cluster Controller
 Package: python-django-maas
 Section: python
 Architecture: all
-Depends: python-avahi,
-         python-amqp,
+Depends: python-amqp,
          python-celery,
          python-convoy,
          python-curtin,
-         python-dbus,
          python-lockfile,
          python-lxml,
          python-maas-client (= ${binary:Version}),
