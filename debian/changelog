@@ -4,6 +4,9 @@ maas (1.4+bzr1853+dfsg-0ubuntu2) UNRELEASED; urgency=low
   * debian/maas-region-controller-min.postinst: Fix typo in sed. Remove
     double quotes. (LP: #1274448)
 
+  [ Andres Rodriguez ]
+  * debian/control: Add depends on python-crochet.
+
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 31 Jan 2014 09:38:51 -0500
 
 maas (1.4+bzr1853+dfsg-0ubuntu1) trusty; urgency=low

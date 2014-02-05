@@ -234,6 +234,7 @@ Architecture: all
 Depends: python-amqp,
          python-celery,
          python-convoy,
+         python-crochet,
          python-curtin,
          python-lockfile,
          python-lxml,
