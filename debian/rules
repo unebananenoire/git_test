@@ -54,12 +54,3 @@ VER=$(shell dpkg-parsechangelog -l$(DEB_DEBIAN_DIR)/changelog \
 get-orig-source:
 	bzr export -r $(REV) --root=maas-$(VER).orig \
              maas_$(VER).orig.tar.gz lp:maas
-	rm -rf maas-$(VER)
-	tar -xf maas_$(VER).orig.tar.gz
-	rm maas_$(VER).orig.tar.gz
-	rm -rf maas-$(VER).orig/src/maasserver/static/jslibs/
-	rm -rf maas-$(VER).orig/contrib/python-tx-tftp
-	GZIP=--best tar -cz --owner root --group root --mode a+rX \
-                        -f maas_$(VER).orig.tar.gz \
-                        maas-$(VER).orig
-	rm -r maas-$(VER).orig
