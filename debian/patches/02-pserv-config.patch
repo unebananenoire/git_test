@@ -3,10 +3,8 @@ Description: Use default settings for MAAS PSERV
  include port, logfile, oops directory, cobbler url and username
 Author: Andres Rodriguez <andreserl@ubuntu.com>
 
-Index: maas-0.1+bzr917+dfsg.orig/etc/maas/pserv.yaml
-===================================================================
---- maas-0.1+bzr917+dfsg.orig.orig/etc/maas/pserv.yaml	2012-08-23 16:22:46.483599114 -0400
-+++ maas-0.1+bzr917+dfsg.orig/etc/maas/pserv.yaml	2012-08-23 16:22:56.579599373 -0400
+--- maas-1.5+bzr1908.orig.orig/etc/maas/pserv.yaml	2014-02-07 11:21:21.686557887 -0500
++++ maas-1.5+bzr1908.orig/etc/maas/pserv.yaml	2014-02-07 11:21:21.678557887 -0500
 @@ -6,7 +6,7 @@
  ## running server.
  #
@@ -34,5 +32,5 @@ Index: maas-0.1+bzr917+dfsg.orig/etc/maas/pserv.yaml
    # generator: http://localhost/MAAS/api/1.0/pxeconfig/
 -  generator: http://localhost:5243/api/1.0/pxeconfig/
  
- ## Boot configuration.
- boot:
+ ## RPC configuration, for region<-->cluster communications.
+ #

@@ -1,7 +1,5 @@
-Index: maas-0.1+bzr702+dfsg.orig/contrib/maas_local_settings.py
-===================================================================
---- maas-0.1+bzr702+dfsg.orig.orig/contrib/maas_local_settings.py	2012-06-29 12:03:20.000000000 -0400
-+++ maas-0.1+bzr702+dfsg.orig/contrib/maas_local_settings.py	2012-06-29 12:17:00.733389757 -0400
+--- maas-1.5+bzr1908.orig.orig/contrib/maas_local_settings.py	2014-02-07 11:22:59.330556956 -0500
++++ maas-1.5+bzr1908.orig/contrib/maas_local_settings.py	2014-02-07 11:22:59.326556956 -0500
 @@ -7,7 +7,7 @@
  DEFAULT_MAAS_URL = "http://maas.internal.example.com/"
  
@@ -11,7 +9,7 @@ Index: maas-0.1+bzr702+dfsg.orig/contrib/maas_local_settings.py
  
  # Prefix to use for MAAS's urls.
  # If FORCE_SCRIPT_NAME is None (the default), all the urls will start with
-@@ -68,9 +68,9 @@
+@@ -81,9 +81,9 @@
      'default': {
          # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' etc.
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
