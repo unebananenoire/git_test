@@ -3,6 +3,10 @@ maas (1.5+bzr1909-0ubuntu2) UNRELEASED; urgency=low
   [ Graham Binns ]
   * debian/control: Depends on python-jsonschema.
 
+  [ Andres Rodriguez ]
+  * debian/maas-region-controller-min.posinst: Make txlongpoll.yaml only
+    readable by the app and not world readeable.
+
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 07 Feb 2014 18:24:08 -0500
 
 maas (1.5+bzr1909-0ubuntu1) trusty; urgency=low
