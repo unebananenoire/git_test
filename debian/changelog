@@ -1,6 +1,7 @@
 maas (1.5+bzr1909-0ubuntu2) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  [ Graham Binns ]
+  * debian/control: Depends on python-jsonschema.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 07 Feb 2014 18:24:08 -0500
 
