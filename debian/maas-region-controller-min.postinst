@@ -66,6 +66,14 @@ configure_maas_squid_deb_proxy() {
         /usr/share/maas/conf/99-maas
 }
 
+# Please keep this stanza until 14.10
+if [ "$1" = "configure" ]; then
+        if dpkg --compare-versions "$2" le-nl 1.5+bzr1909-0ubuntu1 ; then
+                chown root:maas /etc/maas/txlongpoll.yaml
+                chmod 0640 /etc/maas/txlongpoll.yaml
+        fi
+fi
+
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     #########################################################
     ################ Folder Permissions  ####################

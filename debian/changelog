@@ -19,7 +19,11 @@ maas (1.5+bzr1930-0ubuntu1) UNRELEASED; urgency=low
     of maas
   * debian/maas-cli.links: Link from maas to maas-cli for backward compat.
 
- -- Julian Edwards <julian.edwards@canonical.com>  Wed, 12 Feb 2014 15:42:00 +1000
+  [ Seth Arnold ]
+  * debian/maas-region-controller-min.postinst: Make sure txlongpoll.yaml
+    gets correct permissions on upgrade (LP: #1254034)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 13 Feb 2014 14:17:01 -0500
 
 maas (1.5+bzr1909-0ubuntu1) trusty; urgency=low
 
