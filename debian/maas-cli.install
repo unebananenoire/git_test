@@ -1,2 +1,2 @@
-debian/extras/maas-cli usr/bin
+debian/extras/maas usr/bin
 debian/tmp/usr/lib/python*/dist-packages/maascli

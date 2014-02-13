@@ -1,4 +1,4 @@
-maas (1.5+bzr1909-0ubuntu2) UNRELEASED; urgency=low
+maas (1.5+bzr1930-0ubuntu1) UNRELEASED; urgency=low
 
   [ Graham Binns ]
   * debian/control: Depends on python-jsonschema.
@@ -7,7 +7,19 @@ maas (1.5+bzr1909-0ubuntu2) UNRELEASED; urgency=low
   * debian/maas-region-controller-min.posinst: Make txlongpoll.yaml only
     readable by the app and not world readeable.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 07 Feb 2014 18:24:08 -0500
+  [ Julian Edwards ]
+  * debian/extras/maas-cli renamed to debian/extras/maas, and introduce
+    a deprecation warning in favour of using maas over maas-cli.
+  * debian/extras/maas renamed to debian/extras/maas-region-admin
+  * debian/maas-cli.install: install debian/extras/maas
+  * debian/maas-dns.postinst: Invoke maas-region-admin instead of maas
+  * debian/maas-region-controller-min.install: install maas-region-admin
+    instead of maas
+  * debian/maas-region-controller.postinst: Invoke maas-region-admin instead
+    of maas
+  * debian/maas-cli.links: Link from maas to maas-cli for backward compat.
+
+ -- Julian Edwards <julian.edwards@canonical.com>  Wed, 12 Feb 2014 15:42:00 +1000
 
 maas (1.5+bzr1909-0ubuntu1) trusty; urgency=low
 

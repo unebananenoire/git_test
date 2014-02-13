@@ -5,7 +5,7 @@ set -e
 if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; then
     # If /etc/bind/maas is empty, set_up_dns.
     if [ ! "$(ls -A /etc/bind/maas)" ]; then
-        maas set_up_dns
+        maas-region-admin set_up_dns
     fi
 
     # Fix permissions.
@@ -26,7 +26,7 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; the
     # Remove any existing MAAS-related include line from
     # /etc/bind/named.conf.local, then re-add it.
     sed -i '/^include\s.*maas/d' /etc/bind/named.conf.local
-    maas get_named_conf --edit --config_path /etc/bind/named.conf.local
+    maas-region-admin get_named_conf --edit --config_path /etc/bind/named.conf.local
 
     invoke-rc.d bind9 restart || true
 fi

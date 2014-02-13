@@ -1,8 +1,6 @@
 #!/bin/sh
-if [ "$(id -u)" != "0" ]; then
-	echo "This utility may only be run as root." 1>&2
-	exit 1
+if [ "`expr \"$0\" : \".*maas-cli*\"`" != "0" ];then
+    echo "  WARNING: The maas-cli command is deprecated and will be removed" \
+         "in a future\n  version.  From now on please use 'maas' instead."
 fi
-export PYTHONPATH="/usr/share/maas${PYTHONPATH:+:}${PYTHONPATH}"
-export DJANGO_SETTINGS_MODULE="maas.settings"
-exec /usr/bin/django-admin "$@"
+exec python -m maascli "$@"

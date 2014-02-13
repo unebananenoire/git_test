@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ "$(id -u)" != "0" ]; then
+	echo "This utility may only be run as root." 1>&2
+	exit 1
+fi
+export PYTHONPATH="/usr/share/maas${PYTHONPATH:+:}${PYTHONPATH}"
+export DJANGO_SETTINGS_MODULE="maas.settings"
+exec /usr/bin/django-admin "$@"

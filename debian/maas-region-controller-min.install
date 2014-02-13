@@ -30,7 +30,7 @@ debian/tmp/etc/maas/templates/dns
 debian/tmp/etc/maas/templates/commissioning-user-data
 
 # Install all other stuff
-debian/extras/maas usr/sbin
+debian/extras/maas-region-admin usr/sbin
 debian/extras/maas-region-celeryd usr/sbin
 debian/extras/20-maas.conf etc/rsyslog.d
 debian/extras/maas_remote_syslog_compress etc/cron.d

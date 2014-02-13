@@ -12,9 +12,9 @@ fi
 RELEASE=`lsb_release -rs` || RELEASE=""
 
 maas_sync_migrate_db(){
-	maas syncdb --noinput
-	maas migrate maasserver --noinput
-	maas migrate metadataserver --noinput
+	maas-region-admin syncdb --noinput
+	maas-region-admin migrate maasserver --noinput
+	maas-region-admin migrate metadataserver --noinput
 }
 
 restart_rabbitmq(){

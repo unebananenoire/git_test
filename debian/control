@@ -153,6 +153,8 @@ Depends: python-bzrlib,
          python-oauth,
          ${misc:Depends},
          ${python:Depends}
+Conflicts: maas-region-controller-min (<= 1.5+bzr1909-0ubuntu1)
+Replaces: maas-region-controller-min (<= 1.5+bzr1909-0ubuntu1)
 Description: Ubuntu MAAS Client Tool
  Ubuntu MAAS Server is the successor to Orchestra. It offers a
  nice UI to provision your Ubuntu servers. Each physical server
