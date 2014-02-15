@@ -1,6 +1,15 @@
-maas (1.5+bzr1948-0ubuntu2) UNRELEASED; urgency=low
+maas (1.5+bzr1948-0ubuntu3) UNRELEASED; urgency=low
 
-  * UNRELEASED
+  * UNRELEASED 
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Sat, 15 Feb 2014 16:16:38 -0500
+
+maas (1.5+bzr1948-0ubuntu2) trusty; urgency=low
+
+  * debian/maas-cluster-controller.postinst: Make sure generator on
+    pserv.yaml is updated on upgrade or reconfigure. (LP: #1273197)
+  * debian/maas-cluster-controller.maas-pserv.upstart: Make sure maas-pserv
+    is started with authbind.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Sat, 15 Feb 2014 13:55:20 -0500
 

@@ -27,5 +27,5 @@ script
     # file.
     export CLUSTER_UUID
     # To add options to your daemon, edit the line below:
-    exec /usr/bin/twistd -n --uid=maas --gid=maas --pidfile=/run/maas-pserv.pid --logfile=/dev/null maas-pserv --config-file=/etc/maas/pserv.yaml
+    exec /usr/bin/authbind --deep /usr/bin/twistd -n --uid=maas --gid=maas --pidfile=/run/maas-pserv.pid --logfile=/dev/null maas-pserv --config-file=/etc/maas/pserv.yaml
 end script
