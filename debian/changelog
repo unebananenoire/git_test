@@ -1,4 +1,12 @@
-maas (1.5+bzr1930-0ubuntu1) UNRELEASED; urgency=low
+maas (1.5+bzr1948-0ubuntu2) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Sat, 15 Feb 2014 13:55:20 -0500
+
+maas (1.5+bzr1948-0ubuntu1) trusty; urgency=low
+
+  * New upstream release.
 
   [ Graham Binns ]
   * debian/control: Depends on python-jsonschema.
@@ -6,6 +14,7 @@ maas (1.5+bzr1930-0ubuntu1) UNRELEASED; urgency=low
   [ Andres Rodriguez ]
   * debian/maas-region-controller-min.posinst: Make txlongpoll.yaml only
     readable by the app and not world readeable.
+  * debian/patches/02-pserv-config.patch: Refreshed.
 
   [ Julian Edwards ]
   * debian/extras/maas-cli renamed to debian/extras/maas, and introduce
@@ -23,7 +32,7 @@ maas (1.5+bzr1930-0ubuntu1) UNRELEASED; urgency=low
   * debian/maas-region-controller-min.postinst: Make sure txlongpoll.yaml
     gets correct permissions on upgrade (LP: #1254034)
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 13 Feb 2014 14:17:01 -0500
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Sat, 15 Feb 2014 12:08:23 -0500
 
 maas (1.5+bzr1909-0ubuntu1) trusty; urgency=low
 
