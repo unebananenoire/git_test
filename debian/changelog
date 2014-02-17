@@ -1,6 +1,14 @@
-maas (1.5+bzr1948-0ubuntu3) UNRELEASED; urgency=low
+maas (1.5+bzr1951-0ubuntu2) UNRELEASED; urgency=low
 
-  * UNRELEASED 
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Sun, 16 Feb 2014 22:56:36 -0500
+
+maas (1.5+bzr1951-0ubuntu1) trusty; urgency=low
+
+  * New upstream release
+  * debian/maas-cluster-controller.postinst: Also authbind port 69.
+  * debian/maas-cluster-controller.maas-pserv.upstart: Export MAAS_URL.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Sat, 15 Feb 2014 16:16:38 -0500
 

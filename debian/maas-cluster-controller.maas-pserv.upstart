@@ -26,6 +26,7 @@ script
     # Allow the tftpd process to read CLUSTER_UUID as set in that config
     # file.
     export CLUSTER_UUID
+    export MAAS_URL
     # To add options to your daemon, edit the line below:
     exec /usr/bin/authbind --deep /usr/bin/twistd -n --uid=maas --gid=maas --pidfile=/run/maas-pserv.pid --logfile=/dev/null maas-pserv --config-file=/etc/maas/pserv.yaml
 end script
