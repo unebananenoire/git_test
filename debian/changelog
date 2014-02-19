@@ -1,6 +1,21 @@
-maas (1.5+bzr1951-0ubuntu2) UNRELEASED; urgency=low
+maas (1.5+bzr1977-0ubuntu2) UNRELEASED; urgency=low
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 19 Feb 2014 16:45:19 -0500
+
+maas (1.5+bzr1977-0ubuntu1) trusty; urgency=low
+
+  * New upstream bugfix release.
+    - setup.py: Install missing shell snippet
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 19 Feb 2014 16:31:45 -0500
+
+maas (1.5+bzr1976-0ubuntu1) trusty; urgency=low
+
+  * New upstream release.
+  * debian/maas-cluster-controller.postinst: Make sure upgrades handle
+    authbind upgrades too.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Sun, 16 Feb 2014 22:56:36 -0500
 

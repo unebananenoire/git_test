@@ -102,10 +102,10 @@ configure_cluster_authbind() {
             chmod 755 /etc/authbind
             chmod 755 /etc/authbind/byuid
         fi
-        echo '0.0.0.0/0:68,69' >/etc/authbind/byuid/$MAAS_UID
-        chown maas:maas /etc/authbind/byuid/$MAAS_UID
-        chmod 700 /etc/authbind/byuid/$MAAS_UID
     fi
+    echo '0.0.0.0/0:68,69' >/etc/authbind/byuid/$MAAS_UID
+    chown maas:maas /etc/authbind/byuid/$MAAS_UID
+    chmod 700 /etc/authbind/byuid/$MAAS_UID
 }
 
 restart_apache2(){
