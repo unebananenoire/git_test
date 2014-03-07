@@ -16,7 +16,7 @@ env workers_vhost="/maas_workers"
 env DJANGO_SETTINGS_MODULE="maas.settings"
 
 pre-start script
-	if ! /usr/sbin/rabbitmqctl list_user_permissions $workers_user 1>/dev/null 2>&1; then
+	if -f /usr/sbin/rabbitmqctl && ! /usr/sbin/rabbitmqctl list_user_permissions $workers_user 1>/dev/null 2>&1; then
 		workers_pass=`grep "maas_workers" /etc/maas/maas_local_celeryconfig.py | cut -d':' -f3 | cut -d'@' -f1`
 		/usr/sbin/rabbitmqctl add_user "$workers_user" "$workers_pass"
 		/usr/sbin/rabbitmqctl add_vhost "$workers_vhost"

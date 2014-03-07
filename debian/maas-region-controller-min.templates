@@ -1,6 +1,6 @@
 Template: maas/installation-note
 Type: note
-Default: true
+Default: false
 _Description: Ubuntu MAAS Server
  The Ubuntu MAAS Server has been installed in your system. You
  can access the MAAS Web interface here:
