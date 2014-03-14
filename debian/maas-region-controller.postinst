@@ -252,6 +252,7 @@ elif [ -n "$DEBCONF_RECONFIGURE" ]; then
 		configure_maas_squid_deb_proxy "$ipaddr"
 		configure_maas_workers_rabbitmq_user "$ipaddr"
 	fi
+	configure_maas_txlongpoll_rabbitmq_user
 
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
 	# If upgrading to any later package version, then upgrade db.

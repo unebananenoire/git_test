@@ -1,4 +1,6 @@
-maas (1.5+bzr1977-0ubuntu3) UNRELEASED; urgency=low
+maas (1.5+bzr2128-0ubuntu1) UNRELEASED; urgency=low
+
+  * New upstream release
 
   [ Andres Rodriguez ]
   * debian/maas-region-controller-min.templates: Set installation note to false
@@ -6,6 +8,8 @@ maas (1.5+bzr1977-0ubuntu3) UNRELEASED; urgency=low
   * Check rabbitmqctl is present before running commands:
     - debian/maas-region-controller-min.maas-region-celery.upstart.
     - debian/maas-region-controller-min.maas-txlongpoll.upstart.
+  * make sure maas_longpoll rabbitmq user is created/with correct password on
+    a package reconfigure.
 
   [ Julian Edwards ]
   * debian/extas/maas: Echo warning to stderr so json stdout is not polluted
