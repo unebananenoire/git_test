@@ -27,8 +27,21 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; the
     # /etc/bind/named.conf.local, then re-add it.
     sed -i '/^include\s.*maas/d' /etc/bind/named.conf.local
     maas-region-admin get_named_conf --edit --config_path /etc/bind/named.conf.local
+    # Add a line in /etc/bind/named.conf.options that includes the
+    # /etc/named/maas/named.conf.options.inside.maas file.
+    maas-region-admin edit_named_options --config-path /etc/bind/named.conf.options
 
     invoke-rc.d bind9 restart || true
+fi
+
+if [ "$1" = "configure" ]; then
+    # If the /etc/bind/named.conf.options is not set up yet, do it now.
+    # This might happen because of an upgrade from an older package.
+    grep -q "named.conf.options.inside.maas" /etc/bind/named.conf.options
+    if [ "$?" != 0 ]; then
+        maas-region-admin edit_named_options --config-path /etc/bind/named.conf.options
+        invoke-rc.d bind9 restart || true
+    fi
 fi
 
 #DEBHELPER#

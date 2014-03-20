@@ -158,6 +158,7 @@ if [ "$1" = "configure" ]; then
     enable_apache_version_mod
     configure_cluster_http
     restart_apache2
+    maas-provision upgrade-cluster
 fi
 
 db_stop

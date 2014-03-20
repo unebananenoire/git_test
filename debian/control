@@ -202,6 +202,7 @@ Depends: apache2,
          python-maas-provisioningserver (=${binary:Version}),
          python-netaddr,
          python-oauth,
+         python-seamicroclient,
          python-tempita,
          python-twisted,
          python-zope.interface,
@@ -291,6 +292,7 @@ Package: maas-dns
 Architecture: all
 Depends: bind9,
  maas-region-controller-min (= ${binary:Version}),
+ python-iscpy,
  ${misc:Depends}
 Conflicts: dnsmasq
 Breaks: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
