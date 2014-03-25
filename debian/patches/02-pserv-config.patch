@@ -3,10 +3,8 @@ Description: Use default settings for MAAS PSERV
  include port, logfile, oops directory, cobbler url and username
 Author: Andres Rodriguez <andreserl@ubuntu.com>
 
-Index: maas-1.5+bzr1948.orig/etc/maas/pserv.yaml
-===================================================================
---- maas-1.5+bzr1948.orig.orig/etc/maas/pserv.yaml	2014-02-15 12:08:35.152998981 -0500
-+++ maas-1.5+bzr1948.orig/etc/maas/pserv.yaml	2014-02-15 12:08:35.148998981 -0500
+--- a/etc/maas/pserv.yaml
++++ b/etc/maas/pserv.yaml
 @@ -6,7 +6,7 @@
  ## running server.
  #
@@ -25,7 +23,7 @@ Index: maas-1.5+bzr1948.orig/etc/maas/pserv.yaml
    # reporter:
    reporter: "maas-pserv"
  
-@@ -33,10 +33,8 @@
+@@ -33,8 +33,6 @@
  tftp:
    # root: /var/lib/maas/tftp
    # port: 69
@@ -34,5 +32,3 @@ Index: maas-1.5+bzr1948.orig/etc/maas/pserv.yaml
    # generator: http://localhost/MAAS/api/1.0/pxeconfig/
 -  generator: http://localhost:5243/api/1.0/pxeconfig/
  
- ## Boot configuration.
- boot:

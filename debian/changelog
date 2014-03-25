@@ -21,6 +21,7 @@ maas (1.5+bzr2153-0ubuntu0) UNRELEASED; urgency=low
   * debian/control: 
     - maas-dns depends on python-iscpy
     - maas-cluster-controller depends on python-seamicroclient
+  * debian/maas-cluster-controller.install: Install bootresources.yaml
 
  -- Julian Edwards <julian.edwards@canonical.com>  Fri, 21 Mar 2014 21:57:26 +1000
 
