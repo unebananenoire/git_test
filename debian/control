@@ -15,35 +15,31 @@ Homepage: https://launchpad.net/maas
 Package: maas
 Architecture: all
 Depends: ${misc:Depends}, maas-cluster-controller, maas-region-controller, python-django-maas
-Description: Ubuntu MAAS Server
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
+Description: MAAS server all-in-one metapackage
+ MAAS is "Metal As A Service", a system for dynamic provisioning of physical
+ servers that has many of the same characteristics as a cloud.  You register
+ servers with MAAS by telling MAAS about their IPMI or other control system.
+ MAAS can then do hardware inventory, and provision that system on demand
+ with whatever OS and software you like.  MAAS is standalone software that
+ works with any configuration system, but for best results combine MAAS with
+ Juju.
  .
- This package is a metapackage which installs a complete MAAS
- service on a single machine.
+ MAAS provides:
+  * Hardware inventory of servers
+  * Dynamic provisioning based on name or attributes such as disk, RAM cores, sockets
+  * DNS and DHCP as needed
+  * PXE boot services
+ .
+ This package is a metapackage which installs all of the separate components
+ of MAAS on a single machine.
 
 Package: maas-common
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
-Description: Ubuntu MAAS Server
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
- .
- This package contains common files
+Description: MAAS server common files
+ This package contains the common files for any MAAS installation.
 
 Package: maas-region-controller-min
 Architecture: all
@@ -69,18 +65,10 @@ Depends: apache2,
          ${python:Depends}
 Breaks: maas-region-controller ( <= 1.4+bzr1693+dfsg-0ubuntu3 )
 Replaces: maas-region-controller ( <= 1.4+bzr1693+dfsg-0ubuntu3 )
-Description: Ubuntu MAAS Server
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
- .
- This package installs the region controller services: the web
- UI.
+Description: MAAS Server minimum region controller
+ This package installs and configures the minimum region controller
+ services provided by MAAS, including the web UI, caching package proxy,
+ networking/traffic control, and remote logging system.
 
 Package: maas-region-controller
 Architecture: all
@@ -90,18 +78,9 @@ Depends: maas-region-controller-min (= ${binary:Version}),
          ${misc:Depends},
          ${python:Depends}
 Recommends: openssh-server, maas-dns (= ${binary:Version})
-Description: Ubuntu MAAS Server
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
- .
- This package installs the region controller services: the web
- UI and the database.
+Description: MAAS server complete region controller
+ This package installs and configures the complete MAAS region controller,
+ including the minimum setup, plus the database server and messaging queue.
 
 Package: python-maas-provisioningserver
 Section: python
@@ -133,17 +112,8 @@ Depends: python-amqp,
 Breaks: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3), maas-dhcp (<= 1.4+bzr1817+dfsg-0ubuntu1)
 Replaces: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3), maas-dhcp (<= 1.4+bzr1817+dfsg-0ubuntu1)
 Conflicts: python-librabbitmq
-Description: Ubuntu MAAS Server
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
- .
- This package contains the provisioning server libraries.
+Description: MAAS server provisioning libraries
+ This package provides the MAAS provisioning server python libraries.
 
 Package: maas-cli
 Architecture: all
@@ -155,17 +125,10 @@ Depends: python-bzrlib,
          ${python:Depends}
 Conflicts: maas-region-controller-min (<= 1.5+bzr1909-0ubuntu1)
 Replaces: maas-region-controller-min (<= 1.5+bzr1909-0ubuntu1)
-Description: Ubuntu MAAS Client Tool
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
- .
- This package contains the client command line tool.
+Description: MAAS command line API tool
+ This package contains the MAAS client command line API tool.
+ This tool enables automation of tasks in MAAS, remotely, through
+ its API.
 
 Package: python-maas-client
 Section: python
@@ -173,17 +136,8 @@ Architecture: all
 Depends: python-oauth, ${misc:Depends}, ${python:Depends}
 Breaks: maas (<= 0.1+bzr971+dfsg-0ubuntu2 )
 Replaces: maas (<= 0.1+bzr971+dfsg-0ubuntu2 )
-Description: Ubuntu MAAS API Client - (python files)
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
- .
- This package contains the client API Python modules.
+Description: MAAS python API client
+ This package contains the MAAS client API Python modules.
 
 Package: maas-cluster-controller
 Architecture: all
@@ -218,19 +172,10 @@ Suggests: ipmitool, libvirt-bin, amtterm
 Conflicts: tftpd-hpa, python-librabbitmq
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )
-Description: Ubuntu MAAS Cluster Controller
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
- .
- This package contains the cluster controller, which is
- responsible for controlling remote DHCP/TFTP instances on their
- own subnets.
+Description: MAAS server cluster controller
+ This package contains the MAAS cluster controller, which is responsible
+ for enabling and controlling remote DHCP/TFTP instances on their own
+ subnets.
 
 Package: python-django-maas
 Section: python
@@ -259,34 +204,17 @@ Depends: python-amqp,
          ${misc:Depends},
          ${python:Depends}
 Conflicts: python-librabbitmq
-Description: Ubuntu MAAS Server - (django files)
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
- .
- This package contains the Django files.
+Description: MAAS server Django web framework
+ This package provides the Django web framework for MAAS.
 
 Package: maas-dhcp
 Architecture: all
 Depends: isc-dhcp-server (>= 4.2.4), ${misc:Depends}
 Breaks: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
-Description: Ubuntu MAAS Server - DHCP Configuration (meta-package)
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
- .
- This package configures a DHCP that can be used with MAAS.
+Description: MAAS DHCP server
+ This package installs and configures a DHCP server that can be used by
+ MAAS, and enhances the overall MAAS user experience.
 
 Package: maas-dns
 Architecture: all
@@ -297,14 +225,6 @@ Depends: bind9,
 Conflicts: dnsmasq
 Breaks: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
-Description: Ubuntu MAAS Server - DNS configuration (metapackage)
- Ubuntu MAAS Server is the successor to Orchestra. It offers a
- nice UI to provision your Ubuntu servers. Each physical server
- (“node”) will be commissioned automatically on first boot.
- During the commissioning process administrators are able to
- configure hardware settings manually before an automated smoke
- test and burn-in test are done. Once commissioned, a node can
- be deployed on demand by name, or allocated to a queue for
- dynamic allocation to services being deployed on this MAAS.
- .
- This package configures a DNS that can be used with MAAS.
+Description: MAAS DNS server
+ This package installs and configures a DNS server that can be used by
+ MAAS, and enhances the overall MAAS user experience.

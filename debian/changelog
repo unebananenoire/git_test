@@ -18,10 +18,16 @@ maas (1.5+bzr2153-0ubuntu0) UNRELEASED; urgency=low
   * debian/maas-dns.postinst: Call edit_named_options to add a line in
     /etc/bind/named.conf.options that includes the
     /etc/named/maas/named.conf.options.inside.maas file.
-  * debian/control: 
+  * debian/control:
     - maas-dns depends on python-iscpy
     - maas-cluster-controller depends on python-seamicroclient
   * debian/maas-cluster-controller.install: Install bootresources.yaml
+
+  [ Dustin Kirkland ]
+  * debian/control: LP: #1297097
+    - clean up package descriptions, modernize, and more clearly/simply
+      explain what each package does
+    - drop "Ubuntu" in front of MAAS, clean up command line/API description
 
  -- Julian Edwards <julian.edwards@canonical.com>  Fri, 21 Mar 2014 21:57:26 +1000
 
