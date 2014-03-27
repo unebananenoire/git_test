@@ -21,6 +21,7 @@ create_log_dir() {
     chmod -R 775 /var/log/maas/oops
 }
 
+# XXX jtv 2014-03-27 bug=1295479: Is this still needed?
 configure_maas_tgt(){
     # Set up iSCSI: add maas.conf to tgt conf.d.
     local tgtcfg="/etc/tgt/targets.conf"
