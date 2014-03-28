@@ -1,4 +1,4 @@
-maas (1.5+bzr2199-0ubuntu1) UNRELEASED; urgency=low
+maas (1.5+bzr2203-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release
 
@@ -11,6 +11,7 @@ maas (1.5+bzr2199-0ubuntu1) UNRELEASED; urgency=low
   * make sure maas_longpoll rabbitmq user is created/with correct password on
     a package reconfigure.
   * debian/maas-dns.postinst: Fix upgrade setup of named.conf.options.
+  * debian/maas-cluster-controller.install: Install UEFI templates
 
   [ Julian Edwards ]
   * debian/extas/maas: Echo warning to stderr so json stdout is not polluted

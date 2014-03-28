@@ -18,6 +18,7 @@ debian/tmp/etc/maas/maas_local_celeryconfig_cluster.py
 debian/tmp/etc/maas/templates/dhcp
 debian/tmp/etc/maas/templates/power
 debian/tmp/etc/maas/templates/pxe
+debian/tmp/etc/maas/templates/uefi
 
 # Install maas-import-pxe-files and related files
 debian/tmp/usr/sbin/maas-import-pxe-files
