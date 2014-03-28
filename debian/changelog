@@ -1,4 +1,4 @@
-maas (1.5+bzr2153-0ubuntu0) UNRELEASED; urgency=low
+maas (1.5+bzr2199-0ubuntu1) UNRELEASED; urgency=low
 
   * New upstream release
 
@@ -10,6 +10,7 @@ maas (1.5+bzr2153-0ubuntu0) UNRELEASED; urgency=low
     - debian/maas-region-controller-min.maas-txlongpoll.upstart.
   * make sure maas_longpoll rabbitmq user is created/with correct password on
     a package reconfigure.
+  * debian/maas-dns.postinst: Fix upgrade setup of named.conf.options.
 
   [ Julian Edwards ]
   * debian/extas/maas: Echo warning to stderr so json stdout is not polluted
@@ -29,7 +30,7 @@ maas (1.5+bzr2153-0ubuntu0) UNRELEASED; urgency=low
       explain what each package does
     - drop "Ubuntu" in front of MAAS, clean up command line/API description
 
- -- Julian Edwards <julian.edwards@canonical.com>  Fri, 21 Mar 2014 21:57:26 +1000
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 28 Mar 2014 10:43:53 -0400
 
 maas (1.5+bzr1977-0ubuntu1) trusty; urgency=low
 

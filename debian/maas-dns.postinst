@@ -37,8 +37,7 @@ fi
 if [ "$1" = "configure" ]; then
     # If the /etc/bind/named.conf.options is not set up yet, do it now.
     # This might happen because of an upgrade from an older package.
-    grep -q "named.conf.options.inside.maas" /etc/bind/named.conf.options
-    if [ "$?" != 0 ]; then
+    if ! grep -qs "named.conf.options.inside.maas" /etc/bind/named.conf.options; then
         maas-region-admin edit_named_options --config-path /etc/bind/named.conf.options
         invoke-rc.d bind9 restart || true
     fi
