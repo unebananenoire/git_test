@@ -31,6 +31,19 @@ maas (1.5+bzr2203-0ubuntu1) UNRELEASED; urgency=low
       explain what each package does
     - drop "Ubuntu" in front of MAAS, clean up command line/API description
 
+   [Jeroen Vermeulen]
+   * debian/maas-cluster-controller.install:
+     - Don't install obsolete shell-based configuration for old import scripts.
+     - Don't install obsolete maas-import-ephemerals script.
+   * debian/maas-cluster-controller.lintian-overrides:
+     - Remove override for maas-import-ephemerals.
+   * debian/maas-cluster-controller.postinst:
+     - Don't set up old tgt config linking into /var/lib/maas/ephemerals.
+   * debian/maas-region-controller-min.dirs:
+     - Don't create /var/lib/maas/tftp.
+   * debian/patches/02-pserv-conf.patch:
+     - Refresh patch to match change in pserv.yaml.
+
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 28 Mar 2014 10:43:53 -0400
 
 maas (1.5+bzr1977-0ubuntu1) trusty; urgency=low

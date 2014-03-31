@@ -21,16 +21,6 @@ create_log_dir() {
     chmod -R 775 /var/log/maas/oops
 }
 
-# XXX jtv 2014-03-27 bug=1295479: Is this still needed?
-configure_maas_tgt(){
-    # Set up iSCSI: add maas.conf to tgt conf.d.
-    local tgtcfg="/etc/tgt/targets.conf"
-    [ -d /etc/tgt/conf.d/ ] || 
-        echo "Warning! $tgtcfg did not exist" 1>&2;
-    mkdir -p /etc/tgt/conf.d/ /var/lib/maas/ephemeral/
-    ln -sf /var/lib/maas/ephemeral/tgt.conf /etc/tgt/conf.d/maas.conf
-}
-
 extract_cluster_uuid(){
     # Extract ClUSTER_UUID setting from config file $1.  This will work
     # both the cluster celery config (which is python) and the cluster
@@ -135,7 +125,6 @@ configure_pserv_generator(){
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     # logging
     create_log_dir
-    configure_maas_tgt
 fi
 
 if [ "$1" = "configure" ]; then
