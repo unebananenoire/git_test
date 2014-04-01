@@ -25,7 +25,7 @@ configure_maas_tgt() {
     # Ensure that iSCSI targets get re-defined on reboot.
     # Creates a softlink in /etc/tgt/conf.d/ that points to the current
     # boot images' tgt configuration.
-    mkdir -p /etc/tgt/conf.d /var/lib/maas/boot-resources/current/
+    mkdir -p /etc/tgt/conf.d
     ln -sf /var/lib/maas/boot-resources/current/maas.tgt /etc/tgt/conf.d/maas.conf
 }
 

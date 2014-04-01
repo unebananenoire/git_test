@@ -1,1 +1,2 @@
 etc/maas
+var/lib/maas/boot-resources
