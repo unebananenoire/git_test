@@ -2,3 +2,4 @@
 #
 # Enable launchpad personal package archives for squid-deb-proxy
 ppa.launchpad.net
+keyserver.ubuntu.com
