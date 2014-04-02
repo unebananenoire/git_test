@@ -43,7 +43,7 @@ maas (1.5+bzr2216-0ubuntu1) UNRELEASED; urgency=low
    * debian/maas-cluster-controller.lintian-overrides:
      - Remove override for maas-import-ephemerals.
    * debian/maas-cluster-controller.postinst:
-     - Don't set up old tgt config linking into /var/lib/maas/ephemerals.
+     - Make the tgt config link point to the new boot-resources dir.
    * debian/maas-region-controller-min.dirs:
      - Don't create /var/lib/maas/tftp.
    * debian/patches/02-pserv-conf.patch:
