@@ -1,5 +1,28 @@
 maas (1.5+bzr2221-0ubuntu1) UNRELEASED; urgency=medium
 
+  * New upstream bugfix release:
+    - Fix catching exceptions raised by twisted.conch.ssh.keys.Key.fromString
+    - Fix validationg in default NodeGroupInterface.broadcast_ip.
+    - Drop install-pxe-bootloader as it conflicts with newer import script.
+    - Remove references to old import script.
+    - Fix changes that cause overwriting of existing entries.
+    - Fix inappropriate ValidationError when defining networks with nested
+      (but non-identical) address ranges.
+    - Fix issue where if a node does not provide an architecture type on dhcp
+      request, or no other boot method is available for that architecture,
+      the node still uses pxelinux.0 to boot.
+    - Take an advisory lock to prevent concurrent creation of the
+      eventloops table.
+    - Remove the cloud_images_archive setting, as it conflicts with new
+      import script.
+    - Add a 'logout confirmation' page. Using this, the logout action is
+      protected against CSRF attacks because it uses a POST request, in
+      conjunction with Django's CSRF protection feature.
+    - Fix cluster listings when dealing with large number of clusters.
+    - Change list_boot_images() so that it can cope with a missing boot
+      images directory: this happens if the reporting task runs before the
+      images have been imported.
+
   [ Andres Rodriguez ]
   * debian/maas-cluster-controller.install: Install UEFI templates
   * debian/maas-cluster-controller.dirs: Create 'boot-resources' dir.
