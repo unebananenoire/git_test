@@ -1,6 +1,24 @@
-maas (1.5+bzr2216-0ubuntu1) UNRELEASED; urgency=low
+maas (1.5+bzr2221-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New upstream release
+  [ Andres Rodriguez ]
+  * debian/maas-cluster-controller.install: Install UEFI templates
+  * debian/maas-cluster-controller.dirs: Create 'boot-resources' dir.
+
+  [ Jason Hobbs ]
+  * debian/extras/99-maas: Allow access to keyserver.ubuntu.com via
+    squid-deb-proxy.
+ 
+  [Jeroen Vermeulen]
+  * debian/maas-cluster-controller.postinst:
+    - Make the tgt config link point to the new boot-resources dir.
+  * debian/maas-region-controller-min.dirs:
+    - Don't create /var/lib/maas/tftp.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 03 Apr 2014 13:45:02 -0400
+
+maas (1.5+bzr2204-0ubuntu1) trusty; urgency=low
+
+  * New upstream release (LP: #1281881)
 
   [ Andres Rodriguez ]
   * debian/maas-region-controller-min.templates: Set installation note to false
@@ -11,12 +29,7 @@ maas (1.5+bzr2216-0ubuntu1) UNRELEASED; urgency=low
   * make sure maas_longpoll rabbitmq user is created/with correct password on
     a package reconfigure.
   * debian/maas-dns.postinst: Fix upgrade setup of named.conf.options.
-  * debian/maas-cluster-controller.install: Install UEFI templates
-  * debian/maas-cluster-controller.dirs: Create 'boot-resources' dir.
-
-  [ Jason Hobbs ]
-  * debian/extras/99-maas: Allow access to keyserver.ubuntu.com via
-    squid-deb-proxy.
+  * debian/maas-cluster-controller.install: Install UEFI templates (LP: #1299143)
 
   [ Julian Edwards ]
   * debian/extas/maas: Echo warning to stderr so json stdout is not polluted
@@ -35,19 +48,6 @@ maas (1.5+bzr2216-0ubuntu1) UNRELEASED; urgency=low
     - clean up package descriptions, modernize, and more clearly/simply
       explain what each package does
     - drop "Ubuntu" in front of MAAS, clean up command line/API description
-
-   [Jeroen Vermeulen]
-   * debian/maas-cluster-controller.install:
-     - Don't install obsolete shell-based configuration for old import scripts.
-     - Don't install obsolete maas-import-ephemerals script.
-   * debian/maas-cluster-controller.lintian-overrides:
-     - Remove override for maas-import-ephemerals.
-   * debian/maas-cluster-controller.postinst:
-     - Make the tgt config link point to the new boot-resources dir.
-   * debian/maas-region-controller-min.dirs:
-     - Don't create /var/lib/maas/tftp.
-   * debian/patches/02-pserv-conf.patch:
-     - Refresh patch to match change in pserv.yaml.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 28 Mar 2014 10:43:53 -0400
 
