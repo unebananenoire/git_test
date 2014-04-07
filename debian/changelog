@@ -1,27 +1,34 @@
 maas (1.5+bzr2221-0ubuntu1) UNRELEASED; urgency=medium
 
   * New upstream bugfix release:
-    - Fix catching exceptions raised by twisted.conch.ssh.keys.Key.fromString
-    - Fix validationg in default NodeGroupInterface.broadcast_ip.
+    - Fix catching exceptions raised by
+      twisted.conch.ssh.keys.Key.fromString (LP: #1298788)
+    - Fix validationg in default NodeGroupInterface.broadcast_ip making it
+      optional. (LP: #1299374)
     - Drop install-pxe-bootloader as it conflicts with newer import script.
     - Remove references to old import script.
     - Fix changes that cause overwriting of existing entries.
     - Fix inappropriate ValidationError when defining networks with nested
-      (but non-identical) address ranges.
+      (but non-identical) address ranges. (LP: #1299114)
     - Fix issue where if a node does not provide an architecture type on dhcp
       request, or no other boot method is available for that architecture,
-      the node still uses pxelinux.0 to boot.
+      the node still uses pxelinux.0 to boot. (LP: #1300285)
     - Take an advisory lock to prevent concurrent creation of the
-      eventloops table.
+      eventloops table. (LP: #1300363)
     - Remove the cloud_images_archive setting, as it conflicts with new
-      import script.
+      import script. (LP: #1300587)
     - Add a 'logout confirmation' page. Using this, the logout action is
       protected against CSRF attacks because it uses a POST request, in
-      conjunction with Django's CSRF protection feature.
-    - Fix cluster listings when dealing with large number of clusters.
+      conjunction with Django's CSRF protection feature. (LP: #1298790)
+    - Fix cluster listings when dealing with large number of clusters by
+      paginating it. (LP: #1301242)
     - Change list_boot_images() so that it can cope with a missing boot
       images directory: this happens if the reporting task runs before the
-      images have been imported.
+      images have been imported. (LP: #213984)
+    - Fix internal server error on fast path installer. (LP: #1293676)
+    - Fix uploading files using maas-cli. (LP: #1187826)
+    - Fix SM15k Invalid Power Control and Fix enlisting machines with
+      2.0 api. (LP: #1302818, LP: #1302819)
 
   [ Andres Rodriguez ]
   * debian/maas-cluster-controller.install: Install UEFI templates
