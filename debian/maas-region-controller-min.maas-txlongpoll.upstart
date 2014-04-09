@@ -15,7 +15,7 @@ env longpoll_pass=""
 env longpoll_vhost="/maas_longpoll"
 
 pre-start script
-	if [ -f /usr/sbin/rabbitmqctl ] && [ ! /usr/sbin/rabbitmqctl list_user_permissions "$longpoll_user" 1>/dev/null 2>&1 ]; then
+	if [ -f /usr/sbin/rabbitmqctl ] && ! /usr/sbin/rabbitmqctl list_user_permissions "$longpoll_user" 1>/dev/null 2>&1; then
 		longpoll_pass=`/bin/grep "password" /etc/maas/txlongpoll.yaml | cut -d'"' -f2`
 		/usr/sbin/rabbitmqctl add_user "$longpoll_user" "$longpoll_pass"
 		/usr/sbin/rabbitmqctl add_vhost "$longpoll_vhost"
