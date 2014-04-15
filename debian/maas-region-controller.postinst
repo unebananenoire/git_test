@@ -240,7 +240,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	fi
 
 	# Display installation note
-	db_input high maas/installation-note || true
+	db_input low maas/installation-note || true
 	db_go
 
 elif [ -n "$DEBCONF_RECONFIGURE" ]; then
