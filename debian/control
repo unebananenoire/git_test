@@ -87,6 +87,7 @@ Section: python
 Architecture: all
 Depends: python-amqp,
          python-celery,
+         python-crochet,
          python-distro-info,
          python-formencode,
          python-jsonschema,
