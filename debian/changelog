@@ -4,7 +4,7 @@ maas (1.6+bzr2367-0ubuntu1) UNRELEASED; urgency=medium
 
   [Diogo Matsubara]
   * debian/control:
-    - maas-cluster-controller depends on syslinux-dev (LP: #1328659)
+    - maas-cluster-controller depends on syslinux-dev | syslinux-common (LP: #1328659)
 
   [Jeroen Vermeulen]
   * debian/extras/99-maas-sudoers:
