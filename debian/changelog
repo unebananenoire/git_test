@@ -21,6 +21,9 @@ maas (1.6+bzr2367-0ubuntu1) UNRELEASED; urgency=medium
   [ Greg Lutostanski ]
    * debian/control:
     - maas-cluster-controller depends on grub-common
+   * debian/control:
+    - maas-provisioningserver not maas-cluster-controller depends on
+      python-seamicroclient (LP: #1332532)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 15 Apr 2014 14:41:32 -0400
 
