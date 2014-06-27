@@ -103,6 +103,7 @@ configure_cluster_authbind() {
         fi
     fi
     echo '0.0.0.0/0:68,69' >/etc/authbind/byuid/$MAAS_UID
+    echo '::/0,68-69' >>/etc/authbind/byuid/$MAAS_UID
     chown maas:maas /etc/authbind/byuid/$MAAS_UID
     chmod 700 /etc/authbind/byuid/$MAAS_UID
 }

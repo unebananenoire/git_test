@@ -26,6 +26,10 @@ maas (1.6+bzr2367-0ubuntu1) UNRELEASED; urgency=medium
     - maas-provisioningserver not maas-cluster-controller depends on
       python-seamicroclient (LP: #1332532)
 
+  [ Gavin Panella ]
+   * debian/maas-cluster-controller.postinst
+    - Allow maas-pserv to bind to all IPv6 addresses too.
+
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 15 Apr 2014 14:41:32 -0400
 
 maas (1.5+bzr2252-0ubuntu1) trusty; urgency=medium
