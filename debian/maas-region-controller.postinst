@@ -195,6 +195,12 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	chown -R maas:maas /var/log/maas
 	chmod -R 775 /var/log/maas/oops
 
+    # Main syslog file.
+    if [ ! -f /var/log/maas/maas.log ]; then
+        touch /var/log/maas/maas.log
+    fi
+    chown syslog:syslog /var/log/maas/maas.log
+
 	# Create log directory base
 	mkdir -p /var/log/maas/rsyslog
 	chown -R syslog:syslog /var/log/maas/rsyslog

@@ -11,4 +11,7 @@ case "$1" in
                 fi
 esac
 
+rm -f /etc/rsyslog/99-maas.conf
+
+
 #DEBHELPER#
