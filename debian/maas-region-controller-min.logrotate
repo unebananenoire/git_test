@@ -1,4 +1,4 @@
-/var/log/maas/maas.log {
+/var/log/maas/maas-django.log {
  rotate 5
  weekly
  compress

@@ -120,8 +120,8 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
     #########################################################
 
     # Give appropriate permissions
-    if [ ! -f /var/log/maas/maas.log ]; then
-        touch /var/log/maas/maas.log
+    if [ ! -f /var/log/maas/maas-django.log ]; then
+        touch /var/log/maas/maas-django.log
     fi
     chown -R maas:maas /var/log/maas
     chmod -R 775 /var/log/maas/oops

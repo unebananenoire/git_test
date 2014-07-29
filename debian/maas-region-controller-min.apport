@@ -29,7 +29,7 @@ def add_info(report, ui):
         attach_conffiles(report,'maas')
 
     # Attaching log files
-    attach_file_if_exists(report, '/var/log/maas/maas.log', 'MAASLog')
+    attach_file_if_exists(report, '/var/log/maas/maas-django.log', 'MAASLog')
     attach_file_if_exists(report, '/var/log/maas/pserv.log', 'MAASPservLog')
     attach_file_if_exists(report, '/var/log/maas/txlongpoll.log', 'MAAStxlongpollLog')
 
