@@ -9,7 +9,7 @@ add_user_group(){
 	adduser --quiet --system --group --no-create-home "$user" || true
 }
 
-ln -sf /usr/share/maas/maas-rsyslog.conf /etc/rsyslog/99-maas.conf
+ln -sf /usr/share/maas/maas-rsyslog.conf /etc/rsyslog.d/99-maas.conf
 
 add_user_group
 
