@@ -1,4 +1,4 @@
-maas (1.6+bzr2367-0ubuntu3) UNRELEASED; urgency=medium
+maas (1.6+bzr2367-0ubuntu4) UNRELEASED; urgency=medium
 
   * UNRELEASED
 
@@ -41,8 +41,9 @@ maas (1.6+bzr2367-0ubuntu3) UNRELEASED; urgency=medium
      debian/maas-region-controller-min.postinst
      debian/maas-region-controller.postinst
     - Install /var/log/maas/maas.log as a syslog file.
+    - Ensure logging is set up for upgrades 
 
- -- Julian Edwards <julian.edwards@canonical.com>  Tue, 29 Jul 2014 11:49:39 +0100
+ -- Julian Edwards <julian.edwards@canonical.com>  Wed, 30 Jul 2014 18:07:50 +0100
 
 maas (1.5+bzr2252-0ubuntu1) trusty; urgency=medium
 

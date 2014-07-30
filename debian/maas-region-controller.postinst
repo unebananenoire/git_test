@@ -144,6 +144,27 @@ configure_maas_squid_deb_proxy() {
              /usr/share/maas/conf/99-maas
 }
 
+configure_logging() {
+	# Give appropriate permissions
+	if [ ! -f /var/log/maas/maas-django.log ]; then
+		touch /var/log/maas/maas-django.log
+	fi
+	chown -R maas:maas /var/log/maas
+	chmod -R 775 /var/log/maas/oops
+
+	# Main syslog file.
+	if [ ! -f /var/log/maas/maas.log ]; then
+		touch /var/log/maas/maas.log
+	fi
+	chown syslog:syslog /var/log/maas/maas.log
+
+	# Create log directory base
+	mkdir -p /var/log/maas/rsyslog
+	chown -R syslog:syslog /var/log/maas/rsyslog
+	# Make sure rsyslog reads our config
+	invoke-rc.d rsyslog restart
+}
+
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	#########################################################
 	################ Folder Permissions  ####################
@@ -188,24 +209,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	################  Configure Logging  ####################
 	#########################################################
 
-	# Give appropriate permissions
-	if [ ! -f /var/log/maas/maas-django.log ]; then
-		touch /var/log/maas/maas-django.log
-	fi
-	chown -R maas:maas /var/log/maas
-	chmod -R 775 /var/log/maas/oops
-
-	# Main syslog file.
-	if [ ! -f /var/log/maas/maas.log ]; then
-		touch /var/log/maas/maas.log
-	fi
-	chown syslog:syslog /var/log/maas/maas.log
-
-	# Create log directory base
-	mkdir -p /var/log/maas/rsyslog
-	chown -R syslog:syslog /var/log/maas/rsyslog
-	# Make sure rsyslog reads our config
-	invoke-rc.d rsyslog restart
+	configure_logging
 
 	#########################################################
 	################### Squid-deb-proxy  ####################
@@ -261,6 +265,9 @@ elif [ -n "$DEBCONF_RECONFIGURE" ]; then
 	configure_maas_txlongpoll_rabbitmq_user
 
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
+	# Logging changed at r2611, ensure it is set up.
+	configure_logging
+
 	# If upgrading to any later package version, then upgrade db.
 	invoke-rc.d apache2 stop || true
 
