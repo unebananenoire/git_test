@@ -165,6 +165,12 @@ configure_logging() {
 	invoke-rc.d rsyslog restart
 }
 
+configure_third_party_log_symlinks() {
+	ln -s /var/log/apache2 /var/log/maas/
+	ln -s /var/log/squid3 /var/log/maas/
+	ln -s /var/log/squid-deb-proxy /var/log/maas/
+}
+
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	#########################################################
 	################ Folder Permissions  ####################
@@ -210,6 +216,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	#########################################################
 
 	configure_logging
+	configure_third_party_log_symlinks
 
 	#########################################################
 	################### Squid-deb-proxy  ####################
@@ -267,6 +274,7 @@ elif [ -n "$DEBCONF_RECONFIGURE" ]; then
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
 	# Logging changed at r2611, ensure it is set up.
 	configure_logging
+	configure_third_party_log_symlinks
 
 	# If upgrading to any later package version, then upgrade db.
 	invoke-rc.d apache2 stop || true
