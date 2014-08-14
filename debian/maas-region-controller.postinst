@@ -166,9 +166,9 @@ configure_logging() {
 }
 
 configure_third_party_log_symlinks() {
-	ln -s /var/log/apache2 /var/log/maas/
-	ln -s /var/log/squid3 /var/log/maas/
-	ln -s /var/log/squid-deb-proxy /var/log/maas/
+	ln -sf /var/log/apache2 /var/log/maas/
+	ln -sf /var/log/squid3 /var/log/maas/
+	ln -sf /var/log/squid-deb-proxy /var/log/maas/
 }
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then

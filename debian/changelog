@@ -49,6 +49,10 @@ maas (1.6+bzr2644-0ubuntu1) UNRELEASED; urgency=medium
    - Add symlinks for squid3, squid-deb-proxy and apache log directories to
      /var/log/maas.
 
+  [ Andres Rodriguez ]
+  * debian/maas-region-controller.postinst: Force symlink creation
+    for external logs.
+
  -- Graham Binns <graham.binns@canonical.com>  Fri, 01 Aug 2014 09:44:02 +0100
 
 maas (1.5+bzr2252-0ubuntu1) trusty; urgency=medium
