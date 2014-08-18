@@ -1,11 +1,13 @@
-maas (1.6+bzr2644-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.6+bzr2737-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
 
   [Diogo Matsubara]
   * debian/control:
-    - maas-cluster-controller depends on syslinux-dev | syslinux-common (LP: #1328659)
-    - python-maas-provisioningserver depends on python-paramiko (LP: #1334401)
+    - maas-cluster-controller depends on syslinux-dev | 
+      syslinux-common (LP: #1328659)
+    - python-maas-provisioningserver depends on
+      python-paramiko (LP: #1334401)
 
   [Jeroen Vermeulen]
   * debian/extras/99-maas-sudoers:
@@ -14,13 +16,13 @@ maas (1.6+bzr2644-0ubuntu1) UNRELEASED; urgency=medium
     - Stop installing obsolete file bootresources.yaml.
 
   [ Raphaël Badin ]
-   * debian/control:
+  * debian/control:
     - maas-cluster-controller depends on python-pexpect
-   * debian/extras/99-maas-sudoers:
+  * debian/extras/99-maas-sudoers:
     - Add rule 'maas-dhcp-server stop' job.
 
   [ Greg Lutostanski ]
-   * debian/control:
+  * debian/control:
     - maas-cluster-controller depends on grub-common
     - maas-provisioningserver not maas-cluster-controller depends on
       python-pexpect (LP: #1352273)
@@ -28,7 +30,7 @@ maas (1.6+bzr2644-0ubuntu1) UNRELEASED; urgency=medium
       python-seamicroclient (LP: #1332532)
 
   [ Gavin Panella ]
-   * debian/maas-cluster-controller.postinst
+  * debian/maas-cluster-controller.postinst
     - Allow maas-pserv to bind to all IPv6 addresses too.
 
   [ Julian Edwards ]
@@ -36,24 +38,27 @@ maas (1.6+bzr2644-0ubuntu1) UNRELEASED; urgency=medium
     debian/maas-region-controller-min.logrotate
     debian/maas-region-controller-min.postinst
     debian/maas-region-controller.postinst
-   - Change the log file name maas.log to maas-django.log
-  *  debian/maas-cluster-controller.postinst
-     debian/maas-common.install
-     debian/maas-region-controller-min.postinst
-     debian/maas-region-controller.postinst
+    - Change the log file name maas.log to maas-django.log
+  * debian/maas-cluster-controller.postinst
+    debian/maas-common.install
+    debian/maas-region-controller-min.postinst
+    debian/maas-region-controller.postinst
     - Install /var/log/maas/maas.log as a syslog file.
     - Ensure logging is set up for upgrades 
 
   [ Graham Binns ]
   * debian/maas-region-controller.postinst:
-   - Add symlinks for squid3, squid-deb-proxy and apache log directories to
-     /var/log/maas.
+    - Add symlinks for squid3, squid-deb-proxy and apache log directories to
+      /var/log/maas.
 
   [ Andres Rodriguez ]
   * debian/maas-region-controller.postinst: Force symlink creation
     for external logs.
+  * debian/maas-region-controller.postinst: Do not change celery's
+    rabbitmq password on upgrade that to not lock remote
+    Cluster Controllers if upgrading from 1.5+. (LP: #1300507)
 
- -- Graham Binns <graham.binns@canonical.com>  Fri, 01 Aug 2014 09:44:02 +0100
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 14 Aug 2014 18:54:32 -0400
 
 maas (1.5+bzr2252-0ubuntu1) trusty; urgency=medium
 
