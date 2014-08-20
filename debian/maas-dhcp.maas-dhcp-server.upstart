@@ -50,7 +50,7 @@ script
     # maas packages on saucy are only supported with newer isc-dhcp via
     # the cloud-archive.  See bug 1231693 for more information, including
     # a patch that would actually work to support all, but is complex.
-    
+
     mkdir -p $LEASES_DIR
     chown root:root $LEASES_DIR
     [ -e $LEASES_FILE ] || touch $LEASES_FILE

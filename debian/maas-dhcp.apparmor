@@ -1,3 +1,7 @@
+# Work around bug:
+# https://bugs.launchpad.net/ubuntu/+source/isc-dhcp/+bug/1186662
+capability dac_override,
+
 /run/maas/dhcp/ r,
 /run/maas/dhcp/** r,
 /run/maas/dhcp/*.pid lrw,
@@ -5,3 +9,4 @@
 /run/maas/dhcp/*.leases* lrw,
 /var/lib/maas/dhcp/dhcpd*.leases* lrw,
 /etc/maas/dhcpd.conf r,
+/etc/maas/dhcpd6.conf r,
