@@ -21,6 +21,10 @@ restart_rabbitmq(){
 	invoke-rc.d rabbitmq-server restart || true
 }
 
+ensure_rabbitmq_started(){
+	invoke-rc.d rabbitmq-server start || true
+}
+
 restart_postgresql(){
 	invoke-rc.d --force postgresql restart || true
 }
@@ -290,8 +294,7 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 	ipaddr="$RET"
 	configure_maas_default_url "$ipaddr"
 	configure_maas_squid_deb_proxy "$ipaddr"
-	# make sure rabbitmq is running
-	restart_rabbitmq
+	ensure_rabbitmq_started
 	configure_maas_txlongpoll_rabbitmq_user
 	if dpkg --compare-versions "$2" lt 1.5+bzr2252-0ubuntu1; then
 		# Handle celery/rabbitmq publishing
@@ -318,6 +321,10 @@ restart_squid_deb_proxy
 
 invoke-rc.d maas-txlongpoll restart || true
 invoke-rc.d maas-region-celery restart || true
+
+if [ -f /etc/init/maas-cluster-celery.conf ]; then
+	invoke-rc.d maas-cluster-celery start || true
+fi
 
 db_stop
 

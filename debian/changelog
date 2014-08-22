@@ -45,6 +45,9 @@ maas (1.7.0+bzr2772-0ubuntu1) UNRELEASED; urgency=medium
     debian/maas-region-controller.postinst
     - Install /var/log/maas/maas.log as a syslog file.
     - Ensure logging is set up for upgrades 
+  * debian/maas-region-controller.postinst: Don't restart RabbitMQ on
+    upgrades, just ensure it's running.  Should prevent a race with the
+    cluster celery restarting.
 
   [ Graham Binns ]
   * debian/maas-region-controller.postinst:
@@ -57,6 +60,9 @@ maas (1.7.0+bzr2772-0ubuntu1) UNRELEASED; urgency=medium
   * debian/maas-region-controller.postinst: Do not change celery's
     rabbitmq password on upgrade that to not lock remote
     Cluster Controllers if upgrading from 1.5+. (LP: #1300507)
+  * debian/maas-region-controller.postinst: Ensure cluster celery is
+    started if it also runs on the region.
+
 
  -- Julian Edwards <julian.edwards@canonical.com>  Wed, 20 Aug 2014 11:16:20 +1000
 
