@@ -1,6 +1,29 @@
-maas (1.7.0+bzr2772-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.7.0~beta1+bzr2783-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
+
+  [ Jeroen Vermeulen ]
+  * debian/extras/99-maas-sudoers
+    debian/maas-dhcp.maas-dhcp-server.upstart
+    debian/maas-dhcp.maas-dhcpv6-server.upstart
+    debian/maas-dhcp.postinst
+    debian/rules
+    - Add second DHCP server instance for IPv6.
+
+  [ Julian Edwards ]
+  * debian/maas-region-controller.postinst: Don't restart RabbitMQ on
+    upgrades, just ensure it's running.  Should prevent a race with the
+    cluster celery restarting.
+
+  [ Andres Rodriguez ]
+  * debian/maas-region-controller.postinst: Ensure cluster celery is
+    started if it also runs on the region.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 21 Aug 2014 19:36:30 -0400
+
+maas (1.7.0~beta1+bzr2781-0ubuntu1) utopic; urgency=medium
+
+  * New upstream release, 1.7.0 Beta 1
 
   [Diogo Matsubara]
   * debian/control:
@@ -14,12 +37,6 @@ maas (1.7.0+bzr2772-0ubuntu1) UNRELEASED; urgency=medium
     - Let maas user import, including sudo tgt-admin and sudo uec2roottar.
   * debian/maas-cluster-controller.install:
     - Stop installing obsolete file bootresources.yaml.
-  * debian/extras/99-maas-sudoers
-    debian/maas-dhcp.maas-dhcp-server.upstart
-    debian/maas-dhcp.maas-dhcpv6-server.upstart
-    debian/maas-dhcp.postinst
-    debian/rules
-    - Add second DHCP server instance for IPv6.
 
   [ Raphaël Badin ]
   * debian/control:
@@ -51,9 +68,6 @@ maas (1.7.0+bzr2772-0ubuntu1) UNRELEASED; urgency=medium
     debian/maas-region-controller.postinst
     - Install /var/log/maas/maas.log as a syslog file.
     - Ensure logging is set up for upgrades 
-  * debian/maas-region-controller.postinst: Don't restart RabbitMQ on
-    upgrades, just ensure it's running.  Should prevent a race with the
-    cluster celery restarting.
 
   [ Graham Binns ]
   * debian/maas-region-controller.postinst:
@@ -66,11 +80,8 @@ maas (1.7.0+bzr2772-0ubuntu1) UNRELEASED; urgency=medium
   * debian/maas-region-controller.postinst: Do not change celery's
     rabbitmq password on upgrade that to not lock remote
     Cluster Controllers if upgrading from 1.5+. (LP: #1300507)
-  * debian/maas-region-controller.postinst: Ensure cluster celery is
-    started if it also runs on the region.
 
-
- -- Julian Edwards <julian.edwards@canonical.com>  Wed, 20 Aug 2014 11:16:20 +1000
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 21 Aug 2014 14:05:40 -0400
 
 maas (1.5+bzr2252-0ubuntu1) trusty; urgency=medium
 
