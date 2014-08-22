@@ -1,17 +1,17 @@
-description "MAAS instance of ISC DHCP server for IPv4"
+description "MAAS instance of ISC DHCP server for IPv6"
 author "Jeroen Vermeulen <jtv@canonical.com>"
 
 start on runlevel [2345]
 stop on runlevel [!2345]
 
-env CONFIG_FILE=/etc/maas/dhcpd.conf
+env CONFIG_FILE=/etc/maas/dhcpd6.conf
 env PID_DIR=/run/maas/dhcp
-env PID_FILE=/run/maas/dhcp/dhcpd.pid
+env PID_FILE=/run/maas/dhcp/dhcpd6.pid
 env LEASES_DIR=/var/lib/maas/dhcp
-env LEASES_FILE=/var/lib/maas/dhcp/dhcpd.leases
+env LEASES_FILE=/var/lib/maas/dhcp/dhcpd6.leases
 
 # This is where we write what interfaces dhcpd should listen on.
-env INTERFACES_FILE=/var/lib/maas/dhcpd-interfaces
+env INTERFACES_FILE=/var/lib/maas/dhcpd6-interfaces
 
 pre-start script
     if [ ! -f $CONFIG_FILE ]; then
@@ -26,10 +26,10 @@ pre-start script
         exit 0
     fi
 
-    if ! /usr/sbin/dhcpd -t -q -4 -cf $CONFIG_FILE > /dev/null 2>&1; then
+    if ! /usr/sbin/dhcpd -t -q -6 -cf $CONFIG_FILE > /dev/null 2>&1; then
         echo "dhcpd self-test failed.  Please fix the config file."
         echo "The error was: "
-        /usr/sbin/dhcpd -t -4 -cf $CONFIG_FILE
+        /usr/sbin/dhcpd -t -6 -cf $CONFIG_FILE
         stop
         exit 0
     fi
@@ -61,5 +61,5 @@ script
         fi
     done
 
-    exec /usr/sbin/dhcpd -user dhcpd -group dhcpd -f -q -4 -pf $PID_FILE -cf $CONFIG_FILE -lf $LEASES_FILE $INTERFACES
+    exec /usr/sbin/dhcpd -user dhcpd -group dhcpd -f -q -6 -pf $PID_FILE -cf $CONFIG_FILE -lf $LEASES_FILE $INTERFACES
 end script

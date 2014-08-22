@@ -14,6 +14,7 @@ override_dh_installinit:
 	dh_installinit --name maas-pserv
 	dh_installinit --name maas-cluster-celery
 	dh_installinit --name maas-dhcp-server
+	dh_installinit --name maas-dhcpv6-server
 
 override_dh_auto_build:
 	dh_auto_build

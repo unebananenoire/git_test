@@ -2,14 +2,17 @@
 
 set -e
 
-if [ "$1" = "configure" ]; then
-   invoke-rc.d isc-dhcp-server stop
+if [ "$1" = "configure" ]
+then
+    # Stop the dhcpd instance that came with the isc-dhcp-server package.
+    # We run our own dhcpd instances.
+    invoke-rc.d isc-dhcp-server stop
 
-   dhcpd_prof="/etc/apparmor.d/usr.sbin.dhcpd"
-   if [ -f "${dhcpd_prof}" ] && command -v apparmor_parser >/dev/null 2>&1
-   then
-      apparmor_parser --replace --write-cache --skip-read-cache "${dhcpd_prof}" || true
-   fi
+    dhcpd_prof="/etc/apparmor.d/usr.sbin.dhcpd"
+    if [ -f "${dhcpd_prof}" ] && command -v apparmor_parser >/dev/null 2>&1
+    then
+       apparmor_parser --replace --write-cache --skip-read-cache "${dhcpd_prof}" || true
+    fi
 fi
 
 #DEBHELPER#

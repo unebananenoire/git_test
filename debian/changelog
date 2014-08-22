@@ -14,6 +14,12 @@ maas (1.7.0+bzr2772-0ubuntu1) UNRELEASED; urgency=medium
     - Let maas user import, including sudo tgt-admin and sudo uec2roottar.
   * debian/maas-cluster-controller.install:
     - Stop installing obsolete file bootresources.yaml.
+  * debian/extras/99-maas-sudoers
+    debian/maas-dhcp.maas-dhcp-server.upstart
+    debian/maas-dhcp.maas-dhcpv6-server.upstart
+    debian/maas-dhcp.postinst
+    debian/rules
+    - Add second DHCP server instance for IPv6.
 
   [ Raphaël Badin ]
   * debian/control:
