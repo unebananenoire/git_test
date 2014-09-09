@@ -32,6 +32,9 @@ debian/tmp/etc/maas/templates/commissioning-user-data
 # Install driver configuration file
 debian/tmp/etc/maas/drivers.yaml
 
+# Install winrm certificate generation script
+debian/tmp/usr/bin/maas-generate-winrm-cert
+
 # Install all other stuff
 debian/extras/maas-region-admin usr/sbin
 debian/extras/maas-region-celeryd usr/sbin
