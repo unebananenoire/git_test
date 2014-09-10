@@ -1,8 +1,16 @@
-#!/bin/sh
-if [ "$(id -u)" != "0" ]; then
-	echo "This utility may only be run as root." 1>&2
-	exit 1
-fi
-export PYTHONPATH="/usr/share/maas${PYTHONPATH:+:}${PYTHONPATH}"
-export DJANGO_SETTINGS_MODULE="maas.settings"
-exec /usr/bin/django-admin "$@"
+#!/usr/bin/python
+import os
+import sys
+
+user_id = os.getuid()
+if user_id != 0:
+    print("This utility may only be run as root.")
+    sys.exit(1)
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "maas.settings")
+sys.path.append('/usr/share/maas')
+
+from django.core import management
+
+if __name__ == "__main__":
+    management.execute_from_command_line()
