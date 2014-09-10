@@ -22,7 +22,7 @@ create_log_dir() {
 
     # Give appropriate permissions
     chown -R maas:maas /var/lib/maas/
-    chown -R maas:maas /var/log/maas
+    find /var/log/maas -not -user syslog -print0 | xargs -r0 chown maas:maas
     chmod -R 775 /var/log/maas/oops
     chown syslog:syslog /var/log/maas/maas.log
 }
