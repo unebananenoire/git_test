@@ -1,13 +1,4 @@
-maas (1.7.0~beta1+bzr2781-0ubuntu2) utopic; urgency=medium
-
-  [Louis Bouchard]
-  * debian/maas-cluster-controller.postinst:
-    - Exclude /var/log/maas/rsyslog when changing ownership
-      (LP: #1346703)
-
- -- Louis Bouchard <louis.bouchard@canonical.com>  Tue, 09 Sep 2014 15:53:05 +0200
-
-maas (1.7.0~beta1+bzr2783-0ubuntu2) UNRELEASED; urgency=medium
+maas (1.7.0~beta1+bzr2967-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
 
@@ -36,7 +27,12 @@ maas (1.7.0~beta1+bzr2783-0ubuntu2) UNRELEASED; urgency=medium
   * debian/extras/maas-region-admin: Bypass django-admin as it prints
     spurious messages to stdout (LP: #1365130).
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 21 Aug 2014 19:36:30 -0400
+  [Louis Bouchard]
+  * debian/maas-cluster-controller.postinst:
+    - Exclude /var/log/maas/rsyslog when changing ownership
+      (LP: #1346703)
+
+ -- Julian Edwards <julian.edwards@canonical.com>  Fri, 12 Sep 2014 10:31:21 +1000
 
 maas (1.7.0~beta1+bzr2781-0ubuntu1) utopic; urgency=medium
 
