@@ -28,6 +28,7 @@ debian/tmp/etc/maas/preseeds
 # Install templates
 debian/tmp/etc/maas/templates/dns
 debian/tmp/etc/maas/templates/commissioning-user-data
+debian/tmp/etc/maas/templates/deployment-user-data
 
 # Install driver configuration file
 debian/tmp/etc/maas/drivers.yaml

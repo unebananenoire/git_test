@@ -1,4 +1,4 @@
-maas (1.7.0~beta2+bzr2967-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.7.0~beta2+bzr2992-0ubuntu1) UNRELEASED; urgency=medium
 
   * New Upstream Release, Beta 2 Snapshot, bzr2967
 
@@ -9,6 +9,9 @@ maas (1.7.0~beta2+bzr2967-0ubuntu1) UNRELEASED; urgency=medium
     debian/maas-dhcp.postinst
     debian/rules
     - Add second DHCP server instance for IPv6.
+  * debian/maas-region-controller-min.install
+    debian/maas-region-controller-min.lintian-overrides
+    - Install deployment user-data: maas_configure_interfaces.py script.
 
   [ Julian Edwards ]
   * debian/maas-region-controller.postinst: Don't restart RabbitMQ on

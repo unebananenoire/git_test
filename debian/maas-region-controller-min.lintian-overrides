@@ -4,3 +4,4 @@ maas-region-controller: script-not-executable etc/maas/templates/commissioning-u
 maas-region-controller: script-not-executable etc/maas/templates/commissioning-user-data/snippets/maas_signal.py
 maas-region-controller: script-not-executable etc/maas/templates/commissioning-user-data/user_data.template
 maas-region-controller: script-not-executable etc/maas/templates/commissioning-user-data/snippets/maas_get.py
+maas-region-controller: script-not-executable etc/maas/templates/deployment-user-data/maas_configure_interfaces.py
