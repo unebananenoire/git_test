@@ -7,10 +7,6 @@ db_version 2.0
 
 RELEASE=`lsb_release -rs` || RELEASE=""
 
-restart_squid_deb_proxy() {
-    invoke-rc.d squid-deb-proxy restart || true
-}
-
 configure_region_http() {
     case $RELEASE in
         12.04|12.10|13.04)
@@ -51,19 +47,6 @@ get_default_route_ip() {
     ipaddr=${ipaddr#* inet }
     ipaddr=${ipaddr%%/*}
     echo $ipaddr
-}
-
-configure_maas_squid_deb_proxy() {
-    local ipaddr="$1"
-
-    if [ -e /usr/share/maas/conf/99-maas -a \
-        ! -L /etc/squid-deb-proxy/mirror-dstdomain.acl.d/99-maas ]; then
-        ln -sf /usr/share/maas/conf/99-maas \
-               /etc/squid-deb-proxy/mirror-dstdomain.acl.d/99-maas
-    fi
-
-    sed -i "s/\(^[a-zA-Z0-9\.\-].*\) # maasurl$/$ipaddr # maasurl/" \
-        /usr/share/maas/conf/99-maas
 }
 
 # Please keep this stanza until 14.10
@@ -111,7 +94,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
     # Set the IP address of the interface with default route
     if [ -n "$ipaddr" ]; then
         configure_maas_default_url "$ipaddr"
-        configure_maas_squid_deb_proxy "$ipaddr"
         db_set maas/default-maas-url "$ipaddr"
     fi
 
@@ -138,19 +120,12 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
     # Make sure rsyslog reads our config
     invoke-rc.d rsyslog restart
 
-    #########################################################
-    ################### Squid-deb-proxy  ####################
-    #########################################################
-    # Make sure squid-deb-proxy reads our config (99-maas)
-    restart_squid_deb_proxy
-
 elif [ -n "$DEBCONF_RECONFIGURE" ]; then
     # Set the IP address of the interface with default route
     db_get maas/default-maas-url
     ipaddr="$RET"
     if [ -n "$ipaddr" ]; then
         configure_maas_default_url "$ipaddr"
-        configure_maas_squid_deb_proxy "$ipaddr"
     fi
 
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
@@ -164,12 +139,9 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
     db_get maas/default-maas-url
     ipaddr="$RET"
     configure_maas_default_url "$ipaddr"
-    configure_maas_squid_deb_proxy "$ipaddr"
 fi
 
 invoke-rc.d apache2 restart || true
-
-restart_squid_deb_proxy
 
 db_stop
 

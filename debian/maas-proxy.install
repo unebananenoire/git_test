@@ -1,0 +1,3 @@
+debian/extras/maas-proxy.conf etc/maas/
+debian/extras/maas-proxy-common.sh usr/share/maas/
+debian/extras/squid3.override etc/init/

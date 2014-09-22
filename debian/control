@@ -60,7 +60,7 @@ Depends: apache2,
          python-maas-provisioningserver (= ${binary:Version}),
          python-djorm-ext-pgarray,
          rsyslog,
-         squid-deb-proxy,
+         maas-proxy | squid-deb-proxy,
          ${misc:Depends},
          ${python:Depends}
 Breaks: maas-region-controller ( <= 1.4+bzr1693+dfsg-0ubuntu3 )
@@ -233,3 +233,14 @@ Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Description: MAAS DNS server
  This package installs and configures a DNS server that can be used by
  MAAS, and enhances the overall MAAS user experience.
+
+Package: maas-proxy
+Architecture: all
+Depends: ${python:Depends},
+         ${misc:Depends},
+         squid3
+Breaks: squid-deb-proxy
+Replaces: squid-deb-proxy
+Description: MAAS Caching Proxy
+ This package installs and configures a Caching Proxy server that can be
+ used by MAAS. It enhances the overall MAAS user experience.

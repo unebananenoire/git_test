@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ]
+then
+    # Stop the squid3 instance that came with the isc-dhcp-server package.
+    # We run our own squid3 instances.
+    invoke-rc.d squid3 stop
+
+fi
+
+#DEBHELPER#
