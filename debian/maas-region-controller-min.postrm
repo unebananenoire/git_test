@@ -28,6 +28,11 @@ case "$1" in
             invoke-rc.d apache2 restart || true
         fi
 
+        # Delete symlink
+        if [ -L /etc/squid-deb-proxy/mirror-dstdomain.acl.d/99-maas ]; then
+            rm -rf /etc/squid-deb-proxy/mirror-dstdomain.acl.d/99-maas
+        fi
+
         # Delete any remaining / leftover file
         rm -rf /usr/share/maas/maas/
 esac
