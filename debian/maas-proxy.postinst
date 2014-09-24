@@ -8,6 +8,10 @@ then
     # We run our own squid3 instances.
     invoke-rc.d squid3 stop
 
+    # Ensure log folder is created.
+    mkdir -p /var/log/maas/proxy
+    chown -R proxy:proxy /var/log/maas/proxy
+
 fi
 
 #DEBHELPER#

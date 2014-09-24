@@ -150,6 +150,11 @@ configure_logging() {
 	chown -R syslog:syslog /var/log/maas/rsyslog
 	# Make sure rsyslog reads our config
 	invoke-rc.d rsyslog restart
+
+	# If proxy log dir exists, set correct permissions
+	if [ -d /var/log/maas/proxy ]; then
+		chown -R proxy:proxy /var/log/maas/proxy
+	fi
 }
 
 configure_third_party_log_symlinks() {

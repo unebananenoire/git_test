@@ -120,6 +120,11 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
     # Make sure rsyslog reads our config
     invoke-rc.d rsyslog restart
 
+    # If proxy log dir exists, set correct permissions
+    if [ -d /var/log/maas/proxy ]; then
+        chown -R proxy:proxy /var/log/maas/proxy
+    fi
+
 elif [ -n "$DEBCONF_RECONFIGURE" ]; then
     # Set the IP address of the interface with default route
     db_get maas/default-maas-url
