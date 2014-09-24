@@ -20,6 +20,8 @@ maas (1.7.0~beta3+bzr3067-0ubuntu1) trusty; urgency=medium
     - Don't install maas_local_celeryconfig_cluster.py any longer.
     - Don't symlink maas_local_celeryconfig_cluster.py from /etc to /usr.
     - Don't insert UUID into maas_local_celeryconfig_cluster.py.
+  * debian/maas-cluster-controller.maas-cluster-celery.upstart
+    - Don't pass -u/-g to start-cluster-controller; it no longer accepts them.
 
   [ Julian Edwards ]
   * debian/maas-region-controller.postinst: Don't restart RabbitMQ on

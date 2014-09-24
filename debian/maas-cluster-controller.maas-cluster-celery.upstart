@@ -26,5 +26,5 @@ script
     # Allow the cluster-controller process to read CLUSTER_UUID as set
     # in that config file.
     export CLUSTER_UUID
-    exec /usr/bin/authbind --deep /usr/sbin/maas-provision start-cluster-controller $MAAS_URL -u maas -g maas
+    exec /usr/bin/authbind --deep /usr/sbin/maas-provision start-cluster-controller $MAAS_URL
 end script
