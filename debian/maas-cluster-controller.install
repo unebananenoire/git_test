@@ -7,12 +7,6 @@ debian/tmp/etc/maas/pserv.yaml
 # Install cluster config file
 debian/tmp/etc/maas/maas_cluster.conf
 
-# Install celery config file
-debian/tmp/usr/share/maas/celeryconfig_cluster.py
-
-# Install local celery cluster config file
-debian/tmp/etc/maas/maas_local_celeryconfig_cluster.py
-
 # Install templates
 debian/tmp/etc/maas/templates/dhcp
 debian/tmp/etc/maas/templates/power

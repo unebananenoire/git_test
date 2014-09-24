@@ -1,4 +1,4 @@
-maas (1.7.0~beta3+bzr3043-0ubuntu1) trusty; urgency=medium
+maas (1.7.0~beta3+bzr3067-0ubuntu1) trusty; urgency=medium
 
   * New Upstream Snapshot, Beta 3 bzr3043
 
@@ -12,6 +12,14 @@ maas (1.7.0~beta3+bzr3043-0ubuntu1) trusty; urgency=medium
   * debian/maas-region-controller-min.install
     debian/maas-region-controller-min.lintian-overrides
     - Install deployment user-data: maas_configure_interfaces.py script.
+  * debian/maas-cluster-controller.links
+    debian/maas-cluster-controller.install
+    debian/maas-cluster-controller.postinst
+    - Reflect Celery removal changes made in trunk r3067.
+    - Don't install celeryconfig_cluster.py any longer. 
+    - Don't install maas_local_celeryconfig_cluster.py any longer.
+    - Don't symlink maas_local_celeryconfig_cluster.py from /etc to /usr.
+    - Don't insert UUID into maas_local_celeryconfig_cluster.py.
 
   [ Julian Edwards ]
   * debian/maas-region-controller.postinst: Don't restart RabbitMQ on

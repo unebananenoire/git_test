@@ -49,28 +49,23 @@ configure_cluster_uuid(){
     # maas_cluster.conf; otherwise, we want to generate one.
     local uuid
 
-
     if [ -n "$(extract_cluster_uuid /etc/maas/maas_cluster.conf)" ]; then
         # UUID is already set up.  Wonderful.
         return
     fi
 
     # Look for a UUID stored in the old location.
-    uuid="$(extract_cluster_uuid /etc/maas/maas_local_celeryconfig_cluster.py)"
-
-    if [ -z "$uuid" ]; then
-        # No UUID at all yet.  Generate one, and insert it into its
-        # placeholder in the old config location.
-        uuid="$(uuidgen)"
-        sed -i "s|^CLUSTER_UUID = None$|CLUSTER_UUID = '$uuid'|" \
-            /etc/maas/maas_local_celeryconfig_cluster.py
+    if [ -e '/etc/maas/maas_local_celeryconfig_cluster.py' ]; then
+        uuid="$(extract_cluster_uuid /etc/maas/maas_local_celeryconfig_cluster.py)"
     fi
 
-    # Either way, at this point we have a uuid, and it is configured in
-    # the old config location.
-    #
-    # Write it to maas_cluster.conf as well.  There is no initial
-    # placeholder in this file, so just append the setting.
+    if [ -z "$uuid" ]; then
+        # No UUID at all yet.  Generate one.
+        uuid="$(uuidgen)"
+    fi
+
+    # Write the uuid to maas_cluster.conf
+    # There is no initial placeholder in this file, so just append the setting.
     echo "CLUSTER_UUID=\"$uuid\"" >>/etc/maas/maas_cluster.conf
 }
 
@@ -150,14 +145,10 @@ if [ "$1" = "configure" ]; then
     configure_maas_tgt
     configure_pserv_generator
 
-    # These config files may contain a private cluster UUID.  Only maas
-    # can read them; only root can write them
-    chown root:maas \
-        /etc/maas/maas_local_celeryconfig_cluster.py \
-        /etc/maas/maas_cluster.conf
-    chmod 0640 \
-        /etc/maas/maas_local_celeryconfig_cluster.py \
-        /etc/maas/maas_cluster.conf
+    # This config file may contain a private cluster UUID.  Only maas
+    # can read it; only root can write it.
+    chown root:maas /etc/maas/maas_cluster.conf
+    chmod 0640 /etc/maas/maas_cluster.conf
 
     configure_cluster_uuid
     configure_cluster_authbind
