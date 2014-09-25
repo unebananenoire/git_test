@@ -24,7 +24,6 @@ case "$1" in
 				;;
 		esac
 		# remove var directory
-		rm -rf /var/lib/maas/celerybeat-cluster-schedule
 		DIR=/var/lib/maas
 		if [ "$(ls -A $DIR 2> /dev/null)" = "" ]; then
 			rm -rf /var/lib/maas

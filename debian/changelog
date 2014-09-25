@@ -1,4 +1,4 @@
-maas (1.7.0~beta3+bzr3067-0ubuntu1) trusty; urgency=medium
+maas (1.7.0~beta3+bzr3082-0ubuntu1) UNRELEASED; urgency=medium
 
   * New Upstream Snapshot, Beta 3 bzr3043
 
@@ -20,8 +20,6 @@ maas (1.7.0~beta3+bzr3067-0ubuntu1) trusty; urgency=medium
     - Don't install maas_local_celeryconfig_cluster.py any longer.
     - Don't symlink maas_local_celeryconfig_cluster.py from /etc to /usr.
     - Don't insert UUID into maas_local_celeryconfig_cluster.py.
-  * debian/maas-cluster-controller.maas-cluster-celery.upstart
-    - Don't pass -u/-g to start-cluster-controller; it no longer accepts them.
 
   [ Julian Edwards ]
   * debian/maas-region-controller.postinst: Don't restart RabbitMQ on
@@ -39,6 +37,13 @@ maas (1.7.0~beta3+bzr3067-0ubuntu1) trusty; urgency=medium
       of squid-deb-proxy; Depends on maas-proxy | squid-deb-proxy.
     - Add upstrart job.
     - Ensure squid3 is stopped as maas-proxy uses a caching proxy.
+  * Remove Celery references to cluster controller:
+    - Rename upstart job from maas-pserv to maas-cluster; rename
+      maas-cluster-celery to maas-cluster-register. Ensure services
+      are stopped on upgrade.
+    - debian/maintscript: Cleanup config files.
+  * Move some entries in debian/maintscript to
+    debian/maas-cluster-controller.maintscript
 
   [ Jason Hobbs ]
   * debian/maas-region-controller-min.install: Install

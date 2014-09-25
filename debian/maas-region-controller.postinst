@@ -297,8 +297,8 @@ invoke-rc.d apache2 restart || true
 invoke-rc.d maas-txlongpoll restart || true
 invoke-rc.d maas-region-celery restart || true
 
-if [ -f /etc/init/maas-cluster-celery.conf ]; then
-	invoke-rc.d maas-cluster-celery start || true
+if [ -f /etc/init/maas-cluster-register.conf ]; then
+	invoke-rc.d maas-cluster-register start || true
 fi
 
 db_stop

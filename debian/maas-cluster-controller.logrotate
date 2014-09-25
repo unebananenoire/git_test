@@ -4,6 +4,6 @@
  compress
  missingok
  postrotate
-  [ -r /var/run/maas-pserv.pid ] && kill -s USR2 $(cat /var/run/maas-pserv.pid) || true
+  [ -r /var/run/maas-cluster.pid ] && kill -s USR2 $(cat /var/run/maas-cluster.pid) || true
  endscript
 }
