@@ -1,5 +1,4 @@
 maas-region-controller: binary-without-manpage usr/sbin/maas
-maas-region-controller: binary-without-manpage usr/sbin/maas-region-celeryd
 maas-region-controller: script-not-executable etc/maas/templates/commissioning-user-data/snippets/maas_ipmi_autodetect.py
 maas-region-controller: script-not-executable etc/maas/templates/commissioning-user-data/snippets/maas_signal.py
 maas-region-controller: script-not-executable etc/maas/templates/commissioning-user-data/user_data.template

@@ -1,6 +1,6 @@
-maas (1.7.0~beta3+bzr3082-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.7.0~beta4+bzr3126-0ubuntu1) trusty; urgency=medium
 
-  * New Upstream Snapshot, Beta 3 bzr3043
+  * New Upstream Snapshot, Beta 4 bzr3126
 
   [ Jeroen Vermeulen ]
   * debian/extras/99-maas-sudoers
@@ -44,6 +44,10 @@ maas (1.7.0~beta3+bzr3082-0ubuntu1) UNRELEASED; urgency=medium
     - debian/maintscript: Cleanup config files.
   * Move some entries in debian/maintscript to
     debian/maas-cluster-controller.maintscript
+  * Remove usage of txlongpoll and rabbitmq-server. Handle upgrades
+    to ensure these are removed correctly.
+  * Remove all references to the MAAS celery daemon and config files
+    as we don't use it like that anymore.
 
   [ Jason Hobbs ]
   * debian/maas-region-controller-min.install: Install

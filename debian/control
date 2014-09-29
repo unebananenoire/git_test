@@ -74,7 +74,6 @@ Package: maas-region-controller
 Architecture: all
 Depends: maas-region-controller-min (= ${binary:Version}),
          postgresql (>= 9.1),
-         rabbitmq-server,
          ${misc:Depends},
          ${python:Depends}
 Recommends: openssh-server, maas-dns (= ${binary:Version})
@@ -85,8 +84,7 @@ Description: MAAS server complete region controller
 Package: python-maas-provisioningserver
 Section: python
 Architecture: all
-Depends: python-amqp,
-         python-celery,
+Depends: python-celery,
          python-crochet,
          python-distro-info,
          python-formencode,
@@ -115,7 +113,6 @@ Depends: python-amqp,
          ${python:Depends}
 Breaks: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3), maas-dhcp (<= 1.4+bzr1817+dfsg-0ubuntu1)
 Replaces: python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3), maas-dhcp (<= 1.4+bzr1817+dfsg-0ubuntu1)
-Conflicts: python-librabbitmq
 Description: MAAS server provisioning libraries
  This package provides the MAAS provisioning server python libraries.
 
@@ -172,7 +169,7 @@ Depends: apache2,
          ${misc:Depends},
          ${python:Depends}
 Suggests: ipmitool, libvirt-bin, amtterm
-Conflicts: tftpd-hpa, python-librabbitmq
+Conflicts: tftpd-hpa
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )
 Description: MAAS server cluster controller
@@ -202,11 +199,9 @@ Depends: python-amqp,
          python-tempita,
          python-twisted,
          python-txamqp,
-         python-txlongpoll,
          python-zope.interface,
          ${misc:Depends},
          ${python:Depends}
-Conflicts: python-librabbitmq
 Description: MAAS server Django web framework
  This package provides the Django web framework for MAAS.
 

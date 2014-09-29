@@ -16,7 +16,7 @@ from apport.hookutils import *
 
 def add_info(report, ui):
     response = ui.yesno("The contents of your /etc/maas/maas_local_settings.py, "
-                        "/etc/maas/txlongpoll.yaml, /etc/maas/pserv.yaml files "
+                        "/etc/maas/pserv.yaml files "
                         "may help developers diagnose your bug more "
                         "quickly.  However, it may contain sensitive "
                         "information.  Do you want to include it in your "
@@ -31,7 +31,6 @@ def add_info(report, ui):
     # Attaching log files
     attach_file_if_exists(report, '/var/log/maas/maas-django.log', 'MAASLog')
     attach_file_if_exists(report, '/var/log/maas/pserv.log', 'MAASPservLog')
-    attach_file_if_exists(report, '/var/log/maas/txlongpoll.log', 'MAAStxlongpollLog')
 
     # Attaching related packages info
     attach_related_packages(report, ['python-django-maas', 'apparmor'])
