@@ -212,6 +212,10 @@ if [ -f /etc/init/maas-cluster-register.conf ]; then
 	invoke-rc.d maas-cluster-register start || true
 fi
 
+if [ -f /etc/init/maas-cluster.conf ]; then
+	invoke-rc.d maas-cluster restart || true
+if
+
 db_stop
 
 #DEBHELPER#
