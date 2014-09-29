@@ -214,7 +214,7 @@ fi
 
 if [ -f /etc/init/maas-cluster.conf ]; then
 	invoke-rc.d maas-cluster restart || true
-if
+fi
 
 db_stop
 

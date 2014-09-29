@@ -4,15 +4,24 @@ set -e
 
 . /usr/share/debconf/confmodule
 
-#TODO: We need to set the correct version here, which would be the one right before
-# txlongoll is removed.
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" gt 1.7.0~beta3+bzr3066-0ubuntu1; then
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 1.7.0~beta4+bzr3127-0ubuntu1; then
+
     if [ -f /etc/init/maas-txlongpoll.conf ]; then
         invoke-rc.d maas-txlongpoll stop
     fi
+
+    if [ -f /var/log/maas/txlongpoll.log ]; then
+        rm -rf /var/log/maas/txlongpoll.log
+    fi
+
     if [ -f /etc/init/maas-region-celery.conf ]; then
         invoke-rc.d maas-region-celery stop
     fi
+
+    if [ -f /var/log/maas/celery-region.log ]; then
+        rm -rf /var/log/maas/celery-region.log
+    fi
+
 fi
 
 #DEBHELPER#
