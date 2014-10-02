@@ -4,6 +4,6 @@ Default:
 _Description: Ubuntu MAAS API address:
  The MAAS cluster controller and nodes need to contact the MAAS region
  controller API.  Set the URL at which they can reach the MAAS API remotely,
- e.g.  http://192.168.1.1/MAAS
+ e.g. "http://192.168.1.1/MAAS".
  Since nodes must be able to access this URL, localhost or 127.0.0.1 are not
  useful values here.
