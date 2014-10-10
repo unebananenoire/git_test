@@ -208,10 +208,6 @@ fi
 
 invoke-rc.d apache2 restart || true
 
-if [ -f /etc/init/maas-cluster-register.conf ]; then
-	invoke-rc.d maas-cluster-register start || true
-fi
-
 if [ -f /etc/init/maas-clusterd.conf ]; then
 	invoke-rc.d maas-clusterd restart || true
 fi
