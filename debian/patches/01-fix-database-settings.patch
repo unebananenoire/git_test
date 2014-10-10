@@ -1,5 +1,5 @@
---- maas-1.5+bzr1908.orig.orig/contrib/maas_local_settings.py	2014-02-07 11:22:59.330556956 -0500
-+++ maas-1.5+bzr1908.orig/contrib/maas_local_settings.py	2014-02-07 11:22:59.326556956 -0500
+--- a/contrib/maas_local_settings.py
++++ b/contrib/maas_local_settings.py
 @@ -7,7 +7,7 @@
  DEFAULT_MAAS_URL = "http://maas.internal.example.com/"
  
@@ -20,5 +20,5 @@
 +        'USER': 'maas',
 +        'PASSWORD': 'maas',
          'HOST': 'localhost',
-     }
- }
+         'OPTIONS': {
+             'isolation_level': ISOLATION_LEVEL_READ_COMMITTED,
