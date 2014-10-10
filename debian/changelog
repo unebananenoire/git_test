@@ -1,6 +1,6 @@
-maas (1.7.0~beta4+bzr3127-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.7.0~beta6+bzr3232-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New Upstream Snapshot, Beta 4 bzr3127
+  * New Upstream Snapshot, Beta 6 bzr3232
 
   [ Jeroen Vermeulen ]
   * debian/extras/99-maas-sudoers
@@ -48,6 +48,9 @@ maas (1.7.0~beta4+bzr3127-0ubuntu1) UNRELEASED; urgency=medium
     to ensure these are removed correctly.
   * Remove all references to the MAAS celery daemon and config files
     as we don't use it like that anymore.
+  * Rename init scripts:
+    - maas-cluster to maas-clusterd; maas-dhcp-server to maas-dhcpd;
+      maas-dhcpv6-server to maas-dhcpd.
 
   [ Jason Hobbs ]
   * debian/maas-region-controller-min.install: Install
