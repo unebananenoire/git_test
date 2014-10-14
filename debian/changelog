@@ -1,6 +1,6 @@
-maas (1.7.0~beta6+bzr3242-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.7.0~beta6+bzr3245-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New Upstream Snapshot, Beta 6 bzr3232
+  * New Upstream Snapshot, Beta 6 bzr3245
 
   [ Jeroen Vermeulen ]
   * debian/extras/99-maas-sudoers
@@ -19,16 +19,9 @@ maas (1.7.0~beta6+bzr3242-0ubuntu1) UNRELEASED; urgency=medium
     - Don't symlink maas_local_celeryconfig_cluster.py from /etc to /usr.
     - Don't insert UUID into maas_local_celeryconfig_cluster.py.
 
-  [ Julian Edwards ]
-  * debian/maas-region-controller.postinst: Don't restart RabbitMQ on
-    upgrades, just ensure it's running.  Should prevent a race with the
-    cluster celery restarting.
-
   [ Andres Rodriguez ]
-  * debian/maas-region-controller.postinst: Ensure cluster celery is
-    started if it also runs on the region.
   * debian/maas-region-controller-min.postrm: Cleanup lefover files.
-  * debian/maas-dhcp.postrm: Clean lefover configs.
+  * debian/maas-dhcp.postrm: Clean leftover configs.
   * Provide new maas-proxy package that replaces the usage of
     squid-deb-proxy:
     - debian/control: New maas-proxy package that replaces the usage
@@ -40,15 +33,12 @@ maas (1.7.0~beta6+bzr3242-0ubuntu1) UNRELEASED; urgency=medium
       maas-cluster-celery to maas-cluster-register. Ensure services
       are stopped on upgrade.
     - debian/maintscript: Cleanup config files.
+    - Remove all references to the MAAS celery daemon and config
+      files as we don't use it like that anymore
   * Move some entries in debian/maintscript to
     debian/maas-cluster-controller.maintscript
   * Remove usage of txlongpoll and rabbitmq-server. Handle upgrades
     to ensure these are removed correctly.
-  * Remove all references to the MAAS celery daemon and config files
-    as we don't use it like that anymore.
-  * Rename init scripts:
-    - maas-cluster to maas-clusterd; maas-dhcp-server to maas-dhcpd;
-      maas-dhcpv6-server to maas-dhcpd6.
 
   [ Jason Hobbs ]
   * debian/maas-region-controller-min.install: Install
