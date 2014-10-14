@@ -4,8 +4,6 @@ maas (1.7.0~beta6+bzr3242-0ubuntu1) UNRELEASED; urgency=medium
 
   [ Jeroen Vermeulen ]
   * debian/extras/99-maas-sudoers
-    debian/maas-dhcp.maas-dhcp-server.upstart
-    debian/maas-dhcp.maas-dhcpv6-server.upstart
     debian/maas-dhcp.postinst
     debian/rules
     - Add second DHCP server instance for IPv6.
@@ -50,7 +48,7 @@ maas (1.7.0~beta6+bzr3242-0ubuntu1) UNRELEASED; urgency=medium
     as we don't use it like that anymore.
   * Rename init scripts:
     - maas-cluster to maas-clusterd; maas-dhcp-server to maas-dhcpd;
-      maas-dhcpv6-server to maas-dhcpd.
+      maas-dhcpv6-server to maas-dhcpd6.
 
   [ Jason Hobbs ]
   * debian/maas-region-controller-min.install: Install
