@@ -7,3 +7,10 @@ _Description: Ubuntu MAAS API address:
  e.g. "http://192.168.1.1/MAAS".
  Since nodes must be able to access this URL, localhost or 127.0.0.1 are not
  useful values here.
+
+Template: maas-cluster-controller/shared-secret
+Type: password
+Default:
+_Description: MAAS Cluster Controller Shared Secret:
+ The MAAS Cluster Controller needs to contact the MAAS server
+ with a share secret. Set the shared secret here.

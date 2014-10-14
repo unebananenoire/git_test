@@ -121,6 +121,14 @@ configure_pserv_generator(){
     fi
 }
 
+configure_shared_secret() {
+    db_get maas-cluster-controller/shared-secret || true
+    if [ -n "$RET" ]; then
+        echo "$RET" | maas-provision install-shared-secret
+        chown maas:maas /var/lib/maas/secret
+        chmod 0640 /var/lib/maas/secret
+    fi
+}
 
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
@@ -135,6 +143,13 @@ if [ "$1" = "configure" ]; then
 
     configure_maas_tgt
     configure_pserv_generator
+    # Only ask for a shared secret when the region is not installed
+    # on the same system.
+    if [ -n "$DEBCONF_RECONFIGURE" ] && [ ! -f /usr/sbin/maas-region-admin ]; then
+        db_input high maas-cluster-controller/shared-secret
+        db_go
+    fi
+    configure_shared_secret
 
     # This config file may contain a private cluster UUID.  Only maas
     # can read it; only root can write it.
