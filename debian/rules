@@ -52,4 +52,4 @@ VER=$(shell dpkg-parsechangelog -l$(DEB_DEBIAN_DIR)/changelog \
               | sed -rne 's,^Version: ([^-]+).*,\1,p')
 get-orig-source:
 	bzr export -r $(REV) --root=maas-$(VER).orig \
-             maas_$(VER).orig.tar.gz lp:maas
+             maas_$(VER).orig.tar.gz lp:maas/1.7

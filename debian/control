@@ -59,7 +59,7 @@ Depends: apache2,
          python-maas-provisioningserver (= ${binary:Version}),
          python-djorm-ext-pgarray,
          rsyslog,
-         maas-proxy | squid-deb-proxy,
+         maas-proxy,
          ${misc:Depends},
          ${python:Depends}
 Breaks: maas-region-controller ( <= 1.4+bzr1693+dfsg-0ubuntu3 )
@@ -229,7 +229,7 @@ Architecture: all
 Depends: ${python:Depends},
          ${misc:Depends},
          squid3
-Breaks: squid-deb-proxy
+Conflicts: squid-deb-proxy
 Replaces: squid-deb-proxy
 Description: MAAS Caching Proxy
  This package installs and configures a Caching Proxy server that can be
