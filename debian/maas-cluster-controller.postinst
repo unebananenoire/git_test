@@ -25,6 +25,10 @@ create_log_dir() {
     find /var/log/maas -not -user syslog -print0 | xargs -r0 chown maas:maas
     chmod -R 775 /var/log/maas/oops
     chown syslog:syslog /var/log/maas/maas.log
+    # If proxy log dir exists, set correct permissions
+    if [ -d /var/log/maas/proxy ]; then
+        chown -R proxy:proxy /var/log/maas/proxy
+    fi
 }
 
 configure_maas_tgt() {

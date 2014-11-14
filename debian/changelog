@@ -1,14 +1,93 @@
-maas (1.7.0~beta7+bzr3352-0ubuntu1) UNRELEASED; urgency=medium
-
-  [ Michael McCracken ]
-  * debian/maas-dns.postrm: ensure named.conf is cleaned of maas
-    includes (LP: #1346538)
+maas (1.7.1+bzr3373-0ubuntu1) UNRELEASED; urgency=medium
 
   [ Jeroen Vermeulen ]
   * debian/maas-cluster-controller.postinst: configure MAAS_URL through new
     "maas-provision configure-maas-url" sub-command instead of with "sed".
 
- -- Michael McCracken <mike.mccracken@canonical.com>  Mon, 20 Oct 2014 14:48:20 -0700
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 14 Nov 2014 09:04:29 -0500
+
+maas (1.7.0+bzr3299-0ubuntu1) utopic; urgency=medium
+
+  * New upstream release, 1.7.0.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 14 Nov 2014 08:38:39 -0500
+
+maas (1.7.0~rc3+bzr3299-0ubuntu1) utopic; urgency=medium
+
+  * New upstream release, RC3 bzr 3299
+    - Fix dashboard tooltip messages which had stopped being displayed
+      (LP: #1390434)
+
+ -- Julian Edwards <julian.edwards@canonical.com>  Tue, 11 Nov 2014 12:23:07 +1000
+
+maas (1.7.0~rc2+bzr3297-0ubuntu1) utopic; urgency=medium
+
+  * New upstream release, RC2 bzr 3297
+    - Allow marking a node in the DISK_ERASING state as broken (LP: #1388919)
+    - Prevent concurrent allocations of static IP addresses from returning
+      the same clashing address. (LP: #1387262)
+
+  [ Andres Rodriguez ]
+  * debian/maas-cluster-controller.postinst: Make sure that cluster sets
+    the correct permissions for proxy log dir if running on the same
+    system. (LP: #1377964)
+
+ -- Julian Edwards <julian.edwards@canonical.com>  Fri, 07 Nov 2014 09:30:52 +1000
+
+maas (1.7.0~rc1+bzr3295-0ubuntu1) trusty; urgency=medium
+
+  * New Upstream Release, RC1 bzr 3295
+    - If using MSCM (Moonshot Chassis Manager) on a M300, do not overwrite
+      power parameters (LP: #1382075)
+    - Do not write DNS hostmaps if its PXE Mac is not on a managed cluster
+      interface. (LP: #1382108)
+    - Show os field in boot source selections API. (LP: #1384383)
+    - Add documentation for new Import Images features (LP: #1384010)
+    - Allow releasing if Failed to Disk Wipe or Release (LP: #1384821)
+    - Handle missing subarch when creating a node via RPC for
+      probe-and-enlist methods (LP: #1384778)
+    - Update default waiting policy for power actions to increase time of
+      wait to handle different type of BMC's (LP: #1384758)
+    - Use HTTP_PROXY to download images if configured (LP: #1384464)
+    - Return 503 response for PowerActionAlreadyInProgress and add a
+      'Retry-after' Header. (LP: #1384001)
+    - Stop ImportResourcesService from crashing when an import fails
+      (LP: #1386722)
+    - Convert TFTP request paths that contain backslashes to forward
+      slashes. (LP: #1387191)
+    - Do not try to delete synced boot images if not new ones are present
+      to handle a weird race. (LP: #1387133)
+    - Fix storage unit shown on the node edit page (LP: #1387431)
+    - Use CompressedAmpList in UpdateLeases to now parse
+      ~3500 leases (LP: #1387515, LP: #1387515)
+    - Updated XPath expression for discovering storage capacity from new
+      lshw changes. (LP: #1387380)
+    - Add sub status field on API.
+    - Generate DNS mappings for the Dynamic IP range. Hostname generation
+      is limited to /16. (LP: #1382190)
+    - Use configured HTTP Proxy to download boot images (LP: #1384464)
+  * debian/extras/maas-proxy-common.sh: Ensure that permissions are correct
+    before starting maas-proxy. (LP: #1382266)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 27 Oct 2014 21:53:43 -0400
+
+maas (1.7.0~beta8+bzr3272-0ubuntu1) utopic; urgency=medium
+
+  * New Upstream Release, Beta 8 bzr 3272.
+    - Maintain backward compatibility with status codes to not break
+      client MAAS API users.  (LP: #1383609)
+    - Allow users to disable DHCP NIC scanning during commissioning otherwise
+      this can lead machines not being able to commission (LP: #1383384)
+    - Ensure that MAAS can correctly download, and install HWE Kernels, and 
+      not crash in the process. (LP: #1357532, LP: #1382281)
+    - Add a lock to ensure we don't give the same 2 systems to two different
+      users when acquiring a machine. (LP: #1382575)
+
+  [ Michael McCracken ]
+  * debian/maas-dns.postrm: ensure named.conf is cleaned of maas
+    includes (LP: #1346538)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 22 Oct 2014 12:55:08 -0400
 
 maas (1.7.0~beta7+bzr3266-0ubuntu1) utopic; urgency=medium
 
