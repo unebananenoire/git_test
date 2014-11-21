@@ -9,7 +9,7 @@
  
  # Prefix to use for MAAS's urls.
  # If FORCE_SCRIPT_NAME is None (the default), all the urls will start with
-@@ -81,9 +81,9 @@
+@@ -78,9 +78,9 @@
      'default': {
          # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' etc.
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -20,5 +20,5 @@
 +        'USER': 'maas',
 +        'PASSWORD': 'maas',
          'HOST': 'localhost',
-         'OPTIONS': {
-             'isolation_level': ISOLATION_LEVEL_READ_COMMITTED,
+     }
+ }
