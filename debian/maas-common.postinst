@@ -5,8 +5,9 @@ set -e
 add_user_group(){
 	local user="maas"
 	local group="maas"
+	local home="/var/lib/maas"
 	addgroup --quiet --system "$group" || true
-	adduser --quiet --system --group --no-create-home "$user" || true
+	adduser --quiet --system --group --home "$home" "$user" || true
 }
 
 ln -sf /usr/share/maas/maas-rsyslog.conf /etc/rsyslog.d/99-maas.conf
