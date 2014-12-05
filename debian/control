@@ -14,7 +14,10 @@ Homepage: https://launchpad.net/maas
 
 Package: maas
 Architecture: all
-Depends: ${misc:Depends}, maas-cluster-controller, maas-region-controller, python-django-maas
+Depends: ${misc:Depends},
+ maas-cluster-controller (= ${binary:Version}),
+ maas-region-controller (= ${binary:Version}),
+ python-django-maas (= ${binary:Version})
 Description: MAAS server all-in-one metapackage
  MAAS is "Metal As A Service", a system for dynamic provisioning of physical
  servers that has many of the same characteristics as a cloud.  You register
@@ -59,7 +62,7 @@ Depends: apache2,
          python-maas-provisioningserver (= ${binary:Version}),
          python-djorm-ext-pgarray,
          rsyslog,
-         maas-proxy,
+         maas-proxy (= ${binary:Version}),
          ${misc:Depends},
          ${python:Depends}
 Breaks: maas-region-controller ( <= 1.4+bzr1693+dfsg-0ubuntu3 )
@@ -90,7 +93,7 @@ Depends: python-celery,
          python-jsonschema,
          python-lockfile,
          python-lxml,
-         python-maas-client,
+         python-maas-client (= ${binary:Version}),
          python-netifaces,
          python-oops,
          python-oops-datedir-repo,
