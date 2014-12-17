@@ -21,6 +21,10 @@ override_dh_auto_build:
 	HOME=$(BUILDHOME) PYTHONPATH=$(CURDIR)/src/ $(PYTHON)	\
 		$(CURDIR)/src/maasserver/utils/jsenums.py	\
 		$(py_enums) > $(BUILDHOME)/enums.js
+	HOME=$(BUILDHOME) pyscss	\
+		$(CURDIR)/src/maasserver/static/scss/maas-styles.scss	\
+		-o $(CURDIR)/src/maasserver/static/css/maas-styles.scss	\
+		--load-path=$(CURDIR)/src/maasserver/static/scss
 
 override_dh_auto_install:
 	dh_auto_install
@@ -29,6 +33,9 @@ override_dh_auto_install:
 	install -d -m 755  $(CURDIR)/debian/tmp/usr/share/maas/web/static
 	mv $(CURDIR)/debian/tmp/usr/lib/python*/*-packages/maasserver/static \
                 $(CURDIR)/debian/tmp/usr/share/maas/web/
+
+	# Remove scss directory from static files
+	rm -rf $(CURDIR)/debian/tmp/usr/share/maas/web/scss
 
 	# Install built enums.js file.
 	cp $(BUILDHOME)/enums.js $(CURDIR)/debian/tmp/usr/share/maas/web/static/js/
