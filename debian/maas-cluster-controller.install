@@ -1,5 +1,5 @@
 # Install twisted plugins
-twisted/plugins/maasps.py usr/share/pyshared/twisted/plugins
+twisted/plugins/maasclusterd.py usr/share/pyshared/twisted/plugins
 
 # Install PSERV config file
 debian/tmp/etc/maas/pserv.yaml
