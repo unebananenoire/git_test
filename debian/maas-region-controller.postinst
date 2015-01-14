@@ -41,7 +41,6 @@ configure_region_http() {
 	# enable apache modules needed
 	a2enmod proxy_http
 	a2enmod expires
-	a2enmod wsgi
 }
 
 configure_maas_database() {
@@ -74,8 +73,8 @@ get_default_route_ip() {
 
 configure_logging() {
 	# Give appropriate permissions
-	if [ ! -f /var/log/maas/maas-django.log ]; then
-		touch /var/log/maas/maas-django.log
+	if [ ! -f /var/log/maas/regiond.log ]; then
+		touch /var/log/maas/regiond.log
 	fi
 	chown -R maas:maas /var/log/maas
 	chmod -R 775 /var/log/maas/oops
@@ -207,6 +206,7 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 fi
 
 invoke-rc.d apache2 restart || true
+invoke-rc.d maas-regiond restart || true
 
 if [ -f /etc/init/maas-clusterd.conf ]; then
 	invoke-rc.d maas-clusterd restart || true

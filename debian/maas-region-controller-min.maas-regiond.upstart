@@ -1,0 +1,19 @@
+description "MAAS Region Controller"
+author "Gavin Panella <gavin.panella@canonical.com>"
+
+start on filesystem and net-device-up
+stop on runlevel [016]
+
+setuid maas
+setgid maas
+
+respawn
+
+env DJANGO_SETTINGS_MODULE=maas.settings
+env PYTHONPATH=/usr/share/maas
+env LOGFILE=/var/log/maas/regiond.log
+
+script
+    exec /usr/bin/twistd --nodaemon --pidfile= maas-regiond 2>&1 | \
+        /usr/bin/rotatelogs -f -L "${LOGFILE}" "${LOGFILE}" 10M
+end script

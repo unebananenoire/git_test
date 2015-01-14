@@ -48,10 +48,10 @@ Description: MAAS server common files
 Package: maas-region-controller-min
 Architecture: all
 Depends: apache2,
+         apache2-utils,
          bind9utils,
          dbconfig-common,
          iproute,
-         libapache2-mod-wsgi,
          libjs-raphael,
          libjs-yui3-full,
          libjs-yui3-min,

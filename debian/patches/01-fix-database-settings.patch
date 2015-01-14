@@ -1,17 +1,6 @@
 --- a/contrib/maas_local_settings.py
 +++ b/contrib/maas_local_settings.py
-@@ -7,7 +7,7 @@
- DEFAULT_MAAS_URL = "http://maas.internal.example.com/"
- 
- # Absolute path to the directory static files should be collected to.
--STATIC_ROOT = '/var/lib/maas/static/'
-+STATIC_ROOT = '/usr/share/maas/web/static/'
- 
- # Prefix to use for MAAS's urls.
- # If FORCE_SCRIPT_NAME is None (the default), all the urls will start with
-@@ -78,9 +78,9 @@
-     'default': {
-         # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' etc.
+@@ -78,5 +78,5 @@
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
 -        'NAME': '',
 -        'USER': '',
@@ -20,5 +9,3 @@
 +        'USER': 'maas',
 +        'PASSWORD': 'maas',
          'HOST': 'localhost',
-     }
- }

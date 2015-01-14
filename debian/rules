@@ -10,6 +10,7 @@ py_enums := $(wildcard src/*/enum.py)
 
 override_dh_installinit:
 	dh_installinit --name maas-clusterd
+	dh_installinit --name maas-regiond
 	dh_installinit --name maas-dhcpd
 	dh_installinit --name maas-dhcpd6
 	dh_installinit --name maas-proxy

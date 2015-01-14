@@ -1,8 +1,4 @@
-# maas-cluster - provisioning service
-#
-# MAAS Provisioning Service
-
-description     "MAAS"
+description "MAAS Cluster Controller"
 author "Andres Rodriguez <andres.rodriguez@canonical.com>"
 
 start on filesystem and net-device-up
@@ -51,5 +47,5 @@ script
     # To add options to your daemon, edit the line below:
     exec /usr/bin/authbind --deep /usr/bin/twistd \
         --nodaemon --uid=maas --gid=maas --pidfile=/run/maas-cluster.pid \
-        --logfile=/dev/null maas-pserv --config-file=/etc/maas/pserv.yaml
+        --logfile=/dev/null maas-clusterd --config-file=/etc/maas/pserv.yaml
 end script

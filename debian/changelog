@@ -16,6 +16,36 @@ maas (1.8.0~beta1+bzr3398-0ubuntu1) UNRELEASED; urgency=medium
 
   * debian/control: Tighten Dependency versioning of some packages.
 
+  [ Gavin Panella ]
+  * debian/maas-region-controller-min.maas-regiond.upstart
+    - Upstart script for the new maas-regiond.
+    - Use setuid/setgid to drop root privs before running script.
+    - Don't write a pid file.
+  * debian/maas-cluster-controller.maas-clusterd.upstart
+    - Start maas-clusterd; it's no longer called maas-pserv.
+  * debian/maas-region-controller-min.install
+    - Don't install wsgi.py; it's no longer used.
+  * debian/rules
+    - Install maas-regiond plugin.
+  * debian/maas-region-controller-min.apport
+    debian/maas-region-controller-min.logrotate
+    debian/maas-region-controller-min.postinst
+    debian/maas-region-controller.postinst
+    - Change maas-django.log to regiond.log.
+  * debian/maas-region-controller.postinst
+    - Restart maas-regiond after installation.
+  * debian/maas-region-controller.postinst
+    - Restart maas-regiond after installation.
+  * debian/control
+    debian/maas-region-controller-min.postinst
+    debian/maas-region-controller.postinst
+    - mod_wsgi is no longer used.
+  * debian/maas-region-controller-min.logrotate
+    - No longer used; maas-regiond uses rotatelogs.
+  * debian/patches/01-fix-database-settings.patch
+    - Move STATIC_ROOT setting upstream.
+    - Simplify database configuration hunk.
+
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 14 Nov 2014 09:04:29 -0500
 
 maas (1.7.0+bzr3299-0ubuntu1) utopic; urgency=medium
@@ -117,7 +147,7 @@ maas (1.7.0~beta7+bzr3266-0ubuntu1) utopic; urgency=medium
     debian/maas-cluster-controller.install
     debian/maas-cluster-controller.postinst
     - Reflect Celery removal changes made in trunk r3067.
-    - Don't install celeryconfig_cluster.py any longer. 
+    - Don't install celeryconfig_cluster.py any longer.
     - Don't install maas_local_celeryconfig_cluster.py any longer.
     - Don't symlink maas_local_celeryconfig_cluster.py from /etc to /usr.
     - Don't insert UUID into maas_local_celeryconfig_cluster.py.

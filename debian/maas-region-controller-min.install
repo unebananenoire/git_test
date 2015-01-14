@@ -10,9 +10,6 @@ debian/tmp/etc/maas/maas-http.conf
 # Install MAAS local settings
 debian/tmp/etc/maas/maas_local_settings.py
 
-# Install WSGI
-debian/tmp/usr/share/maas/wsgi.py
-
 # Install new preseed files
 debian/tmp/etc/maas/preseeds
 
@@ -26,6 +23,9 @@ debian/tmp/etc/maas/drivers.yaml
 
 # Install winrm certificate generation script
 debian/tmp/usr/bin/maas-generate-winrm-cert
+
+# Install twisted plugins
+twisted/plugins/maasregiond.py usr/share/pyshared/twisted/plugins
 
 # Install all other stuff
 debian/extras/maas-region-admin usr/sbin

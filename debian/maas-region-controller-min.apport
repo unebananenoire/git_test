@@ -2,7 +2,7 @@
 
 '''apport hook for maas-region-controller
 
-(c) 2012 Canonical Ltd.
+(c) 2012-2014 Canonical Ltd.
 Author: Andres Rodriguez <andres.rodriguez@canonical.com>
 
 This program is free software; you can redistribute it and/or modify it
@@ -12,25 +12,28 @@ option) any later version.  See http://www.gnu.org/copyleft/gpl.html for
 the full text of the license.
 '''
 
-from apport.hookutils import *
+from apport.hookutils import (
+    attach_conffiles,
+    attach_file_if_exists,
+    attach_related_packages,
+)
+
 
 def add_info(report, ui):
-    response = ui.yesno("The contents of your /etc/maas/maas_local_settings.py, "
-                        "/etc/maas/pserv.yaml files "
-                        "may help developers diagnose your bug more "
-                        "quickly.  However, it may contain sensitive "
-                        "information.  Do you want to include it in your "
-                        "bug report?")
+    response = ui.yesno(
+        "The contents of your /etc/maas/maas_local_settings.py, "
+        "/etc/maas/pserv.yaml files may help developers diagnose your bug "
+        "more quickly.  However, it may contain sensitive information.  Do "
+        "you want to include it in your bug report?")
 
-    if response == None: # user cancelled
+    if response is None:  # user cancelled
         raise StopIteration
-
-    elif response == True:
-        attach_conffiles(report,'maas')
+    elif response is True:
+        attach_conffiles(report, 'maas')
 
     # Attaching log files
-    attach_file_if_exists(report, '/var/log/maas/maas-django.log', 'MAASLog')
-    attach_file_if_exists(report, '/var/log/maas/pserv.log', 'MAASPservLog')
+    attach_file_if_exists(report, '/var/log/maas/regiond.log', 'MAASRegionLog')
+    attach_file_if_exists(report, '/var/log/maas/pserv.log', 'MAASClusterLog')
 
     # Attaching related packages info
     attach_related_packages(report, ['python-django-maas', 'apparmor'])
