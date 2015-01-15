@@ -3,8 +3,9 @@ Description: Use default settings for MAAS PSERV
  include port, logfile, oops directory, cobbler url and username
 Author: Andres Rodriguez <andreserl@ubuntu.com>
 
---- a/etc/maas/pserv.yaml
-+++ b/etc/maas/pserv.yaml
+=== modified file 'etc/maas/pserv.yaml'
+--- a/etc/maas/pserv.yaml	2015-01-14 16:24:44 +0000
++++ b/etc/maas/pserv.yaml	2015-01-15 10:05:50 +0000
 @@ -6,7 +6,7 @@
  ## running server.
  #
@@ -12,18 +13,9 @@ Author: Andres Rodriguez <andreserl@ubuntu.com>
 -logfile: "/dev/null"
 +logfile: "/var/log/maas/pserv.log"
  
- ## OOPS configuration (optional).
+ ## TFTP configuration.
  #
-@@ -15,7 +15,7 @@
-   # or directories other than what the oops machinery creates there.
-   #
-   # directory:
--  directory: "logs/oops"
-+  directory: "/var/log/maas/oops"
-   # reporter:
-   reporter: "maas-pserv"
- 
-@@ -38,8 +38,6 @@
+@@ -18,8 +18,6 @@
    # resource_root: /var/lib/maas/boot-resources/current/
  
    # port: 69
@@ -32,3 +24,4 @@ Author: Andres Rodriguez <andreserl@ubuntu.com>
    # generator: http://localhost/MAAS/api/1.0/pxeconfig/
 -  generator: http://localhost:5243/api/1.0/pxeconfig/
  
+
