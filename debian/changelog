@@ -35,6 +35,7 @@ maas (1.8.0~alpha1+bzr3463-0ubuntu1) UNRELEASED; urgency=medium
     - Change maas-django.log to regiond.log.
   * debian/maas-region-controller.postinst
     - Restart maas-regiond after installation.
+    - a2enmod rewrite module (LP: #1236544)
   * debian/maas-region-controller.postinst
     - Restart maas-regiond after installation.
   * debian/control
@@ -43,6 +44,7 @@ maas (1.8.0~alpha1+bzr3463-0ubuntu1) UNRELEASED; urgency=medium
     - mod_wsgi is no longer used.
   * debian/maas-region-controller-min.logrotate
     - No longer used; maas-regiond uses rotatelogs.
+    - a2enmod rewrite module (LP: #1236544)
   * debian/patches/01-fix-database-settings.patch
     - Move STATIC_ROOT setting upstream.
     - Simplify database configuration hunk.

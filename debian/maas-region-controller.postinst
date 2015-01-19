@@ -41,6 +41,7 @@ configure_region_http() {
 	# enable apache modules needed
 	a2enmod proxy_http
 	a2enmod expires
+	a2enmod rewrite
 }
 
 configure_maas_database() {
