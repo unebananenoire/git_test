@@ -21,29 +21,6 @@ restart_postgresql(){
 	invoke-rc.d --force postgresql restart || true
 }
 
-configure_region_http() {
-	case $RELEASE in
-		12.04|12.10|13.04)
-			# handle apache configs
-			if [ -e /etc/maas/maas-http.conf -a \
-				! -e /etc/apache2/conf.d/maas-http.conf ]; then
-				ln -sf /etc/maas/maas-http.conf /etc/apache2/conf.d/maas-http.conf
-			fi
-			;;
-		*)
-			# handle apache configs
-			if [ -e /etc/maas/maas-http.conf -a \
-				! -e /etc/apache2/conf-enabled/maas-http.conf ]; then
-				ln -sf /etc/maas/maas-http.conf /etc/apache2/conf-enabled/maas-http.conf
-			fi
-			;;
-	esac
-	# enable apache modules needed
-	a2enmod proxy_http
-	a2enmod expires
-	a2enmod rewrite
-}
-
 configure_maas_database() {
 	local dbc_dbpass="$1"
 	if grep -qs "^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$" /etc/maas/maas_local_settings.py; then
@@ -72,35 +49,6 @@ get_default_route_ip() {
         echo $ipaddr
 }
 
-configure_logging() {
-	# Give appropriate permissions
-	if [ ! -f /var/log/maas/regiond.log ]; then
-		touch /var/log/maas/regiond.log
-	fi
-	chown -R maas:maas /var/log/maas
-	chmod -R 775 /var/log/maas/oops
-
-	# Main syslog file.
-	if [ ! -f /var/log/maas/maas.log ]; then
-		touch /var/log/maas/maas.log
-	fi
-	chown syslog:syslog /var/log/maas/maas.log
-
-	# Create log directory base
-	mkdir -p /var/log/maas/rsyslog
-	chown -R syslog:syslog /var/log/maas/rsyslog
-	# Make sure rsyslog reads our config
-	invoke-rc.d rsyslog restart
-
-	# If proxy log dir exists, set correct permissions
-	if [ -d /var/log/maas/proxy ]; then
-		chown -R proxy:proxy /var/log/maas/proxy
-	fi
-}
-
-configure_third_party_log_symlinks() {
-	ln -sf /var/log/apache2 /var/log/maas/
-}
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	#########################################################
@@ -113,11 +61,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	# by the application but nobody else.
 	chown root:maas /etc/maas/maas_local_settings.py
 	chmod 0640 /etc/maas/maas_local_settings.py
-
-	#########################################################
-	################  Configure Apache2  ####################
-	#########################################################
-	configure_region_http
 
 	#########################################################
 	##########  Configure DEFAULT_MAAS_URL  #################
@@ -136,13 +79,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 		db_subst maas/installation-note MAAS_URL "$ipaddr"
 		db_set maas/default-maas-url "$ipaddr"
 	fi
-
-	#########################################################
-	################  Configure Logging  ####################
-	#########################################################
-
-	configure_logging
-	configure_third_party_log_symlinks
 
 	#########################################################
 	################  Configure Database  ###################
@@ -174,18 +110,11 @@ elif [ -n "$DEBCONF_RECONFIGURE" ]; then
 	fi
 
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
-	# Logging changed at r2611, ensure it is set up.
-	configure_logging
-	configure_third_party_log_symlinks
-
 	# If upgrading to any later package version, then upgrade db.
 	invoke-rc.d apache2 stop || true
 
 	# make sure postgresql is running
 	restart_postgresql
-
-	# make sure maas http config is symlinked
-	configure_region_http
 
 	# we need to regenerate the passwords and update configs.
 	db_get maas/default-maas-url

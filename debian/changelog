@@ -1,4 +1,4 @@
-maas (1.8.0~alpha1+bzr3463-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.8.0~alpha1+bzr3480-0ubuntu1) UNRELEASED; urgency=medium
 
   [ Blake Rouse ]
   * debian/control: added python-pyscss as a build dependency.
@@ -16,6 +16,7 @@ maas (1.8.0~alpha1+bzr3463-0ubuntu1) UNRELEASED; urgency=medium
   * debian/control: Tighten Dependency versioning of some packages.
   * debian/maas-region-controller-min.preinst: Handle upgrades to remove
     legacy files.
+  * debian/maas-region-controller{-min}.postinst: Simplify postinsts.
 
   [ Gavin Panella ]
   * debian/maas-region-controller-min.maas-regiond.upstart
