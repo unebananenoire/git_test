@@ -7,6 +7,7 @@ stop on runlevel [016]
 respawn
 
 env CONFIG_FILE=/etc/maas/maas_cluster.conf
+env LOGFILE=/var/log/maas/clusterd.log
 
 pre-start script
     if [ ! -f $CONFIG_FILE ]; then
@@ -45,7 +46,7 @@ script
         exec sleep 5
     fi
     # To add options to your daemon, edit the line below:
-    exec /usr/bin/authbind --deep /usr/bin/twistd \
-        --nodaemon --uid=maas --gid=maas --pidfile=/run/maas-cluster.pid \
-        --logfile=/dev/null maas-clusterd --config-file=/etc/maas/pserv.yaml
+    exec /usr/bin/authbind --deep \
+        /usr/bin/twistd --nodaemon --uid=maas --gid=maas --pidfile= \
+        maas-clusterd --config-file=/etc/maas/pserv.yaml > ${LOGFILE} 2>&1
 end script

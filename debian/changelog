@@ -49,6 +49,19 @@ maas (1.8.0~alpha1+bzr3480-0ubuntu1) UNRELEASED; urgency=medium
   * debian/patches/01-fix-database-settings.patch
     - Move STATIC_ROOT setting upstream.
     - Simplify database configuration hunk.
+  * debian/maas-cluster-controller.logrotate
+    debian/maas-region-controller.logrotate
+    - Use copytruncate; even though it's sub-optimal, this is currently
+      the best way to integrate logrotate with twistd.
+    - Limit the size of the logs to 50MB, but don't rotate unless
+      they're more than 10MB.
+    - Drop privileges and run as maas/maas.
+  * debian/maas-region-controller-min.maas-regiond.upstart
+    debian/maas-cluster-controller.maas-clusterd.upstart
+    - Redirect stdout and stderr from twistd directly to the daemon's
+      respective log file.
+  * debian/maas-region-controller-min.apport
+    - pserv.log has been renamed to clusterd.log.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 14 Nov 2014 09:04:29 -0500
 
