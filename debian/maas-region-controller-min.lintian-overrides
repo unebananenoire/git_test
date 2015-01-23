@@ -1,6 +1,6 @@
-maas-region-controller: binary-without-manpage usr/sbin/maas
-maas-region-controller: script-not-executable etc/maas/templates/commissioning-user-data/snippets/maas_ipmi_autodetect.py
-maas-region-controller: script-not-executable etc/maas/templates/commissioning-user-data/snippets/maas_signal.py
-maas-region-controller: script-not-executable etc/maas/templates/commissioning-user-data/user_data.template
-maas-region-controller: script-not-executable etc/maas/templates/commissioning-user-data/snippets/maas_get.py
-maas-region-controller: script-not-executable etc/maas/templates/deployment-user-data/maas_configure_interfaces.py
+maas-region-controller-min: binary-without-manpage usr/sbin/maas
+maas-region-controller-min: script-not-executable etc/maas/templates/commissioning-user-data/snippets/maas_ipmi_autodetect.py
+maas-region-controller-min: script-not-executable etc/maas/templates/commissioning-user-data/snippets/maas_signal.py
+maas-region-controller-min: script-not-executable etc/maas/templates/commissioning-user-data/user_data.template
+maas-region-controller-min: script-not-executable etc/maas/templates/commissioning-user-data/snippets/maas_get.py
+maas-region-controller-min: script-not-executable etc/maas/templates/deployment-user-data/maas_configure_interfaces.py
