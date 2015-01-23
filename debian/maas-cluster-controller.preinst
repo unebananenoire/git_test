@@ -26,6 +26,12 @@ if [ "$1" = "upgrade" ]; then
         fi
     fi
 
+    if dpkg --compare-versions "$2" lt 1.8.0~alpha1+bzr3486-0ubuntu1; then
+        if [ -f /var/log/maas/pserv.log ]; then
+            rm -rf /var/log/maas/pserv.log
+        fi
+    fi
+
 fi
 
 #DEBHELPER#

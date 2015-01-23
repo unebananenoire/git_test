@@ -4,17 +4,10 @@ Description: Use default settings for MAAS PSERV
 Author: Andres Rodriguez <andreserl@ubuntu.com>
 
 === modified file 'etc/maas/pserv.yaml'
---- a/etc/maas/pserv.yaml	2015-01-14 16:24:44 +0000
-+++ b/etc/maas/pserv.yaml	2015-01-15 10:05:50 +0000
-@@ -6,7 +6,7 @@
- ## running server.
- #
- # logfile: "pserv.log"
--logfile: "/dev/null"
-+logfile: "/var/log/maas/pserv.log"
- 
- ## TFTP configuration.
- #
+Index: maas-1.8.0~alpha1+bzr3486.orig/etc/maas/pserv.yaml
+===================================================================
+--- maas-1.8.0~alpha1+bzr3486.orig.orig/etc/maas/pserv.yaml	2015-01-23 09:49:28.057580893 -0500
++++ maas-1.8.0~alpha1+bzr3486.orig/etc/maas/pserv.yaml	2015-01-23 09:49:49.137580251 -0500
 @@ -18,8 +18,6 @@
    # resource_root: /var/lib/maas/boot-resources/current/
  
@@ -24,4 +17,3 @@ Author: Andres Rodriguez <andreserl@ubuntu.com>
    # generator: http://localhost/MAAS/api/1.0/pxeconfig/
 -  generator: http://localhost:5243/api/1.0/pxeconfig/
  
-
