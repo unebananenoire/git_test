@@ -24,6 +24,7 @@ override_dh_auto_build:
 		$(py_enums) > $(BUILDHOME)/enums.js
 	HOME=$(BUILDHOME) pyscss	\
 		$(CURDIR)/src/maasserver/static/scss/maas-styles.scss	\
+		--no-compress \
 		-o $(CURDIR)/src/maasserver/static/css/maas-styles.css	\
 		--load-path=$(CURDIR)/src/maasserver/static/scss
 
