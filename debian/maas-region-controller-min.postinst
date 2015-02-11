@@ -36,7 +36,6 @@ configure_logging() {
 		touch /var/log/maas/regiond.log
 	fi
 	chown -R maas:maas /var/log/maas
-	chmod -R 775 /var/log/maas/oops
 
 	# Main syslog file.
 	if [ ! -f /var/log/maas/maas.log ]; then

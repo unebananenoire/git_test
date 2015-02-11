@@ -87,8 +87,7 @@ Description: MAAS server complete region controller
 Package: python-maas-provisioningserver
 Section: python
 Architecture: all
-Depends: python-celery,
-         python-crochet,
+Depends: python-crochet,
          python-distro-info,
          python-formencode,
          python-jsonschema,
@@ -96,9 +95,6 @@ Depends: python-celery,
          python-lxml,
          python-maas-client (= ${binary:Version}),
          python-netifaces,
-         python-oops,
-         python-oops-datedir-repo,
-         python-oops-twisted,
          python-paramiko,
          python-pexpect,
          python-pyparsing,
@@ -183,7 +179,6 @@ Package: python-django-maas
 Section: python
 Architecture: all
 Depends: python-amqp,
-         python-celery,
          python-convoy,
          python-crochet,
          python-curtin,
@@ -191,10 +186,6 @@ Depends: python-amqp,
          python-lxml,
          python-maas-client (= ${binary:Version}),
          python-netaddr,
-         python-oops,
-         python-oops-datedir-repo,
-         python-oops-twisted,
-         python-oops-wsgi,
          python-psycopg2,
          python-sphinx,
          python-tempita,
