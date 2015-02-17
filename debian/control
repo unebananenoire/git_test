@@ -48,7 +48,6 @@ Description: MAAS server common files
 Package: maas-region-controller-min
 Architecture: all
 Depends: apache2,
-         apache2-utils,
          bind9utils,
          dbconfig-common,
          iproute,
@@ -140,8 +139,7 @@ Description: MAAS python API client
 
 Package: maas-cluster-controller
 Architecture: all
-Depends: apache2,
-         authbind,
+Depends: authbind,
          bind9utils,
          distro-info,
          freeipmi-tools,

@@ -19,6 +19,8 @@ maas (1.8.0~alpha1+bzr3520-0ubuntu1) UNRELEASED; urgency=medium
   * debian/maas-region-controller{-min}.postinst: Simplify postinsts.
   * Drop depends on python-celery, python-oops, python-oops-twisted,
     python-oops-datedir-repo, python-oosp-wsgi
+  * Drop maas-cluster-http.conf; Drop depends on apache2 for
+    maas-cluster-controller.
 
   [ Gavin Panella ]
   * debian/maas-region-controller-min.maas-regiond.upstart
