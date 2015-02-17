@@ -10,19 +10,6 @@ case "$1" in
         purge)
 		# remove log directory
 		rm -rf /var/log/maas
-		case $RELEASE in
-			12.04|12.10|13.04)
-				if [ -h /etc/apache2/conf.d/maas-cluster-http.conf ]; then
-					rm -rf /etc/apache2/conf.d/maas-cluster-http.conf
-				fi
-				;;
-			*)
-				# remove apache2 config
-				if [ -h /etc/apache2/conf-enabled/maas-cluster-http.conf ]; then
-					rm -rf /etc/apache2/conf-enabled/maas-cluster-http.conf
-				fi
-				;;
-		esac
 		# remove var directory
 		DIR=/var/lib/maas
 		if [ "$(ls -A $DIR 2> /dev/null)" = "" ]; then
