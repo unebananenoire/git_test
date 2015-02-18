@@ -4,10 +4,10 @@ Description: Use default settings for MAAS PSERV
 Author: Andres Rodriguez <andreserl@ubuntu.com>
 
 === modified file 'etc/maas/pserv.yaml'
-Index: maas-1.8.0~alpha1+bzr3486.orig/etc/maas/pserv.yaml
+Index: maas-1.8.0~alpha1+bzr3523.orig/etc/maas/pserv.yaml
 ===================================================================
---- maas-1.8.0~alpha1+bzr3486.orig.orig/etc/maas/pserv.yaml	2015-01-23 09:49:28.057580893 -0500
-+++ maas-1.8.0~alpha1+bzr3486.orig/etc/maas/pserv.yaml	2015-01-23 09:49:49.137580251 -0500
+--- maas-1.8.0~alpha1+bzr3523.orig.orig/etc/maas/pserv.yaml	2015-02-17 22:25:42.304015180 -0500
++++ maas-1.8.0~alpha1+bzr3523.orig/etc/maas/pserv.yaml	2015-02-17 22:25:42.300015180 -0500
 @@ -18,8 +18,6 @@
    # resource_root: /var/lib/maas/boot-resources/current/
  
@@ -15,5 +15,5 @@ Index: maas-1.8.0~alpha1+bzr3486.orig/etc/maas/pserv.yaml
 -  port: 5244
    ## The URL to be contacted to generate PXE configurations.
    # generator: http://localhost/MAAS/api/1.0/pxeconfig/
--  generator: http://localhost:5243/api/1.0/pxeconfig/
+-  generator: http://localhost:5240/api/1.0/pxeconfig/
  
