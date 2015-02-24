@@ -1,6 +1,12 @@
-maas (1.8.0~alpha2+bzr3532-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.8.0~alpha3+bzr3557-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New upstream release
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 24 Feb 2015 15:47:07 -0500
+
+maas (1.8.0~alpha2+bzr3545-0ubuntu1) trusty; urgency=medium
+
+  * New upstream release, 1.8.0~alpha2 bzr3545
   * debian/control:
     - Depends on libjs-angularjs (LP: #1423457)
     - Depends on ubuntu-cloudimage-keyring for region (LP: #1424287)
