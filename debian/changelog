@@ -2,7 +2,9 @@ maas (1.8.0~alpha3+bzr3568-0ubuntu1) UNRELEASED; urgency=medium
 
   * New upstream release, 1.8.0~alpha3 bzr3568
     - Adds support for Microsoft OCP Chassis.
-  * debian/control: Add python-bson as a depends.
+  * debian/control:
+    - Add python-bson as a depends.
+    - Remove python-pyscss as a build dependency.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 24 Feb 2015 15:47:07 -0500
 
@@ -160,7 +162,7 @@ maas (1.7.0~beta8+bzr3272-0ubuntu1) utopic; urgency=medium
       client MAAS API users.  (LP: #1383609)
     - Allow users to disable DHCP NIC scanning during commissioning otherwise
       this can lead machines not being able to commission (LP: #1383384)
-    - Ensure that MAAS can correctly download, and install HWE Kernels, and 
+    - Ensure that MAAS can correctly download, and install HWE Kernels, and
       not crash in the process. (LP: #1357532, LP: #1382281)
     - Add a lock to ensure we don't give the same 2 systems to two different
       users when acquiring a machine. (LP: #1382575)
@@ -240,7 +242,7 @@ maas (1.7.0~beta1+bzr2781-0ubuntu1) utopic; urgency=medium
 
   [Diogo Matsubara]
   * debian/control:
-    - maas-cluster-controller depends on syslinux-dev | 
+    - maas-cluster-controller depends on syslinux-dev |
       syslinux-common (LP: #1328659)
     - python-maas-provisioningserver depends on
       python-paramiko (LP: #1334401)
@@ -280,7 +282,7 @@ maas (1.7.0~beta1+bzr2781-0ubuntu1) utopic; urgency=medium
     debian/maas-region-controller-min.postinst
     debian/maas-region-controller.postinst
     - Install /var/log/maas/maas.log as a syslog file.
-    - Ensure logging is set up for upgrades 
+    - Ensure logging is set up for upgrades
 
   [ Graham Binns ]
   * debian/maas-region-controller.postinst:
@@ -377,7 +379,7 @@ maas (1.5+bzr2227-0ubuntu1) trusty; urgency=medium
   [ Jason Hobbs ]
   * debian/extras/99-maas: Allow access to keyserver.ubuntu.com via
     squid-deb-proxy.
- 
+
   [Jeroen Vermeulen]
   * debian/maas-cluster-controller.postinst:
     - Make the tgt config link point to the new boot-resources dir.
@@ -1011,7 +1013,7 @@ maas (0.1+bzr971+dfsg-0ubuntu1) quantal; urgency=low
   * New upstream release (LP: #1044367)
 
   [ Julian Edwards ]
-  * Fix 02-pserv-config.patch to handle new default tftp directory 
+  * Fix 02-pserv-config.patch to handle new default tftp directory
 
   [ Andres Rodriguez ]
   * debian/maas.postinst:
@@ -1142,7 +1144,7 @@ maas (0.1+bzr482+dfsg-0ubuntu1) precise; urgency=low
   * debian/maas.postinst:
     - Set cobbler password in between quotes (LP: #984427)
     - Do not change permissions to maas.log (LP: #980915)
-  * no longer use maas-cloudimg2ephemeral, but rather use premade images 
+  * no longer use maas-cloudimg2ephemeral, but rather use premade images
     at http://maas.ubuntu.com
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 17 Apr 2012 23:44:46 -0700
@@ -1242,7 +1244,7 @@ maas (0.1+bzr378+dfsg-0ubuntu1) precise; urgency=low
 maas (0.1+bzr363+dfsg-0ubuntu1) precise; urgency=low
 
   [ Dave Walker (Daviey) ]
-  * debian/control: Add openssh-server as a Recommends, and wrap-and-sort. 
+  * debian/control: Add openssh-server as a Recommends, and wrap-and-sort.
 
   [ Andres Rodriguez ]
   * debian/maas.postinst:
@@ -1282,7 +1284,7 @@ maas (0.1+bzr315+dfsg-0ubuntu1) precise; urgency=low
 
   [ Dave Walker ]
   * debian/maas.postinst: Do not import ISO's at install time.
-  * debian/control: 
+  * debian/control:
     - Drop run-one, it's not a requirement and currently in universe.
     - Drop python-setproctitle, no longer required.
 
@@ -1303,7 +1305,7 @@ maas (0.1+bzr300+dfsg-0ubuntu1) precise; urgency=low
     - 02-pserv-config.patch: Update, and set 'maas' as username.
     - 03-longpoll-config.patch: Update.
   * debian/maas.install: Install preseeds and snippets.
-  * debian/maas.postinst: 
+  * debian/maas.postinst:
     - Set password for 'maas' cobbler username (in pserv and cobbler).
     - Set DEFAULT_MAAS_URL to IP of interface with default gateway.
 
@@ -1378,7 +1380,7 @@ maas (0.1+bzr232+dfsg-0ubuntu1) precise; urgency=low
   [ Dave Walker ]
   * debian/control:
     - Changed depends from psycopg2 to python-psycopg2 and dropped versioning.
-      - LP: #937982 
+      - LP: #937982
 
   [ Andres Rodriguez ]
   * debian/maas.install: Install maas-import-isos and related files.
@@ -1395,7 +1397,7 @@ maas (0.1+bzr232+dfsg-0ubuntu1) precise; urgency=low
 maas (0.1+bzr171+dfsg-0ubuntu1) precise; urgency=low
 
   * New upstream snapshot, post 0.1 release.
-  * debian/control: 
+  * debian/control:
     - Drop depends on rabbitmq-server, no longer required.
   * debian/watch: Introduced watch file.
 
