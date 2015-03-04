@@ -1,4 +1,12 @@
-maas (1.8.0~alpha3+bzr3568-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.8.0~alpha4+bzr3581-0ubuntu1) trusty; urgency=medium
+
+  * New upstream release, 1.8.0~alpha4 bzr3581:
+    - Adds new 'Add Hardware' button on the WebUI.
+    - Adds new 'Add Chassis' button on the WebUI.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 27 Feb 2015 19:50:00 -0500
+
+maas (1.8.0~alpha3+bzr3568-0ubuntu1) trusty; urgency=medium
 
   * New upstream release, 1.8.0~alpha3 bzr3568
     - Adds support for Microsoft OCP Chassis.
