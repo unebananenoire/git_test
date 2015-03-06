@@ -165,7 +165,7 @@ Depends: authbind,
          wget,
          ${misc:Depends},
          ${python:Depends}
-Suggests: ipmitool, libvirt-bin, amtterm
+Suggests: ipmitool, libvirt-bin, amtterm, python-pyvmomi
 Conflicts: tftpd-hpa
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ), maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 )
