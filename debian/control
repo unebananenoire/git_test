@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 Build-Depends: debhelper (>= 8.1.0~),
                dh-apport,
+               dh-systemd,
                po-debconf,
                python (>= 2.7),
                python-distribute,

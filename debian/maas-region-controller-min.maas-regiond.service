@@ -1,0 +1,17 @@
+[Unit]
+Description=MAAS Region Controller
+Requires=network-online.target
+After=network-online.target
+# This will go away one we support new config files.
+ConditionPathExists=/etc/maas/maas_local_settings.py
+
+[Service]
+Restart=on-failure
+Environment="DJANGO_SETTINGS_MODULE=maas.settings"
+Environment="PYTHONPATH=/usr/share/maas"
+ExecStart=/bin/sh -ec '\
+    exec /usr/bin/authbind --deep /usr/bin/twistd \
+    --nodaemon --pidfile= maas-regiond > /var/log/maas/regiond.log 2>&1'
+
+[Install]
+WantedBy=multi-user.target

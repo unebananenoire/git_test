@@ -1,0 +1,21 @@
+[Unit]
+Description=MAAS Cluster Controller
+Requires=network-online.target
+After=network-online.target
+ConditionPathExists=/etc/maas/maas_cluster.conf
+# This (pserv.yaml) will go away once streamline
+# config files or move to sqlite.
+ConditionPathExists=/etc/maas/pserv.yaml
+ConditionPathExists=/var/lib/maas/secret
+
+[Service]
+Restart=on-failure
+EnvironmentFile=/etc/maas/maas_cluster.conf
+ExecStart=/bin/sh -ec '\
+    exec /usr/bin/authbind --deep /usr/bin/twistd \
+    --nodaemon --uid=maas --gid=maas --pidfile=/run/maas-cluster.pid \
+    maas-clusterd --config-file=/etc/maas/pserv.yaml > \
+    /var/log/maas/clusterd.log 2>&1'
+
+[Install]
+WantedBy=multi-user.target

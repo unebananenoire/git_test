@@ -14,6 +14,7 @@ create_log_dir() {
     fi
     # Main syslog file.
     if [ ! -f /var/log/maas/maas.log ]; then
+        mkdir -p /var/log/maas
         touch /var/log/maas/maas.log
     fi
 

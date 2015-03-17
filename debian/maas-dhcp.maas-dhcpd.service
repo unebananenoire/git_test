@@ -1,0 +1,23 @@
+[Unit]
+Description=MAAS instance of ISC DHCP server for IPv4
+Documentation=man:dhcpd(8)
+Wants=network-online.target
+After=network-online.target
+After=time-sync.target
+ConditionPathExists=/etc/maas/dhcpd.conf
+ConditionPathExists=/var/lib/maas/dhcpd-interfaces
+
+[Service]
+ExecStartPre=/bin/mkdir -p /run/maas/dhcp
+# Allow dhcp server to write lease and pid file as 'dhcpd' user
+ExecStartPre=/bin/chown dhcpd:dhcpd /run/maas/dhcp
+# The leases files need to be root:root even when dropping privileges
+ExecStart=/bin/sh -ec '\
+    CONFIG_FILE=/etc/maas/dhcpd.conf; \
+    INTERFACES_FILE=/var/lib/maas/dhcpd-interfaces; \
+    [ -e /var/lib/maas/dhcp/dhcpd.leases ] || touch /var/lib/maas/dhcp/dhcpd.leases; \
+    chown root:root /var/lib/maas/dhcp /var/lib/maas/dhcp/dhcpd.leases*; \
+    exec dhcpd -user dhcpd -group dhcpd -f -4 -pf /run/maas/dhcp/dhcpd.pid -cf $CONFIG_FILE $INTERFACES_FILE'
+
+[Install]
+WantedBy=multi-user.target
