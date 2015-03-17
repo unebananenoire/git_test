@@ -1,6 +1,12 @@
-maas (1.8.0~alpha6+bzr3661-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.8.0~alpha8+bzr3664-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 17 Mar 2015 18:46:41 -0400
+
+maas (1.8.0~alpha7+bzr3664-0ubuntu1) trusty; urgency=medium
+
+  * New upstream release, 1.8.0~alpha7 bzr3664
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 10 Mar 2015 16:36:40 -0400
 
