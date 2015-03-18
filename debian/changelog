@@ -1,6 +1,7 @@
 maas (1.8.0~alpha8+bzr3664-0ubuntu1) UNRELEASED; urgency=medium
 
-  * UNRELEASED
+  [ Steve Langasek ]
+  * Depend on pxelinux for pxelinux.0, not on syslinux-dev. (LP: #1433697)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 17 Mar 2015 18:46:41 -0400
 
