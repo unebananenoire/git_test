@@ -10,6 +10,8 @@ Restart=on-failure
 Environment="DJANGO_SETTINGS_MODULE=maas.settings"
 Environment="PYTHONPATH=/usr/share/maas"
 ExecStart=/bin/sh -ec '\
+    if [ -d "/usr/lib/django16" ]; then  DJANGO_SETTINGS_MODULE=maas.settings; \
+    PYTHONPATH="/usr/share/maas:/usr/lib/django16"; fi; \
     exec /usr/bin/authbind --deep /usr/bin/twistd \
     --nodaemon --pidfile= maas-regiond > /var/log/maas/regiond.log 2>&1'
 

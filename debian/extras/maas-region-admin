@@ -10,6 +10,12 @@ if user_id != 0:
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "maas.settings")
 sys.path.append('/usr/share/maas')
 
+# Use Django 1.6 if the python-django16 package is installed: this is
+# to get MAAS to work on vivid: vivid ships with Django 1.7 by default
+# and MAAS isn't yet compatible with Django 1.7.
+if os.path.exists('/usr/lib/django16'):
+    sys.path.insert(0, '/usr/lib/django16')
+
 from django.core import management
 
 if __name__ == "__main__":
