@@ -3,4 +3,4 @@ maas ALL= NOPASSWD: /usr/sbin/service maas-dhcpd6 restart
 maas ALL= NOPASSWD: /usr/sbin/service maas-dhcpd stop
 maas ALL= NOPASSWD: /usr/sbin/service maas-dhcpd6 stop
 maas ALL= NOPASSWD: /usr/sbin/maas-provision
-maas ALL= NOPASSWD: SETENV: /usr/sbin/maas-import-pxe-files, /usr/sbin/tgt-admin, /usr/bin/uec2roottar
+maas ALL= NOPASSWD: SETENV: /usr/sbin/tgt-admin, /usr/bin/uec2roottar

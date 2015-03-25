@@ -13,9 +13,7 @@ debian/tmp/etc/maas/templates/power
 debian/tmp/etc/maas/templates/pxe
 debian/tmp/etc/maas/templates/uefi
 
-# Install maas-import-pxe-files and related files
-debian/tmp/usr/sbin/maas-import-pxe-files
-man/maas-import-pxe-files.8 usr/share/man/man8
+# Install uec2roottar
 debian/tmp/usr/bin/uec2roottar
 
 # Install all other stuff
