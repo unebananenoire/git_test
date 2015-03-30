@@ -1,6 +1,7 @@
 maas (1.8.0~alpha10+bzr3750-0ubuntu1) UNRELEASED; urgency=medium
 
-  * UNRELEASED
+  [ Mike Pontillo ]
+  * debian/extras/maas-region-admin: Fix Path setting.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 30 Mar 2015 19:17:47 -0400
 
