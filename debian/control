@@ -180,6 +180,7 @@ Package: python-django-maas
 Section: python
 Architecture: all
 Depends: python-amqp,
+         python-apt,
          python-convoy,
          python-crochet,
          python-curtin,
