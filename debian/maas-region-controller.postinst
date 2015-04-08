@@ -135,8 +135,8 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 
 fi
 
-invoke-rc.d apache2 restart || true
 invoke-rc.d maas-regiond restart || true
+invoke-rc.d apache2 restart || true
 
 if [ -f /etc/init/maas-clusterd.conf ]; then
 	invoke-rc.d maas-clusterd restart || true
