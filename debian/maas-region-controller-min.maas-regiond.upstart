@@ -4,15 +4,84 @@ author "Gavin Panella <gavin.panella@canonical.com>"
 start on filesystem and net-device-up
 stop on runlevel [016]
 
+env svcdir=/var/lib/maas/regiond
+
 setuid maas
 setgid maas
 
 respawn
 
-env DJANGO_SETTINGS_MODULE=maas.settings
-env PYTHONPATH=/usr/share/maas
-env LOGFILE=/var/log/maas/regiond.log
+# Give `supervise` time to exit in post-stop. It's not clear that this
+# time applies to pre/post scripts, so this may be for naught.
+kill timeout 15
+
+pre-start script
+    set -eu
+    # Create the service directory.
+    mkdir -p "${svcdir}"
+    # Create a `run` script in the service directory.
+    svcrun="${svcdir}/run"
+    echo "#!/bin/sh" > "${svcrun}"
+    echo "exec >> /var/log/maas/regiond.log 2>&1" >> "${svcrun}"
+    echo "export PYTHONPATH=/usr/share/maas" >> "${svcrun}"
+    echo "export DJANGO_SETTINGS_MODULE=maas.settings" >> "${svcrun}"
+    echo "exec /usr/bin/twistd --nodaemon --pidfile= maas-regiond" >> "${svcrun}"
+    chmod a+x "${svcrun}"
+    # We're going to create between 2 and 5 daemons, depending on core count.
+    daemons="$(nproc)"
+    if [ "${daemons}" -lt 2 ]
+    then
+        daemons=2
+    elif [ "${daemons}" -gt 5 ]
+    then
+        daemons=5
+    fi
+    # Create the run directories and link to the shared `run` script.
+    for daemon in $(seq "${daemons}")
+    do
+        rundir="${svcdir}/${daemon}"
+        mkdir -p "${rundir}"
+        runfile="${rundir}/run"
+        ln -snf "${svcrun}" "${runfile}"
+    done
+end script
 
 script
-    exec /usr/bin/twistd --nodaemon --pidfile= maas-regiond > ${LOGFILE} 2>&1
+    # In the case where this service has been restarted, we may have
+    # running `supervise` daemons. Bring each service up.
+    find "${svcdir}" -name run -executable \
+        -execdir svok . \; -execdir svc -u . \;
+    # In the case where this service has been restarted, we may also
+    # have leftover `down` markers. To remove these, we remove the
+    # `supervise` directories.
+    find "${svcdir}" -name supervise -type d \
+        -not -execdir svok . \; -execdir rm -rf {} \;
+    # Exec the `svscan` daemon, as the meta-supervisor.
+    exec svscan "${svcdir}"
+end script
+
+pre-stop script
+    # Bring each service down. We must *not* exit the `supervise` daemon
+    # because `svscan` may then have time in which to respawn it before
+    # it's stopped.
+    find "${svcdir}" -name run -executable -execdir svok . \; \
+        -printf "Bringing %h down.\n" -execdir svc -d . \;
+end script
+
+post-stop script
+    set -eu
+    # Bring each service down (belt-n-braces) and quit supervise; it's
+    # safe to do so now because `svscan` is guaranteed to have stopped.
+    find "${svcdir}" -name run -executable -execdir svok . \; \
+        -printf "Bringing %h down.\n" -execdir svc -dx . \;
+    # For up to 10 seconds -- less than the `kill timeout` -- check if
+    # any supervise daemons are still running every 0.1 seconds.
+    for attempt in $(seq 100)
+    do
+        # If one or more `supervise` daemons are still running, sleep.
+        find "${svcdir}" -name run -execdir svok . \; -exec sleep 0.1 \; -quit
+    done
+    # Kill with fire any remaining supervise daemons.
+    find "${svcdir}" -name run -executable -execdir svok . \; \
+        -printf "Killing %h; timed-out.\n" -execdir svc -k . \;
 end script

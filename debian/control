@@ -49,6 +49,7 @@ Package: maas-region-controller-min
 Architecture: all
 Depends: apache2,
          bind9utils,
+         daemontools,
          dbconfig-common,
          iproute,
          libjs-angularjs,
