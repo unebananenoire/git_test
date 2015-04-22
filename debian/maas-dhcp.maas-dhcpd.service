@@ -20,7 +20,7 @@ ExecStart=/bin/sh -ec '\
     LEASES_FILE=/var/lib/maas/dhcp/dhcpd.leases; \
     [ -e $LEASES_FILE ] || touch $LEASES_FILE; \
     chown root:root /var/lib/maas/dhcp /var/lib/maas/dhcp/dhcpd.leases*; \
-    exec dhcpd -user dhcpd -group dhcpd -f -q -4 -pf /run/maas/dhcp/dhcpd.pid \ 
+    exec dhcpd -user dhcpd -group dhcpd -f -q -4 -pf /run/maas/dhcp/dhcpd.pid \
         -cf /etc/maas/dhcpd.conf -lf $LEASES_FILE $INTERFACES'
 
 [Install]
