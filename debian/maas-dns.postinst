@@ -13,7 +13,12 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; the
         chown -R maas:root /etc/bind/maas
     fi
     if [ -f /etc/bind/maas/named.conf.maas ]; then
+        chown maas:maas /etc/bind/maas/named.conf.maas
         chmod 644 /etc/bind/maas/named.conf.maas
+    fi
+    if [ -f /etc/bind/maas/named.conf.options.inside.maas ]; then
+        chown maas:maas /etc/bind/maas/named.conf.options.inside.maas
+        chmod 644 /etc/bind/maas/named.conf.options.inside.maas
     fi
     if [ -f /etc/bind/maas/rndc.conf.maas ]; then
         chmod 600 /etc/bind/maas/rndc.conf.maas
