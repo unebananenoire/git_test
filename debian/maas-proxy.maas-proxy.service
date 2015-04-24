@@ -6,7 +6,9 @@ ConditionPathExists=/etc/maas/maas-proxy.conf
 
 [Service]
 ExecStartPre=/bin/mkdir -p /run/maas/proxy
-ExecStartPre=/bin/sh /usr/share/maas/maas-proxy-common.sh
+ExecStartPre=/bin/sh -ec '\
+    . /usr/share/maas/maas-proxy-common.sh; \
+    pre_start'
 ExecStart=/usr/sbin/squid3 -N -f /etc/maas/maas-proxy.conf
 
 [Install]
