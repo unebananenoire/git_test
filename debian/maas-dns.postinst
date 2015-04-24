@@ -2,15 +2,10 @@
 
 set -e
 
-if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; then
-    # If /etc/bind/maas is empty, set_up_dns.
-    if [ ! "$(ls -A /etc/bind/maas)" ]; then
-        maas-region-admin set_up_dns
-    fi
-
-    # Fix permissions.
+fix_dns_permissions(){
     if [ -d /etc/bind/maas ]; then
-        chown -R maas:root /etc/bind/maas
+        chown maas:root /etc/bind/maas
+        chown -R maas:maas /etc/bind/maas/*
     fi
     if [ -f /etc/bind/maas/named.conf.maas ]; then
         chown maas:maas /etc/bind/maas/named.conf.maas
@@ -21,12 +16,24 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; the
         chmod 644 /etc/bind/maas/named.conf.options.inside.maas
     fi
     if [ -f /etc/bind/maas/rndc.conf.maas ]; then
+        chown maas:root /etc/bind/maas/rndc.conf.maas
         chmod 600 /etc/bind/maas/rndc.conf.maas
     fi
     if [ -f /etc/bind/maas/named.conf.rndc.maas ]; then
         chown maas:bind /etc/bind/maas/named.conf.rndc.maas
         chmod 640 /etc/bind/maas/named.conf.rndc.maas
     fi
+}
+
+# This handles installs and re-configuration
+if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; then
+    # If /etc/bind/maas is empty, set_up_dns.
+    if [ ! "$(ls -A /etc/bind/maas)" ]; then
+        maas-region-admin set_up_dns
+    fi
+
+    # Fix permissions.
+    fix_dns_permissions
 
     # Remove any existing MAAS-related include line from
     # /etc/bind/named.conf.local, then re-add it.
@@ -36,16 +43,19 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; the
     # /etc/named/maas/named.conf.options.inside.maas file.
     maas-region-admin edit_named_options --config-path /etc/bind/named.conf.options
 
-    invoke-rc.d bind9 restart || true
 fi
 
 if [ "$1" = "configure" ]; then
+    # Fix permissions
+    fix_dns_permissions
+
     # If the /etc/bind/named.conf.options is not set up yet, do it now.
     # This might happen because of an upgrade from an older package.
     if ! grep -qs "named.conf.options.inside.maas" /etc/bind/named.conf.options; then
         maas-region-admin edit_named_options --config-path /etc/bind/named.conf.options
-        invoke-rc.d bind9 restart || true
     fi
 fi
+
+invoke-rc.d bind9 restart || true
 
 #DEBHELPER#
