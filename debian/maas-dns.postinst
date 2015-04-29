@@ -2,7 +2,18 @@
 
 set -e
 
-fix_dns_permissions(){
+edit_named_options() {
+    # Remove any existing MAAS-related include line from
+    # /etc/bind/named.conf.local, then re-add it.
+    sed -i '/^include\s.*maas/d' /etc/bind/named.conf.local
+    maas-region-admin get_named_conf --edit --config_path /etc/bind/named.conf.local
+
+    # Add a line in /etc/bind/named.conf.options that includes the
+    # /etc/named/maas/named.conf.options.inside.maas file.
+    maas-region-admin edit_named_options --config-path /etc/bind/named.conf.options
+}
+
+fix_dns_permissions() {
     if [ -d /etc/bind/maas ]; then
         chown maas:root /etc/bind/maas
         chown -R maas:maas /etc/bind/maas/*
@@ -35,24 +46,30 @@ if ([ "$1" = "configure" ] && [ -z "$2" ]) || [ -n "$DEBCONF_RECONFIGURE" ]; the
     # Fix permissions.
     fix_dns_permissions
 
-    # Remove any existing MAAS-related include line from
-    # /etc/bind/named.conf.local, then re-add it.
-    sed -i '/^include\s.*maas/d' /etc/bind/named.conf.local
-    maas-region-admin get_named_conf --edit --config_path /etc/bind/named.conf.local
-    # Add a line in /etc/bind/named.conf.options that includes the
-    # /etc/named/maas/named.conf.options.inside.maas file.
-    maas-region-admin edit_named_options --config-path /etc/bind/named.conf.options
+    edit_named_options
 
-fi
-
-if [ "$1" = "configure" ]; then
+elif [ "$1" = "configure" ]; then
     # Fix permissions
     fix_dns_permissions
 
     # If the /etc/bind/named.conf.options is not set up yet, do it now.
     # This might happen because of an upgrade from an older package.
-    if ! grep -qs "named.conf.options.inside.maas" /etc/bind/named.conf.options; then
-        maas-region-admin edit_named_options --config-path /etc/bind/named.conf.options
+    should_edit_named_options=0
+
+    # If the MAAS include statement doesn't exist in named.conf.local, we need to add it.
+    grep -qs '^include\s.*maas' /etc/bind/named.conf.local || should_edit_named_options=1
+
+    # If the 'forwarders' option exists in named.conf.options, it needs to be removed.
+    grep -qs "forwarders" /etc/bind/named.conf.options && should_edit_named_options=1
+
+    # If the 'dnssec-validation' option exists in named.conf.options, it needs to be removed.
+    grep -qs "dnssec-validation" /etc/bind/named.conf.options && should_edit_named_options=1
+
+    # If the include file for the custom MAAS named.conf.options doesn't exist, it needs to be added.
+    grep -qs "named.conf.options.inside.maas" /etc/bind/named.conf.options || should_edit_named_options=1
+    
+    if [ $should_edit_named_options -eq 1 ]; then
+        edit_named_options
     fi
 fi
 

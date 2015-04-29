@@ -1,6 +1,11 @@
 maas (1.8.0~beta5+bzr3849-0ubuntu1) UNRELEASED; urgency=medium
 
+  [ Andres Rodriguez ]
   * d/p/02-pserv.yaml: Fix config file (LP: #1449862)
+
+  [ Mike Pontillo ]
+  * Run DNS reconfiguration if either 'forwarders' or 'dnssec-validation'
+    keywords exist in named.conf.options (LP: #1384334)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 24 Apr 2015 18:55:47 -0400
 
