@@ -1,0 +1,25 @@
+description "MAAS Region Controller (Worker)"
+author "Gavin Panella <gavin.panella@canonical.com>"
+
+# This instance job is started by the parent `maas-regiond` job, and
+# stops when that job is stopped. This is differentiated from its
+# siblings by the $core instance argument.
+
+instance $core
+
+stop on stopping maas-regiond
+
+setuid maas
+setgid maas
+
+respawn
+
+kill timeout 15
+
+env DJANGO_SETTINGS_MODULE=maas.settings
+env PYTHONPATH=/usr/share/maas
+env LOGFILE=/var/log/maas/regiond.log
+
+script
+    exec /usr/bin/twistd --nodaemon --pidfile= maas-regiond >> ${LOGFILE} 2>&1
+end script

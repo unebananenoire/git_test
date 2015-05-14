@@ -17,6 +17,8 @@ override_dh_installinit:
 	dh_systemd_enable --name maas-regiond
 	dh_installinit --name maas-regiond
 	dh_systemd_start --name maas-regiond
+	# maas-regiond-worker
+	dh_installinit --name maas-regiond-worker
 	# maas-dhcpd
 	dh_systemd_enable --name maas-dhcpd
 	dh_installinit --name maas-dhcpd
