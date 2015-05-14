@@ -2,6 +2,19 @@
 
 set -e
 
+create_log_dir(){
+    # Main syslog file.
+    if [ ! -f /var/log/maas/maas.log ]; then
+        mkdir -p /var/log/maas
+        touch /var/log/maas/maas.log
+    fi
+
+    # Give appropriate permissions
+    chown -R maas:maas /var/lib/maas/
+    chown syslog:syslog /var/log/maas/maas.log
+
+}
+
 add_user_group(){
 	local user="maas"
 	local group="maas"
@@ -13,5 +26,6 @@ add_user_group(){
 ln -sf /usr/share/maas/maas-rsyslog.conf /etc/rsyslog.d/99-maas.conf
 
 add_user_group
+create_log_dir
 
 #DEBHELPER#
