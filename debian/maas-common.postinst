@@ -10,9 +10,7 @@ create_log_dir(){
     fi
 
     # Give appropriate permissions
-    chown -R maas:maas /var/lib/maas/
     chown syslog:syslog /var/log/maas/maas.log
-
 }
 
 add_user_group(){
