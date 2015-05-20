@@ -7,25 +7,20 @@ db_version 2.0
 
 RELEASE=`lsb_release -rs` || RELEASE=""
 
-create_log_dir() {
-    # create log dir
+create_var_dir() {
+    # create var dir
     if [ ! -d /var/lib/maas ]; then
         mkdir -p /var/lib/maas
     fi
-    # Main syslog file.
-    if [ ! -f /var/log/maas/maas.log ]; then
-        mkdir -p /var/log/maas
-        touch /var/log/maas/maas.log
-    fi
-
-    # Give appropriate permissions
     chown -R maas:maas /var/lib/maas/
-    find /var/log/maas -not -user syslog -print0 | xargs -r0 chown maas:maas
-    chown syslog:syslog /var/log/maas/maas.log
-    # If proxy log dir exists, set correct permissions
-    if [ -d /var/log/maas/proxy ]; then
-        chown -R proxy:proxy /var/log/maas/proxy
+
+}
+create_log_dir() {
+    # Give appropriate permissions
+    if [ ! -f /var/log/maas/clusterd.log ]; then
+        touch /var/log/maas/clusterd.log
     fi
+    chown maas:maas /var/log/maas/clusterd.log
 }
 
 configure_maas_tgt() {
@@ -111,13 +106,12 @@ configure_shared_secret() {
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     create_log_dir
+    create_var_dir
     configure_maas_tgt
 fi
 
 if [ "$1" = "configure" ]; then
-    if dpkg --compare-versions "$2" lt 0.1+bzr1239+dfsg-0ubuntu1; then
-        create_log_dir
-    fi
+    create_log_dir
 
     configure_maas_tgt
     configure_maas_url

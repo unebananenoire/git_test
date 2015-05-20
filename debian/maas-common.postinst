@@ -3,13 +3,15 @@
 set -e
 
 create_log_dir(){
-    # Main syslog file.
-    if [ ! -f /var/log/maas/maas.log ]; then
+    # Logging directory (/var/log/maas)
+    if [ ! -d /var/log/maas ]; then
         mkdir -p /var/log/maas
-        touch /var/log/maas/maas.log
+        chown -R maas:maas /var/log/maas/
     fi
 
-    # Give appropriate permissions
+    if [ ! -f /var/log/maas/maas.log ]; then
+        touch /var/log/maas/maas.log
+    fi
     chown syslog:syslog /var/log/maas/maas.log
 }
 

@@ -35,13 +35,7 @@ configure_logging() {
 	if [ ! -f /var/log/maas/regiond.log ]; then
 		touch /var/log/maas/regiond.log
 	fi
-	chown -R maas:maas /var/log/maas
-
-	# Main syslog file.
-	if [ ! -f /var/log/maas/maas.log ]; then
-		touch /var/log/maas/maas.log
-	fi
-	chown syslog:syslog /var/log/maas/maas.log
+	chown maas:maas /var/log/maas/regiond.log
 
 	# Create log directory base
 	mkdir -p /var/log/maas/rsyslog
@@ -49,14 +43,7 @@ configure_logging() {
 	# Make sure rsyslog reads our config
 	invoke-rc.d rsyslog restart
 
-	# If proxy log dir exists, set correct permissions
-	if [ -d /var/log/maas/proxy ]; then
-		chown -R proxy:proxy /var/log/maas/proxy
-	fi
-}
-
-
-configure_third_party_log_symlinks() {
+	# apache2 log symlinks
 	ln -sf /var/log/apache2 /var/log/maas/
 }
 
@@ -117,7 +104,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
     ################  Configure Logging  ####################
     #########################################################
     configure_logging
-    configure_third_party_log_symlinks
 
 elif [ -n "$DEBCONF_RECONFIGURE" ]; then
     # Set the IP address of the interface with default route
@@ -130,7 +116,6 @@ elif [ -n "$DEBCONF_RECONFIGURE" ]; then
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
     # Logging changed at r2611, ensure it is set up.
     configure_logging
-    configure_third_party_log_symlinks
 
     # If upgrading to any later package version, then upgrade db.
     invoke-rc.d apache2 stop || true
