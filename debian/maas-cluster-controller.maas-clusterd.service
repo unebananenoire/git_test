@@ -1,21 +1,26 @@
 [Unit]
 Description=MAAS Cluster Controller
+Documentation=https://maas.ubuntu.com/
 Requires=network-online.target
 After=network-online.target
-ConditionPathExists=/etc/maas/maas_cluster.conf
-# This (pserv.yaml) will go away once streamline
-# config files or move to sqlite.
-ConditionPathExists=/etc/maas/pserv.yaml
 ConditionPathExists=/var/lib/maas/secret
+# These will go away one we support new config files.
+ConditionPathExists=/etc/maas/maas_cluster.conf
+ConditionPathExists=/etc/maas/pserv.yaml
 
 [Service]
-Restart=on-failure
+User=maas
+Group=maas
+Restart=always
 EnvironmentFile=/etc/maas/maas_cluster.conf
-ExecStart=/bin/sh -ec '\
-    exec /usr/bin/authbind --deep /usr/bin/twistd \
-    --nodaemon --uid=maas --gid=maas --pidfile=/run/maas-cluster.pid \
-    maas-clusterd --config-file=/etc/maas/pserv.yaml > \
-    /var/log/maas/clusterd.log 2>&1'
+Environment="LOGFILE=/var/log/maas/clusterd.log"
+# Logs go to the journal; read them with
+#   journalctl -u maas-clusterd
+# Logs also go to $LOGFILE for backward compatibility. The journal
+# should now be preferred as the $LOGFILE will be removed in MAAS 1.9.
+ExecStart=/bin/sh -c \
+    'exec /usr/bin/authbind --deep /usr/bin/twistd --nodaemon --pidfile= \
+     maas-clusterd --config-file=/etc/maas/pserv.yaml 2>&1 | tee -a $LOGFILE'
 
 [Install]
 WantedBy=multi-user.target

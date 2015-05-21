@@ -1,0 +1,27 @@
+[Unit]
+Description=MAAS Region Controller (Worker %i)
+Documentation=https://maas.ubuntu.com/
+Requires=network-online.target
+After=network-online.target
+Requires=postgresql.service
+After=postgresql.service
+PartOf=maas-regiond.service
+# This will go away one we support new config files.
+ConditionPathExists=/etc/maas/maas_local_settings.py
+
+[Service]
+User=maas
+Group=maas
+Restart=always
+Environment="DJANGO_SETTINGS_MODULE=maas.settings"
+Environment="PYTHONPATH=/usr/share/maas:/usr/lib/django16"
+Environment="LOGFILE=/var/log/maas/regiond.log"
+# Logs go to the journal; read them with:
+#   journalctl -u maas-regiond-worker@*
+# Logs also go to $LOGFILE for backward compatibility. The journal
+# should now be preferred as $LOGFILE will be removed in MAAS 1.9.
+ExecStart=/bin/sh -c \
+    'exec twistd --nodaemon --pidfile= maas-regiond 2>&1 | tee -a $LOGFILE'
+
+[Install]
+WantedBy=maas-regiond.service
