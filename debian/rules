@@ -18,8 +18,8 @@ override_dh_installinit:
 	dh_installinit --name maas-regiond
 	dh_systemd_start --name maas-regiond
 	# maas-regiond-worker
-	dh_installinit --name maas-regiond-worker  # Upstart
-	dh_installinit --name maas-regiond-worker@  # systemd
+	dh_installinit --no-start --name maas-regiond-worker  # Upstart
+	dh_installinit --no-start --name maas-regiond-worker@  # systemd
 	# maas-dhcpd
 	dh_systemd_enable --name maas-dhcpd
 	dh_installinit --name maas-dhcpd
