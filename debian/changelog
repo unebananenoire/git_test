@@ -1,4 +1,12 @@
-maas (1.8.0~beta8+bzr3926-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.8.0~rc1+bzr3951-0ubuntu1) UNRELEASED; urgency=medium
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 27 May 2015 20:16:40 -0400
+
+maas (1.8.0~beta8+bzr3951-0ubuntu1) trusty; urgency=medium
+
+  * New upstream release, 1.8.0 beta 8 bzr3951.
 
   [ Raphaël Badin ]
   * debian/extras/99-maas-sudoers: Allow maas to check the status of
