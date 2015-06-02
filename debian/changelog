@@ -1,6 +1,14 @@
-maas (1.8.0~rc1+bzr3951-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.8.0~rc2+bzr3972-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 02 Jun 2015 09:27:54 -0400
+
+maas (1.8.0~rc1+bzr3972-0ubuntu1) trusty; urgency=medium
+
+  * New upstream release, 1.8.0 RC1 bzr3972.
+  * debian/copyright: Add copyright headers for ng-tags-input.js.
+  * debian/control: Bump Standards-Version
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 27 May 2015 20:16:40 -0400
 
