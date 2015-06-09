@@ -106,7 +106,6 @@ Depends: python-bson,
          python-tempita,
          python-twisted-core,
          python-twisted-web,
-         python-txamqp,
          python-txtftp,
          python-yaml,
          python-zope.interface,
@@ -179,8 +178,7 @@ Description: MAAS server cluster controller
 Package: python-django-maas
 Section: python
 Architecture: all
-Depends: python-amqp,
-         python-apt,
+Depends: python-apt,
          python-convoy,
          python-crochet,
          python-curtin,
@@ -192,7 +190,6 @@ Depends: python-amqp,
          python-sphinx,
          python-tempita,
          python-twisted,
-         python-txamqp,
          python-zope.interface,
          ${misc:Depends},
          ${python:Depends}
