@@ -21,21 +21,10 @@ restart_postgresql(){
 	invoke-rc.d --force postgresql restart || true
 }
 
-configure_maas_database() {
-	local dbc_dbpass="$1"
-	if grep -qs "^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$" /etc/maas/maas_local_settings.py; then
-		sed -i "s/^\ \{1,\} 'PASSWORD': '[a-zA-Z0-9]\{0,\}',$/        'PASSWORD': '"$dbc_dbpass"',/" \
-                       /etc/maas/maas_local_settings.py
-	fi
-}
-
 configure_maas_default_url() {
 	local ipaddr="$1"
-
-	if grep -qs "^DEFAULT_MAAS_URL\ \= \"[a-zA-Z0-9:/.]\{0,\}\"$" /etc/maas/maas_local_settings.py; then
-		sed -i "s/^DEFAULT_MAAS_URL\ \= \"[a-zA-Z0-9:/.]\{0,\}\"$/DEFAULT_MAAS_URL = \"http:\/\/"$ipaddr"\/MAAS\"/" \
-                    /etc/maas/maas_local_settings.py
-	fi
+	maas-region-admin local_config_set \
+	    --maas-url "http://${ipaddr}/MAAS"
 }
 
 get_default_route_ip() {
@@ -56,11 +45,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	#########################################################
 	mkdir -p /var/lib/maas/media/storage
 	chown -R maas:maas /var/lib/maas/
-
-	# Config will contain credentials, so should be readable
-	# by the application but nobody else.
-	chown root:maas /etc/maas/maas_local_settings.py
-	chmod 0640 /etc/maas/maas_local_settings.py
 
 	#########################################################
 	##########  Configure DEFAULT_MAAS_URL  #################
@@ -89,7 +73,9 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 
 	# Create the database
 	dbc_go maas-region-controller $@
-	configure_maas_database "$dbc_dbpass"
+	maas-region-admin local_config_set \
+            --database-host "localhost" --database-name "$dbc_dbname" \
+            --database-user "$dbc_dbuser" --database-pass "$dbc_dbpass"
 
 	# Only syncdb if we have selected to install it with dbconfig-common.
 	db_get maas-region-controller/dbconfig-install
@@ -116,20 +102,31 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 	# make sure postgresql is running
 	restart_postgresql
 
-	# we need to regenerate the passwords and update configs.
-	db_get maas/default-maas-url
-	ipaddr="$RET"
-	configure_maas_default_url "$ipaddr"
-	# handle database upgrade
-	if [ -f /etc/dbconfig-common/maas-region-controller.conf ]; then
-		# source dbconfig-common db config for maas-region-controller
-		# before upgrading database, otherwise a new config is written
-		# but the password is no longer preserved.
-		. /etc/dbconfig-common/maas-region-controller.conf
-	else
-		dbc_go maas-region-controller $@
+	# If the version we are upgrading from ("$2") is less than
+	# 1.9.0~alpha1+bzr4038-0ubuntu1 then we need migrate to new
+	# config file.
+	if dpkg --compare-versions "$2" lt 1.9.0~alpha1+bzr4038-0ubuntu1 && [ -f /etc/maas/maas_local_settings.py ]; then
+		# we need to regenerate the passwords and update configs.
+		db_get maas/default-maas-url
+		ipaddr="$RET"
+		configure_maas_default_url "$ipaddr"
+		# handle database upgrade
+		if [ -f /etc/dbconfig-common/maas-region-controller.conf ]; then
+			# source dbconfig-common db config for maas-region-controller
+			# before upgrading database, otherwise a new config is written
+			# but the password is no longer preserved.
+			. /etc/dbconfig-common/maas-region-controller.conf
+		else
+			dbc_go maas-region-controller $@
+		fi
+
+		# Reconfigure the config file.
+		maas-region-admin local_config_set \
+		    --database-host "localhost" --database-name "$dbc_dbname" \
+		    --database-user "$dbc_dbuser" --database-pass "$dbc_dbpass"
+
+		mv /etc/maas/maas_local_settings.py /etc/maas/maas_local_settings.py.maas-old
 	fi
-	configure_maas_database "$dbc_dbpass"
 
 	maas_sync_migrate_db
 

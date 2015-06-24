@@ -1,5 +1,3 @@
-etc/maas/maas_local_settings.py usr/share/maas/maas_local_settings.py
-
 # dh-systemd does not yet appear to fully grok template units, so we
 # install unit dependencies directly instead.
 lib/systemd/system/maas-regiond-worker@.service lib/systemd/system/maas-regiond.service.wants/maas-regiond-worker@1.service

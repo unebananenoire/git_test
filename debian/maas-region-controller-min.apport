@@ -36,7 +36,7 @@ def attach_journal_logs(report, key, *units):
 
 def add_info(report, ui):
     response = ui.yesno(
-        "The contents of your /etc/maas/maas_local_settings.py, "
+        "The contents of your /etc/maas/regiond.conf, "
         "/etc/maas/pserv.yaml files may help developers diagnose your bug "
         "more quickly.  However, it may contain sensitive information.  Do "
         "you want to include it in your bug report?")
@@ -45,6 +45,8 @@ def add_info(report, ui):
         raise StopIteration
     elif response is True:
         attach_conffiles(report, 'maas')
+        attach_file_if_exists(
+            report, '/etc/maas/regiond.conf', 'MAASRegionConfig')
 
     # Attaching log files (Upstart).
     attach_file_if_exists(
