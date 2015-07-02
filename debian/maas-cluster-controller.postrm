@@ -26,4 +26,10 @@ case "$1" in
 		if [ -f "/etc/authbind/byuid/$MAAS_UID" ]; then
 			rm -rf /etc/authbind/byuid/$MAAS_UID
 		fi
+
+		# Deleting old/new config files
+		rm -rf /etc/maas/pserv.yaml.maas-old
+		rm -rf /etc/maas/maas_cluster.conf.maas-old
+		rm -rf /etc/maas/clusterd.conf
+
 esac

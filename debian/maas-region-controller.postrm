@@ -40,6 +40,10 @@ case "$1" in
 			rm -rf /etc/squid-deb-proxy/mirror-dstdomain.acl.d/99-maas
 		fi
 
+		# Deleting old/new config files
+		rm -rf /etc/maas/maas_local_settings.py.maas-old
+		rm -rf /etc/maas/regiond.conf
+
 esac
 
 #DEBHELPER#
