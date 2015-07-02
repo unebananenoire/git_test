@@ -6,28 +6,13 @@ stop on runlevel [016]
 
 respawn
 
-env CONFIG_FILE=/etc/maas/maas_cluster.conf
 env LOGFILE=/var/log/maas/clusterd.log
-
-pre-start script
-    if [ ! -f $CONFIG_FILE ]; then
-        echo "$CONFIG_FILE does not exist.  Aborting."
-        stop
-        exit 0
-    fi
-end script
 
 script
     # Exit immediately on error, and treat unset variables as errors. In
     # sh/dash, unfortunately, the following does not cause the use of an unset
     # variable to halt the script, it merely prints an error and sets $?.
     set -o errexit -o nounset
-    # Load the configuration file.
-    . $CONFIG_FILE
-    # The MAAS cluster controller needs both CLUSTER_UUID and MAAS_URL to
-    # operate.
-    export CLUSTER_UUID
-    export MAAS_URL
     # Check for the shared-secret. If it's not here, sleep for a while, then
     # exit and allow respawn to do its thing.
     if ! maas-provision check-for-shared-secret >/dev/null; then
@@ -48,5 +33,5 @@ script
     # To add options to your daemon, edit the line below:
     exec /usr/bin/authbind --deep \
         /usr/bin/twistd --nodaemon --uid=maas --gid=maas --pidfile= \
-        maas-clusterd --config-file=/etc/maas/pserv.yaml > ${LOGFILE} 2>&1
+        maas-clusterd > ${LOGFILE} 2>&1
 end script

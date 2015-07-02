@@ -36,17 +36,24 @@ def attach_journal_logs(report, key, *units):
 
 def add_info(report, ui):
     response = ui.yesno(
-        "The contents of your /etc/maas/regiond.conf, "
-        "/etc/maas/pserv.yaml files may help developers diagnose your bug "
-        "more quickly.  However, it may contain sensitive information.  Do "
-        "you want to include it in your bug report?")
+        "The contents of /etc/maas/regiond.conf and /etc/maas/clusterd.conf "
+        "may help developers diagnose your bug more quickly. However, it may "
+        "contain sensitive information. Do you want to include it in your bug "
+        "report?")
 
-    if response is None:  # user cancelled
+    if response is None:
+        # The user cancelled.
         raise StopIteration
     elif response is True:
+        # The user agreed to include the configuration files.
         attach_conffiles(report, 'maas')
         attach_file_if_exists(
             report, '/etc/maas/regiond.conf', 'MAASRegionConfig')
+        attach_file_if_exists(
+            report, '/etc/maas/clusterd.conf', 'MAASClusterConfig')
+    else:
+        # The user declined to include the configuration files.
+        pass
 
     # Attaching log files (Upstart).
     attach_file_if_exists(

@@ -4,15 +4,11 @@ Documentation=https://maas.ubuntu.com/
 Requires=network-online.target
 After=network-online.target
 ConditionPathExists=/var/lib/maas/secret
-# These will go away one we support new config files.
-ConditionPathExists=/etc/maas/maas_cluster.conf
-ConditionPathExists=/etc/maas/pserv.yaml
 
 [Service]
 User=maas
 Group=maas
 Restart=always
-EnvironmentFile=/etc/maas/maas_cluster.conf
 Environment="LOGFILE=/var/log/maas/clusterd.log"
 # Logs go to the journal; read them with
 #   journalctl -u maas-clusterd
@@ -20,7 +16,7 @@ Environment="LOGFILE=/var/log/maas/clusterd.log"
 # should now be preferred as the $LOGFILE will be removed in MAAS 1.9.
 ExecStart=/bin/sh -c \
     'exec /usr/bin/authbind --deep /usr/bin/twistd --nodaemon --pidfile= \
-     maas-clusterd --config-file=/etc/maas/pserv.yaml 2>&1 | tee -a $LOGFILE'
+     maas-clusterd 2>&1 | tee -a $LOGFILE'
 
 [Install]
 WantedBy=multi-user.target
