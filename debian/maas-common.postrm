@@ -3,12 +3,12 @@
 set -e
 
 case "$1" in
-        purge)
-                # Deleting user/group
-                if getent passwd maas >/dev/null; then
-                        deluser maas || true
-                        delgroup maas || true
-                fi
+    purge)
+        # Deleting user/group
+        if getent passwd maas >/dev/null; then
+            deluser maas || true
+            delgroup maas || true
+        fi
 esac
 
 rm -f /etc/rsyslog.d/99-maas.conf

@@ -67,7 +67,7 @@ elif [ "$1" = "configure" ]; then
 
     # If the include file for the custom MAAS named.conf.options doesn't exist, it needs to be added.
     grep -qs "named.conf.options.inside.maas" /etc/bind/named.conf.options || should_edit_named_options=1
-    
+
     if [ $should_edit_named_options -eq 1 ]; then
         edit_named_options
     fi

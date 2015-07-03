@@ -7,29 +7,29 @@ set -e
 RELEASE=`lsb_release -rs` || RELEASE=""
 
 case "$1" in
-        purge)
-		# remove log directory
-		rm -rf /var/log/maas
-		# remove var directory
-		DIR=/var/lib/maas
-		if [ "$(ls -A $DIR 2> /dev/null)" = "" ]; then
-			rm -rf /var/lib/maas
-		fi
+    purge)
+        # remove log directory
+        rm -rf /var/log/maas
+        # remove var directory
+        DIR=/var/lib/maas
+        if [ "$(ls -A $DIR 2> /dev/null)" = "" ]; then
+            rm -rf /var/lib/maas
+        fi
 
-		# Delete symlink for iSCSI config.
-		if [ -L /etc/tgt/conf.d/maas.conf ]; then
-			rm -rf /etc/tgt/conf.d/maas.conf
-		fi
+        # Delete symlink for iSCSI config.
+        if [ -L /etc/tgt/conf.d/maas.conf ]; then
+            rm -rf /etc/tgt/conf.d/maas.conf
+        fi
 
-		# Remove authbind
-		MAAS_UID="`id -u maas`"
-		if [ -f "/etc/authbind/byuid/$MAAS_UID" ]; then
-			rm -rf /etc/authbind/byuid/$MAAS_UID
-		fi
+        # Remove authbind
+        MAAS_UID="`id -u maas`"
+        if [ -f "/etc/authbind/byuid/$MAAS_UID" ]; then
+            rm -rf /etc/authbind/byuid/$MAAS_UID
+        fi
 
-		# Deleting old/new config files
-		rm -rf /etc/maas/pserv.yaml.maas-old
-		rm -rf /etc/maas/maas_cluster.conf.maas-old
-		rm -rf /etc/maas/clusterd.conf
+        # Deleting old/new config files
+        rm -rf /etc/maas/pserv.yaml.maas-old
+        rm -rf /etc/maas/maas_cluster.conf.maas-old
+        rm -rf /etc/maas/clusterd.conf
 
 esac

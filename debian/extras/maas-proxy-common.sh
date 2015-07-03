@@ -19,16 +19,3 @@ pre_start() {
    $SQUID -z -N -f /etc/maas/maas-proxy.conf
   fi
 }
-
-# from the squid3 debian init script
-find_cache_dir () {
-        w="     " # space tab
-        res=`sed -ne '
-                s/^'$1'['"$w"']\+[^'"$w"']\+['"$w"']\+\([^'"$w"']\+\).*$/\1/p;
-                t end;
-                d;
-                :end q' < $CONFIG`
-        [ -n "$res" ] || res=$2
-        echo "$res"
-}
-

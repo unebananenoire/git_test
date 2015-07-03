@@ -6,36 +6,37 @@ set -e
 db_version 2.0
 
 if [ -f /usr/share/dbconfig-common/dpkg/postinst.pgsql ]; then
-	. /usr/share/dbconfig-common/dpkg/postinst.pgsql
+    . /usr/share/dbconfig-common/dpkg/postinst.pgsql
 fi
 
 RELEASE=`lsb_release -rs` || RELEASE=""
 
 maas_sync_migrate_db(){
-	maas-region-admin syncdb --noinput
-	maas-region-admin migrate maasserver --noinput
-	maas-region-admin migrate metadataserver --noinput
+    maas-region-admin syncdb --noinput
+    maas-region-admin migrate maasserver --noinput
+    maas-region-admin migrate metadataserver --noinput
 }
 
 restart_postgresql(){
-	invoke-rc.d --force postgresql restart || true
+    invoke-rc.d --force postgresql restart || true
 }
 
 configure_maas_default_url() {
-	local ipaddr="$1"
-	maas-region-admin local_config_set \
-	    --maas-url "http://${ipaddr}/MAAS"
+    local ipaddr="$1"
+    maas-region-admin local_config_set \
+        --maas-url "http://${ipaddr}/MAAS"
 }
 
 get_default_route_ip() {
-	while read Iface Destination Gateway Flags RefCnt Use Metric Mask MTU Window IRTT; do
-		[ "$Mask" = "00000000" ] && break
-	done < /proc/net/route
-	interface="$Iface"
-	ipaddr=$(LC_ALL=C /sbin/ip -4 addr list dev "$interface" scope global)
-	ipaddr=${ipaddr#* inet }
-	ipaddr=${ipaddr%%/*}
-        echo $ipaddr
+    while read Iface Destination Gateway Flags RefCnt Use Metric Mask MTU Window IRTT
+    do
+        [ "$Mask" = "00000000" ] && break
+    done < /proc/net/route
+    interface="$Iface"
+    ipaddr=$(LC_ALL=C /sbin/ip -4 addr list dev "$interface" scope global)
+    ipaddr=${ipaddr#* inet }
+    ipaddr=${ipaddr%%/*}
+    echo $ipaddr
 }
 
 extract_default_maas_url() {
@@ -45,96 +46,96 @@ extract_default_maas_url() {
 
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
-	#########################################################
-	################ Folder Permissions  ####################
-	#########################################################
-	mkdir -p /var/lib/maas/media/storage
-	chown -R maas:maas /var/lib/maas/
+    #########################################################
+    ################ Folder Permissions  ####################
+    #########################################################
+    mkdir -p /var/lib/maas/media/storage
+    chown -R maas:maas /var/lib/maas/
 
-	#########################################################
-	##########  Configure DEFAULT_MAAS_URL  #################
-	#########################################################
+    #########################################################
+    ##########  Configure DEFAULT_MAAS_URL  #################
+    #########################################################
 
-	# Obtain IP address of default route and change DEFAULT_MAAS_URL
-	# if default-maas-url has not been preseeded.
-	db_get maas/default-maas-url
-	ipaddr="$RET"
-	if [ -z "$RET" ]; then
-		ipaddr=$(get_default_route_ip)
-	fi
-	# Set the IP address of the interface with default route
-	if [ -n "$ipaddr" ]; then
-		configure_maas_default_url "$ipaddr"
-		db_subst maas/installation-note MAAS_URL "$ipaddr"
-		db_set maas/default-maas-url "$ipaddr"
-	fi
+    # Obtain IP address of default route and change DEFAULT_MAAS_URL
+    # if default-maas-url has not been preseeded.
+    db_get maas/default-maas-url
+    ipaddr="$RET"
+    if [ -z "$RET" ]; then
+        ipaddr=$(get_default_route_ip)
+    fi
+    # Set the IP address of the interface with default route
+    if [ -n "$ipaddr" ]; then
+        configure_maas_default_url "$ipaddr"
+        db_subst maas/installation-note MAAS_URL "$ipaddr"
+        db_set maas/default-maas-url "$ipaddr"
+    fi
 
-	#########################################################
-	################  Configure Database  ###################
-	#########################################################
+    #########################################################
+    ################  Configure Database  ###################
+    #########################################################
 
-	# Need to for postgresql start so it doesn't fail on the installer
-	restart_postgresql
+    # Need to for postgresql start so it doesn't fail on the installer
+    restart_postgresql
 
-	# Create the database
-	dbc_go maas-region-controller $@
-	maas-region-admin local_config_set \
+    # Create the database
+    dbc_go maas-region-controller $@
+    maas-region-admin local_config_set \
+        --database-host "localhost" --database-name "$dbc_dbname" \
+        --database-user "$dbc_dbuser" --database-pass "$dbc_dbpass"
+
+    # Only syncdb if we have selected to install it with dbconfig-common.
+    db_get maas-region-controller/dbconfig-install
+    if [ "$RET" = "true" ]; then
+        maas_sync_migrate_db
+    fi
+
+    # Display installation note
+    db_input low maas/installation-note || true
+    db_go
+
+elif [ -n "$DEBCONF_RECONFIGURE" ]; then
+    # Set the IP address of the interface with default route
+    db_get maas/default-maas-url
+    ipaddr="$RET"
+    if [ -n "$ipaddr" ]; then
+        configure_maas_default_url "$ipaddr"
+    fi
+
+elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
+    # If upgrading to any later package version, then upgrade db.
+    invoke-rc.d apache2 stop || true
+
+    # make sure postgresql is running
+    restart_postgresql
+
+    # If the version we are upgrading from ("$2") is less than
+    # 1.9.0~alpha1+bzr4038-0ubuntu1 then we need migrate to new
+    # config file.
+    if dpkg --compare-versions "$2" lt 1.9.0~alpha1+bzr4038-0ubuntu1 && [ -f /etc/maas/maas_local_settings.py ]; then
+        ipaddr=$(extract_default_maas_url /etc/maas/maas_local_settings.py)
+        if [ -n "$ipaddr" ]; then
+            configure_maas_default_url "$ipaddr"
+            db_set maas/default-maas-url "$ipaddr"
+        fi
+        # handle database upgrade
+        if [ -f /etc/dbconfig-common/maas-region-controller.conf ]; then
+            # source dbconfig-common db config for maas-region-controller
+            # before upgrading database, otherwise a new config is written
+            # but the password is no longer preserved.
+            . /etc/dbconfig-common/maas-region-controller.conf
+        else
+            dbc_go maas-region-controller $@
+        fi
+
+        # Reconfigure the config file.
+        maas-region-admin local_config_set \
             --database-host "localhost" --database-name "$dbc_dbname" \
             --database-user "$dbc_dbuser" --database-pass "$dbc_dbpass"
 
-	# Only syncdb if we have selected to install it with dbconfig-common.
-	db_get maas-region-controller/dbconfig-install
-	if [ "$RET" = "true" ]; then
-		maas_sync_migrate_db
-	fi
+        mv /etc/maas/maas_local_settings.py /etc/maas/maas_local_settings.py.maas-old
+    fi
 
-	# Display installation note
-	db_input low maas/installation-note || true
-	db_go
-
-elif [ -n "$DEBCONF_RECONFIGURE" ]; then
-	# Set the IP address of the interface with default route
-	db_get maas/default-maas-url
-	ipaddr="$RET"
-	if [ -n "$ipaddr" ]; then
-		configure_maas_default_url "$ipaddr"
-	fi
-
-elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
-	# If upgrading to any later package version, then upgrade db.
-	invoke-rc.d apache2 stop || true
-
-	# make sure postgresql is running
-	restart_postgresql
-
-	# If the version we are upgrading from ("$2") is less than
-	# 1.9.0~alpha1+bzr4038-0ubuntu1 then we need migrate to new
-	# config file.
-	if dpkg --compare-versions "$2" lt 1.9.0~alpha1+bzr4038-0ubuntu1 && [ -f /etc/maas/maas_local_settings.py ]; then
-		ipaddr=$(extract_default_maas_url /etc/maas/maas_local_settings.py)
-		if [ -n "$ipaddr" ]; then
-			configure_maas_default_url "$ipaddr"
-			db_set maas/default-maas-url "$ipaddr"
-		fi
-		# handle database upgrade
-		if [ -f /etc/dbconfig-common/maas-region-controller.conf ]; then
-			# source dbconfig-common db config for maas-region-controller
-			# before upgrading database, otherwise a new config is written
-			# but the password is no longer preserved.
-			. /etc/dbconfig-common/maas-region-controller.conf
-		else
-			dbc_go maas-region-controller $@
-		fi
-
-		# Reconfigure the config file.
-		maas-region-admin local_config_set \
-		    --database-host "localhost" --database-name "$dbc_dbname" \
-		    --database-user "$dbc_dbuser" --database-pass "$dbc_dbpass"
-
-		mv /etc/maas/maas_local_settings.py /etc/maas/maas_local_settings.py.maas-old
-	fi
-
-	maas_sync_migrate_db
+    maas_sync_migrate_db
 
 fi
 
@@ -142,7 +143,7 @@ invoke-rc.d maas-regiond restart || true
 invoke-rc.d apache2 restart || true
 
 if [ -f /etc/init/maas-clusterd.conf ]; then
-	invoke-rc.d maas-clusterd restart || true
+    invoke-rc.d maas-clusterd restart || true
 fi
 
 db_stop

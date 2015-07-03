@@ -16,18 +16,18 @@ script
     # Check for the shared-secret. If it's not here, sleep for a while, then
     # exit and allow respawn to do its thing.
     if ! maas-provision check-for-shared-secret >/dev/null; then
-        fmt -w 72 <<-'EOF' >&2
-	A shared secret has not been installed for this cluster. Obtain
-	the secret from the region (find it in /var/lib/maas/secret once
-	the region controller has started for the first time) and
-	install it with `maas-provision install-shared-secret`.
+        (sed 's/^ *//' | fmt -w 72) <<'EOF' >&2
+        A shared secret has not been installed for this cluster. Obtain
+        the secret from the region (find it in /var/lib/maas/secret once
+        the region controller has started for the first time) and
+        install it with `maas-provision install-shared-secret`.
 
-	However, if this machine is also serving as the region, ensure
-	that the region controller is started (`sudo service apache2
-	start` typically). It will create the shared secret, which
-	maas-clusterd will then find when it respawns in 5 seconds.
+        However, if this machine is also serving as the region, ensure
+        that the region controller is started (`sudo service apache2
+        start` typically). It will create the shared secret, which
+        maas-clusterd will then find when it respawns in 5 seconds.
 
-	EOF
+EOF
         exec sleep 5
     fi
     # To add options to your daemon, edit the line below:

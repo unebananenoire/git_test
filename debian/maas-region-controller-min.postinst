@@ -22,20 +22,20 @@ configure_region_http() {
 }
 
 configure_logging() {
-	# Give appropriate permissions
-	if [ ! -f /var/log/maas/regiond.log ]; then
-		touch /var/log/maas/regiond.log
-	fi
-	chown maas:maas /var/log/maas/regiond.log
+    # Give appropriate permissions
+    if [ ! -f /var/log/maas/regiond.log ]; then
+        touch /var/log/maas/regiond.log
+    fi
+    chown maas:maas /var/log/maas/regiond.log
 
-	# Create log directory base
-	mkdir -p /var/log/maas/rsyslog
-	chown -R syslog:syslog /var/log/maas/rsyslog
-	# Make sure rsyslog reads our config
-	invoke-rc.d rsyslog restart
+    # Create log directory base
+    mkdir -p /var/log/maas/rsyslog
+    chown -R syslog:syslog /var/log/maas/rsyslog
+    # Make sure rsyslog reads our config
+    invoke-rc.d rsyslog restart
 
-	# apache2 log symlinks
-	ln -sf /var/log/apache2 /var/log/maas/
+    # apache2 log symlinks
+    ln -sf /var/log/apache2 /var/log/maas/
 }
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
