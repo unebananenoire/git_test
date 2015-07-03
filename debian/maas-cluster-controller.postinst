@@ -39,7 +39,7 @@ extract_cluster_uuid(){
 
 extract_maas_url(){
     # Extract the MAAS_URL setting from the config file $1.
-    grep "^MAAS_URL" "$1" | cut -d"/" -f3
+    grep "^MAAS_URL" "$1" | cut -d"\"" -f2
 }
 
 configure_cluster_uuid(){
