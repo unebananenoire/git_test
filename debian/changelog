@@ -7,9 +7,12 @@ maas (1.9.0~alpha1+bzr4064-0ubuntu1) UNRELEASED; urgency=medium
   * Drop dependency on python-iscpy: the code has been integrated into
     MAAS. (LP: #1413388).
 
-
   [ Gavin Panella ]
   * Use new local configuration support for the cluster.
+
+  [ Andres Rodriguez ]
+  * Refactor maas-dns upgrade code so it doesn't break local DNS config
+    and it gets migrated (LP: #1413388)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 12 Jun 2015 14:16:47 -0400
 

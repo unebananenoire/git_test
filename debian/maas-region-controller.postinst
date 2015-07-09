@@ -44,6 +44,15 @@ extract_default_maas_url() {
     grep "^DEFAULT_MAAS_URL" "$1" | cut -d"/" -f3
 }
 
+configure_migrate_maas_dns() {
+    # This only runs on upgrade. We only run this if the
+    # there are forwarders to migrate or no
+    # named.conf.options.inside.maas are present.
+    maas-region-admin edit_named_options \
+        --migrate-conflicting-options --config-path \
+        /etc/bind/named.conf.options
+    invoke-rc.d bind9 restart || true
+}
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     #########################################################
@@ -137,6 +146,7 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 
     maas_sync_migrate_db
 
+    configure_migrate_maas_dns
 fi
 
 invoke-rc.d maas-regiond restart || true
