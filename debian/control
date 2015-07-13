@@ -77,11 +77,12 @@ Description: MAAS Server minimum region controller
 
 Package: maas-region-controller
 Architecture: all
-Depends: maas-region-controller-min (= ${binary:Version}),
+Depends: maas-dns (= ${binary:Version}),
+         maas-region-controller-min (= ${binary:Version}),
          postgresql (>= 9.1),
          ${misc:Depends},
          ${python:Depends}
-Recommends: openssh-server, maas-dns (= ${binary:Version})
+Recommends: openssh-server
 Description: MAAS server complete region controller
  This package installs and configures the complete MAAS region controller,
  including the minimum setup, plus the database server and messaging queue.

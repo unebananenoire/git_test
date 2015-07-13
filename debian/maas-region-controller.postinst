@@ -96,6 +96,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
     db_get maas-region-controller/dbconfig-install
     if [ "$RET" = "true" ]; then
         maas_sync_migrate_db
+        configure_migrate_maas_dns
     fi
 
     # Display installation note
