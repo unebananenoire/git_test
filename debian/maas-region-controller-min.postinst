@@ -38,6 +38,10 @@ configure_logging() {
     ln -sf /var/log/apache2 /var/log/maas/
 }
 
+# Unconditionally ensure that there is at least an empty configuration
+# file. This does *not* overwrite any existing configuration.
+maas-region-admin local_config_set
+
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     #########################################################
     ################ Folder Permissions  ####################

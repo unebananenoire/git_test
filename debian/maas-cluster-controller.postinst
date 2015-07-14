@@ -79,6 +79,10 @@ configure_shared_secret() {
     fi
 }
 
+# Unconditionally ensure that there is at least an empty configuration
+# file. This does *not* overwrite any existing configuration.
+maas-provision config
+
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     create_log_dir
     create_var_dir

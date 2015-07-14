@@ -13,6 +13,7 @@ ConditionPathExists=/etc/maas/regiond.conf
 User=maas
 Group=maas
 Restart=always
+RestartSec=10s
 Environment="DJANGO_SETTINGS_MODULE=maas.settings"
 Environment="PYTHONPATH=/usr/share/maas:/usr/lib/django16"
 Environment="LOGFILE=/var/log/maas/regiond.log"

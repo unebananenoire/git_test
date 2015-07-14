@@ -3,12 +3,12 @@ Description=MAAS Cluster Controller
 Documentation=https://maas.ubuntu.com/
 Requires=network-online.target
 After=network-online.target
-ConditionPathExists=/var/lib/maas/secret
 
 [Service]
 User=maas
 Group=maas
 Restart=always
+RestartSec=10s
 Environment="LOGFILE=/var/log/maas/clusterd.log"
 # Logs go to the journal; read them with
 #   journalctl -u maas-clusterd
