@@ -4,7 +4,7 @@ Documentation=man:dhcpd(8)
 Wants=network-online.target
 After=network-online.target
 After=time-sync.target
-ConditionPathExists=/etc/maas/dhcpd6.conf
+ConditionPathExists=/var/lib/maas/dhcpd6.conf
 ConditionPathExists=/var/lib/maas/dhcpd-interfaces
 
 [Service]
@@ -21,7 +21,7 @@ ExecStart=/bin/sh -ec '\
     [ -e $LEASES_FILE ] || touch $LEASES_FILE; \
     chown root:root /var/lib/maas/dhcp /var/lib/maas/dhcp/dhcpd6.leases*; \
     exec dhcpd -user dhcpd -group dhcpd -f -6 -pf /run/maas/dhcp/dhcpd6.pid \
-        -cf /etc/maas/dhcpd6.conf -lf $LEASES_FILE $INTERFACES'
+        -cf /var/lib/maas/dhcpd6.conf -lf $LEASES_FILE $INTERFACES'
 
 [Install]
 WantedBy=multi-user.target

@@ -4,7 +4,7 @@ author "Jeroen Vermeulen <jtv@canonical.com>"
 start on runlevel [2345]
 stop on runlevel [!2345]
 
-env CONFIG_FILE=/etc/maas/dhcpd.conf
+env CONFIG_FILE=/var/lib/maas/dhcpd.conf
 env PID_DIR=/run/maas/dhcp
 env PID_FILE=/run/maas/dhcp/dhcpd.pid
 env LEASES_DIR=/var/lib/maas/dhcp

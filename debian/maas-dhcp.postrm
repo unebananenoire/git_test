@@ -9,8 +9,8 @@ if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
       apparmor_parser --replace --write-cache --skip-read-cache "${dhcpd_prof}"
    fi
    if [ "$1" = "purge" ]; then
-      rm -rf /etc/maas/dhcpd.conf
-      rm -rf /etc/maas/dhcpd6.conf
+      rm -rf /var/lib/maas/dhcpd.conf
+      rm -rf /var/lib/maas/dhcpd6.conf
    fi
 fi
 
