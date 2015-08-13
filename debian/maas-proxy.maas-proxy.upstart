@@ -20,5 +20,5 @@ script
       echo "No squid binary found"
       exit 1
   fi
-  exec $SQUID -N -f /etc/maas/maas-proxy.conf
+  exec $SQUID -N -f /usr/share/maas/maas-proxy.conf
 end script

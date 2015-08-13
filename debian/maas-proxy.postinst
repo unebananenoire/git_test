@@ -17,6 +17,12 @@ then
     mkdir -p /var/log/maas/proxy
     chown -R proxy:proxy /var/log/maas/proxy
 
+    # Move maas-proxy.conf if we are upgrading from an earlier
+    # version that used to ship maas-proxy.conf in /etc/maas.
+    if [ -f /etc/maas/maas-proxy.conf ]; then
+        mv /etc/maas/maas-proxy.conf /usr/share/maas/
+    fi
+
 fi
 
 #DEBHELPER#

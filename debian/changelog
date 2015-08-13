@@ -1,4 +1,4 @@
-maas (1.9.0~alpha1+bzr4177-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.9.0~alpha1+bzr4185-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
 
@@ -22,6 +22,8 @@ maas (1.9.0~alpha1+bzr4177-0ubuntu1) UNRELEASED; urgency=medium
   * debian/control: Make maas-dns a Dependy of maas-region-controller.
   * Update the location of dhcpd.conf and dhcpd6.conf to be /var/lib/maas/
     and handle upgrades. (LP: #1482857)
+  * Move /etc/maas/maas-proxy.conf to /usr/share/maas/maas-proxy.conf as
+    this is not a config we want users to modify. (LP: #1482859)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 12 Jun 2015 14:16:47 -0400
 

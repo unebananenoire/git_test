@@ -19,6 +19,6 @@
       exit 1
   fi
 
-  test ! -e /var/run/maas-proxy.pid || $SQUID -f /etc/maas/maas-proxy.conf -k rotate
+  test ! -e /var/run/maas-proxy.pid || $SQUID -f /usr/share/maas/maas-proxy.conf -k rotate
  endscript
 }
