@@ -5,3 +5,12 @@ rm_conffile /etc/init/maas-pserv.conf 1.7.0~beta3+bzr3043-0ubuntu1
 rm_conffile /etc/init/maas-cluster.conf 1.7.0~beta6+bzr3231-0ubuntu1
 rm_conffile /etc/init/maas-cluster-register.conf 1.7.0~beta6+bzr3231-0ubuntu1
 rm_conffile /etc/maas/maas-cluster-http.conf 1.8.0~alpha1+bzr3522-0ubuntu1
+rm_conffile /etc/maas/templates/power/apc.template 1.9.0~alpha1+bzr4184-0ubuntu1
+rm_conffile /etc/maas/templates/power/ipmi.conf 1.9.0~alpha1+bzr4184-0ubuntu1
+rm_conffile /etc/maas/templates/power/ipmi.template 1.9.0~alpha1+bzr4184-0ubuntu1
+rm_conffile /etc/maas/templates/power/mscm.template 1.9.0~alpha1+bzr4184-0ubuntu1
+rm_conffile /etc/maas/templates/power/msftocs.template 1.9.0~alpha1+bzr4184-0ubuntu1
+rm_conffile /etc/maas/templates/power/sm15k.template 1.9.0~alpha1+bzr4184-0ubuntu1
+rm_conffile /etc/maas/templates/power/ucsm.template 1.9.0~alpha1+bzr4184-0ubuntu1
+rm_conffile /etc/maas/templates/power/virsh.template 1.9.0~alpha1+bzr4184-0ubuntu1
+rm_conffile /etc/maas/templates/power/vmware.template 1.9.0~alpha1+bzr4184-0ubuntu1

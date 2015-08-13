@@ -9,9 +9,9 @@ RELEASE=`lsb_release -rs` || RELEASE=""
 
 configure_region_http() {
     # handle apache configs
-    if [ -e /etc/maas/maas-http.conf -a \
+    if [ -e /usr/share/maas/maas-http.conf -a \
         ! -e /etc/apache2/conf-enabled/maas-http.conf ]; then
-        ln -sf /etc/maas/maas-http.conf /etc/apache2/conf-enabled/maas-http.conf
+        ln -sf /usr/share/maas/maas-http.conf /etc/apache2/conf-enabled/maas-http.conf
     fi
 
     # enable apache modules needed
