@@ -92,6 +92,7 @@ Section: python
 Architecture: all
 Depends: python-bson,
          python-crochet,
+         python-curtin,
          python-distro-info,
          python-formencode,
          python-jsonschema,
