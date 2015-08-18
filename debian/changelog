@@ -1,4 +1,4 @@
-maas (1.9.0~alpha1+bzr4194-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.9.0~alpha1+bzr4201-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
 
@@ -26,7 +26,9 @@ maas (1.9.0~alpha1+bzr4194-0ubuntu1) UNRELEASED; urgency=medium
     this is not a config we want users to modify. (LP: #1482859)
   * Move /etc/maas/maas-http.conf to /usr/share/maas/maas-http.conf as
     this is not a config we want users to modify. (LP: #1482858)
-  * debian/control: Add missing dependency on python-curtin.
+  * debian/control:
+    - Add missing dependency on python-curtin.
+    - Drop python-lockfile as it is no longer used.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 12 Jun 2015 14:16:47 -0400
 
