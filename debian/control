@@ -92,7 +92,7 @@ Section: python
 Architecture: all
 Depends: python-bson,
          python-crochet,
-         python-curtin,
+         python-curtin (>= 0.1.0~bzr247),
          python-distro-info,
          python-formencode,
          python-jsonschema,
@@ -181,7 +181,7 @@ Architecture: all
 Depends: python-apt,
          python-convoy,
          python-crochet,
-         python-curtin,
+         python-curtin (>= 0.1.0~bzr247),
          python-lxml,
          python-maas-client (= ${binary:Version}),
          python-netaddr,

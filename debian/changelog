@@ -1,6 +1,10 @@
-maas (1.9.0~alpha1+bzr4201-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.9.0~alpha1+bzr4221-0ubuntu1) wily; urgency=medium
 
-  * UNRELEASED
+  * New upstream release, 1.9.0 Alpha 1, bzr4218:
+    - Native storage support (Flat, LVM, bcache, RAID).
+    - New config files (regiond.conf, clusterd.conf)
+    - New Python Power Drivers.
+    - Better support for HWE Kernels.
 
   [ Scott Moser ]
   * maas-proxy: sync apt specific squid config with squid-deb-proxy
@@ -29,6 +33,7 @@ maas (1.9.0~alpha1+bzr4201-0ubuntu1) UNRELEASED; urgency=medium
   * debian/control:
     - Add missing dependency on python-curtin.
     - Drop python-lockfile as it is no longer used.
+    - Depend on python-curtin >= 0.1.0~bzr247.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 12 Jun 2015 14:16:47 -0400
 
