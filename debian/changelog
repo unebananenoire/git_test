@@ -1,3 +1,14 @@
+maas (1.9.0~alpha2+bzr4322-0ubuntu1) wily; urgency=medium
+
+  * New upstream release, 1.9.0 Alpha 2, bzr4322:
+    - Native support for Network Configuration (IP assignment, VLANs, bonds)
+    - First class support for CentOS
+    - Status updates from curtin/cloud-init
+    - Support for fabrics, spaces, subnets and fans.
+    - Support for commissioning actions.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 01 Sep 2015 19:04:39 -0400
+
 maas (1.9.0~alpha1+bzr4221-0ubuntu1) wily; urgency=medium
 
   * New upstream release, 1.9.0 Alpha 1, bzr4218:
