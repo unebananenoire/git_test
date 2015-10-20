@@ -1,3 +1,32 @@
+maas (1.9.0~alpha5+bzr4381-0ubuntu1) UNRELEASED; urgency=medium
+
+  * New upstream release, 1.9.0 Alpha 5, bzr4381:
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 15 Oct 2015 21:22:44 -0700
+
+maas (1.9.0~alpha4+bzr4371-0ubuntu1) wily; urgency=medium
+
+  * New upstream release, 1.9.0 Alpha 4, bzr4371:
+    - Various UI fixes and improvements.
+    - Various concurrency issues fixed.
+    - Do not create MBR bigger than 2 TiB, otherwise MAAS will fail to
+      deploy on disks larger than 2 TiB.
+    - Fix broken migration due to missing import (LP: #1504340)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 07 Oct 2015 13:02:53 -0700
+
+maas (1.9.0~alpha3+bzr4355-0ubuntu1) wily; urgency=medium
+
+  * New upstream release, 1.9.0 Alpha 3, bzr4355
+    - Node network configuration (VLAN, aliases, bond's).
+    - Subnets page.
+    - Mount, Unmount filesystems. Formatting, unformatting.
+    - Create partitions.
+    - Checks for missing power drivers tool and warns the users.
+  * debian/control: Recommends on apache2.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 29 Sep 2015 12:53:36 -0400
+
 maas (1.9.0~alpha2+bzr4322-0ubuntu1) wily; urgency=medium
 
   * New upstream release, 1.9.0 Alpha 2, bzr4322:
