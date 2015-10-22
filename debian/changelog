@@ -1,6 +1,17 @@
-maas (1.9.0~alpha5+bzr4381-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.9.0~alpha6+bzr4398-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New upstream release, 1.9.0 Alpha 5, bzr4381:
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 22 Oct 2015 14:05:50 -0400
+
+maas (1.9.0~alpha5+bzr4398-0ubuntu1) wily; urgency=medium
+
+  * New upstream release, 1.9.0 Alpha 5, bzr4398:
+    - Various UI fixes and improvements.
+    - Add ability to create partitions in the UI.
+    - Add ability to create Bcache (create cache sets and backing devices).
+    - Check and warns users about missing power driver tools (LP: #1381000).
+    - Add fabric class_type.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 15 Oct 2015 21:22:44 -0700
 
