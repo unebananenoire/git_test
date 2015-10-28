@@ -1,6 +1,9 @@
-maas (1.9.0~alpha6+bzr4398-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.9.0~beta1+bzr4417-0ubuntu1) wily; urgency=medium
 
-  * UNRELEASED
+  * New upstream release, 1.9.0 beta1, bzr4415:
+    - Various UI fixes and improvements
+    - Add ability to create LVM.
+    - Add ability to create RAID.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 22 Oct 2015 14:05:50 -0400
 
