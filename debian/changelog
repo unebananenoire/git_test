@@ -1,3 +1,67 @@
+maas (1.9.0~beta3+bzr4466-0ubuntu1) UNRELEASED; urgency=medium
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 05 Nov 2015 08:29:06 -0500
+
+maas (1.9.0~beta2+bzr4456-0ubuntu1) wily; urgency=medium
+
+  * New upstream release, 1.9.0 beta2, bzr4456:
+    - New capabilities for subnets, vlan, spaces and
+      fabrics. (LP: #LP: #1511257)
+    - Upgrade left a PXE NIC"s on nodes without a subnet associated
+      causing deploy issues. (LP: #LP: #1509077)
+    - DNS record doesn't get created against the PXE
+      interface (LP: #1512109)
+    - bcache cache_mode setting not configured on
+      servers (LP: #1510334)
+    - Administrators unable to delete users using the API (LP: #1510210)
+    - Can create a VolumeGroup (vg0) without having created
+      a partition on the boot disk (LP: #1509536)
+    - set-boot-disk yields in a machine not being able to
+      deploy (LP: #1501400)
+    - Deploying Other OS' (CentOS, Windows) should not configure
+      custom storage (LP: #1504956)
+    - Add RAID 10 support (LP: #1509164)
+    - MAAS should download grub from grub-efi-amd64-signed package
+      instead of the archive path (LP: #1511437)
+    - Fails to deploy with UEFI (LP: #1510120)
+    - previous owner of node can use oauth creds to retrieve current
+      owner's user-data (LP: #1507586)
+    - IP range validation for too small ranges (LP: #1507630)
+    - test__calls_update_host_maps_for_next_ip_managed_subnet
+      can fail randomly (LP: #1507630)
+    - No way to disable maas-proxy (LP: #1511071)
+    - [UI] HWE naming needs to be clearer (LP: #1505034))
+    - [UI] Angular $digest loop issue on node details page (LP: #1509476)
+    - [UI] New nodes interfaces doesn't show which interface is the
+      PXE interface (LP: #1509473)
+    - [UI] When partitioning, there should be 20px padding between
+      the sizing fields (LP: #1510471)
+    - [UI] On the available table, add model and serial to the
+      name column (LP: #1510467)
+    - [UI] On the available table, change “available space” to
+      “size” for consistency (LP: #1510466)
+    - [UI] when formatting/mounting, the button says “Format & Mount”
+      this should just be “Mount” (LP: #1510472)
+    - [UI] Tickbox on create bond networking (LP: #1503533)
+    - [UI] On the file system table, change name to “File system”
+      (lower case S) (LP: #1510447)
+    - [UI] When creating bcache and raid, remove the empty column
+      between the config fields. (LP: #1510474)
+    - [UI] On the available table, make sure all buttons are
+      lowercase (LP: #1510488)
+    - [UI] Subnets filter doesn't show network, it shows name
+      instead (LP: #1511174)
+    - [UI] can't edit / add storage tags (LP: #1509417)
+    - [UI] Hover state for networking doesn't work (LP: #1510891)
+    - [UI] change "edit tag" link to icon storage (LP: #1510458)
+    - [UI] Can no longer see the IP address PXE interface gets
+      on commissioning (LP: #1510629)
+  * debian/control: Bump Dep on python-curtin to > 0.1.0~bzr275.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 28 Oct 2015 21:20:39 -0400
+
 maas (1.9.0~beta1+bzr4417-0ubuntu1) wily; urgency=medium
 
   * New upstream release, 1.9.0 beta1, bzr4415:
