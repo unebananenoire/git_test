@@ -6,12 +6,8 @@ if [ "$1" = "configure" ]
 then
     # Stop the dhcpd instance that came with the isc-dhcp-server package.
     # We run our own dhcpd instances.
-    if [ -d /run/systemd/system ]; then
-        systemctl stop isc-dhcp-server >/dev/null || true
-        systemctl disable isc-dhcp-server >/dev/null || true
-    else
-        invoke-rc.d isc-dhcp-server stop
-    fi
+    systemctl stop isc-dhcp-server >/dev/null || true
+    systemctl disable isc-dhcp-server >/dev/null || true
 
     dhcpd_prof="/etc/apparmor.d/usr.sbin.dhcpd"
     if [ -f "${dhcpd_prof}" ] && command -v apparmor_parser >/dev/null 2>&1

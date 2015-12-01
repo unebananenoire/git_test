@@ -1,6 +1,10 @@
 maas (1.9.0~rc2+bzr4496-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
+    - Remove all Upstart related services.
+    - Remove python-django16 dependency.
+    - Add python-petname dependency.
+    - Change dependency python-django-piston to python-django-piston3.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 13 Nov 2015 13:13:42 +0000
 
@@ -320,7 +324,7 @@ maas (1.8.0~beta3+bzr3825-0ubuntu1) trusty; urgency=medium
 
   * New upstream release. 1.8.0 Beta3 bzr3825 (LP: #1432666):
     - Fixx issues with concurrent DB access and the isolation level
-      that made MAAS unusable in highload environments. 
+      that made MAAS unusable in highload environments.
 
   [ Gavin Panella ]
   * Run one maas-regiond per CPU core.

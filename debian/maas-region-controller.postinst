@@ -12,9 +12,7 @@ fi
 RELEASE=`lsb_release -rs` || RELEASE=""
 
 maas_sync_migrate_db(){
-    maas-region-admin syncdb --noinput
-    maas-region-admin migrate maasserver --noinput
-    maas-region-admin migrate metadataserver --noinput
+    maas-region-admin dbupgrade
 }
 
 restart_postgresql(){

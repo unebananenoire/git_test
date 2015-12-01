@@ -6,12 +6,8 @@ if [ "$1" = "configure" ]
 then
     # Stop the squid3 instance that came with the isc-dhcp-server package.
     # We run our own squid3 instances.
-    if [ -d /run/systemd/system ]; then
-        systemctl stop squid3 >/dev/null || true
-        systemctl disable squid3 >/dev/null || true
-    else
-        invoke-rc.d squid3 stop
-    fi
+    systemctl stop squid3 >/dev/null || true
+    systemctl disable squid3 >/dev/null || true
 
     # Ensure log folder is created.
     mkdir -p /var/log/maas/proxy
