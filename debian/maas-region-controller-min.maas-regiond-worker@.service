@@ -15,14 +15,14 @@ Group=maas
 Restart=always
 RestartSec=10s
 Environment="DJANGO_SETTINGS_MODULE=maas.settings"
-Environment="PYTHONPATH=/usr/share/maas:/usr/lib/django16"
+Environment="PYTHONPATH=/usr/share/maas"
 Environment="LOGFILE=/var/log/maas/regiond.log"
 # Logs go to the journal; read them with:
 #   journalctl -u maas-regiond-worker@*
 # Logs also go to $LOGFILE for backward compatibility. The journal
 # should now be preferred as $LOGFILE will be removed in MAAS 1.9.
 ExecStart=/bin/sh -c \
-    'exec twistd --nodaemon --pidfile= maas-regiond 2>&1 | tee -a $LOGFILE'
+    'exec twistd3 --nodaemon --pidfile= maas-regiond 2>&1 | tee -a $LOGFILE'
 
 [Install]
 WantedBy=maas-regiond.service

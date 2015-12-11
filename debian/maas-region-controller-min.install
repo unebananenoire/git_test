@@ -21,7 +21,7 @@ debian/tmp/etc/maas/drivers.yaml
 debian/tmp/usr/bin/maas-generate-winrm-cert
 
 # Install twisted plugins
-twisted/plugins/maasregiond.py usr/share/pyshared/twisted/plugins
+twisted/plugins/maasregiond.py usr/lib/python3/dist-packages/twisted/plugins
 
 # Install all other stuff
 debian/extras/maas-region-admin usr/sbin

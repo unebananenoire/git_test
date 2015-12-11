@@ -4,4 +4,4 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 export PYTHONPATH="/usr/share/maas${PYTHONPATH:+:}${PYTHONPATH}"
-exec /usr/bin/python -m provisioningserver.dhcp.probe "$@"
+exec /usr/bin/python3 -m provisioningserver.dhcp.probe "$@"

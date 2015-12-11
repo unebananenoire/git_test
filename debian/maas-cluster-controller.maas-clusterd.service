@@ -15,7 +15,7 @@ Environment="LOGFILE=/var/log/maas/clusterd.log"
 # Logs also go to $LOGFILE for backward compatibility. The journal
 # should now be preferred as the $LOGFILE will be removed in MAAS 1.9.
 ExecStart=/bin/sh -c \
-    'exec /usr/bin/authbind --deep /usr/bin/twistd --nodaemon --pidfile= \
+    'exec /usr/bin/authbind --deep /usr/bin/twistd3 --nodaemon --pidfile= \
      maas-clusterd 2>&1 | tee -a $LOGFILE'
 
 [Install]

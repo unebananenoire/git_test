@@ -3,4 +3,4 @@ if [ "`expr \"$0\" : \".*maas-cli*\"`" != "0" ];then
     echo "  WARNING: The maas-cli command is deprecated and will be removed" \
          "in a future\n  version.  From now on please use 'maas' instead." >&2
 fi
-exec python -m maascli "$@"
+exec python3 -m maascli "$@"

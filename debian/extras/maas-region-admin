@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Copyright 2015 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
@@ -45,12 +45,6 @@ def run():
 
     # The Django configuration lives outside of sys.path.
     sys.path.append('/usr/share/maas')
-
-    # Use Django 1.6 if the python-django16 package is installed: this is to
-    # get MAAS to work on vivid: vivid ships with Django 1.7 by default and
-    # MAAS isn't yet compatible with Django 1.7.
-    if os.path.exists('/usr/lib/django16'):
-        sys.path.insert(1, '/usr/lib/django16')
 
     # Let Django do the rest.
     from django.core import management
