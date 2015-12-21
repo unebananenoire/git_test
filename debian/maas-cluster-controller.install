@@ -1,6 +1,3 @@
-# Install twisted plugins
-twisted/plugins/maasclusterd.py usr/lib/python3/dist-packages/twisted/plugins
-
 # Install templates
 debian/tmp/etc/maas/templates/dhcp
 debian/tmp/etc/maas/templates/power
