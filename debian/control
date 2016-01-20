@@ -90,7 +90,9 @@ Description: MAAS server complete region controller
 Package: python3-maas-provisioningserver
 Section: python
 Architecture: all
-Depends: python3-bson,
+Depends: archdetect-deb,
+         lshw,
+         python3-bson,
          python3-crochet,
          python3-curtin (>> 0.1.0~bzr275),
          python3-distro-info,
@@ -109,6 +111,8 @@ Depends: python3-bson,
          python3-txtftp,
          python3-yaml,
          python3-zope.interface,
+	 isc-dhcp-client,
+	 iproute2,
          ${misc:Depends},
          ${python3:Depends}
 Breaks: maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3),
