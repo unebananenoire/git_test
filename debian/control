@@ -91,7 +91,7 @@ Package: python3-maas-provisioningserver
 Section: python
 Architecture: all
 Depends: archdetect-deb,
-         lshw
+         lshw,
          python3-bson,
          python3-crochet,
          python3-curtin (>> 0.1.0~bzr275),
