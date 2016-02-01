@@ -51,7 +51,6 @@ Package: maas-region-controller-min
 Architecture: all
 Depends: apache2,
          bind9utils,
-         dbconfig-pgsql,
          iproute,
          libjs-angularjs,
          libjs-yui3-full,
@@ -78,7 +77,8 @@ Description: MAAS Server minimum region controller
 
 Package: maas-region-controller
 Architecture: all
-Depends: maas-dns (= ${binary:Version}),
+Depends: dbconfig-pgsql,
+         maas-dns (= ${binary:Version}),
          maas-region-controller-min (= ${binary:Version}),
          postgresql (>= 9.1),
          ${misc:Depends},
@@ -176,7 +176,7 @@ Depends: authbind,
          wget,
          ${misc:Depends},
          ${python3:Depends}
-Suggests: amtterm, ipmitool, libvirt-bin, python-pyvmomi
+Suggests: amtterm, ipmitool, libvirt-bin, python3-pyvmomi
 Conflicts: tftpd-hpa
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ),
         maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 ),

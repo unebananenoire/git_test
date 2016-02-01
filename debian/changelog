@@ -1,6 +1,20 @@
-maas (1.10.0+bzr4570-0ubuntu1) xenial; urgency=medium
+maas (2.0.0~alpha1+bzr4622-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New upstram release, 1.10.0 bzr 4570:
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 01 Feb 2016 18:18:52 +0100
+
+maas (1.10.0+bzr4572-0ubuntu2) xenial; urgency=medium
+
+  * debian/maas-region-controller.config: Ensure we truly preseed db
+    setting so we always use localhost and it never asks the user.
+  * debian/control: Suggests on python3-pyvmomi
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 01 Feb 2016 17:04:27 +0100
+
+maas (1.10.0+bzr4572-0ubuntu1) xenial; urgency=medium
+
+  * New upstram release, 1.10.0 bzr 4572:
     - Support python3, drop support for python2.
     - Support django 1.8+.
   * debian/control:
