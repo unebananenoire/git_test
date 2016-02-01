@@ -3,8 +3,6 @@ Description=MAAS Region Controller (Worker %i)
 Documentation=https://maas.ubuntu.com/
 Requires=network-online.target
 After=network-online.target
-Requires=postgresql.service
-After=postgresql.service
 PartOf=maas-regiond.service
 # This will go away one we support new config files.
 ConditionPathExists=/etc/maas/regiond.conf

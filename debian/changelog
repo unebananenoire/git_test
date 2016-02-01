@@ -1,6 +1,8 @@
-maas (1.10.0~alpha1+bzr4570-0ubuntu1) UNRELEASED; urgency=medium
+maas (1.10.0+bzr4570-0ubuntu1) xenial; urgency=medium
 
-  * UNRELEASED
+  * New upstram release, 1.10.0 bzr 4570:
+    - Support python3, drop support for python2.
+    - Support django 1.8+.
   * debian/control:
     - Remove all Upstart related services.
     - Remove python-django16 dependency.
@@ -9,6 +11,11 @@ maas (1.10.0~alpha1+bzr4570-0ubuntu1) UNRELEASED; urgency=medium
     - Depends on dbconfig-pgsql instead of dbconfig-common.
   * debian/maas-region-controller.config:
     - Preseed dbconfig common to not ask for PG server to use.
+  * debian/maas-region-controller-min.maas-regiond-worker@.service: Don't
+    depend on postgresql.service anymore, as it would prevent regiond
+    to run on machines with a remote PostgreSQL.
+  * debian/rules: Refactor installation of init scripts so that they are
+    correctly handled, and maas-regiond is not started on install.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 13 Nov 2015 13:13:42 +0000
 

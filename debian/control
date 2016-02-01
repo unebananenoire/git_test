@@ -91,7 +91,7 @@ Package: python3-maas-provisioningserver
 Section: python
 Architecture: all
 Depends: archdetect-deb,
-         lshw,
+         lshw
          python3-bson,
          python3-crochet,
          python3-curtin (>> 0.1.0~bzr275),
@@ -144,8 +144,8 @@ Package: python3-maas-client
 Section: python
 Architecture: all
 Depends: python3-oauth, ${misc:Depends}, ${python3:Depends}
-Breaks: maas (<= 0.1+bzr971+dfsg-0ubuntu2 )
-Replaces: maas (<= 0.1+bzr971+dfsg-0ubuntu2 )
+Breaks: maas (<= 0.1+bzr971+dfsg-0ubuntu2 ), python-maas-client
+Replaces: maas (<= 0.1+bzr971+dfsg-0ubuntu2 ), python-maas-client
 Description: MAAS python API client (Python 3)
  This package contains the MAAS client API Python modules.
  .
@@ -180,10 +180,10 @@ Suggests: amtterm, ipmitool, libvirt-bin, python-pyvmomi
 Conflicts: tftpd-hpa
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ),
         maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 ),
-        python-maas-provisioningserver ( <= 1.9.0 )
+        python-maas-provisioningserver
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ),
           maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 ),
-          python-maas-provisioningserver ( <= 1.9.0 )
+          python-maas-provisioningserver
 Description: MAAS server cluster controller
  This package contains the MAAS cluster controller, which is responsible
  for enabling and controlling remote DHCP/TFTP instances on their own
@@ -206,6 +206,8 @@ Depends: python3-apt,
          python3-zope.interface,
          ${misc:Depends},
          ${python3:Depends}
+Breaks: python-django-maas
+Replaces: python-django-maas
 Description: MAAS server Django web framework (Python 3)
  This package provides the Django web framework for MAAS.
  .

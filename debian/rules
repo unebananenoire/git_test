@@ -13,29 +13,19 @@ override_dh_auto_test:
 	# internet access
 
 override_dh_installinit:
-	# maas-clusterd
-	dh_systemd_enable --name maas-clusterd
-	dh_installinit --name maas-clusterd
-	dh_systemd_start --name maas-clusterd
-	# maas-regiond
-	dh_systemd_enable --name maas-regiond
-	dh_installinit --name maas-regiond
-	dh_systemd_start --name maas-regiond
-	# maas-regiond-worker
-	dh_installinit --no-start --name maas-regiond-worker  # Upstart
-	dh_installinit --no-start --name maas-regiond-worker@  # systemd
-	# maas-dhcpd
-	dh_systemd_enable --name maas-dhcpd
-	dh_installinit --name maas-dhcpd
-	dh_systemd_start --name maas-dhcpd
-	# maas-dhcpd6
-	dh_systemd_enable --name maas-dhcpd6
-	dh_installinit --name maas-dhcpd6
-	dh_systemd_start --name maas-dhcpd6
-	# maas-proxy
-	dh_systemd_enable --name maas-proxy
-	dh_installinit --name maas-proxy
-	dh_systemd_start --name maas-proxy
+	dh_installinit --name=maas-regiond --no-start
+	dh_installinit --name=maas-regiond-worker@  --no-start
+	dh_installinit --name=maas-clusterd
+	dh_installinit --name=maas-dhcpd
+	dh_installinit --name=maas-dhcpd6
+	dh_installinit --name=maas-proxy
+
+override_dh_systemd_start:
+	dh_systemd_start -p maas-region-controller-min --no-start maas-regiond.service
+	dh_systemd_start -p maas-cluster-controller maas-clusterd.service
+	dh_systemd_start -p maas-dhcpd maas-dhcpd.service
+	dh_systemd_start -p maas-dhcpd6 maas-dhcpd6.service
+	dh_systemd_start -p maas-proxy maas-proxy.service
 
 override_dh_auto_build:
 	dh_auto_build
