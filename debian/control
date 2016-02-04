@@ -17,7 +17,7 @@ Homepage: https://launchpad.net/maas
 
 Package: maas
 Architecture: all
-Depends: maas-cluster-controller (= ${binary:Version}),
+Depends: maas-rack-controller (= ${binary:Version}),
          maas-region-controller (= ${binary:Version}),
          python3-django-maas (= ${binary:Version}),
          ${misc:Depends}
@@ -68,8 +68,6 @@ Depends: apache2,
          ubuntu-cloudimage-keyring,
          ${misc:Depends},
          ${python3:Depends}
-Breaks: maas-region-controller ( <= 1.4+bzr1693+dfsg-0ubuntu3 )
-Replaces: maas-region-controller ( <= 1.4+bzr1693+dfsg-0ubuntu3 )
 Description: MAAS Server minimum region controller
  This package installs and configures the minimum region controller
  services provided by MAAS, including the web UI, caching package proxy,
@@ -115,12 +113,6 @@ Depends: archdetect-deb,
          iproute2,
          ${misc:Depends},
          ${python3:Depends}
-Breaks: maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3),
-        maas-dhcp (<= 1.4+bzr1817+dfsg-0ubuntu1),
-        python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
-Replaces: maas-cluster-controller (<= 0.1+bzr1243+dfsg-0ubuntu3),
-          maas-dhcp (<= 1.4+bzr1817+dfsg-0ubuntu1),
-          python-django-maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Description: MAAS server provisioning libraries (Python 3)
  This package provides the MAAS provisioning server python libraries.
  .
@@ -144,14 +136,14 @@ Package: python3-maas-client
 Section: python
 Architecture: all
 Depends: python3-oauth, ${misc:Depends}, ${python3:Depends}
-Breaks: maas (<= 0.1+bzr971+dfsg-0ubuntu2 ), python-maas-client
-Replaces: maas (<= 0.1+bzr971+dfsg-0ubuntu2 ), python-maas-client
+Breaks: python-maas-client
+Replaces: python-maas-client
 Description: MAAS python API client (Python 3)
  This package contains the MAAS client API Python modules.
  .
  This package contains Python 3 modules.
 
-Package: maas-cluster-controller
+Package: maas-rack-controller
 Architecture: all
 Depends: authbind,
          bind9utils,
@@ -178,12 +170,10 @@ Depends: authbind,
          ${python3:Depends}
 Suggests: amtterm, ipmitool, libvirt-bin, python3-pyvmomi
 Conflicts: tftpd-hpa
-Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ),
-        maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 ),
-        python-maas-provisioningserver
-Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 ),
-          maas-region-controller ( <= 0.1+bzr1314+dfsg-0ubuntu1 ),
-          python-maas-provisioningserver
+Breaks: python-maas-provisioningserver,
+        maas-cluster-controller
+Replaces: python-maas-provisioningserver,
+          maas-cluster-controller
 Description: MAAS server cluster controller
  This package contains the MAAS cluster controller, which is responsible
  for enabling and controlling remote DHCP/TFTP instances on their own
@@ -216,8 +206,6 @@ Description: MAAS server Django web framework (Python 3)
 Package: maas-dhcp
 Architecture: all
 Depends: isc-dhcp-server (>= 4.2.4), ${misc:Depends}
-Breaks: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
-Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Description: MAAS DHCP server
  This package installs and configures a DHCP server that can be used by
  MAAS, and enhances the overall MAAS user experience.
@@ -228,8 +216,6 @@ Depends: bind9,
          maas-region-controller-min (= ${binary:Version}),
          ${misc:Depends}
 Conflicts: dnsmasq
-Breaks: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
-Replaces: maas-dhcp (<= 0.1+bzr777+dfsg-0ubuntu1)
 Description: MAAS DNS server
  This package installs and configures a DNS server that can be used by
  MAAS, and enhances the overall MAAS user experience.

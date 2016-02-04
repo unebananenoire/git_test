@@ -36,7 +36,7 @@ def attach_journal_logs(report, key, *units):
 
 def add_info(report, ui):
     response = ui.yesno(
-        "The contents of /etc/maas/regiond.conf and /etc/maas/clusterd.conf "
+        "The contents of /etc/maas/regiond.conf and /etc/maas/rackd.conf "
         "may help developers diagnose your bug more quickly. However, it may "
         "contain sensitive information. Do you want to include it in your bug "
         "report?")
@@ -50,7 +50,7 @@ def add_info(report, ui):
         attach_file_if_exists(
             report, '/etc/maas/regiond.conf', 'MAASRegionConfig')
         attach_file_if_exists(
-            report, '/etc/maas/clusterd.conf', 'MAASClusterConfig')
+            report, '/etc/maas/rackd.conf', 'MAASClusterConfig')
     else:
         # The user declined to include the configuration files.
         pass
@@ -59,14 +59,14 @@ def add_info(report, ui):
     attach_file_if_exists(
         report, '/var/log/maas/regiond.log', 'MAASRegionLog')
     attach_file_if_exists(
-        report, '/var/log/maas/clusterd.log', 'MAASClusterLog')
+        report, '/var/log/maas/rackd.log', 'MAASClusterLog')
 
     # Attaching log files (systemd). These will overwrite the logs above on a
     # system where systemd is available.
     attach_journal_logs(
         report, "MAASRegionLog", "maas-regiond", "maas-regiond-worker@*")
     attach_journal_logs(
-        report, "MAASClusterLog", "maas-clusterd")
+        report, "MAASClusterLog", "maas-rackd")
 
     # Attaching related packages info
     attach_related_packages(report, ['python-django-maas', 'apparmor'])

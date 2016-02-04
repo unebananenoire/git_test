@@ -30,6 +30,6 @@ case "$1" in
         # Deleting old/new config files
         rm -rf /etc/maas/pserv.yaml.maas-old
         rm -rf /etc/maas/maas_cluster.conf.maas-old
-        rm -rf /etc/maas/clusterd.conf
+        rm -rf /etc/maas/rackd.conf
 
 esac

@@ -1,4 +1,4 @@
-Template: maas-cluster-controller/maas-url
+Template: maas-rack-controller/maas-url
 Type: string
 Default:
 _Description: Ubuntu MAAS API address:
@@ -8,7 +8,7 @@ _Description: Ubuntu MAAS API address:
  Since nodes must be able to access this URL, localhost or 127.0.0.1 are not
  useful values here.
 
-Template: maas-cluster-controller/shared-secret
+Template: maas-rack-controller/shared-secret
 Type: password
 Default:
 _Description: MAAS Cluster Controller Shared Secret:

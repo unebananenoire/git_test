@@ -151,8 +151,8 @@ fi
 invoke-rc.d maas-regiond restart || true
 invoke-rc.d apache2 restart || true
 
-if [ -f /etc/init/maas-clusterd.conf ]; then
-    invoke-rc.d maas-clusterd restart || true
+if [ -f /etc/init/maas-rackd.conf ]; then
+    invoke-rc.d maas-rackd restart || true
 fi
 
 db_stop

@@ -1,6 +1,7 @@
-maas (2.0.0~alpha1+bzr4622-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~alpha1+bzr4633-0ubuntu1) UNRELEASED; urgency=medium
 
-  * UNRELEASED
+  * New usptream release:
+  * Rename maas-cluster* to maas-rack*.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 01 Feb 2016 18:18:52 +0100
 
