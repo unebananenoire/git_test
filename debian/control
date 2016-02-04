@@ -99,6 +99,8 @@ Depends: archdetect-deb,
          python3-lxml,
          python3-maas-client (= ${binary:Version}),
          python3-netifaces,
+         python3-oauth,
+         python3-oauthlib,
          python3-paramiko,
          python3-pexpect,
          python3-pyparsing,
@@ -122,7 +124,6 @@ Package: maas-cli
 Architecture: all
 Depends: python3-httplib2,
          python3-maas-client (= ${binary:Version}),
-         python3-oauth,
          ${misc:Depends},
          ${python3:Depends}
 Conflicts: maas-region-controller-min (<= 1.5+bzr1909-0ubuntu1)
@@ -135,7 +136,9 @@ Description: MAAS command line API tool
 Package: python3-maas-client
 Section: python
 Architecture: all
-Depends: python3-oauth, ${misc:Depends}, ${python3:Depends}
+Depends: python3-oauth,
+         ${misc:Depends},
+         ${python3:Depends}
 Breaks: python-maas-client
 Replaces: python-maas-client
 Description: MAAS python API client (Python 3)
@@ -157,7 +160,6 @@ Depends: authbind,
          python3-httplib2,
          python3-maas-provisioningserver (=${binary:Version}),
          python3-netaddr,
-         python3-oauth,
          python3-tempita,
          python3-twisted,
          python3-zope.interface,

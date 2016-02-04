@@ -14,3 +14,5 @@ rm_conffile /etc/maas/templates/power/virsh.template 1.9.0~alpha1+bzr4184-0ubunt
 rm_conffile /etc/maas/templates/power/vmware.template 1.9.0~alpha1+bzr4184-0ubuntu1
 rm_conffile /etc/maas/templates/power/ipmi.conf 1.9.0~alpha1+bzr4221-0ubuntu1
 rm_conffile /etc/maas/templates/power/ipmi.template 1.9.0~alpha1+bzr4221-0ubuntu1
+rm_conffile /etc/init/maas-cluster.conf 2.0.0~alpha1+bzr4635-0ubuntu1
+rm_conffile /lib/systemd/system/maas-clusterd.service 2.0.0~alpha1+bzr4635-0ubuntu1

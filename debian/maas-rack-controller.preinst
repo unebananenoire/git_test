@@ -38,6 +38,21 @@ if [ "$1" = "upgrade" ]; then
         fi
     fi
 
+    if dpkg --compare-versions "$2" lt 2.0.0~alpha1+bzr4636-0ubuntu1; then
+        if [ -f /etc/init/maas-clusterd.conf ] || [ -f /lib/systemd/system/maas-clusterd.service ]; then
+            invoke-rc.d maas-clusterd stop
+        fi
+        if [ -f /var/log/maas/clusterd.log ]; then
+            mv /var/log/maas/clusterd.log /var/log/maas/rackd.log
+        fi
+        if [ -f /etc/maas/clusterd.conf ]; then
+            mv /etc/maas/clusterd.conf /etc/maas/rackd.conf
+        fi
+        if [ -f /usr/lib/python3/dist-packages/twisted/plugins/maasclusterd.py ]; then
+            rm -rf /usr/lib/python3/dist-packages/twisted/plugins/maasclusterd.py
+        fi
+    fi
+
 fi
 
 #DEBHELPER#
