@@ -4,6 +4,7 @@ Documentation=man:dhcpd(8)
 Wants=network-online.target
 After=network-online.target
 After=time-sync.target
+BindsTo=maas-rackd.service
 ConditionPathExists=/var/lib/maas/dhcpd6.conf
 ConditionPathExists=/var/lib/maas/dhcpd-interfaces
 
