@@ -8,6 +8,8 @@ then
     # We run our own dhcpd instances.
     systemctl stop isc-dhcp-server >/dev/null || true
     systemctl disable isc-dhcp-server >/dev/null || true
+    systemctl stop isc-dhcp-server6 >/dev/null || true
+    systemctl disable isc-dhcp-server6 >/dev/null || true
 
     dhcpd_prof="/etc/apparmor.d/usr.sbin.dhcpd"
     if [ -f "${dhcpd_prof}" ] && command -v apparmor_parser >/dev/null 2>&1

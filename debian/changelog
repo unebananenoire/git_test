@@ -1,7 +1,8 @@
-maas (2.0.0~alpha1+bzr4636-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~alpha1+bzr4657-0ubuntu1) UNRELEASED; urgency=medium
 
   * New usptream release:
   * Rename maas-cluster* to maas-rack* and handle the upgrade path.
+  * Fix installation of init scripts and daemon systemd units.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 01 Feb 2016 18:18:52 +0100
 

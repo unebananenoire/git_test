@@ -4,53 +4,41 @@ set -e
 
 . /usr/share/debconf/confmodule
 
-if [ "$1" = "upgrade" ]; then
-
-    if dpkg --compare-versions "$2" lt 1.7.0~beta3+bzr3066-0ubuntu1; then
-        if [ -f /etc/init/maas-pserv.conf ]; then
-            invoke-rc.d maas-pserv stop
-        fi
-
-        if [ -f /etc/init/maas-cluster-celery.conf ]; then
-            invoke-rc.d maas-cluster-celery stop
-        fi
-
-        if [ -f /var/log/maas/celery.log ]; then
-            rm -rf /var/log/maas/celery.log
-        fi
+if [ "$1" = "install" ]; then
+    if [ -f /etc/init/maas-pserv.conf ]; then
+        invoke-rc.d maas-pserv stop
     fi
 
-    if dpkg --compare-versions "$2" lt 1.7.0~beta6+bzr3232-0ubuntu1; then
-        if [ -f /etc/init/maas-cluster.conf ]; then
-            invoke-rc.d maas-cluster stop
-        fi
+    if [ -f /etc/init/maas-cluster-celery.conf ]; then
+        invoke-rc.d maas-cluster-celery stop
     fi
 
-    if dpkg --compare-versions "$2" lt 1.8.0~alpha1+bzr3486-0ubuntu1; then
-        if [ -f /var/log/maas/pserv.log ]; then
-            rm -rf /var/log/maas/pserv.log
-        fi
+    if [ -f /var/log/maas/celery.log ]; then
+        rm -rf /var/log/maas/celery.log
     fi
 
-    if dpkg --compare-versions "$2" lt 1.8.0~alpha1+bzr3523-0ubuntu1; then
-        if [ -f /etc/apache2/conf-enabled/maas-cluster-http.conf ]; then
-            rm -rf /etc/apache2/conf-enabled/maas-cluster-http.conf
-        fi
+    if [ -f /etc/init/maas-cluster.conf ]; then
+        invoke-rc.d maas-cluster stop
     fi
 
-    if dpkg --compare-versions "$2" lt 2.0.0~alpha1+bzr4636-0ubuntu1; then
-        if [ -f /etc/init/maas-clusterd.conf ] || [ -f /lib/systemd/system/maas-clusterd.service ]; then
-            invoke-rc.d maas-clusterd stop
-        fi
-        if [ -f /var/log/maas/clusterd.log ]; then
-            mv /var/log/maas/clusterd.log /var/log/maas/rackd.log
-        fi
-        if [ -f /etc/maas/clusterd.conf ]; then
-            mv /etc/maas/clusterd.conf /etc/maas/rackd.conf
-        fi
-        if [ -f /usr/lib/python3/dist-packages/twisted/plugins/maasclusterd.py ]; then
-            rm -rf /usr/lib/python3/dist-packages/twisted/plugins/maasclusterd.py
-        fi
+    if [ -f /var/log/maas/pserv.log ]; then
+        rm -rf /var/log/maas/pserv.log
+    fi
+
+    if [ -f /etc/apache2/conf-enabled/maas-cluster-http.conf ]; then
+        rm -rf /etc/apache2/conf-enabled/maas-cluster-http.conf
+    fi
+
+    if [ -f /etc/init/maas-clusterd.conf ] || [ -f /lib/systemd/system/maas-clusterd.service ]; then
+        invoke-rc.d maas-clusterd stop
+    fi
+
+    if [ -f /etc/maas/clusterd.conf ]; then
+        mv /etc/maas/clusterd.conf /etc/maas/clusterd.conf.1.10
+    fi
+
+    if [ -f /var/log/maas/clusterd.log ]; then
+        mv /var/log/maas/clusterd.log /var/log/maas/rackd.log
     fi
 
 fi
