@@ -1,8 +1,10 @@
-maas (2.0.0~alpha1+bzr4657-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~alpha1+bzr4722-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New usptream release:
+  * New usptream release, 2.0.0 bzr 4682.
   * Rename maas-cluster* to maas-rack* and handle the upgrade path.
   * Fix installation of init scripts and daemon systemd units.
+  * Allow 'dhcpd' to access /usr/sbin/maas-provision via
+    sudoers file (LP: #1552775)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 01 Feb 2016 18:18:52 +0100
 
