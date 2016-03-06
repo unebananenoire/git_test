@@ -149,11 +149,11 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
 fi
 
 systemctl enable maas-regiond >/dev/null || true
-invoke-rc.d maas-regiond restart || true
+systemctl restart maas-regiond >/dev/null || true
 invoke-rc.d apache2 restart || true
 
 if [ -f /lib/systemd/system/maas-rackd.service ]; then
-    invoke-rc.d maas-rackd restart || true
+    systemctl restart maas-rackd >/dev/null || true
 fi
 
 db_stop
