@@ -1,3 +1,11 @@
+maas (2.0.0~alpha1+bzr4741-0ubuntu1) UNRELEASED; urgency=medium
+
+  * New usptream release, 2.0.0 bzr 4741.
+  * maas-dns Depends: bind9 >= 1:9.10.3.dfsg.P2-5 for better system time.
+    LP: #1553176.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 01 Feb 2016 18:18:52 +0100
+
 maas (2.0.0~alpha1+bzr4736-0ubuntu1~xenial2) xenial; urgency=medium
 
   * New usptream release, 2.0.0 bzr 4736:

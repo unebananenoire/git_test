@@ -217,7 +217,7 @@ Description: MAAS DHCP server
 
 Package: maas-dns
 Architecture: all
-Depends: bind9,
+Depends: bind9 (>= 1:9.10.3.dfsg.P2-5~),
          maas-region-controller-min (= ${binary:Version}),
          ${misc:Depends}
 Conflicts: dnsmasq
