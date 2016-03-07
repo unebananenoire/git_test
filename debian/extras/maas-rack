@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright 2015 Canonical Ltd.  This software is licensed under the
+# Copyright 2016 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 from __future__ import (
@@ -15,6 +15,7 @@ __all__ = []
 
 import grp
 import os
+import sys
 
 
 def check_user():
@@ -45,6 +46,12 @@ def run():
 
 
 def main():
+    if 'maas-provision' in sys.argv[0]:
+        sys.stderr.write(
+            "WARNING: The maas-provision command is deprecated and will be "
+            "removed in a future version. From now on please use 'maas-rack' "
+            "instead.\n")
+
     check_user()
     set_group()
     set_umask()

@@ -12,7 +12,7 @@ fi
 RELEASE=`lsb_release -rs` || RELEASE=""
 
 maas_sync_migrate_db(){
-    maas-region-admin dbupgrade
+    maas-region dbupgrade
 }
 
 restart_postgresql(){
@@ -21,7 +21,7 @@ restart_postgresql(){
 
 configure_maas_default_url() {
     local ipaddr="$1"
-    maas-region-admin local_config_set \
+    maas-region local_config_set \
         --maas-url "http://${ipaddr}/MAAS"
 }
 
@@ -46,7 +46,7 @@ configure_migrate_maas_dns() {
     # This only runs on upgrade. We only run this if the
     # there are forwarders to migrate or no
     # named.conf.options.inside.maas are present.
-    maas-region-admin edit_named_options \
+    maas-region edit_named_options \
         --migrate-conflicting-options --config-path \
         /etc/bind/named.conf.options
     invoke-rc.d bind9 restart || true
@@ -86,7 +86,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 
     # Create the database
     dbc_go maas-region-controller $@
-    maas-region-admin local_config_set \
+    maas-region local_config_set \
         --database-host "localhost" --database-name "$dbc_dbname" \
         --database-user "$dbc_dbuser" --database-pass "$dbc_dbpass"
 
@@ -136,7 +136,7 @@ elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0
         fi
 
         # Reconfigure the config file.
-        maas-region-admin local_config_set \
+        maas-region local_config_set \
             --database-host "localhost" --database-name "$dbc_dbname" \
             --database-user "$dbc_dbuser" --database-pass "$dbc_dbpass"
 

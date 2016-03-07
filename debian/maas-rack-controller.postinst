@@ -44,7 +44,7 @@ extract_maas_url(){
 
 configure_cluster_uuid(){
     # This will configure a UUID if one has not previously been set.
-    maas-provision config --init
+    maas-rack config --init
 }
 
 configure_cluster_authbind() {
@@ -66,14 +66,14 @@ configure_maas_url(){
     # Get the MAAS URL on configure/reconfigure and write it to the conf files.
     db_get maas-rack-controller/maas-url || true
     if [ -n "$RET" ]; then
-        maas-provision config --region-url "$RET"
+        maas-rack config --region-url "$RET"
     fi
 }
 
 configure_shared_secret() {
     db_get maas-rack-controller/shared-secret || true
     if [ -n "$RET" ]; then
-        echo "$RET" | maas-provision install-shared-secret
+        echo "$RET" | maas-rack install-shared-secret
         chown maas:maas /var/lib/maas/secret
         chmod 0640 /var/lib/maas/secret
     fi
@@ -85,9 +85,9 @@ upgrade_from_cluster_controller() {
     # it with the new configuration tool.
     if [ -f /etc/maas/maas_cluster.conf ]; then
         uuid=$(extract_cluster_uuid /etc/maas/maas_cluster.conf)
-        maas-provision config --uuid "$uuid"
+        maas-rack config --uuid "$uuid"
         maas_url=$(extract_maas_url /etc/maas/maas_cluster.conf)
-        maas-provision config --region-url "$maas_url"
+        maas-rack config --region-url "$maas_url"
         db_set maas-rack-controller/maas-url "$maas_url"
         mv /etc/maas/maas_cluster.conf /etc/maas/maas_cluster.conf.maas-old
         mv /etc/maas/pserv.yaml /etc/maas/pserv.yaml.maas-old
@@ -104,7 +104,7 @@ upgrade_from_cluster_controller() {
 
 # Unconditionally ensure that there is at least an empty configuration
 # file. This does *not* overwrite any existing configuration.
-maas-provision config
+maas-rack config
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
     create_log_dir
@@ -113,14 +113,14 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
     configure_maas_url
     configure_cluster_uuid
     configure_cluster_authbind
-    maas-provision upgrade-cluster
+    maas-rack upgrade-cluster
     upgrade_from_cluster_controller
 
 elif [ -n "$DEBCONF_RECONFIGURE" ]; then
     configure_maas_url
     # Only ask for a shared secret when the region is not installed
     # on the same system.
-    if [ ! -f /usr/sbin/maas-region-admin ]; then
+    if [ ! -f /usr/sbin/maas-region ]; then
         db_input high maas-rack-controller/shared-secret
         db_go
     fi
@@ -128,7 +128,7 @@ elif [ -n "$DEBCONF_RECONFIGURE" ]; then
 
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
     configure_cluster_authbind
-    maas-provision upgrade-cluster
+    maas-rack upgrade-cluster
 fi
 
 db_stop
