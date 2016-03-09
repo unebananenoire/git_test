@@ -12,6 +12,7 @@ RestartSec=10s
 Environment="LOGFILE=/var/log/maas/rackd.log"
 # Prevent maas-dhcpd and maas-dhcpd6 from starting until maas-rackd
 # has regenerated the configurations and told the services to start.
+ExecStartPre=/bin/rm -f /var/lib/maas/dhcpd.sock
 ExecStartPre=/bin/rm -f /var/lib/maas/dhcpd.conf
 ExecStartPre=/bin/rm -f /var/lib/maas/dhcpd6.conf
 # Logs go to the journal; read them with
