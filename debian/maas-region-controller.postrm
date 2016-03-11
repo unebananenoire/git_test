@@ -6,11 +6,9 @@ set -e
 
 RELEASE=`lsb_release -rs` ||  RELEASE=""
 
-if [ -f /etc/dbconfig-common/maas.conf ]; then
-    if [ -f /usr/share/dbconfig-common/dpkg/postrm ]; then
-        . /usr/share/dbconfig-common/dpkg/postrm.pgsql
-        dbc_go maas-region-controller $@
-    fi
+if [ -f /usr/share/dbconfig-common/dpkg/postrm ]; then
+    . /usr/share/dbconfig-common/dpkg/postrm.pgsql
+    dbc_go maas-region-controller $@
 fi
 
 case "$1" in
