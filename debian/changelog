@@ -1,12 +1,14 @@
-maas (2.0.0~alpha2+bzr4760-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~alpha2+bzr4773-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New usptream release, 2.0.0 bzr 4760 (LP: #1553261).
+  * New usptream release, 2.0.0 bzr 4773 (LP: #1553261).
   * maas-dns Depends: bind9 >= 1:9.10.3.dfsg.P2-5 for better system time.
     LP: #1553176.
   * debian/extras/maas-{region,rack}: Replace maas-region-admin
     and maas-provision, respectively (LP: #1553791)
   * debian/maas-region-controller.postrm: Correctly handle removal by
     dbconfig-common. (LP: #1553648)
+  * debian/extras/99-maas-region-sudoers: Allow running systemctl for
+    bind9 and maas-proxy to support service tracking. (LP: #1555308)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 01 Feb 2016 18:18:52 +0100
 

@@ -1,0 +1,4 @@
+maas ALL= NOPASSWD: /bin/systemctl status bind9
+maas ALL= NOPASSWD: /bin/systemctl start bind9
+maas ALL= NOPASSWD: /bin/systemctl status maas-proxy
+maas ALL= NOPASSWD: /bin/systemctl start maas-proxy
