@@ -15,16 +15,15 @@ ConditionPathExists=/var/lib/maas/dhcpd-interfaces
 KillSignal=SIGKILL
 # Allow dhcp server to write lease and pid file as 'dhcpd' user
 ExecStartPre=/bin/mkdir -p /run/maas/dhcp
-ExecStartPre=/bin/chown root:root /run/maas/dhcp
-# The leases files need to be root:root even when dropping privileges
+# The leases files need to be root:dhcpd even when dropping privileges
 ExecStartPre=/bin/mkdir -p /var/lib/maas/dhcp
-ExecStartPre=/bin/chown root:root /var/lib/maas/dhcp
 # Start the daemon
 ExecStart=/bin/sh -ec '\
     INTERFACES=$(cat /var/lib/maas/dhcpd-interfaces); \
     LEASES_FILE=/var/lib/maas/dhcp/dhcpd.leases; \
     [ -e $LEASES_FILE ] || touch $LEASES_FILE; \
-    chown root:root /var/lib/maas/dhcp /var/lib/maas/dhcp/dhcpd.leases*; \
+    chown root:dhcpd /var/lib/maas/dhcp /var/lib/maas/dhcp/dhcpd.leases*; \
+    chmod 775 /var/lib/maas/dhcp ; chmod 664 /var/lib/maas/dhcp/dhcpd.leases; \
     exec dhcpd -user dhcpd -group dhcpd -f -q -4 -pf /run/maas/dhcp/dhcpd.pid \
         -cf /var/lib/maas/dhcpd.conf -lf $LEASES_FILE $INTERFACES'
 
