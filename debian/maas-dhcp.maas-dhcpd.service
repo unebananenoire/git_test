@@ -9,10 +9,6 @@ ConditionPathExists=/var/lib/maas/dhcpd.conf
 ConditionPathExists=/var/lib/maas/dhcpd-interfaces
 
 [Service]
-# Kill the DHCP server with SIGKILL. Without this dhcpd can take a very long
-# time to stop, which prevents the quick reload of the dhcpd.conf that MAAS
-# requires.
-KillSignal=SIGKILL
 # Allow dhcp server to write lease and pid file as 'dhcpd' user
 ExecStartPre=/bin/mkdir -p /run/maas/dhcp
 # The leases files need to be root:dhcpd even when dropping privileges

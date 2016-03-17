@@ -9,7 +9,6 @@ maas ALL= NOPASSWD: /bin/systemctl stop maas-dhcpd6
 maas ALL= NOPASSWD: /bin/systemctl status tgt
 maas ALL= NOPASSWD: /bin/systemctl start tgt
 maas ALL= NOPASSWD: /usr/sbin/maas-rack
-dhcpd ALL= NOPASSWD: /usr/sbin/maas-rack
 maas ALL= NOPASSWD: SETENV: /usr/sbin/tgt-admin, /usr/bin/uec2roottar
 maas ALL= NOPASSWD: /usr/bin/lshw
 maas ALL= NOPASSWD: /sbin/blockdev

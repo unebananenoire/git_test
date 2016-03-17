@@ -6,3 +6,4 @@
 /var/lib/maas/dhcp/dhcpd*.leases* lrw,
 /var/lib/maas/dhcpd.conf r,
 /var/lib/maas/dhcpd6.conf r,
+/usr/sbin/maas-rack Ux,

@@ -15,13 +15,18 @@ __all__ = []
 
 import grp
 import os
+import pwd
 import sys
 
 
-def check_user():
-    # At present, only root should execute this.
-    if os.getuid() != 0:
-        raise SystemExit("This utility may only be run as root.")
+def check_users(users):
+    """Check that the runnig user is in users."""
+    uid = os.getuid()
+    for user in users:
+        user_uid = pwd.getpwnam(user)[2]
+        if uid == user_uid:
+            return user
+    raise SystemExit("This utility may only be run as %s." % ", ".join(users))
 
 
 def set_group():
@@ -52,9 +57,18 @@ def main():
             "removed in a future version. From now on please use 'maas-rack' "
             "instead.\n")
 
-    check_user()
-    set_group()
-    set_umask()
+    # Allow dhcpd user to call dhcp-notify.
+    users = ["root"]
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "dhcp-notify":
+            users.append("dhcpd")
+
+    # Only set the group and umask when running as root.
+    if check_users(users) == "root":
+        set_group()
+        set_umask()
+
+    # Run the script.
     run()
 
 
