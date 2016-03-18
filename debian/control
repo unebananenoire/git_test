@@ -210,7 +210,7 @@ Description: MAAS server Django web framework (Python 3)
 
 Package: maas-dhcp
 Architecture: all
-Depends: isc-dhcp-server (>= 4.2.4), ${misc:Depends}
+Depends: isc-dhcp-server (>= 4.3.3-5ubuntu10~), ${misc:Depends}
 Description: MAAS DHCP server
  This package installs and configures a DHCP server that can be used by
  MAAS, and enhances the overall MAAS user experience.
