@@ -1,6 +1,22 @@
-maas (2.0.0~alpha3+bzr4785-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~alpha3+bzr4810-0ubuntu1) xenial; urgency=medium
 
-  * New upstream release, 2.0.0 bzr 4779 (LP: #1553261)
+  * New upstream release, 2.0.0 bzr 4810 (Standing FFe LP: #1553261)
+    - New Networks WebUI
+      + Add Fabrics and Spaces details page.
+      + Actions to Add/Remove Fabrics, VLANs, Spaces, Subnets.
+    - Storage WebUI
+      + Mount options
+      + Swap Partitions
+    - WebUI to change a Machine's domain.
+    - Rack Controller details page now shows 'Server VLANs'
+    - Add maas-rack support-dump command.
+    - Fixes:
+      + python3-maas-client API 2.0 no loger use op but MAASClient.post
+        requires it (LP: #1555393)
+      + Fail to commission when Fabric on Machine Interface doesn't match
+        Rack Controller Fabric. (LP: #1554566)
+      + TFTP back-end crashes (LP: #1553848)
+      + Can't deploy a node, no interfaces on rack controller (LP: #1554999)
   * Update dhcpd permissions to conform with most recent paranoia described
     on LP: 1543794, so capability dac_override is not granted.
   * Update versioned depend on isc-dhcp-server
