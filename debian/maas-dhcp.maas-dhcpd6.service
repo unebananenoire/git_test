@@ -18,9 +18,9 @@ ExecStart=/bin/sh -ec '\
     INTERFACES=$(cat /var/lib/maas/dhcpd-interfaces); \
     LEASES_FILE=/var/lib/maas/dhcp/dhcpd6.leases; \
     [ -e $LEASES_FILE ] || touch $LEASES_FILE; \
-    chown root:root /var/lib/maas/dhcp /var/lib/maas/dhcp/dhcpd6.leases*; \
-    chown root:dhcpd /var/lib/maas/dhcp /var/lib/maas/dhcp/dhcpd6.leases; \
-    chmod 775 /var/lib/maas/dhcp ; chmod 664 /var/lib/maas/dhcp/dhcpd6.leases; \
+    /usr/sbin/maas-dhcp-helper clean $LEASES_FILE; \
+    chown root:dhcpd /var/lib/maas/dhcp $LEASES_FILE; \
+    chmod 775 /var/lib/maas/dhcp ; chmod 664 $LEASES_FILE; \
     exec dhcpd -user dhcpd -group dhcpd -f -6 -pf /run/maas/dhcp/dhcpd6.pid \
         -cf /var/lib/maas/dhcpd6.conf -lf $LEASES_FILE $INTERFACES'
 
