@@ -4,6 +4,7 @@ maas (2.0.0~alpha4+bzr4837-0ubuntu1) UNRELEASED; urgency=medium
   * Ensure /etc/maas/templates/power gets removed on upgrade
   * debian/control: Update homepage and package descriptions.
     (LP: #1562036, LP: #1562034, LP: #1562062)
+  * Rename maas-reigon-controller-min to maas-region-api (LP: #1562069)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 23 Mar 2016 12:27:27 -0400
 

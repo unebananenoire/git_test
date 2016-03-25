@@ -13,22 +13,22 @@ override_dh_auto_test:
 	# internet access
 
 override_dh_installinit:
-	dh_installinit -p maas-region-controller-min --name=maas-regiond --no-start
-	dh_installinit -p maas-region-controller-min --name=maas-regiond-worker@  --no-start
+	dh_installinit -p maas-region-api --name=maas-regiond --no-start
+	dh_installinit -p maas-region-api --name=maas-regiond-worker@  --no-start
 	dh_installinit -p maas-rack-controller --name=maas-rackd
 	dh_installinit -p maas-proxy --name=maas-proxy
 	dh_installinit -p maas-dhcp --name=maas-dhcpd
 	dh_installinit -p maas-dhcp --name=maas-dhcpd6
 
 override_dh_systemd_enable:
-	dh_systemd_enable -p maas-region-controller-min --name=maas-regiond
+	dh_systemd_enable -p maas-region-api --name=maas-regiond
 	dh_systemd_enable -p maas-rack-controller --name=maas-rackd
 	dh_systemd_enable -p maas-proxy --name=maas-proxy
 	dh_systemd_enable -p maas-dhcp --name=maas-dhcpd
 	dh_systemd_enable -p maas-dhcp --name=maas-dhcpd6
 
 override_dh_systemd_start:
-	dh_systemd_start -p maas-region-controller-min --no-start maas-regiond.service
+	dh_systemd_start -p maas-region-api --no-start maas-regiond.service
 	dh_systemd_start -p maas-rack-controller maas-rackd.service
 	dh_systemd_start -p maas-proxy maas-proxy.service
 	dh_systemd_start -p maas-dhcp maas-dhcpd.service
@@ -63,7 +63,7 @@ override_dh_auto_install:
 
 	# install python3 twisted plugins
 	set -ex; for python in $(PYTHON3); do \
-		dh_install twisted/plugins/maasregiond.py usr/lib/$$python/dist-packages/twisted/plugins -pmaas-region-controller-min; \
+		dh_install twisted/plugins/maasregiond.py usr/lib/$$python/dist-packages/twisted/plugins -pmaas-region-api; \
 		dh_install twisted/plugins/maasrackd.py usr/lib/$$python/dist-packages/twisted/plugins -pmaas-rack-controller; \
 	done
 

@@ -10,7 +10,7 @@ RemainAfterExit=yes
 ExecStart=/bin/true
 
 #
-# The maas-region-controller-min package configures four workers. This
+# The maas-region-api package configures four workers. This
 # should work for most people. However:
 #
 # * `systemctl start maas-regiond-worker@x` (where 'x' can be anything,
