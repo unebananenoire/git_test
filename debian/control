@@ -13,7 +13,7 @@ Build-Depends: debhelper (>= 8.1.0~),
                python3-twisted
 Standards-Version: 3.9.6
 X-Python3-Version: >= 3.5
-Homepage: https://launchpad.net/maas
+Homepage: http://maas.io/
 
 Package: maas
 Architecture: all
@@ -21,18 +21,31 @@ Depends: maas-rack-controller (= ${binary:Version}),
          maas-region-controller (= ${binary:Version}),
          python3-django-maas (= ${binary:Version}),
          ${misc:Depends}
-Description: MAAS server all-in-one metapackage
- MAAS is "Metal As A Service", a system for dynamic provisioning of physical
- servers that has many of the same characteristics as a cloud.  You register
- servers with MAAS by telling MAAS about their IPMI or other control system.
- MAAS can then do hardware inventory, and provision that system on demand
- with whatever OS and software you like.  MAAS is standalone software that
- works with any configuration system, but for best results combine MAAS with
- Juju.
+Description: "Metal as a Service" is a physical cloud and IPAM
+ MAAS runs a software-defined data centre - it turns a collection of physical
+ servers into an on-demand bare metal cloud with full open source IP address
+ management (IPAM).
+ .
+ MAAS controls the servers through IPMI or another BMC or  converged chassis
+ controller such as Cisco UCS. It provides a full inventory of components,
+ and can install Ubuntu, CentOS or Windows very fast on any server under
+ its control.
+ .
+ MAAS handles VLANs and fabrics that span many trunked switches, as well as
+ the routing-centric infrastructure typically used for large-scale OpenStack
+ or other scale-out deployments. MAAS can track IP addresses and provides
+ APIs for address assignment and release. MAAS can also assign IP addresses
+ for containers on machines, and release them when the machine is repurposed.
+ MAAS provides PXE, DHCP, DNS and other low-level  services to ensure the
+ cluster works smoothly.
+ .
+ MAAS works with any configuration system, and is recommended by the teams
+ behind both Chef and Juju as a physical provisioning system.
  .
  MAAS provides:
   * Hardware inventory of servers
-  * Dynamic provisioning based on name or attributes such as disk, RAM cores, sockets
+  * Dynamic provisioning based on name or attributes such as disk, RAM, cores,
+    nic's, networking
   * DNS and DHCP as needed
   * PXE boot services
  .
@@ -82,9 +95,18 @@ Depends: dbconfig-pgsql,
          postgresql (>= 9.1),
          ${misc:Depends},
 Recommends: openssh-server
-Description: MAAS server complete region controller
- This package installs and configures the complete MAAS region controller,
- including the minimum setup, plus the database server and messaging queue.
+Description: Region Controller for MAAS
+ The MAAS region controller is the REST API server for all MAAS clients,
+ and the postgres database that maintains machine state for the entire
+ data centre (or “region”). The region controller can be scaled-out and
+ highly available given the appropriate postgres setup and additional
+ API servers.
+ .
+ This package installs the postgres database and the API server, so it
+ is appropriate for the initial installation of a new MAAS region. To
+ scale out the controller or make it highly available, install
+ maas-region-controller-api on additional servers and ensure the
+ postgres database is HA too.
 
 Package: python3-maas-provisioningserver
 Section: python
@@ -131,10 +153,11 @@ Depends: python3-httplib2,
          ${python3:Depends}
 Conflicts: maas-region-controller-min (<= 1.5+bzr1909-0ubuntu1)
 Replaces: maas-region-controller-min (<= 1.5+bzr1909-0ubuntu1)
-Description: MAAS command line API tool
- This package contains the MAAS client command line API tool.
- This tool enables automation of tasks in MAAS, remotely, through
- its API.
+Description: MAAS client and command-line interface
+ This package contains the 'maas' command-line interface, which
+ talks to the MAAS region controller REST API. Use the maas command
+ to login to MAAS and drive the data centre entirely from the
+ command-line.
 
 Package: python3-maas-client
 Section: python
@@ -179,10 +202,22 @@ Breaks: python-maas-provisioningserver,
         maas-cluster-controller
 Replaces: python-maas-provisioningserver,
           maas-cluster-controller
-Description: MAAS server cluster controller
- This package contains the MAAS cluster controller, which is responsible
- for enabling and controlling remote DHCP/TFTP instances on their own
- subnets.
+Description: Rack Controller for MAAS
+ The MAAS rack controller provides highly available, fast and local
+ broadcast services to the machines provisioned by MAAS. There should
+ be a MAAS rack controller attached to each fabric (which is a set of
+ trunked switches). You can arrange for multiple rack controllers
+ that are attached to these physical networks, and MAAS will then be
+ highly available, with secondary rack controllers automatically
+ stepping to provide these services to a rack if the primary rack
+ controller fails.
+ .
+ A common configuration is to have a rack controller in each rack,
+ with secondary network interfaces on one or two other racks for high
+ availability redundancy.
+ .
+ This package also installs all the necessary components to provide
+ iSCSI, DHCP, TFTP and power management.
 
 Package: python3-django-maas
 Section: python

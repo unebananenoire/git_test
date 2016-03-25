@@ -1,7 +1,9 @@
-maas (2.0.0~alpha4+bzr4834-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~alpha4+bzr4837-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New upstream release, 2.0.0 alpha 4 bzr4834 (Standing FFe LP: #1553261)
+  * New upstream release, 2.0.0 alpha 4 bzr4837 (Standing FFe LP: #1553261)
   * Ensure /etc/maas/templates/power gets removed on upgrade
+  * debian/control: Update homepage and package descriptions.
+    (LP: #1562036, LP: #1562034, LP: #1562062)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 23 Mar 2016 12:27:27 -0400
 
