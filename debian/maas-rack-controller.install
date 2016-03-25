@@ -1,6 +1,4 @@
 # Install templates
-debian/tmp/etc/maas/templates/dhcp
-debian/tmp/etc/maas/templates/power
 debian/tmp/etc/maas/templates/pxe
 debian/tmp/etc/maas/templates/uefi
 

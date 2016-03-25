@@ -43,4 +43,14 @@ if [ "$1" = "install" ]; then
 
 fi
 
+if [ "$1" = "install" ] || [ "$1" = "upgrade" ]; then
+    if [ -d /etc/maas/templates/power ]; then
+        rm -rf /etc/maas/templates/power
+    fi
+
+    if [ -d /etc/maas/templates/dhcp ]; then
+        mv /etc/maas/templates/dhcp /etc/maas/templates/dhcp.maas-old
+    fi
+fi
+
 #DEBHELPER#
