@@ -1,6 +1,15 @@
-maas (2.0.0~alpha4+bzr4837-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~beta1+bzr4843-0ubuntu2) UNRELEASED; urgency=medium
 
-  * New upstream release, 2.0.0 alpha 4 bzr4837 (Standing FFe LP: #1553261)
+  * New upstream release, 2.0.0 beta 1 bzr4848 (Standing FFe LP: #1553261)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 28 Mar 2016 16:47:58 -0400
+
+maas (2.0.0~alpha4+bzr4843-0ubuntu1) xenial; urgency=medium
+
+  * New upstream release, 2.0.0 alpha 4 bzr4843 (Standing FFe LP: #1553261)
+    - DHCP Snippets backend and API.
+    - Rack controller WebUI Served VLANs & Service Tracking
+    - Rsyslog during enlistment/commissioning.
   * Ensure /etc/maas/templates/power gets removed on upgrade
   * debian/control: Update homepage and package descriptions.
     (LP: #1562036, LP: #1562034, LP: #1562062)
