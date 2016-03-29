@@ -7,3 +7,4 @@
 /var/lib/maas/dhcpd.conf r,
 /var/lib/maas/dhcpd6.conf r,
 /usr/sbin/maas-dhcp-helper Ux,
+/tmp/maas-dhcpd-* r,
