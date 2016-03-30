@@ -12,6 +12,7 @@ User=maas
 Group=maas
 Restart=always
 RestartSec=10s
+Environment="MAAS_REGIOND_WORKER_ID=%i"
 Environment="DJANGO_SETTINGS_MODULE=maas.settings"
 Environment="PYTHONPATH=/usr/share/maas"
 Environment="LOGFILE=/var/log/maas/regiond.log"
