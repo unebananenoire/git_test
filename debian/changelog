@@ -1,6 +1,8 @@
 maas (2.0.0~beta1+bzr4843-0ubuntu2) UNRELEASED; urgency=medium
 
   * New upstream release, 2.0.0 beta 1 bzr4848 (Standing FFe LP: #1553261)
+  * debian/control: Move 'maascli' package install to
+    python3-maas-client (LP: #1563859)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 28 Mar 2016 16:47:58 -0400
 
