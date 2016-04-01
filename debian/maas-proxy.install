@@ -1,2 +1,1 @@
-debian/extras/maas-proxy.conf usr/share/maas/
 debian/extras/maas-proxy-common.sh usr/share/maas/

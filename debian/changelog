@@ -7,6 +7,8 @@ maas (2.0.0~beta1+bzr4858-0ubuntu1) UNRELEASED; urgency=medium
     and ownership (LP: #1563799 , LP: #1563779)
   * Improve the way how removals clean the system (LP: #1563337)
   * Reflect new names and website for systemd units (LP: #1563807)
+  * maas-proxy now uses a custom-built config, instead of a boilerplate.
+    LP: #1379567
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 28 Mar 2016 16:47:58 -0400
 
