@@ -1,6 +1,6 @@
 [Unit]
 Description=MAAS Region Controller
-Documentation=https://maas.ubuntu.com/
+Documentation=https://maas.io/
 
 [Service]
 Type=oneshot

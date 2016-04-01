@@ -8,13 +8,19 @@ RELEASE=`lsb_release -rs` || RELEASE=""
 
 case "$1" in
     purge)
-        # remove log directory
-        rm -rf /var/log/maas
-        # remove var directory
-        DIR=/var/lib/maas
-        if [ "$(ls -A $DIR 2> /dev/null)" = "" ]; then
-            rm -rf /var/lib/maas
-        fi
+        # remove logfile as it wasn't installed by packaging
+        rm -rf /var/log/maas/rackd.log*
+
+        # remove var directories provided it will always have files
+        # not installed or tracked by packaging
+        rm -rf /var/lib/maas/boot-resources
+
+        # remove files that were created by the rack controller
+        rm -rf /var/lib/maas/dhcpd.sock
+        rm -rf /var/lib/maas/dhcpd.conf
+        rm -rf /var/lib/maas/dhcpd-interfaces
+        rm -rf /var/lib/maas/dhcpd6.conf
+        rm -rf /var/lib/maas/dhcpd6-interfaces
 
         # Delete symlink for iSCSI config.
         if [ -L /etc/tgt/conf.d/maas.conf ]; then
@@ -27,10 +33,18 @@ case "$1" in
             rm -rf /etc/authbind/byuid/$MAAS_UID
         fi
 
-        # Deleting old/new config files
-        rm -rf /etc/maas/pserv.yaml.maas-old
-        rm -rf /etc/maas/maas_cluster.conf.maas-old
-        rm -rf /etc/maas/templates/dhcp.maas-old
+        # Remove rackd.conf file
         rm -rf /etc/maas/rackd.conf
+
+        # Deleting old config files if they exist
+        if [ -f /etc/maas/pserv.yaml.maas-old ]; then
+            rm -rf /etc/maas/pserv.yaml.maas-old
+        fi
+        if [ -f /etc/maas/maas_cluster.conf.maas-old ]; then
+            rm -rf /etc/maas/maas_cluster.conf.maas-old
+        fi
+        if [ -f /etc/maas/templates/dhcp.maas-old ]; then
+            rm -rf /etc/maas/templates/dhcp.maas-old
+        fi
 
 esac

@@ -26,5 +26,9 @@ if [ "$1" = "install" ] || [ "$1" = "upgrade" ]; then
         rm -rf /var/log/maas/maas-django.log
     fi
 
+    if [ -d /var/lib/maas/media ]; then
+        rm -rf /var/lib/maas/media
+    fi
+
 fi
 #DEBHELPER#

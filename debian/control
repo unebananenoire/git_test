@@ -269,7 +269,6 @@ Package: maas-proxy
 Architecture: all
 Depends: squid3, ${misc:Depends}
 Conflicts: squid-deb-proxy
-Replaces: squid-deb-proxy
 Description: MAAS Caching Proxy
  This package installs and configures a Caching Proxy server that can be
  used by MAAS. It enhances the overall MAAS user experience.

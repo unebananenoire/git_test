@@ -27,6 +27,9 @@ then
     if [ -f /etc/maas/dhcpd6.conf ]; then
         mv /etc/maas/dhcpd6.conf /var/lib/maas/
     fi
+
+    # Ensure ownership is correct
+    chown root:dhcpd /var/lib/maas/dhcp
 fi
 
 #DEBHELPER#

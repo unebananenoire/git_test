@@ -1,6 +1,6 @@
 [Unit]
-Description=MAAS Cluster Controller
-Documentation=https://maas.ubuntu.com/
+Description=MAAS Rack Controller
+Documentation=https://maas.io/
 Requires=network-online.target
 After=network-online.target
 

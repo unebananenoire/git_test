@@ -1,8 +1,12 @@
-maas (2.0.0~beta1+bzr4843-0ubuntu2) UNRELEASED; urgency=medium
+maas (2.0.0~beta1+bzr4858-0ubuntu1) UNRELEASED; urgency=medium
 
   * New upstream release, 2.0.0 beta 1 bzr4848 (Standing FFe LP: #1553261)
   * debian/control: Move 'maascli' package install to
     python3-maas-client (LP: #1563859)
+  * Improve way on how upgrades ensures correct permissions
+    and ownership (LP: #1563799 , LP: #1563779)
+  * Improve the way how removals clean the system (LP: #1563337)
+  * Reflect new names and website for systemd units (LP: #1563807)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 28 Mar 2016 16:47:58 -0400
 

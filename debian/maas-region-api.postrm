@@ -8,8 +8,14 @@ RELEASE=`lsb_release -rs` ||  RELEASE=""
 
 case "$1" in
     purge)
-        rm -rf /var/log/maas
-        rm -rf /var/lib/maas
+        # Remove logging files & foldesr
+        rm -rf /var/log/maas/regiond.log*
+        rm -rf /var/log/maas/apache2
+        rm -rf /var/log/maas/rsyslog
+
+        # Remove libgdir related files
+        rm -rf /var/lib/maas/media
+
         case $RELEASE in
             12.04|12.10|13.04)
                 if [ -h /etc/apache2/conf.d/maas-http.conf ]; then
@@ -35,6 +41,7 @@ case "$1" in
 
         # Delete any remaining / leftover file
         rm -rf /usr/share/maas/maas/
+        rm -rf /etc/maas/regiond.conf
 esac
 
 #DEBHELPER#

@@ -1,6 +1,6 @@
 [Unit]
 Description=MAAS Region Controller (Worker %i)
-Documentation=https://maas.ubuntu.com/
+Documentation=https://maas.io/
 Requires=network-online.target
 After=network-online.target
 PartOf=maas-regiond.service

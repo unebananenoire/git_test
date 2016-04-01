@@ -7,20 +7,49 @@ db_version 2.0
 
 RELEASE=`lsb_release -rs` || RELEASE=""
 
-create_var_dir() {
-    # create var dir
-    if [ ! -d /var/lib/maas ]; then
-        mkdir -p /var/lib/maas
-    fi
-    chown -R maas:maas /var/lib/maas/
-
-}
-create_log_dir() {
+configure_logging() {
     # Give appropriate permissions
     if [ ! -f /var/log/maas/rackd.log ]; then
         touch /var/log/maas/rackd.log
     fi
     chown maas:maas /var/log/maas/rackd.log
+}
+
+configure_libdir() {
+    # create var dir
+    if [ ! -d /var/lib/maas/boot-resources ]; then
+        mkdir -p /var/lib/maas/boot-resources
+    fi
+    # Ensure /var/lib/maas/boot-resources has correct ownership
+    chown -R maas:maas /var/lib/maas/boot-resources
+
+    # If /var/lib/maas/secret exists, ensure ownership and
+    # permissions are correct
+    if [ -f /var/lib/maas/secret ]; then
+        chown maas:maas /var/lib/maas/secret
+        chmod 0640 /var/lib/maas/secret
+    fi
+
+    if [ -f /var/lib/maas/maas_id ]; then
+       chown maas:maas /var/lib/maas/maas_id
+    fi
+
+    # Ensure dhcpd related files have the correct permissions
+    if [ -f /var/lib/maas/dhcpd.conf ]; then
+        chown root:maas /var/lib/maas/dhcpd.conf
+    fi
+    if [ -f /var/lib/maas/dhcpd-interfaces ]; then
+        chown root:maas /var/lib/maas/dhcpd-interfaces
+    fi
+    if [ -f /var/lib/maas/dhcpd6.conf ]; then
+        chown maas:maas /var/lib/maas/dhcpd6.conf
+    fi
+    if [ -f /var/lib/maas/dhcpd6-interfaces ]; then
+        chown maas:maas /var/lib/maas/dhcpd6-interfaces
+    fi
+    if [ -S /var/lib/maas/dhcpd.sock ]; then
+        chown maas:maas /var/lib/maas/dhcpd.sock
+    fi
 }
 
 configure_maas_tgt() {
@@ -107,8 +136,8 @@ upgrade_from_cluster_controller() {
 maas-rack config
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
-    create_log_dir
-    create_var_dir
+    configure_logging
+    configure_libdir
     configure_maas_tgt
     configure_maas_url
     configure_cluster_uuid
@@ -127,6 +156,8 @@ elif [ -n "$DEBCONF_RECONFIGURE" ]; then
     configure_shared_secret
 
 elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" gt 0.1+bzr266+dfsg-0ubuntu1; then
+    configure_logging
+    configure_libdir
     configure_cluster_authbind
     maas-rack upgrade-cluster
 fi
