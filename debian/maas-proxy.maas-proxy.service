@@ -10,6 +10,7 @@ ExecStartPre=/bin/sh -ec '\
     . /usr/share/maas/maas-proxy-common.sh; \
     pre_start'
 ExecStart=/usr/sbin/squid3 -N -f /var/lib/maas/maas-proxy.conf
+ExecReload=/usr/sbin/squid3 -k reconfigure
 
 [Install]
 WantedBy=multi-user.target
