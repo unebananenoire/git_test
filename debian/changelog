@@ -1,6 +1,15 @@
-maas (2.0.0~beta1+bzr4858-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~beta2+bzr4873-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New upstream release, 2.0.0 beta 1 bzr4848 (Standing FFe LP: #1553261)
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 05 Apr 2016 17:02:32 -0400
+
+maas (2.0.0~beta1+bzr4873-0ubuntu1) xenial; urgency=medium
+
+  * New upstream release, 2.0.0 beta 1 bzr4873 (Standing FFe LP: #1553261)
+    - DHCP Snippets WebUI.
+    - Ensure proxy configuration ACL's subnets MAAS knows about.
+    - DNS High Availability.
   * debian/control: Move 'maascli' package install to
     python3-maas-client (LP: #1563859)
   * Improve way on how upgrades ensures correct permissions
