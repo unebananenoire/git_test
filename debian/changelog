@@ -1,6 +1,11 @@
-maas (2.0.0~beta2+bzr4885-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~beta2+bzr4889-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New upstream release, 2.0.0 beta 2 bzr 4885 (Standing FFe LP: #1553261)
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 07 Apr 2016 18:22:00 -0400
+
+maas (2.0.0~beta1+bzr4873-0ubuntu2) xenial; urgency=medium
+
   * Add maas-region-udeb and maas-rack-udeb to be used as part of the
     Ubuntu Server Installer (LP: #1561954)
     - ensure maas-rack-controller and maas-region-controller can be fully
