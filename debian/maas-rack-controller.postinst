@@ -144,6 +144,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
     configure_cluster_authbind
     maas-rack upgrade-cluster
     upgrade_from_cluster_controller
+    configure_shared_secret
 
 elif [ -n "$DEBCONF_RECONFIGURE" ]; then
     configure_maas_url

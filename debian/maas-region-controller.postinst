@@ -91,6 +91,16 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
         configure_migrate_maas_dns
     fi
 
+    db_get maas/username
+    username="$RET"
+    if [ -n "$username" ]; then
+        db_get maas/password
+        password="$RET"
+        if [ -n "$password" ]; then
+            maas-region createadmin --username "$username" --password "$password" --email "$username@maas"
+        fi
+    fi
+
     # Display installation note
     db_input low maas/installation-note || true
     db_go
