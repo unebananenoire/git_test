@@ -276,7 +276,7 @@ Description: MAAS Caching Proxy
 Package: maas-region-udeb
 Package-Type: udeb
 Section: debian-installer
-Architecture: any
+Architecture: all
 Depends:
  ${shlibs:Depends},
  ${misc:Depends}
@@ -286,7 +286,7 @@ Description: Install a MAAS server (installer integration)
 Package: maas-rack-udeb
 Package-Type: udeb
 Section: debian-installer
-Architecture: any
+Architecture: all
 Depends:
  ${shlibs:Depends},
  ${misc:Depends}
