@@ -15,7 +15,9 @@ pre_start() {
   if [ -d /var/log/maas/proxy ]; then
    chown -R proxy:proxy /var/log/maas/proxy
   fi
-  if [ ! -d /var/cache/maas-proxy/00 ]; then
-   $SQUID -z -N -f /var/lib/maas/maas-proxy.conf
+  if [ -f /var/lib/maas/maas-proxy.conf ]; then
+    if [ ! -d /var/cache/maas-proxy/00 ]; then
+      $SQUID -z -N -f /var/lib/maas/maas-proxy.conf
+    fi
   fi
 }
