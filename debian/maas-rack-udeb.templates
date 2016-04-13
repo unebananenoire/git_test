@@ -18,7 +18,6 @@ _Description: Would you like to proceed with the installation of your MAAS Rack 
 
 Template: maas-rack-udeb/maas-url
 Type: string
-Default:
 _Description: Ubuntu MAAS Region API address:
  The MAAS rack controller and nodes need to contact the MAAS region
  controller API.  Set the URL at which they can reach the MAAS API remotely,
@@ -29,7 +28,6 @@ _Description: Ubuntu MAAS Region API address:
 
 Template: maas-rack-udeb/shared-secret
 Type: password
-Default:
 _Description: MAAS Rack Controller shared secret:
  The MAAS Rack Controller needs to contact the MAAS server
  with a share secret. This shared secret can be found on

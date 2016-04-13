@@ -39,7 +39,6 @@ _Description: Ubuntu MAAS password
 
 Template: maas-rack-controller/maas-url
 Type: string
-Default:
 _Description: Ubuntu MAAS API address:
  The MAAS cluster controller and nodes need to contact the MAAS region
  controller API.  Set the URL at which they can reach the MAAS API remotely,
@@ -49,7 +48,6 @@ _Description: Ubuntu MAAS API address:
 
 Template: maas-rack-controller/shared-secret
 Type: password
-Default:
 _Description: MAAS Cluster Controller Shared Secret:
  The MAAS Cluster Controller needs to contact the MAAS server
  with a share secret. Set the shared secret here.
