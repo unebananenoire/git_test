@@ -66,17 +66,3 @@ msgid ""
 "clients. If the automatically detected address is not in the same network as "
 "the clients, it must be changed."
 msgstr ""
-
-#. Type: string
-#. Description
-#: ../maas-cluster-controller.templates:1001
-msgid "Ubuntu MAAS API address:"
-msgstr ""
-
-#. Type: string
-#. Description
-#: ../maas-cluster-controller.templates:1001
-msgid ""
-"The MAAS Cluster Controller needs to contact the MAAS server to register its "
-"presence.  Set the URL to the MAAS API here, e.g. http://192.168.1.1/MAAS"
-msgstr ""
