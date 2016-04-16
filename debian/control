@@ -152,8 +152,7 @@ Description: MAAS server provisioning libraries (Python 3)
 
 Package: maas-cli
 Architecture: all
-Depends: python3-httplib2,
-         python3-maas-client (= ${binary:Version}),
+Depends: python3-maas-client (= ${binary:Version}),
          ${misc:Depends},
          ${python3:Depends}
 Conflicts: maas-region-controller-min (<= 1.5+bzr1909-0ubuntu1)
@@ -167,7 +166,8 @@ Description: MAAS client and command-line interface
 Package: python3-maas-client
 Section: python
 Architecture: all
-Depends: python3-oauth,
+Depends: python3-httplib2,
+         python3-oauth,
          ${misc:Depends},
          ${python3:Depends}
 Breaks: python-maas-client, maas-cli ( <= 2.0.0~alpha4+bzr4843-0ubuntu1 )
