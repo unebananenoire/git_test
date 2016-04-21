@@ -48,6 +48,6 @@ _Description: Ubuntu MAAS API address:
 
 Template: maas-rack-controller/shared-secret
 Type: password
-_Description: MAAS Cluster Controller Shared Secret:
- The MAAS Cluster Controller needs to contact the MAAS server
+_Description: MAAS Rack Controller Shared Secret:
+ The MAAS Rack Controller needs to contact the MAAS server
  with a share secret. Set the shared secret here.

@@ -1,6 +1,14 @@
-maas (2.0.0~beta2+bzr4920-0ubuntu3) UNRELEASED; urgency=medium
+maas (2.0.0~beta4+bzr4941-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 20 Apr 2016 22:43:22 -0400
+
+maas (2.0.0~beta3+bzr4941-0ubuntu1) xenial; urgency=medium
+
+  * New upstream release, 2.0.0 beta 3 bzr4941 (Standing FFe LP: #1553261)
+  * Remove some leftover references to Cluster.
+  * Run debconf-updatepo.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 15 Apr 2016 22:27:56 -0400
 
