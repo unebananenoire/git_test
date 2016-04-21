@@ -1,6 +1,7 @@
 maas (2.0.0~beta4+bzr4941-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
+  * debian/extras/20-maas.conf: Better organize rsyslog logs.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 20 Apr 2016 22:43:22 -0400
 
