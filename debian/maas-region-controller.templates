@@ -1,3 +1,17 @@
+Template: maas/installation-note
+Type: note
+Default: false
+_Description: Ubuntu MAAS Server
+ The Ubuntu MAAS Server has been installed in your system. You
+ can access the MAAS Web interface here:
+ .
+    http://${MAAS_URL}/MAAS
+ .
+ If the automatically detected address above is not in the same
+ network as the MAAS clients, you need to reconfigure it:
+ .
+    sudo dpkg-reconfigure maas-region-controller
+
 Template: maas/default-maas-url
 Type: string
 _Description: Ubuntu MAAS PXE/Provisioning network address:
