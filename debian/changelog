@@ -1,9 +1,34 @@
-maas (2.0.0~beta4+bzr4958-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~beta5+bzr4999-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 06 May 2016 09:56:40 -0500
+
+maas (2.0.0~beta4+bzr4985-0ubuntu1) xenial; urgency=medium
+
+  * New upstream release, 2.0.0 beta 4 bzr4985:
+    - Disk erasing with Xenial results it abnormal poweroff (LP: #1527634)
+    - UI Nodes page shows 'ascii' codec can't decode byte (LP: #1555864)
+    - When power_type changed to manual "power_state" was not set to "unknown" (LP: #1574003)
+    - MAAS Rack Controller doesn't log when it is importing images. (LP: #1571007)
+    - rackd fails to register vlan interfaces with "vlan" naming scheme (LP: #1575945)
+    - Traceback deleting fabric (LP: #1573492)
+    - adding files with paths in the filename confuses maas (LP: #1566108)
+    - MAAS does not add node to DNS Domain (LP: #1571621)
+    - tag only supports 'nodes' and and not 'machines' or 'controller's (LP: #1573644)
+    - enlistment fails: /tmp/sh.UZ7qJT/bin/maas-enlist: archdetect: not found (LP: #1573264)
+    - creating a dnsresource-record at the root of a zone should allow fqdn= (LP: #1562919)
+    - In the domain details pages, sometimes names have links to nodes when they should not (LP: #1573690)
+    - Can't power on/off Rack Controller (LP: #1576854)
+    - ipranges create raises incorrect error for missing type (LP: #1573660)
+    - fabric and space pages fail to update automatically (LP: #1557597)
+    - Subnet page doesn't show which machine or device owns an IP address (LP: #1567150)
+    - MAAS Controller listing page doesn't indicate whne a rack is downloading images (LP: #1571680)
+    - Deleting user in UI leads to 500 (LP: #1573219)
+    - maas enlistment of power8 found ipmi 1.5 should do ipmi 2.0 (LP: #1556219)
   * debian/extras/20-maas.conf: Better organize rsyslog logs.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 20 Apr 2016 22:43:22 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Sat, 30 Apr 2016 18:40:26 -0400
 
 maas (2.0.0~beta3+bzr4941-0ubuntu1) xenial; urgency=medium
 
