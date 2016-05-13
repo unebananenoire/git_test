@@ -1,6 +1,8 @@
-maas (2.0.0~beta5+bzr4999-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~beta5+bzr5019-0ubuntu1) UNRELEASED; urgency=medium
 
-  * UNRELEASED
+  * New upstream release, 2.0.0 beta 5 bzr:
+  * debian/maas-dhcp.posinst: Pipe error messages correctly to not show
+    messages when disabling isc-dhcp-server init scripts. (LP: #1570911)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 06 May 2016 09:56:40 -0500
 
