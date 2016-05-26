@@ -56,7 +56,8 @@ Description: "Metal as a Service" is a physical cloud and IPAM
 
 Package: maas-common
 Architecture: all
-Depends: ${misc:Depends}
+Depends: rsyslog,
+         ${misc:Depends}
 Breaks: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Replaces: maas ( <= 0.1+bzr1048+dfsg-0ubuntu1 )
 Description: MAAS server common files
@@ -80,7 +81,6 @@ Depends: apache2,
          python3-maas-provisioningserver (= ${binary:Version}),
          python3-petname,
          python3-requests,
-         rsyslog,
          ubuntu-cloudimage-keyring,
          ${misc:Depends},
          ${python3:Depends}
@@ -194,7 +194,6 @@ Depends: authbind,
          python3-tempita,
          python3-twisted,
          python3-zope.interface,
-         rsyslog,
          syslinux-common,
          tgt,
          uuid-runtime,

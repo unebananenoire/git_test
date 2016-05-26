@@ -31,8 +31,6 @@ configure_logging() {
     # Create log directory base
     mkdir -p /var/log/maas/rsyslog
     chown -R syslog:syslog /var/log/maas/rsyslog
-    # Make sure rsyslog reads our config
-    invoke-rc.d rsyslog restart
 
     # apache2 log symlinks
     ln -sf /var/log/apache2 /var/log/maas/
