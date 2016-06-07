@@ -29,6 +29,6 @@ _Description: Ubuntu MAAS Region API address:
 Template: maas-rack-udeb/shared-secret
 Type: password
 _Description: MAAS Rack Controller shared secret:
- The MAAS Rack Controller needs to contact the MAAS server
- with a share secret. This shared secret can be found on
- the MAAS Region Controller server under /var/lib/maas/secret.
+ The MAAS rack controller needs to contact the MAAS region controller
+ with the shared secret found in /var/lib/maas/secret on the region controller.
+ Set the shared secret here.
