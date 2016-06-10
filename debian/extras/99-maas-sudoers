@@ -12,5 +12,3 @@ maas ALL= NOPASSWD: /bin/systemctl disable maas-rackd
 maas ALL= NOPASSWD: /bin/systemctl stop maas-rackd
 maas ALL= NOPASSWD: /usr/sbin/maas-rack
 maas ALL= NOPASSWD: SETENV: /usr/sbin/tgt-admin, /usr/bin/uec2roottar
-maas ALL= NOPASSWD: /usr/bin/lshw
-maas ALL= NOPASSWD: /sbin/blockdev

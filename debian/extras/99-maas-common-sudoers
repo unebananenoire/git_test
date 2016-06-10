@@ -1,0 +1,2 @@
+maas ALL= NOPASSWD: /usr/bin/lshw
+maas ALL= NOPASSWD: /sbin/blockdev
