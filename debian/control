@@ -118,6 +118,7 @@ Section: python
 Architecture: all
 Depends: archdetect-deb,
          lshw,
+         openssh-client,
          python3-bson,
          python3-crochet,
          python3-curtin (>> 0.1.0~bzr351),
