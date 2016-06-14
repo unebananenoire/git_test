@@ -1,12 +1,13 @@
-maas (2.0.0~beta8+bzr5112-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~beta8+bzr5120-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
   * /etc/maas/templates/dns is obsolete. (LP: #1581729)
   * Switch to OpenSSH for SSH public key validation. Previously
     Twisted's conch was used but it does not yet support the newer ecdsa
     and ed25519 key types. (LP: #1590081)
+  * debian/control: maas-region-api depends on maas-cli.
 
- -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 14 Jun 2016 08:59:27 -0400
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 14 Jun 2016 17:08:48 -0400
 
 maas (2.0.0~beta7+bzr5112-0ubuntu1) xenial; urgency=medium
 
