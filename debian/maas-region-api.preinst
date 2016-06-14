@@ -30,5 +30,9 @@ if [ "$1" = "install" ] || [ "$1" = "upgrade" ]; then
         rm -rf /var/lib/maas/media
     fi
 
+    if [ -d /etc/maas/templates/dns ]; then
+        mv /etc/maas/templates/dns /etc/maas/templates/dns.maas-old
+    fi
+
 fi
 #DEBHELPER#

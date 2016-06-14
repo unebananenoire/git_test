@@ -1,6 +1,7 @@
 maas (2.0.0~beta8+bzr5112-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
+  * /etc/maas/templates/dns is obsolete. (LP: #1581729)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 14 Jun 2016 08:59:27 -0400
 
