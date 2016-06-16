@@ -6,6 +6,7 @@ maas (2.0.0~beta8+bzr5120-0ubuntu1) UNRELEASED; urgency=medium
     Twisted's conch was used but it does not yet support the newer ecdsa
     and ed25519 key types. (LP: #1590081)
   * debian/control: maas-region-api depends on maas-cli.
+  * Versioned Depend on squid
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 14 Jun 2016 17:08:48 -0400
 
