@@ -32,6 +32,10 @@ configure_logging() {
     mkdir -p /var/log/maas/rsyslog
     chown -R syslog:syslog /var/log/maas/rsyslog
 
+    # Make sure rsyslog reads our config after creating the
+    # destination folder.
+    systemctl restart rsyslog >/dev/null 2>&1 || true
+
     # apache2 log symlinks
     ln -sf /var/log/apache2 /var/log/maas/
 }

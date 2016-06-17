@@ -21,6 +21,11 @@ restart_postgresql(){
 
 configure_maas_default_url() {
     local ipaddr="$1"
+    local local_port=$(echo "$ipaddr" | cut -d":" -f2)
+    if [ -z "$local_port" ]; then
+        # Ensure MAAS binds to 5240 by default.
+        ipaddr=${ipaddr}:5240
+    fi
     maas-region local_config_set \
         --maas-url "http://${ipaddr}/MAAS"
 }
