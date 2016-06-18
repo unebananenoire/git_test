@@ -32,6 +32,8 @@ maas (2.0.0~beta8+bzr5134-0ubuntu1) UNRELEASED; urgency=medium
   * Versioned Depend on squid
   * debian/maas-region-controller.config: Ensure dbc_go is not run when
     dbconfig common is not yet installed.
+  * Wait for squid to finish starting before returning from the start command.
+    LP: #1592954
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 14 Jun 2016 17:08:48 -0400
 
