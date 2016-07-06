@@ -1,6 +1,25 @@
-maas (2.0.0~beta8+bzr5134-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.0.0~rc2+bzr5143-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New upstream release, 2.0.0 RC1 bzr5134:
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 06 Jul 2016 09:49:41 -0400
+
+maas (2.0.0~rc1+bzr5143-0ubuntu1) xenial; urgency=medium
+
+  * New upstream release, 2.0.0 RC1 bzr5143:
+    - Determine a method for how to reconnect a deleted rack controller (LP: #1576357)
+    - [2.0b7, regression] maas-rack register makes up a new hostname (LP: #1592246)
+    - [2.0b8] HMC power driver regression -- Not able to connect via SSH. (LP: #1595753)
+    - [2.0b7] Date and time format should be consistent accross logs (LP: #1592885)
+    - [2.0b8] Unable to set default gateway interface (LP: #1597324)
+    - [1.9] VMware power management fails when VMs are organized in nested subfolders (LP: #1515188)
+    - [2.0] maas 2.0 pxeboot fails on PowerNV (LP: #1596046)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 28 Jun 2016 16:58:20 -0400
+
+maas (2.0.0~beta8+bzr5134-0ubuntu1) xenial; urgency=medium
+
+  * New upstream release, 2.0.0 beta8 bzr5134:
     - Allow ed25519 and ecdsa ssh keys (LP: #1590081)
     - [2.0b2, UI] Can't add a device and it does not show why. (LP: #1462078)
     - [2.0b3] Interfaces on region controllers are not
