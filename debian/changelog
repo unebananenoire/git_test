@@ -1,3 +1,47 @@
+maas (2.0.0~rc4+bzr5180-0ubuntu1) UNRELEASED; urgency=medium
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 27 Jul 2016 22:26:55 -0400
+
+maas (2.0.0~rc3+bzr5180-0ubuntu2) yakkety; urgency=medium
+
+  * Really fix by the determination of the default gateway, otherwise
+    automatically chose localhost. (LP: #1607112)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 27 Jul 2016 22:20:09 -0400
+
+maas (2.0.0~rc3+bzr5180-0ubuntu1) yakkety; urgency=medium
+
+  * New upstream release, 2.0.0 RC3 bzr5180:
+    - CLI version command doesn't work (2.0) (LP: #1557434)
+    - [2.0rc1] MAAS does not respect default subnet's DNS server when
+      choosing default DNS (LP: #1576116)
+    - [2.0RC1] MAAS displays every power query on the summarized view of
+      node event log (LP: #1594991)
+    - [2.0] Loading latest machine events can make web browser
+      unresponsive (LP: #1598028)
+    - [2.0rc1] MAAS doesn't honor DNS settings for a subnet for
+      DHCP (LP: #1600720)
+    - [2.0rc1] drop arm64/efi grub module workaround (LP: #1600285)
+    - maas login yields "ImportError: No module named
+      'maasserver'" (LP: #1604169)
+    - [doc] events API limit,before, after options not
+      documented (LP: #1604901)
+    - RackController.get_image_sync_status causes huge load
+      on regiond process (LP: #1604465)
+    - [2.0b8] MAAS is automatically monitoring timeouts. (LP: #1598149)
+    - [2.0] Error messaging about monitor expiry has been
+      dropped (LP: #1605252)
+    - [2.0rc2] Can't get node-results via cli/api (LP: #1602721)
+    - node set to "failed deployment" for no visible reason (LP: #1604962)
+    - Event log should always include a reason why a node was
+      marked Failed Deployment (LP: #1604987)
+  * If no default route is present in the system, configure maas_url on
+    regiond.conf to localhost to allow the user to tell MAAS what IP to use.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 22 Jul 2016 18:05:45 -0400
+
 maas (2.0.0~rc2+bzr5156-0ubuntu1) yakkety; urgency=medium
 
   * New upstream release, 2.0.0 RC2 bzr5156:
