@@ -1,2 +1,8 @@
 maas ALL= NOPASSWD: /usr/bin/lshw
 maas ALL= NOPASSWD: /sbin/blockdev
+
+# Control of the NTP server: MAAS needs to reconfigure it after editing
+# its configuration file, and start it again if stopped manually.
+maas ALL= NOPASSWD: /bin/systemctl restart ntp
+maas ALL= NOPASSWD: /bin/systemctl start ntp
+maas ALL= NOPASSWD: /bin/systemctl status ntp
