@@ -23,6 +23,9 @@ def check_users(users):
     """Check that the runnig user is in users."""
     uid = os.getuid()
     for user in users:
+        if user is None:
+            # Special case: this means any user is allowed.
+            return None
         user_uid = pwd.getpwnam(user)[2]
         if uid == user_uid:
             return user
@@ -64,6 +67,10 @@ def main():
             users.append("dhcpd")
         if sys.argv[1] == "observe-arp":
             users.append("maas")
+        if sys.argv[1] == "observe-mdns":
+            # Any user can call this. (It might be necessary for a normal
+            # user to call this for support/debugging purposes.)
+            users.append(None)
 
     # Only set the group and umask when running as root.
     if check_users(users) == "root":
