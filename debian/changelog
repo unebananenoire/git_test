@@ -1,3 +1,9 @@
+maas (2.1.0~alpha2+bzr5307-0ubuntu1) UNRELEASED; urgency=medium
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 31 Aug 2016 20:25:17 +0100
+
 maas (2.1.0~alpha1+bzr5300-0ubuntu1) yakkety; urgency=medium
 
   * New upstream release, MAAS 2.1.0 Alpha 1 (bzr5300):
