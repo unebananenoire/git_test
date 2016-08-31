@@ -10,9 +10,6 @@ debian/tmp/usr/share/maas/maas-http.conf
 # Install new preseed files
 debian/tmp/etc/maas/preseeds
 
-# Install templates
-debian/tmp/etc/maas/templates/commissioning-user-data
-
 # Install driver configuration file
 debian/tmp/etc/maas/drivers.yaml
 

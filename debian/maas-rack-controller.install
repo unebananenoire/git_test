@@ -1,7 +1,3 @@
-# Install templates
-debian/tmp/etc/maas/templates/pxe
-debian/tmp/etc/maas/templates/uefi
-
 # Install uec2roottar
 debian/tmp/usr/bin/uec2roottar
 
