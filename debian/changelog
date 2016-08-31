@@ -1,8 +1,15 @@
-maas (2.1.0~alpha1+bzr5294-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.1.0~alpha1+bzr5300-0ubuntu1) yakkety; urgency=medium
 
+  * New upstream release, MAAS 2.1.0 Alpha 1 (bzr5300):
+    - Advanced networking - static routes.
+    - Machine networking - bridge configuration.
+    - Machine networking - UI redesign and tags.
+    - Derived (mirrors) and additional repositories.
+    - Maintenance - Rescue Mode.
+    - Device discovery - backend.
+    - NTP support - backend.
   * Give MAAS on both region and rack the ability to start, restart, and
     get the status of the local NTP service.
-
   * Depend on python3-attr for the region and rack controllers.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 03 Aug 2016 10:51:50 -0400
