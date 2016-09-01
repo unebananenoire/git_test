@@ -101,7 +101,7 @@ Depends: dbconfig-pgsql,
          maas-region-api (= ${binary:Version}),
          postgresql (>= 9.1),
          ${misc:Depends},
-Recommends: avahi-utils, openssh-server
+Recommends: avahi-utils, openssh-server, tcpdump
 Description: Region Controller for MAAS
  The MAAS region controller (maas-regiond) is the REST API server for
  all MAAS clients, and the postgres database that maintains machine
@@ -205,7 +205,7 @@ Depends: authbind,
          wget,
          ${misc:Depends},
          ${python3:Depends}
-Recommends: avahi-utils
+Recommends: avahi-utils, tcpdump
 Suggests: amtterm, ipmitool, libvirt-bin, wsmancli
 Conflicts: tftpd-hpa
 Breaks: python-maas-provisioningserver,
