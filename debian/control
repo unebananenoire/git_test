@@ -96,12 +96,14 @@ Description: Region controller API service for MAAS
 
 Package: maas-region-controller
 Architecture: all
-Depends: dbconfig-pgsql,
+Depends: avahi-utils,
+         dbconfig-pgsql,
          maas-dns (= ${binary:Version}),
          maas-region-api (= ${binary:Version}),
          postgresql (>= 9.1),
+         tcpdump,
          ${misc:Depends},
-Recommends: avahi-utils, openssh-server, tcpdump
+Recommends: openssh-server
 Description: Region Controller for MAAS
  The MAAS region controller (maas-regiond) is the REST API server for
  all MAAS clients, and the postgres database that maintains machine
@@ -184,6 +186,7 @@ Description: MAAS python API client (Python 3)
 Package: maas-rack-controller
 Architecture: all
 Depends: authbind,
+         avahi-utils,
          bind9utils,
          distro-info,
          freeipmi-tools,
@@ -200,12 +203,12 @@ Depends: authbind,
          python3-twisted,
          python3-zope.interface,
          syslinux-common,
+         tcpdump,
          tgt,
          uuid-runtime,
          wget,
          ${misc:Depends},
          ${python3:Depends}
-Recommends: avahi-utils, tcpdump
 Suggests: amtterm, ipmitool, libvirt-bin, wsmancli
 Conflicts: tftpd-hpa
 Breaks: python-maas-provisioningserver,
