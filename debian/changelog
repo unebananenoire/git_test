@@ -1,7 +1,13 @@
-maas (2.1.0~alpha2+bzr5307-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.1.0~alpha2+bzr5321-0ubuntu1) yakkety; urgency=medium
 
-  * UNRELEASED
+  * New upstream release, MAAS 2.1.0 Alpha 2 (bzr5321):
+    - Commissioning user data and PXE templates no longer user configs.
+      They are no longer shipped on /etc/maas.
+    - Adds support for Device Discovery (Backend and API).
+    - [UI] Better error surfacing for DHCP snippets and Package Repositories.
   * Add depends on avahi-utils, ntp, and tcpdump.
+  * Old templates still exist. Move them so users know they are no longer
+    user (LP: #1619202)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 31 Aug 2016 20:25:17 +0100
 
