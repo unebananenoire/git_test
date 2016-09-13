@@ -8,6 +8,9 @@ maas (2.1.0~alpha2+bzr5321-0ubuntu1) yakkety; urgency=medium
   * Add depends on avahi-utils, ntp, and tcpdump.
   * Old templates still exist. Move them so users know they are no longer
     user (LP: #1619202)
+  * Create the /etc/ntp directory. MAAS writes custom NTP configuration
+    to /etc/ntp/maas.conf because ntpd is allowed by AppArmor to read
+    configuration only from /etc/ntp.conf and /etc/ntp/**.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 31 Aug 2016 20:25:17 +0100
 
