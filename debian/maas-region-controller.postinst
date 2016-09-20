@@ -21,25 +21,38 @@ restart_postgresql(){
 
 configure_maas_default_url() {
     local ipaddr="$1"
-    local local_port=$(echo "$ipaddr" | cut -d":" -f2)
-    if [ -z "$local_port" ]; then
-        # Ensure MAAS binds to 5240 by default.
-        ipaddr=${ipaddr}:5240
-    fi
-    maas-region local_config_set \
-        --maas-url "http://${ipaddr}/MAAS"
+    # The given address is either "[IPv6_IP]" or "IPv4_IP" or "name", such as
+    # [2001:db8::3:1]:5555 or 127.0.0.1 or maas.example.com.
+    # The ugly sed splits the given thing as:
+    #   (string of anything but ":", or [ipv6_ip]),
+    #   optionally followed by :port.
+    local address=$(echo "$ipaddr" |
+        sed -rn 's/^([^:]*|\[[0-9a-fA-F:]*\])(|:[0-9]*)?$/\1/p')
+    local port=$(echo "$ipaddr" |
+        sed -rn 's/^([^:]*|\[[0-9a-fA-F:]*\])(|:[0-9]*)?$/\2/p')
+    test -n "$port" || port=":5240"
+    ipaddr="${ipaddr}${port}"
+    maas-region local_config_set --maas-url "http://${ipaddr}/MAAS"
 }
 
-get_default_route_ip_or_localhost() {
+get_default_route_ip6() {
+    while read Src SrcPref Dest DestPref Gateway Metric RefCnt Use Flags Iface
+    do
+        [ "$SrcPref" = 00 ] && [ "$Iface" != lo ] && break
+    done < /proc/net/ipv6_route
+    if [ -n "$Iface" ]; then
+        LC_ALL=C /sbin/ip -6 addr list dev "$Iface" scope global permanent |
+            sed -n '/ inet6 /s/.*inet6 \([0-9a-fA-F:]*\).*/[\1]/p' | head -1
+    fi
+}
+
+get_default_route_ip4() {
     while read Iface Destination Gateway Flags RefCnt Use Metric Mask MTU Window IRTT
     do
         [ "$Mask" = "00000000" ] && break
     done < /proc/net/route
-    interface="$Iface"
-    if [ -z "$interface" ]; then
-        echo "localhost"
-    else
-        ipaddr=$(LC_ALL=C /sbin/ip -4 addr list dev "$interface" scope global)
+    if [ -n "$Iface" ]; then
+        ipaddr=$(LC_ALL=C /sbin/ip -4 addr list dev "$Iface" scope global)
         ipaddr=${ipaddr#* inet }
         ipaddr=${ipaddr%%/*}
         echo $ipaddr
@@ -67,18 +80,25 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
     #########################################################
 
     # Obtain IP address of default route and change DEFAULT_MAAS_URL
-    # if default-maas-url has not been preseeded.
+    # if default-maas-url has not been preseeded.  Prefer ipv4 addresses if
+    # present, and use "localhost" only if there is no default route in either
+    # address family.
     db_get maas/default-maas-url
     ipaddr="$RET"
-    if [ -z "$RET" ]; then
-        ipaddr=$(get_default_route_ip_or_localhost)
+    if [ -z "$ipaddr" ]; then
+        ipaddr=$(get_default_route_ip4)
+    fi
+    if [ -z "$ipaddr" ]; then
+        ipaddr=$(get_default_route_ip6)
+    fi
+    # Fallback default is "localhost"
+    if [ -z "$ipaddr" ]; then
+        ipaddr=localhost
     fi
     # Set the IP address of the interface with default route
-    if [ -n "$ipaddr" ]; then
-        configure_maas_default_url "$ipaddr"
-        db_subst maas/installation-note MAAS_URL "$ipaddr"
-        db_set maas/default-maas-url "$ipaddr"
-    fi
+    configure_maas_default_url "$ipaddr"
+    db_subst maas/installation-note MAAS_URL "$ipaddr"
+    db_set maas/default-maas-url "$ipaddr"
 
     #########################################################
     ################  Configure Database  ###################
