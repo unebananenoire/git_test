@@ -1,3 +1,22 @@
+maas (2.1.0~alpha4+bzr5375-0ubuntu1) UNRELEASED; urgency=medium
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 19 Sep 2016 17:21:47 -0400
+
+maas (2.1.0~alpha3+bzr5368-0ubuntu1) yakkety; urgency=medium
+
+  * New upstream release, MAAS 2.1.0 Alpha 3 (bzr5363):
+    - First user journey (SSH key import not yet available).
+    - Allow the user to import SSH keys from LP or GH (only API/CLI).
+    - Provide NTP services. Region and Rack Controllers now provide NTP
+      services. Machines are also deployed with NTP configuration via.
+      + Add cloud-init vendor data to support configuring the machine with
+        NTP settings.
+    - Images page complete redesign and transition to AngularJS.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 19 Sep 2016 17:21:20 -0400
+
 maas (2.1.0~alpha2+bzr5321-0ubuntu1) yakkety; urgency=medium
 
   * New upstream release, MAAS 2.1.0 Alpha 2 (bzr5321):
