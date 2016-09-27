@@ -1,6 +1,12 @@
-maas (2.1.0~alpha4+bzr5375-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.1.0~alpha4+bzr5397-0ubuntu1) yakkety; urgency=medium
 
-  * UNRELEASED
+  * MAAS new upstream release, MAAS 2.1.0 alpha 4 (bzr5397):
+    - Complete First User Journey (Ability to import keys from GH/LP).
+    - User profile has ability to import keys from GH/LP as well.
+    - Device discovery:
+      - Ability to clear records that may be incorrect.
+      - Ability to 'Map networks' via the API.
+    - Import NTP configuration via vendor-data and DHCP.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 19 Sep 2016 17:21:47 -0400
 
