@@ -42,7 +42,7 @@ case "$1" in
         # Delete any remaining / leftover file
         rm -rf /usr/share/maas/maas/
         rm -rf /etc/maas/regiond.conf
-        rm -rf /etc/maas/templates/dns.maas-old
+        rm -rf /etc/maas/templates.maas-old
 esac
 
 #DEBHELPER#

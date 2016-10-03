@@ -1,6 +1,15 @@
-maas (2.1.0~beta1+bzr5397-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.1.0~beta1+bzr5429-0ubuntu1) UNRELEASED; urgency=medium
 
-  * UNRELEASED
+  * MAAS new upstream release. MAAS 2.1.0 beta 1 (bzr):
+    - Support for new version of streams.
+    - Bootloaders are now downloaded from the streams.
+    - Support for Low Latency kernels.
+    - Support for new hardware enablement kernels.
+    - Device discovery
+      - UI ability to Map a network as an action.
+      - Ability to select interval of active discovery.
+      - Ability to enable active discovery per subnet.
+  * Remove old template files on package removal.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 27 Sep 2016 14:44:26 -0400
 
