@@ -1,6 +1,6 @@
-maas (2.1.0~beta1+bzr5429-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.1.0~beta1+bzr5433-0ubuntu1) yakkety; urgency=medium
 
-  * MAAS new upstream release. MAAS 2.1.0 beta 1 (bzr):
+  * MAAS new upstream release. MAAS 2.1.0 beta 1 (bzr5433):
     - Support for new version of streams.
     - Bootloaders are now downloaded from the streams.
     - Support for Low Latency kernels.
