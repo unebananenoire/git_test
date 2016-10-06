@@ -1,3 +1,24 @@
+maas (2.1.0~beta2+bzr5454-0ubuntu1) yakkety; urgency=medium
+
+  * MAAS new upstream bugfix release. MAAS 2.1.0 beta 2 (bzr5454):
+    - [2.1] Bootloaders not downloaded on initial import (LP: #1630394)
+    - Cryptic error when PXE-boot requires an image not yet imported (LP: #1611949)
+    - [2.0, 2.1, UI] MAAS webui allows boot disk to be changed on an
+      already deployed node (LP: #1625676)
+    - [2.1] Rename "Networks" tab to "Subnets" (LP: #1630591)
+    - [2.1] netaddr assumes MAC OUI is ascii (LP: #1628761)
+    - [2.1, 2.0] Can't input dynamic range on "Enable DHCP" after I deleted
+      the dynamic range (LP: #1619262)
+    - Machine unable to pxe with no-such-image while non-related images are
+      being imported (LP: #1612203)
+    - External DHCP detection is broken for a variety of reasons (LP: #1628645)
+    - [2.1] expected string or bytes-like object (LP: #1627362)
+    - [2.1] When trying to release a node, it gets stuck in releasing if
+      there is no rack controller to power control (LP: #1614659)
+    - WebUI needs a filter for deployed OS (LP: #1445941)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 05 Oct 2016 10:59:45 -0400
+
 maas (2.1.0~beta1+bzr5433-0ubuntu1) yakkety; urgency=medium
 
   * MAAS new upstream release. MAAS 2.1.0 beta 1 (bzr5433):
