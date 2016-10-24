@@ -1,6 +1,42 @@
-maas (2.1.0~beta3+bzr5454-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.1.1+bzr5501-0ubuntu1) UNRELEASED; urgency=medium
 
-  * UNRELEASED
+  * MAAS new upstream bugfix release. MAAS 2.1.1:
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 24 Oct 2016 11:28:59 -0400
+
+maas (2.1.0+bzr5480-0ubuntu1) yakkety; urgency=medium
+
+  * MAAS new upstream bugfix release. MAAS 2.1.0 (0-day SRU LP: #1633064):
+    - TestPartition.test_get_partition_number_returns_starting_at_2_for_ppc64el
+      fails spuriously (LP: #1569365)
+    - "Deployed" and "Deploying" are too similar (LP: #1598470)
+    - Users' maas api keys do not have a name (LP: #1536354)
+    - [2.1] Incorrect logging message - showing SERVICE_STATE.ON (LP: #1631358)
+    - [2.1 UI] Images page "Queued for download" is confusing when selections
+      are not saved (LP: #1631420)
+    - [2.1b1] Dashboard column widths for discovered items are
+      wonky (LP: #1631024)
+    - [2.1b1] 'Registering existing rack controller' (LP: #1631022)
+    - [2.1] Command 'interface link-subnet' does not work (LP: #1629604)
+    - [FUJ] SSH input field not indicated for invalid username & the error
+      is incomprehensible (LP: #1628114)
+    - [2.1 ipv6] DHCP generation should not fail when address-family
+      conflicts are present (LP: #1629475)
+    - [2.0rc2] Commissioning node with gateway_link_v4 set fails. (LP: #1603466)
+    - [2.1, 2.0 UI] Error when using dhcp range with pre-existing dynamic
+      reservation (LP: #1608555)
+    - [2.1b2] Node failed to be released, because of the following error:
+      'NoneType' object has no attribute 'addErrback' (LP: #1632815)
+    - [2.1, Yakkety, UI] UI error when adding a chassis (LP: #1632395)
+    - [2.0, 2.1 UI] Other reserved IP ranges disappear when one of them is
+      deleted on Subnet details page. (LP: #1631079)
+    - [2.1b1] MAAS fails to deploy systems with 3+ TB disks (LP: #1630667)
+    - [2.1 Yakkety UI] Unable to select nodes (LP: #1630633)
+    - [2.0, 2.1] Release and list IPs reserved by another user (LP: #1629061)
+    - [2.0rc2] Changing DNSSEC validation does not trigger configuration
+      file update (LP: #1605476)
+    - [2.1] Failed to mount a partition and it doesn't surface error. (LP: #1631152)
+    - [2.1. Yakkety] "Map subnet" action doesn't work. (LP: #1632862)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 05 Oct 2016 21:47:25 -0400
 
