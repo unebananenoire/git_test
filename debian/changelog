@@ -1,6 +1,12 @@
-maas (2.1.1+bzr5501-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.2.0~alpha1+bzr5562-0ubuntu1) UNRELEASED; urgency=medium
 
-  * MAAS new upstream bugfix release. MAAS 2.1.1:
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 21 Nov 2016 20:01:31 -0500
+
+maas (2.1.1+bzr5501-0ubuntu1) zesty; urgency=medium
+
+  * MAAS new upstream bugfix release. MAAS 2.1.1 bzr 5544.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 24 Oct 2016 11:28:59 -0400
 
