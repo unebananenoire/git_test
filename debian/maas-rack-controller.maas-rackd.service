@@ -18,10 +18,11 @@ ExecStartPre=/bin/rm -f /var/lib/maas/dhcpd6.conf
 # Logs go to the journal; read them with
 #   journalctl -u maas-rackd
 # Logs also go to $LOGFILE for backward compatibility. The journal
-# should now be preferred as the $LOGFILE will be removed in MAAS 1.9.
+# should now be preferred as the $LOGFILE will be removed.
 ExecStart=/bin/sh -c \
     'exec /usr/bin/authbind --deep /usr/bin/twistd3 --nodaemon --pidfile= \
-     maas-rackd 2>&1 | tee -a $LOGFILE'
+       --logger=provisioningserver.logger.EventLogger maas-rackd 2>&1 | \
+     tee -a $LOGFILE'
 
 [Install]
 WantedBy=multi-user.target
