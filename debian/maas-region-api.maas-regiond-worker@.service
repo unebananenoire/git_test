@@ -13,8 +13,7 @@ Group=maas
 Restart=always
 RestartSec=10s
 Environment="MAAS_REGIOND_WORKER_ID=%i"
-Environment="DJANGO_SETTINGS_MODULE=maas.settings"
-Environment="PYTHONPATH=/usr/share/maas"
+Environment="DJANGO_SETTINGS_MODULE=maasserver.djangosettings.settings"
 Environment="LOGFILE=/var/log/maas/regiond.log"
 # Logs go to the journal; read them with:
 #   journalctl -u maas-regiond-worker@*

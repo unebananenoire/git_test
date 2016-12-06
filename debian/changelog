@@ -1,6 +1,9 @@
 maas (2.2.0~alpha1+bzr5562-0ubuntu1) UNRELEASED; urgency=medium
 
   * UNRELEASED
+    - Don't install Django settings into /usr/share/maas/maas. For
+      regiond these were squatting the `maas` namespace, preventing its
+      use elsewhere (LP: 1646748)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 21 Nov 2016 20:01:31 -0500
 
