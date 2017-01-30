@@ -1,9 +1,18 @@
-maas (2.2.0~alpha1+bzr5562-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.2.0~beta1+bzr5675-0ubuntu1) zesty; urgency=medium
 
-  * UNRELEASED
+  * New upstream release. MAAS 2.2.0 Beta 1 (bzr5675):
+    - Changing the concept of Spaces to a L2 layer.
+    - Support for DHCP relays.
+    - Introduce the concept of UNMANAGED subnets.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 11 Jan 2017 13:34:46 +0200
+
+maas (2.2.0~alpha1+bzr5614-0ubuntu1) zesty; urgency=medium
+
+  * New upstream release. MAAS 2.2.0 Alpha 1 (bzr5614):
     - Don't install Django settings into /usr/share/maas/maas. For
       regiond these were squatting the `maas` namespace, preventing its
-      use elsewhere (LP: 1646748)
+      use elsewhere (LP: #1646748)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 21 Nov 2016 20:01:31 -0500
 
