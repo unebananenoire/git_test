@@ -1,8 +1,9 @@
 maas (2.2.0~beta2+bzr5717-0ubuntu1) zesty; urgency=medium
 
-  * New upstream release. MAAS 2.0.0 Beta 2 (bzr5710):
+  * New upstream release. MAAS 2.0.0 Beta 2 (bzr5717):
     - Introduce initial support for Intel RSD.
     - Introduce IPv6 IPMI auto-discovery.
+    - Introduce notifications.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 30 Jan 2017 15:55:02 -0500
 
