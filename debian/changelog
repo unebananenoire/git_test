@@ -1,3 +1,11 @@
+maas (2.2.0~beta3+bzr5733-0ubuntu1) UNRELEASED; urgency=medium
+
+  * New upstream release. MAAS 2.0.0 Beta 3:
+    - Introduce storage verification smoke tests.
+    - Introduce notifications API.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 15 Feb 2017 08:37:25 -0500
+
 maas (2.2.0~beta2+bzr5717-0ubuntu1) zesty; urgency=medium
 
   * New upstream release. MAAS 2.0.0 Beta 2 (bzr5717):
