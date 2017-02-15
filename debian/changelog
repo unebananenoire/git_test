@@ -1,7 +1,8 @@
-maas (2.2.0~beta2+bzr5680-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.2.0~beta2+bzr5717-0ubuntu1) zesty; urgency=medium
 
-  * New upstream release. MAAS 2.0.0 Beta 2 (bzr):
-    - Introduce initial support for Intel RSD
+  * New upstream release. MAAS 2.0.0 Beta 2 (bzr5710):
+    - Introduce initial support for Intel RSD.
+    - Introduce IPv6 IPMI auto-discovery.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Mon, 30 Jan 2017 15:55:02 -0500
 
