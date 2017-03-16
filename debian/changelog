@@ -1,8 +1,12 @@
-maas (2.2.0~beta3+bzr5733-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.2.0~beta3+bzr5815-0ubuntu1) zesty; urgency=medium
 
-  * New upstream release. MAAS 2.0.0 Beta 3:
+  * New upstream release. MAAS 2.0.0 Beta 3 (FFe LP: #1667141):
     - Introduce storage verification smoke tests.
     - Introduce notifications API.
+    - Add device details page.
+    - Introduce Wedge BMC discovery during commissioning.
+    - Add pod listing & details page.
+    - Add dynamic composition for virsh devices.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 15 Feb 2017 08:37:25 -0500
 
