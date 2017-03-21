@@ -1,6 +1,14 @@
+maas (2.2.0~beta4+bzr5831-0ubuntu1) UNRELEASED; urgency=medium
+
+  * New upstream release, MAAS 2.2.0 Beta 4.
+    - Add support to disable components.
+    - Improve RSD details page. Show composed machines.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 16 Mar 2017 16:10:26 +0000
+
 maas (2.2.0~beta3+bzr5815-0ubuntu1) zesty; urgency=medium
 
-  * New upstream release. MAAS 2.0.0 Beta 3 (FFe LP: #1667141):
+  * New upstream release. MAAS 2.2.0 Beta 3 (FFe LP: #1667141):
     - Introduce storage verification smoke tests.
     - Introduce notifications API.
     - Add device details page.
@@ -12,7 +20,7 @@ maas (2.2.0~beta3+bzr5815-0ubuntu1) zesty; urgency=medium
 
 maas (2.2.0~beta2+bzr5717-0ubuntu1) zesty; urgency=medium
 
-  * New upstream release. MAAS 2.0.0 Beta 2 (bzr5717):
+  * New upstream release. MAAS 2.2.0 Beta 2 (bzr5717):
     - Introduce initial support for Intel RSD.
     - Introduce IPv6 IPMI auto-discovery.
     - Introduce notifications.
