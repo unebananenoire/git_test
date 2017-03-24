@@ -7,8 +7,6 @@ debian/tmp/usr/sbin/maas-dhcp-helper
 # Install network monitoring scripts
 debian/tmp/usr/lib/maas/maas-network-monitor
 debian/tmp/usr/lib/maas/maas-dhcp-monitor
-debian/tmp/usr/lib/maas/maas-delete-file
-debian/tmp/usr/lib/maas/maas-write-file
 
 # Install all other stuff
 debian/extras/99-maas-sudoers etc/sudoers.d
