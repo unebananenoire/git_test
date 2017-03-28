@@ -1,8 +1,12 @@
-maas (2.2.0~beta4+bzr5831-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.2.0~beta4+bzr5856-0ubuntu1) zesty; urgency=medium
 
-  * New upstream release, MAAS 2.2.0 Beta 4.
+  * New upstream release, MAAS 2.2.0 Beta 4. (FFe LP: #1667141)
     - Add support to disable components.
-    - Improve RSD details page. Show composed machines.
+    - Improve RSD details page. Show composed machines and power tab.
+    - Add NTP & Internet connectivity tests.
+    - UX improvements - Change to new tab system to improve navigation.
+    - Error surfacing - For interfaces of Machines & Devices.
+    - Windows deployments - support to select the root/boot disk.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 16 Mar 2017 16:10:26 +0000
 
