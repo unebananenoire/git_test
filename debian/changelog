@@ -1,6 +1,8 @@
 maas (2.2.0~beta5+bzr5865-0ubuntu1) UNRELEASED; urgency=medium
 
-  * UNRELEASED
+  * New upstream release, MAAS 2.2.0 Beta 5.
+  * debian/maas-common.logrotate: Rotate maas.log weekly, instead of daily.
+    Store logs for 8 weeks. (LP: #1677005)
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Tue, 28 Mar 2017 11:08:38 -0400
 
