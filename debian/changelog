@@ -1,6 +1,18 @@
-maas (2.2.0~beta5+bzr5865-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.2.0~rc2+bzr5922-0ubuntu1) UNRELEASED; urgency=medium
 
-  * New upstream release, MAAS 2.2.0 Beta 5.
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 05 Apr 2017 14:41:09 -0400
+
+maas (2.2.0~rc1+bzr5922-0ubuntu2) zesty; urgency=medium
+
+  * Bump depends version on python3-curtin. (LP: #1680175)
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 05 Apr 2017 13:51:58 -0400
+
+maas (2.2.0~rc1+bzr5922-0ubuntu1) zesty; urgency=medium
+
+  * New upstream release, MAAS 2.2.0 RC 1. (FFe LP: #1667141)
   * debian/maas-common.logrotate: Rotate maas.log weekly, instead of daily.
     Store logs for 8 weeks. (LP: #1677005)
 
