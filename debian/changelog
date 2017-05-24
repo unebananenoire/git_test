@@ -1,6 +1,12 @@
-maas (2.2.0~rc4+bzr6025-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.2.0+bzr6054-0ubuntu1) artful; urgency=medium
 
-  * UNRELEASED
+  * New upstream release, MAAS 2.2.0.
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 18 May 2017 11:08:43 -0400
+
+maas (2.2.0~rc4+bzr6048-0ubuntu1) zesty; urgency=medium
+
+  * New upstream release, MAAS 2.2.0 RC 4.
 
  -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 27 Apr 2017 16:10:06 -0400
 
