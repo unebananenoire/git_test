@@ -1,3 +1,9 @@
+maas (2.2.1+bzr6054-0ubuntu1) UNRELEASED; urgency=medium
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 24 May 2017 19:16:27 -0400
+
 maas (2.2.0+bzr6054-0ubuntu1) artful; urgency=medium
 
   * New upstream release, MAAS 2.2.0.
