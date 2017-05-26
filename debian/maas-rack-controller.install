@@ -8,6 +8,9 @@ debian/tmp/usr/sbin/maas-dhcp-helper
 debian/tmp/usr/lib/maas/maas-network-monitor
 debian/tmp/usr/lib/maas/maas-dhcp-monitor
 
+# Install test scripts
+debian/tmp/usr/lib/maas/maas-test-enlistment
+
 # Install all other stuff
 debian/extras/99-maas-sudoers etc/sudoers.d
 debian/extras/maas-rack usr/sbin
