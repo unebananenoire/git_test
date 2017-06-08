@@ -47,7 +47,7 @@ override_dh_auto_install:
 
 	# Move static files
 	install -d -m 755  $(CURDIR)/debian/tmp/usr/share/maas/web/static
-	mv $(CURDIR)/debian/tmp/usr/lib/python*/*-packages/maasserver/static \
+	mv $(CURDIR)/debian/tmp/usr/lib/$(PYTHON3)/*-packages/maasserver/static \
                 $(CURDIR)/debian/tmp/usr/share/maas/web/
 
 	# Remove scss directory from static files
