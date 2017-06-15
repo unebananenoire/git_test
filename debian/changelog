@@ -1,4 +1,10 @@
-maas (2.2.1+bzr6054-0ubuntu1) UNRELEASED; urgency=medium
+maas (2.3.0~alpha1+bzr6085-0ubuntu1) UNRELEASED; urgency=medium
+
+  * UNRELEASED
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Thu, 15 Jun 2017 09:03:52 +0100
+
+maas (2.2.1+bzr6054-0ubuntu1) artful; urgency=medium
 
   * debian/rules: Fix FTBFS in artful
 
