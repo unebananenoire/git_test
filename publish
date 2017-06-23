@@ -1,0 +1,31 @@
+#!/bin/sh -e
+
+PKG=$(head -n1 debian/changelog | awk '{print $1}')
+VER=$(head -n 1 debian/changelog | sed 's/^.*(//' | sed 's/).*//' | sed 's/-.*//')
+
+case "$1" in
+    experimental3)
+        dput -f ppa:maas-maintainers/experimental3 maas*source.changes
+    ;;
+    next)
+        dput -f ppa:maas/next maas*source.changes
+    ;;
+    next-proposed)
+        dput -f ppa:maas/next-proposed maas*source.changes
+    ;;
+    experimental)
+        echo "experimental"
+        dput -f ppa:maas-maintainers/experimental maas*trusty*source.changes
+        dput -f ppa:maas-maintainers/experimental maas*vivid*source.changes
+        dput -f ppa:maas-maintainers/experimental maas*wily*source.changes
+    ;;
+    proposed)
+        dput -f ppa:maas/proposed maas*source.changes
+    ;;
+    stable)
+        dput -f ppa:maas/stable maas*source.changes
+    ;;
+    *)
+        dput -f $1 maas*source.changes
+    ;;
+esac

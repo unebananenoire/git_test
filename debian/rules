@@ -73,12 +73,3 @@ override_dh_auto_clean:
 	dh_auto_clean
 	rm -rf $(BUILDHOME)
 	rm -rf src/*.egg-info
-
-DEB_DEBIAN_DIR=$(dir $(firstword $(MAKEFILE_LIST)))
-REV=$(shell dpkg-parsechangelog -l$(DEB_DEBIAN_DIR)/changelog \
-              | sed -rne 's,^Version: .*[+~]bzr([0-9]+).*,\1,p')
-VER=$(shell dpkg-parsechangelog -l$(DEB_DEBIAN_DIR)/changelog \
-              | sed -rne 's,^Version: ([^-]+).*,\1,p')
-get-orig-source:
-	bzr export -r $(REV) --root=maas-$(VER).orig \
-             maas_$(VER).orig.tar.gz lp:maas
