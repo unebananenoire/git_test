@@ -6,6 +6,7 @@ debian/tmp/usr/sbin/maas-dhcp-helper
 
 # Install network monitoring scripts
 debian/tmp/usr/lib/maas/maas-network-monitor
+debian/tmp/usr/lib/maas/maas-beacon-monitor
 debian/tmp/usr/lib/maas/maas-dhcp-monitor
 
 # Install test scripts

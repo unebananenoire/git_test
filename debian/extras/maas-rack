@@ -67,6 +67,8 @@ def main():
             users.append("dhcpd")
         if sys.argv[1] == "observe-arp":
             users.append("maas")
+        if sys.argv[1] == "observe-beacons":
+            users.append("maas")
         if sys.argv[1] == "observe-mdns":
             # Any user can call this. (It might be necessary for a normal
             # user to call this for support/debugging purposes.)
