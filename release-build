@@ -29,12 +29,12 @@ MAJOR_VER=$(head -n 1 debian/changelog | sed 's/^.*(//' | sed 's/).*//' | sed 's
 #REV=$(head -n 1 debian/changelog | sed -rne 's,.*[+~.]git([0-9a-zA-Z]+).*,\1,p')
 REV_COUNT=$(git -C $1 rev-list --count $COMMIT)
 REV_SHORT=$(git -C $1 rev-parse --short $COMMIT)
-FULL_VER="$MAJOR_VER+git$REV_COUNT.$REV_SHORT"
+FULL_VER="$MAJOR_VER-$REV_COUNT-g$REV_SHORT"
 TARBALL="maas_$FULL_VER.orig.tar.gz"
 
 get_orig_source() {
         branch="$1"
-        git -C $branch archive --format=tar.gz --prefix="maas-$FULL_VER.orig/" $COMMIT -o $TARBALL $REV
+        git -C $branch archive --format=tar.gz --prefix="maas-$FULL_VER.orig/" $COMMIT -o $TARBALL
 	
 }
 # Obtain the tarball from a local branch

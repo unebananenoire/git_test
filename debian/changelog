@@ -6,7 +6,7 @@ maas (2.3.0~alpha1-0ubuntu1) UNRELEASED; urgency=medium
   * Add maas-beacon-monitor script to sudoers file.
     (Allows observation of UDP traffic sent to port 5240.)
 
- -- Mike Pontillo <mike.pontillo@canonical.com>  Wed, 21 Jun 2017 08:36:26 -0700
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Wed, 28 Jun 2017 14:53:05 -0400
 
 maas (2.2.0+bzr6054-0ubuntu2) artful; urgency=medium
 
