@@ -7,6 +7,7 @@
 //@import 'pages.scratch';
 //@import 'action-card';
 @import '_patterns_icons.scss';
+@import '_patterns_navigation.scss';
 
 // Config overrides
 $use-local-fonts: true;
@@ -15,5 +16,6 @@ $use-local-fonts: true;
 @include vanilla;
 @include maas;
 @include maas-icons;
+@include maas-navigation;
 
 //@include maas-pages;
