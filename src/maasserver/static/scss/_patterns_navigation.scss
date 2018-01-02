@@ -1,0 +1,42 @@
+//Local overrides to the navigation pattern
+@mixin maas-navigation {
+  .p-dropdown.active {
+    .p-navigation__toggle--open {
+      display: none;
+    }
+
+    .p-navigation__toggle--close {
+      @media (max-width: $breakpoint-navigation-threshold) {
+        display: inline-block;
+      }
+    }
+
+    .p-navigation__nav {
+      display: block;
+    }
+  }
+
+
+  .p-navigation {
+    &__banner {
+      @media (max-width: $breakpoint-navigation-threshold) {
+        overflow: hidden;
+        position: relative;
+      }
+    }
+
+    &__links {
+      &--right {
+        @extend .p-navigation__links;
+
+        @media (min-width: $breakpoint-navigation-threshold) {
+          float: right !important;
+        }
+      }
+
+      .p-navigation__link:first-child {
+        border-top: 0;
+      }
+    }
+  }
+}
