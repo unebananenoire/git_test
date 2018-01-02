@@ -15,6 +15,7 @@ libjs-jquery-hotkeys
 libjs-yui3-full
 libnss-wrapper
 make
+npm
 psmisc
 python3-django-nose
 python3-dnspython

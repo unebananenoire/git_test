@@ -1,0 +1,7 @@
+@mixin maas {
+  // sticky-header
+  .p-sticky-header {
+    background-color: $color-x-light;
+    border-bottom: 1px solid $color-mid-light;
+  }
+}
