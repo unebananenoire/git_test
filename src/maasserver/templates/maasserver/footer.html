@@ -1,16 +1,20 @@
-<footer class="p-footer p-strip">
+<footer class="p-strip--light is-shallow p-footer">
     <div class="row">
         <div class="col-8 p-footer__nav">
             {% block footer-copyright %}
-            <p>
-              <small>MAAS name: <strong>{% include "maasserver/site_title.html" %}</strong></small>
-            </p>
-            <p><small>MAAS version: <strong>{{version}}</strong></small></p>
+            <ul class="p-list">
+                <li>
+                    <small>MAAS name: <strong>{% include "maasserver/site_title.html" %}</strong></small>
+                </li>
+                <li>
+                    <small>MAAS version: <strong>{{version}}</strong></small>
+                </li>
+            </ul>
             <ul class="p-footer__links">
                 <li class="p-footer__item"><a href="http://docs.ubuntu.com/maas/{{doc_version}}/en/release-notes" class="p-footer__link">View release notes</a></li>
                 <li class="p-footer__item"><a href="https://docs.ubuntu.com/maas/{{doc_version}}/" class="p-footer__link">View documentation</a></li>
             </ul>
-            <p>&copy; {% now "Y" %} Canonical Ltd. Ubuntu and Canonical are registered trademarks of Canonical Ltd.</p>
+            <p class="u-remove-max-width">&copy; {% now "Y" %} Canonical Ltd. Ubuntu and Canonical are registered trademarks of Canonical Ltd.</p>
             {% endblock %}
         </div>
         <div class="col-4">
