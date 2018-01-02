@@ -1,7 +1,24 @@
 @mixin maas {
-  // sticky-header
+  // sticky-header - temporary fix
+  // Issue: https://github.com/ubuntudesign/MAAS-design-squad/issues/98
   .p-sticky-header {
     background-color: $color-x-light;
     border-bottom: 1px solid $color-mid-light;
+  }
+
+  // XXX Footer link fix
+  // Issue: https://github.com/vanilla-framework/vanilla-framework/issues/1500
+  .p-footer__link {
+    color: $color-link;
+
+    &::after {
+      color: $color-dark;
+    }
+  }
+
+  // XXX Utility to remove max-width
+  // Issue: https://github.com/vanilla-framework/vanilla-framework/issues/1502
+  .u-remove-max-width {
+    max-width: none;
   }
 }
