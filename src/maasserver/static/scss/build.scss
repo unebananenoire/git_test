@@ -1,13 +1,19 @@
+// import maas-specific Vanilla configuration
+@import '_settings.scss';
+
 // import required files
-@import 'base.cloud-vanilla';
-@import 'base.maas-gui-vanilla-theme';
-@import 'pages.scratch';
-@import 'utilities.equal-height';
-@import 'action-card';
+@import '../../../../include/nodejs/node_modules/vanilla-framework/scss/build.scss';
+@import '_maas.scss';
+//@import 'pages.scratch';
+//@import 'action-card';
+@import '_patterns_icons.scss';
 
 // Config overrides
 $use-local-fonts: true;
 
-// Build the MAAS theme
-@include maas-gui-vanilla-theme;
-@include maas-pages;
+// Include vanilla and local components
+@include vanilla;
+@include maas;
+@include maas-icons;
+
+//@include maas-pages;
