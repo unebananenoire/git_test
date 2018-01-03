@@ -1,21 +1,16 @@
-// import maas-specific Vanilla configuration
-@import '_settings.scss';
+// Import MAAS-specific Vanilla configuration
+@import 'settings';
 
-// import required files
-@import '../../../../include/nodejs/node_modules/vanilla-framework/scss/build.scss';
-@import '_maas.scss';
-//@import 'pages.scratch';
-//@import 'action-card';
-@import '_patterns_icons.scss';
-@import '_patterns_navigation.scss';
-
-// Config overrides
-$use-local-fonts: true;
-
-// Include vanilla and local components
+// Import Vanilla framework
+@import '../../../../include/nodejs/node_modules/vanilla-framework/scss/vanilla';
 @include vanilla;
+
+// Import local patterns
+@import 'maas';
+@import 'patterns_icons';
+@import 'patterns_navigation';
+
+// Include local patterns
 @include maas;
 @include maas-icons;
 @include maas-navigation;
-
-//@include maas-pages;
