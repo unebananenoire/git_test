@@ -14,8 +14,6 @@
   <script type="text/javascript" src="{% url "merge" filename="maas-settings-yui.js" %}?v={{files_version}}"></script>
 {% endblock %}
 
-{% block page-header-classes %}u-margin--bottom-none{% endblock %}
-
 {% block page-navigation %}
 <div class="page-navigation">
     <div class="wrapper--inner">
@@ -166,7 +164,7 @@
     <div class="eight-col u-border--bottom">
         <div id="proxy" class="eight-col">
             <h2>Proxy</h2>
-            <span class="u-text--loading" data-ng-if="loading"><i class="icon icon--loading u-animation--spin"></i> Loading...</span>
+            <span class="u-text--loading" data-ng-if="loading"><i class="p-icon--spinner u-animation--spin"></i> Loading...</span>
 
             <form action="{% url 'settings' %}" method="post">
                 {% csrf_token %}

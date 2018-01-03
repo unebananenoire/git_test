@@ -1,111 +1,114 @@
-<header class="page-header" sticky media-query="min-width: 769px">
-    <div class="wrapper--inner">
-        <h1 class="page-header__title">Subnets</h1>
-        <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
-        <p class="page-header__status" data-ng-show="loading"><span class="u-text--loading"><i class="icon icon--loading u-animation--spin"></i> Loading...</span></p>
-
-        <!-- Drop-down box -->
-        <div class="page-header__controls u-float--right" data-ng-show="actionOptions.length">
-            <div data-maas-cta="actionOptions"
-                 data-default-title="Add"
-                 data-ng-model="actionOption"
-                 data-ng-change="actionChanged()">
-            </div>
+<header class="p-strip--light is-shallow is-bordered page-header" sticky media-query="min-width: 769px">
+    <div class="row">
+        <div class="col-8">
+            <h1 class="page-header__title">Subnets</h1>
+            <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
+            <p class="page-header__status" data-ng-show="loading"><span class="u-text--loading"><i class="p-icon--spinner u-animation--spin"></i> Loading...</span></p>
         </div>
-        <div class="page-header__dropdown" data-ng-class="{ 'is-open': actionOption.name}">
-            <section class="page-header__section twelve-col u-margin--bottom-none ng-hide" data-ng-show="actionOption.name === 'add_fabric'">
-                <maas-obj-form obj="newObject" manager="fabricManager" manager-method="createItem"
-                    inline="true" save-on-blur="false" after-save="cancelAction">
-                    <fieldset class="form__fieldset">
-                        <maas-obj-field
-                            type="text" key="name" label="Add fabric" subtle="false"
-                            placeholder="Name (optional)"></maas-obj-field>
-                        <maas-obj-errors></maas-obj-errors>
-                    </fieldset>
-                    <div class="page-header__controls">
-                        <button class="button--base button--inline" data-ng-click="cancelAction()">Cancel</button>
-                        <button class="button--positive button--inline" maas-obj-save>Add fabric</button>
-                    </div>
-                </maas-obj-form>
-            </section>
-            <section class="page-header__section twelve-col u-margin--bottom-none ng-hide" data-ng-show="actionOption.name === 'add_vlan'">
-                <maas-obj-form obj="newObject" manager="vlanManager" manager-method="createItem"
-                    inline="true" save-on-blur="false" after-save="cancelAction">
-                    <fieldset class="form__fieldset">
-                        <maas-obj-field
-                            type="text" key="name" label="Add VLAN" subtle="false"
-                            placeholder="Name (optional)"></maas-obj-field>
-                        <maas-obj-field
-                            type="text" key="vid" label="with VID" subtle="false"
-                            placeholder="numeric value 1-4094"></maas-obj-field>
-                        <maas-obj-field
-                            type="options" key="fabric" label="to fabric" subtle="false"
-                            options="f.id as f.name for f in fabrics"
-                            placeholder="Select fabric"></maas-obj-field>
-                        <maas-obj-field
-                                subtle="false" type="options" key="space" label="in space"
-                                placeholder="(undefined)" placeholder-enabled="true"
-                                options="space.id as space.name for space in spaces"></maas-obj-field>
-                        <maas-obj-errors></maas-obj-errors>
-                    </fieldset>
-                    <div class="page-header__controls">
-                        <button class="button--base button--inline" data-ng-click="cancelAction()">Cancel</button>
-                        <button class="button--positive button--inline" maas-obj-save>Add VLAN</button>
-                    </div>
-                </maas-obj-form>
-            </section>
-            <section class="page-header__section twelve-col u-margin--bottom-none ng-hide" data-ng-show="actionOption.name === 'add_space'">
-                <maas-obj-form obj="newObject" manager="spaceManager" manager-method="createItem"
-                    inline="true" save-on-blur="false" after-save="cancelAction">
-                    <fieldset class="form__fieldset">
-                        <maas-obj-field
-                            type="text" key="name" label="Add space" subtle="false"
-                            placeholder="Name (optional)"></maas-obj-field>
-                        <maas-obj-errors></maas-obj-errors>
-                    </fieldset>
-                    <div class="page-header__controls">
-                        <button class="button--base button--inline" data-ng-click="cancelAction()">Cancel</button>
-                        <button class="button--positive button--inline" maas-obj-save>Add space</button>
-                    </div>
-                </maas-obj-form>
-            </section>
-            <maas-obj-form obj="newObject" manager="subnetManager" manager-method="createItem"
-                table-form="true" save-on-blur="false" pre-process="actionSubnetPreSave" after-save="cancelAction" class="ng-hide" data-ng-show="actionOption.name == 'add_subnet'">
-                <section class="page-header__section twelve-col u-margin--bottom-none">
-                    <h3 class="page-header__dropdown-title">Add subnet</h3>
-                    <fieldset class="form__fieldset six-col">
-                        <maas-obj-field
-                            subtle="false" type="text" key="name" label="Name" placeholder="Name (optional)"
-                            label-width="two" input-width="three"></maas-obj-field>
-                        <maas-obj-field
-                            subtle="false" type="text" key="cidr" label="CIDR"
-                            placeholder="Use IPv4 or IPv6 format"
-                            label-width="two" input-width="three"></maas-obj-field>
-                        <maas-obj-field
-                            subtle="false" type="text" key="gateway_ip" label="Gateway IP"
-                            placeholder="Use IPv4 or IPv6 format (optional)"
-                            label-width="two" input-width="three"></maas-obj-field>
-                    </fieldset>
-                    <fieldset class="form__fieldset six-col last-col">
-                        <maas-obj-field
-                            subtle="false" type="text" key="dns_servers" label="DNS servers"
-                            placeholder="Use IPv4 or IPv6 format (optional)"
-                            label-width="two" input-width="three"></maas-obj-field>
+        <div class="col-4">
+            <!-- Drop-down box -->
+            <div class="page-header__controls u-float--right" data-ng-show="actionOptions.length">
+                <div data-maas-cta="actionOptions"
+                    data-default-title="Add"
+                    data-ng-model="actionOption"
+                    data-ng-change="actionChanged()">
+                </div>
+            </div>
+            <div class="page-header__dropdown" data-ng-class="{ 'is-open': actionOption.name}">
+                <section class="page-header__section twelve-col u-margin--bottom-none ng-hide" data-ng-show="actionOption.name === 'add_fabric'">
+                    <maas-obj-form obj="newObject" manager="fabricManager" manager-method="createItem"
+                        inline="true" save-on-blur="false" after-save="cancelAction">
+                        <fieldset class="form__fieldset">
+                            <maas-obj-field
+                                type="text" key="name" label="Add fabric" subtle="false"
+                                placeholder="Name (optional)"></maas-obj-field>
+                            <maas-obj-errors></maas-obj-errors>
+                        </fieldset>
+                        <div class="page-header__controls">
+                            <button class="button--base button--inline" data-ng-click="cancelAction()">Cancel</button>
+                            <button class="button--positive button--inline" maas-obj-save>Add fabric</button>
+                        </div>
+                    </maas-obj-form>
+                </section>
+                <section class="page-header__section twelve-col u-margin--bottom-none ng-hide" data-ng-show="actionOption.name === 'add_vlan'">
+                    <maas-obj-form obj="newObject" manager="vlanManager" manager-method="createItem"
+                        inline="true" save-on-blur="false" after-save="cancelAction">
+                        <fieldset class="form__fieldset">
+                            <maas-obj-field
+                                type="text" key="name" label="Add VLAN" subtle="false"
+                                placeholder="Name (optional)"></maas-obj-field>
+                            <maas-obj-field
+                                type="text" key="vid" label="with VID" subtle="false"
+                                placeholder="numeric value 1-4094"></maas-obj-field>
+                            <maas-obj-field
+                                type="options" key="fabric" label="to fabric" subtle="false"
+                                options="f.id as f.name for f in fabrics"
+                                placeholder="Select fabric"></maas-obj-field>
+                            <maas-obj-field
+                                    subtle="false" type="options" key="space" label="in space"
+                                    placeholder="(undefined)" placeholder-enabled="true"
+                                    options="space.id as space.name for space in spaces"></maas-obj-field>
+                            <maas-obj-errors></maas-obj-errors>
+                        </fieldset>
+                        <div class="page-header__controls">
+                            <button class="button--base button--inline" data-ng-click="cancelAction()">Cancel</button>
+                            <button class="button--positive button--inline" maas-obj-save>Add VLAN</button>
+                        </div>
+                    </maas-obj-form>
+                </section>
+                <section class="page-header__section twelve-col u-margin--bottom-none ng-hide" data-ng-show="actionOption.name === 'add_space'">
+                    <maas-obj-form obj="newObject" manager="spaceManager" manager-method="createItem"
+                        inline="true" save-on-blur="false" after-save="cancelAction">
+                        <fieldset class="form__fieldset">
+                            <maas-obj-field
+                                type="text" key="name" label="Add space" subtle="false"
+                                placeholder="Name (optional)"></maas-obj-field>
+                            <maas-obj-errors></maas-obj-errors>
+                        </fieldset>
+                        <div class="page-header__controls">
+                            <button class="button--base button--inline" data-ng-click="cancelAction()">Cancel</button>
+                            <button class="button--positive button--inline" maas-obj-save>Add space</button>
+                        </div>
+                    </maas-obj-form>
+                </section>
+                <maas-obj-form obj="newObject" manager="subnetManager" manager-method="createItem"
+                    table-form="true" save-on-blur="false" pre-process="actionSubnetPreSave" after-save="cancelAction" class="ng-hide" data-ng-show="actionOption.name == 'add_subnet'">
+                    <section class="page-header__section twelve-col u-margin--bottom-none">
+                        <h3 class="page-header__dropdown-title">Add subnet</h3>
+                        <fieldset class="form__fieldset six-col">
+                            <maas-obj-field
+                                subtle="false" type="text" key="name" label="Name" placeholder="Name (optional)"
+                                label-width="two" input-width="three"></maas-obj-field>
+                            <maas-obj-field
+                                subtle="false" type="text" key="cidr" label="CIDR"
+                                placeholder="Use IPv4 or IPv6 format"
+                                label-width="two" input-width="three"></maas-obj-field>
+                            <maas-obj-field
+                                subtle="false" type="text" key="gateway_ip" label="Gateway IP"
+                                placeholder="Use IPv4 or IPv6 format (optional)"
+                                label-width="two" input-width="three"></maas-obj-field>
+                        </fieldset>
+                        <fieldset class="form__fieldset six-col last-col">
+                            <maas-obj-field
+                                subtle="false" type="text" key="dns_servers" label="DNS servers"
+                                placeholder="Use IPv4 or IPv6 format (optional)"
+                                label-width="two" input-width="three"></maas-obj-field>
 
-                        <maas-obj-field
-                            subtle="false" type="options" key="vlan" label="Fabric &amp; VLAN" placeholder="Choose Fabric &amp; VLAN"
-                            options="v.id as getVLANName(v) group by getFabricNameById(v.fabric) for v in vlans"
-                            label-width="two" input-width="three"></maas-obj-field>
-                    </fieldset>
-                </section>
-                <section class="page-header__section twelve-col u-margin--bottom-none">
-                    <maas-obj-errors class="page-header__message page-header__message--error"></maas-obj-errors>
-                    <div class="page-header__controls">
-                        <button class="button--base button--inline" data-ng-click="cancelAction()">Cancel</button>
-                        <button class="button--positive button--inline" maas-obj-save>Add subnet</button>
-                    </div>
-                </section>
-            </maas-obj-form>
+                            <maas-obj-field
+                                subtle="false" type="options" key="vlan" label="Fabric &amp; VLAN" placeholder="Choose Fabric &amp; VLAN"
+                                options="v.id as getVLANName(v) group by getFabricNameById(v.fabric) for v in vlans"
+                                label-width="two" input-width="three"></maas-obj-field>
+                        </fieldset>
+                    </section>
+                    <section class="page-header__section twelve-col u-margin--bottom-none">
+                        <maas-obj-errors class="page-header__message page-header__message--error"></maas-obj-errors>
+                        <div class="page-header__controls">
+                            <button class="button--base button--inline" data-ng-click="cancelAction()">Cancel</button>
+                            <button class="button--positive button--inline" maas-obj-save>Add subnet</button>
+                        </div>
+                    </section>
+                </maas-obj-form>
+            </div>
         </div>
     </div>
 </header>

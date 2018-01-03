@@ -79,11 +79,11 @@
             {% endif %}
         </nav>
     </header>
-    <main id="main-content" class="wrapper">
+    <main id="main-content" class="u-no-margin--top">
         {% block page-title-block %}
-        <header class="p-sticky-header p-strip {% block page-header-classes %}{% endblock %}" sticky media-query="min-width: 769px">
+        <header class="p-strip--light is-shallow is-bordered p-sticky-header page-header {% block page-header-classes %}{% endblock %}" sticky media-query="min-width: 769px">
             <div class="row">
-                <h1 class="p-heading--two">{% block page-title %}{% endblock %}</h1>
+                <h1 class="page-header__title">{% block page-title %}{% endblock %}</h1>
                 <p class="page-header__status">{% block page-status %}{% endblock %}</p>
             </div>
         </header>

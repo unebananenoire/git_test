@@ -1,4 +1,3 @@
-
 // Import MAAS-specific Vanilla configuration
 @import 'settings';
 
@@ -10,8 +9,10 @@
 @import 'maas';
 @import 'patterns_icons';
 @import 'patterns_navigation';
+@import 'patterns_page-header';
 
 // Include local patterns
 @include maas;
 @include maas-icons;
 @include maas-navigation;
+@include maas-page-header;
