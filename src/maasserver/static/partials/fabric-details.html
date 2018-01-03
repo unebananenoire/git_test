@@ -1,44 +1,48 @@
 <div data-ng-hide="loaded">
-    <header class="page-header" sticky media-query="min-width: 769px">
-        <div class="wrapper--inner">
+    <header class="p-strip--light is-shallow is-bordered page-header" sticky media-query="min-width: 769px">
+        <div class="row">
             <h1 class="page-header__title">Loading...</h1>
         </div>
     </header>
 </div>
 <div class="ng-hide" data-ng-show="loaded">
-    <header class="page-header" sticky media-query="min-width: 769px">
-        <div class="wrapper--inner">
-            <h1 class="page-header__title">{$ fabric.name $}</h1>
-            <div class="page-header__controls ng-hide" data-ng-show="isSuperUser() && !isDefaultFabric() && !loading">
-                <button class="button--destructive button--inline"
-                    data-ng-click="deleteButton()"
-                    data-ng-hide="confirmingDelete">Delete fabric</button>
+    <header class="p-strip--light is-shallow is-bordered page-header" sticky media-query="min-width: 769px">
+        <div class="row">
+            <div class="col-8">
+                <h1 class="page-header__title">{$ fabric.name $}</h1>
             </div>
-            <div class="page-header__dropdown" data-ng-class="{ 'is-open': confirmingDelete }">
-                <section class="page-header__section ng-hide" data-ng-hide="canBeDeleted()">
-                    <p class="page-header__message page-header__message--error">
-                        Fabric cannot be deleted because it is the default fabric.
-                    </p>
-                    <div class="page-header__controls">
-                        <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
-                    </div>
-                </section>
-                <section class="page-header__section ng-hide" data-ng-show="canBeDeleted() && !error">
-                    <p class="page-header__message page-header__message--error">
-                        Are you sure you want to delete this fabric?
-                    </p>
-                    <div class="page-header__controls">
-                        <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
-                        <button class="button--destructive button--inline" data-ng-click="deleteConfirmButton()">Delete fabric</button>
-                    </div>
-                </section>
-                <section class="page-header__section ng-hide" data-ng-show="canBeDeleted() && error">
-                    <p class="page-header__message page-header__message--error">{$ error $}</p>
-                    <div class="page-header__controls">
-                        <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
-                        <button class="button--secondary button--inline" data-ng-click="deleteConfirmButton()">Retry</button>
-                    </div>
-                </section>
+            <div class="col-4">
+                <div class="page-header__controls ng-hide" data-ng-show="isSuperUser() && !isDefaultFabric() && !loading">
+                    <button class="button--destructive button--inline"
+                        data-ng-click="deleteButton()"
+                        data-ng-hide="confirmingDelete">Delete fabric</button>
+                </div>
+                <div class="page-header__dropdown" data-ng-class="{ 'is-open': confirmingDelete }">
+                    <section class="page-header__section ng-hide" data-ng-hide="canBeDeleted()">
+                        <p class="page-header__message page-header__message--error">
+                            Fabric cannot be deleted because it is the default fabric.
+                        </p>
+                        <div class="page-header__controls">
+                            <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
+                        </div>
+                    </section>
+                    <section class="page-header__section ng-hide" data-ng-show="canBeDeleted() && !error">
+                        <p class="page-header__message page-header__message--error">
+                            Are you sure you want to delete this fabric?
+                        </p>
+                        <div class="page-header__controls">
+                            <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
+                            <button class="button--destructive button--inline" data-ng-click="deleteConfirmButton()">Delete fabric</button>
+                        </div>
+                    </section>
+                    <section class="page-header__section ng-hide" data-ng-show="canBeDeleted() && error">
+                        <p class="page-header__message page-header__message--error">{$ error $}</p>
+                        <div class="page-header__controls">
+                            <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
+                            <button class="button--secondary button--inline" data-ng-click="deleteConfirmButton()">Retry</button>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
     </header>

@@ -1,6 +1,6 @@
 <div class="wrapper--inner" data-ng-controller="NodeResultsController">
     <div class="twelve-col" data-ng-if="!resultsLoaded">
-        <p class="u-text--loading"><i class="icon icon--loading u-animation--spin"></i>&nbsp;&nbsp;Loading...</p>
+        <p class="u-text--loading"><i class="p-icon--spinner u-animation--spin"></i>&nbsp;&nbsp;Loading...</p>
     </div>
     <div data-ng-repeat="hardware_type in results">
         <div data-ng-if="resultsLoaded && (hardware_type.results | json) != '{}'">

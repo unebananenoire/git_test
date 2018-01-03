@@ -1,43 +1,47 @@
-<header class="page-header" sticky media-query="min-width: 769px">
-    <div class="wrapper--inner">
-        <h1 class="page-header__title">
-            {$ domain.displayname $}:
-            <ng-pluralize data-ng-hide="loading" count="domain.hosts"
-                          when="{'one': '{$ domain.hosts $} host,', 'other': '{$ domain.hosts $} hosts,'}"></ng-pluralize>
-            <ng-pluralize data-ng-hide="loading" count="domain.resource_count"
-                          when="{'one': ' {$ domain.resource_count $} record total', 'other': ' {$ domain.resource_count $} records total'}"></ng-pluralize>
-        </h1>
-        <p class="page-header__status" data-ng-show="loading"><span class="u-text--loading"><i class="icon icon--loading u-animation--spin"></i> Loading...</span></p>
-        <div class="page-header__controls ng-hide" data-ng-show="isSuperUser() && !isDefaultDomain() && !loading">
-            <button class="button--destructive button--inline"
-                data-ng-click="deleteButton()"
-                data-ng-hide="confirmingDelete">Delete domain</button>
+<header class="p-strip--light is-shallow is-bordered page-header" sticky media-query="min-width: 769px">
+    <div class="row">
+        <div class="col-8">
+            <h1 class="page-header__title">
+                {$ domain.displayname $}:
+                <ng-pluralize data-ng-hide="loading" count="domain.hosts"
+                            when="{'one': '{$ domain.hosts $} host,', 'other': '{$ domain.hosts $} hosts,'}"></ng-pluralize>
+                <ng-pluralize data-ng-hide="loading" count="domain.resource_count"
+                            when="{'one': ' {$ domain.resource_count $} record total', 'other': ' {$ domain.resource_count $} records total'}"></ng-pluralize>
+            </h1>
+            <p class="page-header__status" data-ng-show="loading"><span class="u-text--loading"><i class="p-icon--spinner u-animation--spin"></i> Loading...</span></p>
         </div>
-        <div class="page-header__dropdown" data-ng-class="{ 'is-open': confirmingDelete }">
-            <div class="page-header__section ng-hide" data-ng-hide="canBeDeleted()">
-                <p class="page-header__message page-header__message--error">
-                    Domain cannot be deleted because it has resource records.  Remove all resource records from the domain to allow deletion.
-                </p>
-                <div class="page-header__controls">
-                    <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
-                </div>
+        <div class="col-4">
+            <div class="page-header__controls ng-hide" data-ng-show="isSuperUser() && !isDefaultDomain() && !loading">
+                <button class="button--destructive button--inline"
+                    data-ng-click="deleteButton()"
+                    data-ng-hide="confirmingDelete">Delete domain</button>
             </div>
-              <div class="page-header__section ng-hide" data-ng-show="canBeDeleted() && !error">
-                <p class="page-header__message page-header__message--error">
-                    Are you sure you want to delete this domain?
-                </p>
-                <div class="page-header__controls">
-                    <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
-                    <button class="button--destructive button--inline" data-ng-click="deleteConfirmButton()">Delete domain</button>
+            <div class="page-header__dropdown" data-ng-class="{ 'is-open': confirmingDelete }">
+                <div class="page-header__section ng-hide" data-ng-hide="canBeDeleted()">
+                    <p class="page-header__message page-header__message--error">
+                        Domain cannot be deleted because it has resource records.  Remove all resource records from the domain to allow deletion.
+                    </p>
+                    <div class="page-header__controls">
+                        <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
+                    </div>
                 </div>
-            </div>
-              <div class="page-header__section ng-hide" data-ng-show="canBeDeleted() && error">
-                <p class="page-header__message page-header__message--error">
-                    {$ error $}
-                </p>
-                <div class="page-header__controls">
-                    <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
-                    <button class="button--secondary button--inline" data-ng-click="deleteConfirmButton()">Retry</button>
+                <div class="page-header__section ng-hide" data-ng-show="canBeDeleted() && !error">
+                    <p class="page-header__message page-header__message--error">
+                        Are you sure you want to delete this domain?
+                    </p>
+                    <div class="page-header__controls">
+                        <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
+                        <button class="button--destructive button--inline" data-ng-click="deleteConfirmButton()">Delete domain</button>
+                    </div>
+                </div>
+                <div class="page-header__section ng-hide" data-ng-show="canBeDeleted() && error">
+                    <p class="page-header__message page-header__message--error">
+                        {$ error $}
+                    </p>
+                    <div class="page-header__controls">
+                        <button class="button--base button--inline" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
+                        <button class="button--secondary button--inline" data-ng-click="deleteConfirmButton()">Retry</button>
+                    </div>
                 </div>
             </div>
         </div>

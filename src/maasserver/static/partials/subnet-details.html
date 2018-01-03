@@ -1,59 +1,69 @@
 <div data-ng-hide="loaded">
-    <header class="page-header" sticky media-query="min-width: 769px">
-        <div class="wrapper--inner">
+    <header class="p-strip--light is-shallow is-bordered page-header" sticky media-query="min-width: 769px">
+        <div class="row">
             <h1 class="page-header__title">Loading...</h1>
         </div>
     </header>
 </div>
 <div class="ng-hide" data-ng-show="loaded" window-width>
-    <header class="page-header" sticky media-query="min-width: 769px">
-        <div class="wrapper--inner">
-          <h1 class="page-header__title">{$ subnet.cidr $}</h1>
-            <!-- "Take action" dropdown -->
-            <div class="page-header__controls u-float--right ng-hide" data-ng-show="isSuperUser() && !isDefaultSubnet() && !loading && actionOptions.length">
-                <div data-maas-cta="actionOptions"
-                    data-default-title="Take action"
-                    data-ng-model="actionOption"
-                    data-ng-change="actionChanged()">
+    <header class="p-strip--light is-shallow is-bordered page-header" sticky media-query="min-width: 769px">
+        <div class="row">
+            <div class="col-8">
+                <h1 class="page-header__title">{$ subnet.cidr $}</h1>
+            </div>
+            <div class="col-4">
+                <!-- "Take action" dropdown -->
+                <div class="page-header__controls u-float--right ng-hide" data-ng-show="isSuperUser() && !isDefaultSubnet() && !loading && actionOptions.length">
+                    <div data-maas-cta="actionOptions"
+                        data-default-title="Take action"
+                        data-ng-model="actionOption"
+                        data-ng-change="actionChanged()">
+                    </div>
                 </div>
             </div>
-            <div class="page-header__dropdown" data-ng-class="{ 'is-open': actionOption.name }">
-                <section class="page-header__section twelve-col u-margin--bottom-none ng-hide" data-ng-show="!actionError && actionOption.name === 'map_subnet'">
+        </div>
+        <div class="page-header__dropdown" data-ng-class="{ 'is-open': actionOption.name }">
+            <div class="row">
+                <section class="page-header__section col-12 ng-hide" data-ng-show="!actionError && actionOption.name === 'map_subnet'">
                     <p class="page-header__message page-header__message--info">
                         You will start mapping your subnet. Go to the <a href="#/dashboard">dashboard</a> to see the discovered items.
                     </p>
                     <div class="page-header__controls">
-                        <button class="button--base button--inline" type="button" data-ng-click="cancelAction()">Cancel</button>
-                        <button class="button--positive button--inline" data-ng-click="actionGo()">Map subnet</button>
+                        <button class="button--base is-inline" type="button" data-ng-click="cancelAction()">Cancel</button>
+                        <button class="button--positive is-inline" data-ng-click="actionGo()">Map subnet</button>
                     </div>
                 </section>
-                <section class="page-header__section twelve-col u-margin--bottom-none ng-hide" data-ng-show="!actionError && actionOption.name == 'delete'">
+            </div>
+            <div class="row">
+                <section class="page-header__section col-12 ng-hide" data-ng-show="!actionError && actionOption.name == 'delete'">
                     <p class="page-header__message page-header__message--error">
                         Are you sure you want to delete this subnet and release all IP addresses assigned within its range?
                     </p>
                     <div class="page-header__controls">
-                        <button class="button--base button--inline" type="button" data-ng-click="cancelAction()">Cancel</button>
-                        <button class="button--destructive button--inline" data-ng-click="actionGo()">Delete subnet</button>
+                        <button class="button--base is-inline" type="button" data-ng-click="cancelAction()">Cancel</button>
+                        <button class="button--negative is-inline" data-ng-click="actionGo()">Delete subnet</button>
                     </div>
                 </section>
-                <section class="page-header__section twelve-col u-margin--bottom-none ng-hide" data-ng-show="actionError">
+            </div>
+            <div class="row">
+                <section class="page-header__section col-12 ng-hide" data-ng-show="actionError">
                     <p class="page-header__message page-header__message--error">{$ actionError $}</p>
                     <div class="page-header__controls">
-                        <button class="button--base button--inline" type="button" data-ng-click="cancelAction()">Cancel</button>
-                        <button class="button--secondary button--inline" data-ng-click="actionRetry()">Retry</button>
+                        <button class="button--base is-inline" type="button" data-ng-click="cancelAction()">Cancel</button>
+                        <button class="button--neutral is-inline" data-ng-click="actionRetry()">Retry</button>
                     </div>
                 </section>
-  	    </div>
+            </div>
             <!-- End of "Take action" dropdown -->
         </div>
     </header>
     <section class="row">
         <div class="wrapper--inner">
-            <div class="twelve-col">
+            <div class="col-12">
                 <h2 class="u-float--left">Subnet summary</h2>
-                <button type="button" name="button" class="button--secondary button--inline u-float--right" data-ng-click="enterEditSummary()" data-ng-if="editSummary != true">Edit</button>
+                <button type="button" name="button" class="button--secondary is-inline u-float--right" data-ng-click="enterEditSummary()" data-ng-if="editSummary != true">Edit</button>
             </div>
-            <div class="twelve-col" data-ng-if="editSummary != true">
+            <div class="col-12" data-ng-if="editSummary != true">
                 <dl class="six-col">
                     <dt class="two-col">Name</dt>
                         <dd class="four-col last-col">{$ subnet.name $}</dd>
@@ -161,19 +171,19 @@
                     <maas-obj-errors></maas-obj-errors>
                 </div>
                 <div class="six-col last-col u-align--right">
-                    <button class="button--base button--inline" type="button"
+                    <button class="button--base is-inline" type="button"
                        data-ng-click="exitEditSummary()">Cancel</button>
-                    <button class="button--positive button--inline" maas-obj-save>Save summary</button>
+                    <button class="button--positive is-inline" maas-obj-save>Save summary</button>
                 </div>
             </maas-obj-form>
         </div>
     </section>
     <section class="row" window-width>
         <div class="wrapper--inner">
-            <div class="twelve-col">
+            <div class="col-12">
                 <h2>Static Routes</h2>
             </div>
-            <div class="twelve-col">
+            <div class="col-12">
                 <div class="table u-margin--bottom">
                     <header class="table__head">
                         <div class="table__row">
@@ -218,8 +228,8 @@
                                               <p><span class="icon icon--warning u-margin--right-small"></span>Are you sure you want to remove this static route?</p>
                                         </div>
                                         <div class="table__data u-float--right">
-                                              <button class="button--base button--inline" type="button" data-ng-click="staticRouteCancelDelete()">Cancel</button>
-                                              <button class="button--destructive button--inline" data-ng-click="staticRouteConfirmDelete()">Remove</button>
+                                              <button class="button--base is-inline" type="button" data-ng-click="staticRouteCancelDelete()">Cancel</button>
+                                              <button class="button--destructive is-inline" data-ng-click="staticRouteConfirmDelete()">Remove</button>
                                         </div>
                                     </div>
                                 </div>
@@ -250,8 +260,8 @@
                                             <maas-obj-errors></maas-obj-errors>
                                         </div>
                                         <div class="table__data u-float--right">
-                                            <button class="button--base button--inline" type="button" data-ng-click="staticRouteToggleEditMode(staticRoute)">Cancel</button>
-                                            <button class="button--positive button--inline" maas-obj-save>Save static route</button>
+                                            <button class="button--base is-inline" type="button" data-ng-click="staticRouteToggleEditMode(staticRoute)">Cancel</button>
+                                            <button class="button--positive is-inline" maas-obj-save>Save static route</button>
                                         </div>
                                     </div>
                                 </div>
@@ -297,8 +307,13 @@
                                             <maas-obj-errors></maas-obj-errors>
                                         </div>
                                         <div class="table__data u-float--right">
+<<<<<<< HEAD
                                             <button class="button--base button--inline" type="button" data-ng-click="cancelAddStaticRoute()">Cancel</button>
                                             <button class="button--positive button--inline" maas-obj-save>Save static route</button>
+=======
+                                            <button class="button--base is-inline" type="button" data-ng-click="cancelAddStaticRoute()">Cancel</button>
+                                            <button class="button--positive is-inline" maas-obj-save>Save static route</button>
+>>>>>>> Convert sticky headers to Vanilla
                                         </div>
                                     </div>
                                 </div>
@@ -307,14 +322,14 @@
                     </main>
                 </div>
                 <div data-ng-if="isSuperUser() && !newStaticRoute">
-                    <button class="button--secondary button--inline" data-ng-click="addStaticRoute()">Add static route</button>
+                    <button class="button--secondary is-inline" data-ng-click="addStaticRoute()">Add static route</button>
                 </div>
             </div>
         </div>
     </section>
     <section class="row">
         <div class="wrapper--inner">
-            <div class="twelve-col">
+            <div class="col-12">
                 <h2>Utilisation</h2>
             </div>
             <div class="six-col">
@@ -334,7 +349,7 @@
                         <dd class="four-col last-col">{$ subnet.statistics.usage_string $}</dd>
                 </dl>
             </div>
-            <div class="twelve-col">
+            <div class="col-12">
                 <h2>Reserved</h2>
             </div>
 	    <maas-ip-ranges subnet="subnet"></maas-ip-ranges>
@@ -347,7 +362,7 @@
                     <input class="search__submit" type="submit">
                 </div>
             </div>
-            <div class="twelve-col">
+            <div class="col-12">
                 <table>
                     <thead>
                         <tr class="table-listing__row">

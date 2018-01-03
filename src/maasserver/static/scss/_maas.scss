@@ -21,4 +21,16 @@
   .u-remove-max-width {
     max-width: none;
   }
+
+  body {
+    background-color: $color-light;
+  }
+
+  .p-strip--light {
+    background-color: $color-x-light;
+  }
+
+  [class^="ng-"] {
+    margin-top: 0 !important;
+  }
 }
