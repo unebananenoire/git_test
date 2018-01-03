@@ -17,7 +17,7 @@
     {{ field }}
     {% endifnotequal %}
     {% if field.errors %}
-    <span class="u-text--error u-margin--top-tiny">{{ field.errors }}</span>
+    <p class="p-form-validation__message"><strong>Error:</strong> {{ field.errors }}</p>
     {% endif %}
-    <span class="help u-display--block"><small>{% if field.help_text %}{{ field.help_text }}{% endif %}</small></span>
+    <p class="p-form-help-text">{% if field.help_text %}{{ field.help_text }}{% endif %}</p>
 </li>
