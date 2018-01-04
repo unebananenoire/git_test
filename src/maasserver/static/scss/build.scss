@@ -10,9 +10,13 @@
 @import 'patterns_icons';
 @import 'patterns_navigation';
 @import 'patterns_page-header';
+@import 'patterns_tabs';
+@import 'patterns_onoffswitch';
 
 // Include local patterns
 @include maas;
 @include maas-icons;
 @include maas-navigation;
 @include maas-page-header;
+@include maas-tabs;
+@include maas-onoffswitch;

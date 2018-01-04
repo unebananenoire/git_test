@@ -32,7 +32,7 @@
 
   [class^="ng-"],
   [class^="yui3-"] {
-    margin-top: .25rem !important;
+    margin-top: 0 !important;
   }
 
   // XXX Can be remove when this Vanilla issue is resolved
@@ -40,5 +40,30 @@
   [class^="p-icon--"], 
   [class*=" p-icon--"] {
     overflow: hidden;
+  }
+
+  maas-obj-field[type="text"] {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0;
+    padding: 0;
+  }
+
+  textarea {
+    min-height: 175px;
+  }
+
+  .p-table-expanding {
+    &__panel {
+      position: relative;
+      top: -1px;
+      background-color: $color-x-light;
+      padding: 1rem;
+    }
+
+    tr.is-active {
+      background-color: $color-x-light;
+    }
   }
 }
