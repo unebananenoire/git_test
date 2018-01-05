@@ -62,6 +62,10 @@
       padding: 1rem;
     }
 
+    td {
+      display: table-cell;
+    }
+
     tr.is-active {
       background-color: $color-x-light;
     }
