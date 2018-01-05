@@ -59,7 +59,6 @@
       position: relative;
       top: -1px;
       background-color: $color-x-light;
-      padding: 1rem;
     }
 
     td {
@@ -69,5 +68,9 @@
     tr.is-active {
       background-color: $color-x-light;
     }
+  }
+
+  .u-float-none {
+    float: none !important;
   }
 }

@@ -60,7 +60,7 @@
                         </td>
                         <td aria-label="Enabled" data-ng-if="editSnippet !== snippet">
                             <div class="onoffswitch">
-                                <input type="checkbox" name="enabled" class="onoffswitch-checkbox" id="enabled-{$ snippet.id $}"
+                                <input type="checkbox" name="enabled" class="onoffswitch-checkbox u-float-none" id="enabled-{$ snippet.id $}"
                                     data-ng-model="snippet.enabled"
                                     data-ng-change="snippetToggle(snippet)">
                                 <label class="onoffswitch-label" for="enabled-{$ snippet.id $}">
@@ -123,15 +123,13 @@
                                                     disable-label="true" rows="10"></maas-obj-field>
                                             </div>
                                         </div>
-                                        <div class="is-active">
-                                            <div class="u-float--left">
-                                                <maas-obj-errors></maas-obj-errors>
-                                            </div>
-                                            <div class="u-float--right">
-                                                <button class="p-button--base"
-                                                    data-ng-click="snippetExitEdit(snippet)" type="button">Cancel</button>
-                                                <button class="p-button--positive" maas-obj-save>Save snippet</button>
-                                            </div>
+                                        <div class="u-float--left u-no-margin--top">
+                                            <maas-obj-errors></maas-obj-errors>
+                                        </div>
+                                        <div class="u-float--right u-no-margin--top">
+                                            <button class="p-button--base"
+                                                data-ng-click="snippetExitEdit(snippet)" type="button">Cancel</button>
+                                            <button class="p-button--positive" maas-obj-save>Save snippet</button>
                                         </div>
                                     </div>
                                 </div>
