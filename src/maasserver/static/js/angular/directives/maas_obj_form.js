@@ -536,7 +536,7 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                 // Set ngDisabled from the parent controller.
                 scope.ngDisabled = controller.scope.ngDisabled;
 
-                element.addClass("form__group");
+                element.addClass("p-form__group");
                 if(attrs.subtle !== "false") {
                     element.addClass("form__group--subtle");
                 }
@@ -565,9 +565,9 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                     var labelElement = angular.element('<label/>');
                     labelElement.attr('for', attrs.key);
                     labelElement.text(label);
-                    labelElement.addClass('form__group-label');
+                    labelElement.addClass('p-form__label');
                     if(attrs.labelWidth) {
-                        labelElement.addClass(attrs.labelWidth + "-col");
+                        labelElement.addClass("col-" + attrs.labelWidth);
                     } else {
                         labelElement.addClass("u-margin--right");
                     }
@@ -604,11 +604,10 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
 
                 // Add the wrapper for the input.
                 var inputWrapper = angular.element('<div></div>');
-                inputWrapper.addClass("form__group-input");
+                inputWrapper.addClass("p-form__control");
 
                 if(attrs.inputWidth) {
-                    inputWrapper.addClass(attrs.inputWidth + "-col");
-                    inputWrapper.addClass("last-col");
+                    inputWrapper.addClass("col-" + attrs.inputWidth);
                 }
 
                 // Render the input based on the type.
