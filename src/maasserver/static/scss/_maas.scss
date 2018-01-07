@@ -61,8 +61,16 @@
       background-color: $color-x-light;
     }
 
+    th,
     td {
       display: table-cell;
+      flex-basis: auto;
+      flex-grow: 0;
+      margin-left: 3.2877%;
+
+      &:first-child {
+        margin-left: 0;
+      }
     }
 
     tr.is-active {
@@ -72,5 +80,28 @@
 
   .u-float-none {
     float: none !important;
+  }
+
+  .p-form--inline,
+  .p-form--inline .p-form__group {
+    width: 100%;
+  }
+
+  p:empty,
+  ul:empty {
+    margin: 0;
+    padding: 0;
+  }
+
+  .tags .input {
+    width: 100% !important;
+  }
+
+  .onoffswitch {
+    display: inline-block;
+
+    &-checkbox {
+      margin-right: 0;
+    }
   }
 }
