@@ -13,6 +13,7 @@
 @import 'patterns_page-header';
 @import 'patterns_tabs';
 @import 'patterns_onoffswitch';
+@import 'patterns_table-expanding';
 
 // Include local patterns
 @include maas;
@@ -22,3 +23,4 @@
 @include maas-page-header;
 @include maas-tabs;
 @include maas-onoffswitch;
+@include maas-table-expanding;

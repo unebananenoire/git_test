@@ -37,7 +37,7 @@
 
   // XXX Can be remove when this Vanilla issue is resolved
   // https://github.com/vanilla-framework/vanilla-framework/issues/1505
-  [class^="p-icon--"], 
+  [class^="p-icon--"],
   [class*=" p-icon--"] {
     overflow: hidden;
   }
