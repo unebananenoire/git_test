@@ -23,9 +23,9 @@
                         <a class="p-tooltip p-tooltip--top-right js-delete-link" data-ng-click="open(group, 'delete')"><i class="p-icon--delete"></i><span class="p-tooltip__message" role="tooltip">Delete SSH key</span></a></div>
                     </td>
                     <td class="p-table-expanding__panel" data-ng-class="{ 'u-hide': group.id !== openRow || rowMode !== 'view' }">
-                        <div>
-                            <p data-ng-repeat="key in group.keys" data-ng-bind-html="trustAsHtml(key.display)"></p>
-                        </div>
+                        <ul class="p-list">
+                            <li data-ng-repeat="key in group.keys" data-ng-bind-html="trustAsHtml(key.display)"></li>
+                        </ul>
                     </td>
                     <td class="p-table-expanding__panel" data-ng-class="{ 'u-hide': group.id !== openRow || rowMode !== 'delete' }">
                         <div class="col-8">
@@ -45,7 +45,7 @@
 <div class="row">
     <div class="col-8">
         <form>
-                <div class="p-form p-form--inline">
+            <div class="p-form p-form--inline">
                 <div class="p-form__group">
                     <label class="p-form__label" for="source">Source</label>
                     <select class="p-form__control" id="source" data-ng-model="add.source" data-ng-disabled="add.saving">
