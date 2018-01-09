@@ -46,7 +46,7 @@
     background-color: transparent;
     border: 0;
     border-radius: 0;
-    box-shadow: 0;
+    box-shadow: none;
     padding: 0;
   }
 
@@ -54,22 +54,26 @@
     min-height: 175px;
   }
 
-  .p-table-expanding {
-    &__panel {
-      position: relative;
-      top: -1px;
-      background-color: $color-x-light;
-    }
+  td.p-table-expanding__panel {
+    position: relative;
+    top: -1px;
+  }
 
+  .p-table-expanding__panel {
+    background-color: $color-x-light;
+    margin-left: 0 !important;
+  }
+
+  table {
     th,
     td {
-      display: table-cell;
-      flex-basis: auto;
+      display: table-cell !important;
+      flex-basis: auto !important;
       flex-grow: 0;
-      margin-left: 3.2877%;
+      margin-left: 3.2877% !important;
 
       &:first-child {
-        margin-left: 0;
+        margin-left: 0 !important;
       }
     }
 
@@ -103,5 +107,13 @@
     &-checkbox {
       margin-right: 0;
     }
+  }
+
+
+  // XXX Can be remove when this Vanilla issue is resolved
+  // https://github.com/vanilla-framework/vanilla-framework/issues/1509
+  .p-tooltip__message {
+    max-width: none;
+    margin-top: 0;
   }
 }
