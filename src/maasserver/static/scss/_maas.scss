@@ -109,11 +109,18 @@
     }
   }
 
-
   // XXX Can be remove when this Vanilla issue is resolved
   // https://github.com/vanilla-framework/vanilla-framework/issues/1509
   .p-tooltip__message {
     max-width: none;
     margin-top: 0;
+  }
+
+  // Local variant for notification patter
+  .p-notification,
+  .p-notification--negative,
+  .p-notification--positive,
+  .p-notification--caution {
+    width: 100%;
   }
 }
