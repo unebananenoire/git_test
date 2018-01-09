@@ -112,139 +112,149 @@
         </div>
     </div>
 </header>
-<section class="row u-padding--top-none">
-    <div class="wrapper--inner">
-        <div class="twelve-col">
-            <form class="form form--inline four-col">
-                <div class="form__group listing-filter">
-                    <label class="u-margin--right-small" for="network-filter">Group by</label>
-                    <select name="network-filter" class="listing-filter__select" id="networks-groupby" data-ng-model="groupBy" data-ng-change="updateGroupBy()">
+<section class="p-strip is-shallow">
+    <div class="row u-equal-height">
+        <div class="col-3">
+            <form class="p-form p-form--inline">
+                <div class="p-form__group">
+                    <label class="p-form__label" for="network-filter">Group by</label>
+                    <select name="network-filter" class="p-form__control" id="networks-groupby" data-ng-model="groupBy" data-ng-change="updateGroupBy()">
                         <option value="fabric">Fabrics</option>
                         <option value="space">Spaces</option>
                     </select>
-                    <span class="icon icon--help tooltip tooltip--right u-margin--left-small u-display--desktop"
-                          aria-label="Fabric is a set of consistent interconnected VLANs that are capable of mutual communication.&#xa;Space is a grouping of networks (VLANs and their subnets) that are able to mutually communicate with each other.&#xa;Subnets within a space do not need to belong to the same fabric."></span>
                 </div>
             </form>
-            <!-- XXX mpontillo temporarily hidden -->
-            <div class="eight-col last-col ng-hide">
-                <div class="search">
-                  <input placeholder="Search" class="search__input" type="search">
-                  <input class="search__submit" type="submit">
-              </div>
+        </div>
+        <div class="col-1 u-vertically-center">
+            <div class="p-tooltip p-tooltip--right">
+                <i class="p-icon--help u-hide u-show--large">Help:</i>
+                <span class="p-tooltip__message" role="tooltip">Fabric is a set of consistent interconnected VLANs that are capable of mutual communication.&#xa;Space is a grouping of networks (VLANs and their subnets) that are able to mutually communicate with each other.&#xa;Subnets within a space do not need to belong to the same fabric.</span>
             </div>
         </div>
-        <div class="twelve-col ng-hide" data-ng-show="!loading">
+    </div>
+
+    <div class="row u-no-margin--top">
+    <!-- XXX mpontillo temporarily hidden -->
+        <div class="col-8 ng-hide">
+            <div class="search">
+                <input placeholder="Search" class="search__input" type="search">
+                <input class="search__submit" type="submit">
+            </div>
+        </div>
+    </div>
+
+    <div class="row u-no-margin--top">
+        <div class="ng-hide" data-ng-show="!loading">
             <!-- Spaces grouped table -->
-            <table class="table-listing ng-hide" data-ng-show="groupBy === 'space'">
+            <table class="ng-hide" data-ng-show="groupBy === 'space'">
                 <thead>
-                    <tr class="table-listing__row">
-                        <!-- <th class="table__column--3 ng-hide">
+                    <tr>
+                        <!-- <th class="ng-hide">
                             <input class="checkbox" type="checkbox" id="spaces-all" />
                             <label class="checkbox-label" for="spaces-all"></label>
                         </th> -->
-                        <th class="table__column--10">Space</th>
-                        <th class="table__column--10">VLAN</th>
-                        <th class="table__column--10">DHCP</th>
-                        <th class="table__column--20">Fabric</th>
-                        <th class="table__column--30">Subnet</th>
-                        <th class="table__column--13 align-right">Available IPs</th>
+                        <th>Space</th>
+                        <th>VLAN</th>
+                        <th>DHCP</th>
+                        <th>Fabric</th>
+                        <th>Subnet</th>
+                        <th class="u-align--right">Available IPs</th>
                     </tr>
                 </thead>
                 <tbody vs-repeat vs-scroll-parent="window">
-                    <tr class="table-listing__row" data-ng-repeat="row in group.spaces.rows">
-                        <!-- <td class="table-listing__cell table__column--3 ng-hide">
+                    <tr data-ng-repeat="row in group.spaces.rows">
+                        <!-- <td class="ng-hide">
                             <div data-ng-if="row.space_name">
                                 <input class="checkbox" type="checkbox" id="space-{$ row.space.id $}" />
                                 <label class="checkbox-label" for="space-{$ row.space.id $}"></label>
                             </div>
                         </td> -->
-                        <td class="table-listing__cell table__column--20" aria-label="Space">
+                        <td aria-label="Space">
                             <a href="#/space/{$ row.space.id $}">{$ row.space_name $}</a>
                         </td>
-                        <td class="table-listing__cell table__column--20" aria-label="VLAN">
+                        <td aria-label="VLAN">
                             <a href="#/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
                         </td>
-                        <td class="table-listing__cell table__column--20" aria-label="DHCP">
+                        <td aria-label="DHCP">
                             <p data-ng-if="row.vlan.dhcp_on === true || row.vlan.relay_vlan !== null">Enabled</p>
                             <p data-ng-if="row.vlan.dhcp_on !== true && row.vlan.relay_vlan === null">Disabled</p>
                         </td>
-                        <td class="table-listing__cell table__column--20" aria-label="Fabric">
+                        <td aria-label="Fabric">
                             <a href="#/fabric/{$ row.fabric.id $}">{$ row.fabric.name $}</a>
                         </td>
-                        <td class="table-listing__cell table__column--30" aria-label="Subnet">
+                        <td aria-label="Subnet">
                             <a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
                         </td>
-                        <td class="table-listing__cell table__column--13 align-right" aria-label="Available IPs">
+                        <td class="u-align--right" aria-label="Available IPs">
                             {$ row.subnet.statistics.available_string $}
                         </td>
                     </tr>
-                    <tr class="table-listing__row" data-ng-repeat="row in group.spaces.orphanVLANs">
-                        <td class="table-listing__cell table__column--20" aria-label="Space">
+                    <tr data-ng-repeat="row in group.spaces.orphanVLANs">
+                        <td aria-label="Space">
                             <a data-ng-if="$index === 0" href="#/space/{$ row.space.id $}">(undefined)</a>
                             <span data-ng-if="$index === 0" class="icon icon--warning tooltip tooltip--right u-margin--left-small u-display--desktop"
                               aria-label="MAAS integrations require a space in order to determine the purpose of a network.&#xa;Define a space for each subnet by selecting the space on the VLAN details page.&#xa;If an approprate space does not exist, one may be created on this page."></span>
                         </td>
-                        <td class="table-listing__cell table__column--20">
+                        <td>
                             <a href="#/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
                         </td>
-                        <td class="table-listing__cell table__column--10" aria-label="DHCP">
+                        <td aria-label="DHCP">
                             <p data-ng-if="row.vlan.dhcp_on === true || row.vlan.relay_vlan !== null || row.vlan.external_dhcp === true">Enabled</p>
                             <p data-ng-if="row.vlan.dhcp_on !== true && row.vlan.relay_vlan === null">Disabled</p>
                         </td>
-                        <td class="table-listing__cell table__column--20">
+                        <td>
                             <a href="#/fabric/{$ row.fabric.id $}">{$ row.fabric.name $}</a>
                         </td>
-                        <td class="table-listing__cell table__column--30">
+                        <td>
                             <a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
                         </td>
-                        <td class="table-listing__cell table__column--13 align-right">
+                        <td class="u-align--right">
                             {$ row.subnet.statistics.available_string $}
                         </td>
                     </tr>
                 </tbody>
          </table>
             <!-- Fabric grouped table -->
-            <table class="table-listing ng-hide" data-ng-show="groupBy === 'fabric'">
+            <table class="ng-hide" data-ng-show="groupBy === 'fabric'">
                 <thead>
-                    <tr class="table-listing__row">
-                        <!-- <th class="table__column--3 ng-hide">
+                    <tr>
+                        <!-- <th class="ng-hide">
                             <input class="checkbox" type="checkbox" id="fabrics-all" />
                             <label class="checkbox-label" for="fabrics-all"></label>
                         </th> -->
-                        <th class="table__column--10">Fabric</th>
-                        <th class="table__column--10">VLAN</th>
-                        <th class="table__column--10">DHCP</th>
-                        <th class="table__column--27">Subnet</th>
-                        <th class="table__column--15 align-right">Available IPs</th>
-                        <th class="table__column--25">Space</th>
+                        <th>Fabric</th>
+                        <th>VLAN</th>
+                        <th>DHCP</th>
+                        <th>Subnet</th>
+                        <th class="u-align--right">Available IPs</th>
+                        <th class="u-align--right">Space</th>
                     </tr>
                 </thead>
                 <tbody vs-repeat vs-scroll-parent="window">
-                    <tr class="table-listing__row" data-ng-repeat="row in group.fabrics.rows">
-                        <!-- <td class="table-listing__cell table__column--3 ng-hide">
+                    <tr data-ng-repeat="row in group.fabrics.rows">
+                        <!-- <td class="ng-hide">
                             <div data-ng-if="row.fabric_name">
                                 <input class="checkbox" type="checkbox" id="fabric-{$ row.fabric.id $}" />
                                 <label class="checkbox-label" for="fabric-{$ row.fabric.id $}"></label>
                             </div>
                         </td> -->
-                        <td class="table-listing__cell table__column--10" aria-label="Fabric">
+                        <td aria-label="Fabric">
                             <a href="#/fabric/{$ row.fabric.id $}">{$ row.fabric_name $}</a>
                         </td>
-                        <td class="table-listing__cell table__column--10" aria-label="VLAN">
+                        <td aria-label="VLAN">
                             <a href="#/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
                         </td>
-                        <td class="table-listing__cell table__column--10" aria-label="DHCP">
+                        <td aria-label="DHCP">
                             <p data-ng-if="row.vlan.dhcp_on === true || row.vlan.relay_vlan !== null || row.vlan.external_dhcp === true">Enabled</p>
                             <p data-ng-if="row.vlan.dhcp_on !== true && row.vlan.relay_vlan === null">Disabled</p>
                         </td>
-                        <td class="table-listing__cell table__column--27" aria-label="Subnet">
+                        <td aria-label="Subnet">
                             <a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
                         </td>
-                        <td class="table-listing__cell table__column--15 align-right" aria-label="Available IPs">
+                        <td class="u-align--right" aria-label="Available IPs">
                             {$ row.subnet.statistics.available_string $}
                         </td>
-                        <td class="table-listing__cell table__column--25" aria-label="Space">
+                        <td class="u-align--right" aria-label="Space">
                             <a data-ng-if="row.space !== null" href="#/space/{$ row.space.id $}">{$ row.space.name $}</a>
                             <p data-ng-if="row.space === null">(undefined)</p>
                         </td>
@@ -252,4 +262,5 @@
                 </tbody>
             </table>
         </div>
+    </div>
 </section>

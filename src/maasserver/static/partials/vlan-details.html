@@ -231,135 +231,168 @@
             <!-- End of "Take action" dropdown -->
         </div>
     </header>
-    <section class="row">
-        <div class="wrapper--inner">
-            <div class="twelve-col">
+    <section class="p-strip is-bordered">
+        <div class="row">
+            <div class="col-6">
                 <h2 class="u-float--left">VLAN Summary</h2>
-                <button type="button" name="button" class="button--secondary button--inline u-float--right" data-ng-click="vlanDetails.enterEditSummary()" data-ng-if="!vlanDetails.editSummary">Edit</button>
             </div>
-            <div class="twelve-col" data-ng-if="!vlanDetails.editSummary">
+            <div class="col-6">
+                <button type="button" name="button" class="p-button--neutral u-float--right" data-ng-click="vlanDetails.enterEditSummary()" data-ng-if="!vlanDetails.editSummary">Edit</button>
+            </div>
+        </div>
+        <div class="row u-no-margin--top">
+            <div data-ng-if="!vlanDetails.editSummary">
                 <dl class="col-6">
-                    <dt class="col-2">VID</dt>
-                    <dd class="four-col">{$ vlanDetails.vlan.vid $}</dd>
-                    <dt class="col-2">Name</dt>
-                    <dd class="four-col">{$ vlanDetails.vlan.name $}</dd>
-                    <dt class="col-2">MTU</dt>
-                    <dd class="four-col">{$ vlanDetails.vlan.mtu $}</dd>
-                    <dt class="col-2">Space</dt>
-                    <dd class="four-col">{$ vlanDetails.getSpaceName() $}</dd>
-                    <dt class="col-2">Description</dt>
-                    <dd class="four-col">{$ vlanDetails.vlan.description $}</dd>
+                    <dt>VID</dt><dd>{$ vlanDetails.vlan.vid $}</dd>
+                    <dt>Name</dt><dd>{$ vlanDetails.vlan.name $}</dd>
+                    <dt>MTU</dt><dd>{$ vlanDetails.vlan.mtu $}</dd>
+                    <dt>Space</dt><dd>{$ vlanDetails.getSpaceName() $}</dd>
+                    <dt>Description</dt><dd>{$ vlanDetails.vlan.description $}</dd>
                 </dl>
                 <dl class="col-6">
-                  <dt class="col-2">Fabric</dt>
-                  <dd class="four-col">
+                  <dt>Fabric</dt>
+                  <dd>
                       <a href="#/fabric/{$ vlanDetails.fabric.id $}">{$ vlanDetails.fabric.name $}</a>
                   </dd>
                   <div data-ng-if="vlanDetails.relatedControllers">
-                      <dt class="col-2">Rack controllers <span class="icon icon--help tooltip" aria-label="A rack controller controls hosts and images and runs network services&#xa;like DHCP for connected VLANs."></span></dt>
-                      <dd class="four-col">
+                      <dt>Rack controllers 
+                        <span class="p-tooltip p-tooltip--top-center">
+                            <i class="p-icon--information">Help:</i>
+                            <span class="p-tooltip__message" role="tooltip">A rack controller controls hosts and images and runs network services&#xa;like DHCP for connected VLANs.</span>
+                        </span>
+                       <span class="icon icon--information tooltip" aria-label="A rack controller controls hosts and images and runs network services&#xa;like DHCP for connected VLANs."></span>
+                      </dt>
+                      <dd>
                           <span data-ng-repeat="rack in vlanDetails.relatedControllers">
-                              <a href="#/node/controller/{$ rack.system_id $}">{$ rack.hostname $}</a>
-                          </span>&nbsp;
+                              <a href="#/node/controller/{$ rack.system_id $}">{$ rack.hostname $}</a>,
+                          </span>
                       </dd>
                   </div>
                 </dl>
             </div>
+        </div>
+        <div class="row">
             <maas-obj-form obj="vlanDetails.vlan" manager="vlanDetails.vlanManager" data-ng-disabled="!vlanDetails.isSuperUser()" data-ng-if="vlanDetails.editSummary"
-              table-form="true" save-on-blur="false" after-save="vlanDetails.exitEditSummary">
-                <fieldset class="p-form__fieldset col-6">
-                    <maas-obj-field type="text" key="vid" label="VID" placeholder="VLAN VID"
-                        label-width="two" input-width="three" blur-on-enter="true"></maas-obj-field>
-                    <maas-obj-field type="text" key="name" label="Name" placeholder="VLAN name"
-                        label-width="two" input-width="three" blur-on-enter="true"></maas-obj-field>
-                    <maas-obj-field type="text" key="mtu" label="MTU" placeholder="VLAN MTU"
-                        label-width="two" input-width="three" blur-on-enter="true"></maas-obj-field>
-                    <maas-obj-field type="options" key="space" label="Space" placeholder="(undefined)" placeholder-enabled="true"
-                        options="space.id as space.name for space in vlanDetails.spaces"
-                        label-width="two" input-width="three"></maas-obj-field>
-                    <maas-obj-field type="textarea" key="description" label="Description" placeholder="VLAN description"
-                        label-width="two" input-width="three" blur-on-enter="true"></maas-obj-field>
-                </fieldset>
-                <div class="col-6">
-                    <dl>
-                        <dt class="col-2">Fabric</dt>
-                        <dd class="four-col">
-                            <a href="#/fabric/{$ vlanDetails.fabric.id $}">{$ vlanDetails.fabric.name $}</a>
-                        </dd>
-                        <div data-ng-if="vlanDetails.relatedControllers">
-                            <dt class="col-2">Rack controllers <span class="icon icon--help tooltip" aria-label="A rack controller controls hosts and images and runs network services&#xa;like DHCP for connected VLANs."></span></dt>
-                            <dd class="four-col">
-                                <span data-ng-repeat="rack in vlanDetails.relatedControllers">
-                                    <a href="#/node/controller/{$ rack.system_id $}">{$ rack.hostname $}</a>
-                                </span>&nbsp;
+            table-form="true" save-on-blur="false" after-save="vlanDetails.exitEditSummary">
+                <div class="row">    
+                    <div class="col-6">
+                        <maas-obj-field type="text" key="vid" label="VID" placeholder="VLAN VID"
+                            label-width="2" input-width="5" blur-on-enter="true"></maas-obj-field>
+                        <maas-obj-field type="text" key="name" label="Name" placeholder="VLAN name"
+                            label-width="2" input-width="5" blur-on-enter="true"></maas-obj-field>
+                        <maas-obj-field type="text" key="mtu" label="MTU" placeholder="VLAN MTU"
+                            label-width="2" input-width="5" blur-on-enter="true"></maas-obj-field>
+                        <maas-obj-field type="options" key="space" label="Space" placeholder="(undefined)" placeholder-enabled="true"
+                            options="space.id as space.name for space in vlanDetails.spaces"
+                            label-width="2" input-width="5"></maas-obj-field>
+                        <maas-obj-field type="textarea" key="description" label="Description" placeholder="VLAN description"
+                            label-width="2" input-width="5" blur-on-enter="true"></maas-obj-field>
+                    </div>
+                    <div class="col-6">
+                        <dl>
+                            <dt>Fabric</dt>
+                            <dd>
+                                <a href="#/fabric/{$ vlanDetails.fabric.id $}">{$ vlanDetails.fabric.name $}</a>
                             </dd>
-                        </div>
-                    </dl>
+                            <div data-ng-if="vlanDetails.relatedControllers">
+                                <dt>Rack controllers 
+                                    <span class="p-tooltip p-tooltip--top-center">
+                                        <i class="p-icon--help">Help:</i>
+                                        <span class="p-tooltip__message" role="tooltip">A rack controller controls hosts and images and runs network services&#xa;like DHCP for connected VLANs.</span>
+                                    </span>
+                                </dt>
+                                <dd>
+                                    <span data-ng-repeat="rack in vlanDetails.relatedControllers">
+                                        <a href="#/node/controller/{$ rack.system_id $}">{$ rack.hostname $}</a>,
+                                    </span>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
                 </div>
-                <div class="twelve-col u-align--right">
-                    <button class="button--base button--inline"
-                       data-ng-click="vlanDetails.exitEditSummary()">Cancel</button>
-                    <button class="button--positive button--inline" maas-obj-save>Save summary</button>
+                <div class="row u-no-margin--top">
+                    <div class="row u-align--right">
+                        <button class="p-button--base"
+                        data-ng-click="vlanDetails.exitEditSummary()">Cancel</button>
+                        <button class="p-button--positive" maas-obj-save>Save summary</button>
+                    </div>
                 </div>
             </maas-obj-form>
         </div>
     </section>
 
-    <section class="row">
-      <div class="wrapper--inner">
-        <div class="twelve-col">
-            <h2 class="u-display--inline-block">DHCP</h2>
-            <h4 data-ng-if="vlanDetails.primaryRack && vlanDetails.secondaryRack" class="u-display--inline-block u-margin--left u-text--off"> High availability</h4>
+    <section class="p-strip">
+        <div class="row">
+            <div class="col-12">
+                <h2>DHCP</h2>
+                <h4 data-ng-if="vlanDetails.primaryRack && vlanDetails.secondaryRack" class="u-off-screen"> High availability</h4>
+            </div>
         </div>
-        <div class="twelve-col">
+        <div class="row">
             <div class="col-6">
                 <dl>
-                    <dt class="col-2">Status</dt>
-                    <dd class="four-col">{$ vlanDetails.getDHCPStatus() $}</dd>
+                    <dt>Status</dt>
+                    <dd>{$ vlanDetails.getDHCPStatus() $}</dd>
                     <div data-ng-if="vlanDetails.vlan.external_dhcp">
-                        <dt class="col-2">External DHCP</dt>
-                        <dd class="four-col">{$ vlanDetails.vlan.external_dhcp $}
-                            <i class="icon icon--warning tooltip" aria-label="Another DHCP server has been discovered on this VLAN. Enabling DHCP is not recommended."></i>
+                        <dt>External DHCP</dt>
+                        <dd>{$ vlanDetails.vlan.external_dhcp $}
+                            <span class="p-tooltip p-tooltip--top-center">
+                                <i class="p-icon--warning">Warning:</i>
+                                <span class="p-tooltip__message" role="tooltip">Another DHCP server has been discovered on this VLAN. Enabling DHCP is not recommended.</span>
+                            </span>
                         </dd>
                     </div>
                     <div data-ng-if="vlanDetails.primaryRack">
-                        <dt class="col-2">Primary controller <span class="icon icon--help tooltip" aria-label="The rack controller where DHCP service runs on."></span></dt><dd class="four-col">{$ vlanDetails.primaryRack.hostname $}</dd>
+                        <dt>Primary controller
+                            <span class="p-tooltip p-tooltip--top-center">
+                                <i class="p-icon--help">Help:</i>
+                                <span class="p-tooltip__message" role="tooltip">The rack controller where DHCP service runs on.</span>
+                            </span>
+                        </dt>
+                        <dd>{$ vlanDetails.primaryRack.hostname $}</dd>
                     </div>
                     <div data-ng-if="vlanDetails.secondaryRack">
-                        <dt class="col-2">Secondary controller <span class="icon icon--help tooltip" aria-label="The rack controller that will take over DHCP services if the primary fails."></span></dt><dd class="four-col">{$ vlanDetails.secondaryRack.hostname $}</dd>
+                        <dt>Secondary controller
+                            <span class="p-tooltip p-tooltip--top-center">
+                                <i class="p-icon--help">Help:</i>
+                                <span class="p-tooltip__message" role="tooltip">The rack controller that will take over DHCP services if the primary fails.</span>
+                            </span>
+                        </dt>
+                        <dd>{$ vlanDetails.secondaryRack.hostname $}</dd>
                     </div>
                 </dl>
             </div>
         </div>
-        <div class="twelve-col">
-          <h2>Reserved ranges</h2>
-        </div>
-        <maas-ip-ranges vlan="vlanDetails.vlan"></maas-ip-ranges>
-      </div>
     </section>
-    <section class="row">
-        <div class="wrapper--inner">
-            <div class="twelve-col">
+    <section class="p-strip">
+        <div class="row">
+            <h2>Reserved ranges</h2>
+        </div>
+        <div class="row">
+            <maas-ip-ranges vlan="vlanDetails.vlan"></maas-ip-ranges>
+        </div>
+    </section>
+    <section class="p-strip">
+        <div class="row">
+            <div class="col-12">
                 <h2>Subnets on this VLAN</h2>
             </div>
-            <div class="twelve-col">
-                <div class="table">
-                    <header class="table__head">
-                        <div class="table__row">
-                            <div class="table__header table-col--60">Subnet</div>
-                            <div class="table__header table-col--10">Used</div>
-                            <div class="table__header table-col--30">Space</div>
-                        </div>
-                    </header>
-                    <section class="table__body">
-                        <div class="table__row" data-ng-repeat="row in vlanDetails.relatedSubnets">
-                            <div class="table__data table-col--60" aria-label="Subnet"><a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet.cidr $}</a></div>
-                            <div class="table__data table-col--10" aria-label="Used">{$ row.subnet.statistics.usage_string $}</div>
-                            <div class="table__data table-col--30" aria-label="Space"><a href="#space/{$ row.space.id $}">{$ row.space.name $}</a></div>
-                        </div>
-                    </section>
-                </div>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <td class="col-6">Subnet</td>
+                        <td class="col-2">Used</td>
+                        <td class="col-4">Space</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="row in vlanDetails.relatedSubnets">
+                        <td class="col-6" aria-label="Subnet"><a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet.cidr $}</a></td>
+                        <td class="col-2" aria-label="Used">{$ row.subnet.statistics.usage_string $}</td>
+                        <td class="col-4" aria-label="Space"><a href="#space/{$ row.space.id $}">{$ row.space.name $}</a></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </section>
 </div>

@@ -915,7 +915,7 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
 
                 // Errors element.
                 var errorsElement = angular.element(
-                    '<ul class="form__error"></ul>');
+                    '<ul class="p-list u-no-margin--top"></ul>');
                 if(!controller.isTableForm()) {
                     errorsElement.addClass("form__error");
                 }
@@ -923,19 +923,25 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
 
                 // Called by controller to clear all errors.
                 scope.clearErrors = function() {
-                    inputElement.removeClass("has-error");
                     inputElement.removeClass("ng-dirty");
+                    inputElement.removeClass("p-form-validation__input");
+                    inputWrapper.removeClass("p-form-validation");
+                    inputWrapper.removeClass("is-error");
+                    inputWrapper.removeClass("u-no-margin--top");
                     errorsElement.empty();
                 };
 
                 // Called by controller to set errors.
                 scope.setErrors = function(errors) {
                     if(errors.length > 0) {
-                        inputElement.addClass("has-error");
+                        inputWrapper.addClass("p-form-validation");
+                        inputWrapper.addClass("is-error");
+                        inputWrapper.addClass("u-no-margin--top");
                         inputElement.addClass("ng-dirty");
+                        inputElement.addClass("p-form-validation__input");
                         angular.forEach(errors, function(error) {
                             errorsElement.append(
-                              '<li class="form__error-item">' + error + '</li>'
+                              '<li class="p-form-validation__message"><strong>Error:</strong> ' + error + '</li>'
                             );
                         });
                         // Set the input in focus but outside of the current
@@ -1021,7 +1027,7 @@ angular.module('MAAS').directive('maasObjErrors', function() {
             restrict: "E",
             require: ["^^maasObjForm"],
             scope: {},
-            template: '<ul class="form__error"></ul>',
+            template: '<ul class="p-list u-no-margin--top"></ul>',
             link: function(scope, element, attrs, controllers) {
                 // Set on the controller the global error handler.
                 controllers[0].errorScope = scope;
@@ -1037,7 +1043,7 @@ angular.module('MAAS').directive('maasObjErrors', function() {
                     if(errors.length > 0) {
                         angular.forEach(errors, function(error) {
                             ul.append(
-                              '<li class="form__error-item">' + error + '</li>'
+                              '<li class="p-list__item"><i class="p-icon--error"></i> ' + error + '</li>'
                             );
                         });
                     }
