@@ -13,13 +13,13 @@
             <div class="col-3">
                 <h3>Choose source</h3>
                 <ul class="p-list is-split">
-                <li class="p-list__item">
+                <li>
                     <input type="radio" data-ng-model="source.source_type" id="source_maas" value="maas.io" data-ng-change="sourceChanged()" data-ng-disabled="saving">
                     <label class="u-no-margin--top" for="source_maas">maas.io</label>
                 </li>
-                <li class="p-list__item">
+                <li>
                     <input type="radio" data-ng-model="source.source_type" id="source_custom" value="custom" data-ng-change="sourceChanged()" data-ng-disabled="saving">
-                    <label for="source_custom">Custom</label>
+                    <label for="source_custom" class="u-no-margin--top">Custom</label>
                 </li>
             </div>
         </div>
@@ -136,7 +136,7 @@
                             <i class="{$ image.icon $}"></i>
                         </td>
                         <td aria-label="Release">
-                            {$ image.title $} <i class="p-icon--warning tooltip" aria-label="Image no longer exists at the source." data-ng-if="canBeRemoved(image)"></i>
+                            {$ image.title $} <i class="p-icon--warning p-tooltip p-tooltip--top-right" data-ng-if="canBeRemoved(image)" aria-describedby="tooltip-{$ image.resourceId}"><span class="p-tooltip__message" role="tooltip" id="tooltip-{$ image.resourceId}">Image no longer exists at the source.</span></i>
                         </td>
                         <td aria-label="Architecture">{$ image.arch $}</td>
                         <td aria-label="Size">{$ image.size $}</td>
@@ -295,7 +295,6 @@
                     </td>
                     <td class="p-table-expanding__panel" data-ng-if="isShowingDeleteConfirm(image)">
                         <h2 data-ng-click="cancelRemove()" class="u-float--left">Remove image</h2>
-                        <button data-ng-click="cancelRemove()" class="icon icon--remove u-float--right u-margin--top-small u-margin--right-small"></button>
                         <p><i class="p-icon--warning">Warning: </i> Are you sure you want to remove this image?</p>
                         <div class="u-float--right">
                             <a class="p-button--neutral is-inline" data-ng-click="cancelRemove()">Cancel</a>
