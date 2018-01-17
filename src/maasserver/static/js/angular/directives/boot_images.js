@@ -13,18 +13,16 @@ angular.module('MAAS').directive('maasBootImagesStatus', [
             template: [
                 '<p class="page-header__status" ',
                     'data-ng-if="data.region_import_running">',
-                    '<span class="u-text--loading u-margin--left-small">',
-                        '<i class="p-icon--loading u-animation--spin ',
-                            'u-margin--right-tiny"></i>',
+                    '<span class="u-text--loading">',
+                        '<i class="p-icon--loading u-animation--spin"></i>',
                         'Step 1/2: Region controller importing',
                     '</span>',
                 '</p>',
                 '<p class="page-header__status" ',
                     'data-ng-if="!data.region_import_running && ',
                     'data.rack_import_running">',
-                    '<span class="u-text--loading u-margin--left-small">',
-                        '<i class="p-icon--loading u-animation--spin ',
-                            'u-margin--right-tiny"></i>',
+                    '<span class="u-text--loading">',
+                        '<i class="p-icon--loading u-animation--spin"></i>',
                         'Step 2/2: Rack controller(s) importing',
                     '</span>',
                 '</p>'
@@ -99,7 +97,7 @@ angular.module('MAAS').directive('maasBootImages', [
                 // Return the overall title icon.
                 $scope.getTitleIcon = function() {
                     if($scope.bootResources.resources.length === 0) {
-                        return 'p-icon--success-grey';
+                        return 'p-icon--success-muted';
                     } else {
                         return 'p-icon--success';
                     }

@@ -13,14 +13,15 @@
             <div class="col-3">
                 <h3>Choose source</h3>
                 <ul class="p-list is-split">
-                <li>
-                    <input type="radio" data-ng-model="source.source_type" id="source_maas" value="maas.io" data-ng-change="sourceChanged()" data-ng-disabled="saving">
-                    <label class="u-no-margin--top" for="source_maas">maas.io</label>
-                </li>
-                <li>
-                    <input type="radio" data-ng-model="source.source_type" id="source_custom" value="custom" data-ng-change="sourceChanged()" data-ng-disabled="saving">
-                    <label for="source_custom" class="u-no-margin--top">Custom</label>
-                </li>
+                    <li>
+                        <input type="radio" data-ng-model="source.source_type" id="source_maas" value="maas.io" data-ng-change="sourceChanged()" data-ng-disabled="saving">
+                        <label class="u-no-margin--top" for="source_maas">maas.io</label>
+                    </li>
+                    <li>
+                        <input type="radio" data-ng-model="source.source_type" id="source_custom" value="custom" data-ng-change="sourceChanged()" data-ng-disabled="saving">
+                        <label for="source_custom" class="u-no-margin--top">Custom</label>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="row" data-ng-if="isSuperUser() && !source.tooMany && showMirrorPath()">
@@ -37,9 +38,12 @@
                     </div>
                     <div class="col-3">
                         <button class="p-button--neutral" aria-label="Toggle advanced URL controls" data-ng-click="toggleAdvancedOptions()" >
-                            <i data-ng-class="{ 'p-icon--open': !isShowingAdvancedOptions(), 'icon--close': isShowingAdvancedOptions() }"></i>
-                            <span data-ng-if="!isShowingAdvancedOptions()">Show advanced options</span>
-                            <span data-ng-if="isShowingAdvancedOptions()">Hide advanced options</span>
+                            <span data-ng-if="!isShowingAdvancedOptions()">
+                                Show advanced options <i class="p-icon--plus"></i>
+                            </span>
+                            <span data-ng-if="isShowingAdvancedOptions()">
+                                Hide advanced options <i class="p-icon--minus"></i>
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -128,7 +132,7 @@
                     </tr>
                     <tr data-ng-if="!commissioningSeriesSelected()">
                         <td colspan="6" aria-label="Error">
-                            <i class="p-icon--error"></i> Ubuntu {$ bootResources.ubuntu.commissioning_series $} must be selected as it is the operating system used for commissioning.
+                            <i class="p-icon--error">Error: </i> Ubuntu {$ bootResources.ubuntu.commissioning_series $} must be selected as it is the operating system used for commissioning.
                         </td>
                     </tr>
                     <tr data-ng-repeat="image in ubuntuImages | orderBy:['-title', 'arch']" data-ng-class="{'is-active': canBeRemoved(image) && ubuntuDeleteId === image.resourceId}">
@@ -136,7 +140,7 @@
                             <i class="{$ image.icon $}"></i>
                         </td>
                         <td aria-label="Release">
-                            {$ image.title $} <i class="p-icon--warning p-tooltip p-tooltip--top-right" data-ng-if="canBeRemoved(image)" aria-describedby="tooltip-{$ image.resourceId}"><span class="p-tooltip__message" role="tooltip" id="tooltip-{$ image.resourceId}">Image no longer exists at the source.</span></i>
+                            {$ image.title $} <span class="p-tooltip__message" role="tooltip" id="tooltip-{$ image.resourceId}" data-ng-if="canBeRemoved(image)"><i class="p-icon--warning p-tooltip p-tooltip--top-right"  aria-describedby="tooltip-{$ image.resourceId}">Image no longer exists at the source.</span></i>
                         </td>
                         <td aria-label="Architecture">{$ image.arch $}</td>
                         <td aria-label="Size">{$ image.size $}</td>
@@ -145,7 +149,7 @@
                             <button data-ng-if="(isSuperUser() && canBeRemoved(image))" class="p-button--negative" aria-label="Remove" data-ng-click="deleteImage(image)">Remove</button>
                         </td>
                         <td colspan="6" class="p-table-expanding__panel" data-ng-if="canBeRemoved(image) && ubuntuDeleteId === image.resourceId">
-                            <p><span class="p-icon--warning"></span>Are you sure you want to remove this image?</p>
+                            <p><i class="p-icon--warning">Warning:</i> Are you sure you want to remove this image?</p>
                             <button class="p-button--neutral is-inline" data-ng-click="deleteImage()">Cancel</button>
                             <button class="p-button--negative" data-ng-click="confirmDeleteImage()">Remove</button>
                         </td>
@@ -173,38 +177,38 @@
                 </span>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <table class="p-table-expanding">
-                    <thead>
-                        <tr>
-                            <th colspan="2">Name</th>
-                            <th>Architecture</th>
-                            <th>Size</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-ng-if="!ubuntuCoreImages.length">
-                            <td colspan="5">No images have been selected for syncing.</td>
-                        </tr>
-                        <tr data-ng-repeat="image in ubuntuCoreImages | orderBy:['-title', 'arch']">
-                            <td>
-                                <i class="{$ image.icon $}"></i>
-                            </td>
-                            <td aria-label="Name">{$ image.title $}</td>
-                            <td aria-label="Architecture">{$ image.arch $}</td>
-                            <td aria-label="Size">{$ image.size $}</td>
-                            <td aria-label="Status">{$ image.status $}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="p-table-expanding">
+                <thead>
+                    <tr>
+                        <th colspan="2">Name</th>
+                        <th>Architecture</th>
+                        <th>Size</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-if="!ubuntuCoreImages.length">
+                        <td colspan="5">No images have been selected for syncing.</td>
+                    </tr>
+                    <tr data-ng-repeat="image in ubuntuCoreImages | orderBy:['-title', 'arch']">
+                        <td>
+                            <i class="{$ image.icon $}"></i>
+                        </td>
+                        <td aria-label="Name">{$ image.title $}</td>
+                        <td aria-label="Architecture">{$ image.arch $}</td>
+                        <td aria-label="Size">{$ image.size $}</td>
+                        <td aria-label="Status">{$ image.status $}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="row" data-ng-if="!source.tooMany">
-            <div class="col-12 u-align--right">
-                <button class="p-button--positive" data-ng-if="isSuperUser()" data-ng-disabled="saving" data-ng-click="saveUbuntuCoreSelection()">{$ getSaveSelectionText() $}</button>
-            </div>
+    </div>
+    <div class="row" data-ng-if="!source.tooMany">
+        <div class="col-12 u-align--right">
+            <button class="p-button--positive" data-ng-if="isSuperUser()" data-ng-disabled="saving" data-ng-click="saveUbuntuCoreSelection()">{$ getSaveSelectionText() $}</button>
         </div>
     </div>
 </div>
@@ -230,12 +234,11 @@
                         <th>Architecture</th>
                         <th>Size</th>
                         <th>Status</th>
-                        <th class="u-align--right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr data-ng-if="!otherImages.length">
-                        <td colspan="6">
+                        <td colspan="5">
                             No images have been selected for syncing.
                         </td>
                     </tr>
@@ -249,7 +252,6 @@
                         <td aria-label="Architecture">{$ image.arch $}</td>
                         <td aria-label="Size">{$ image.size $}</td>
                         <td aria-label="Status">{$ image.status $}</td>
-                        <td>&nbsp;</td>
                     </tr>
                 </tbody>
             </table>
