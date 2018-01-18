@@ -7,10 +7,10 @@
         <div class="col-4">
             <div class="page-header__controls">
                 <div data-ng-if="pods.length > 0 && !selectedItems.length">
-                    <button class="p-button--neutral is-inline" data-ng-click="add.open = true" data-ng-if="!add.open">Add pod</button>
+                    <button class="p-button--neutral" data-ng-click="add.open = true" data-ng-if="!add.open">Add pod</button>
                 </div>
                 <div data-ng-if="isSuperUser() && selectedItems.length">
-                    <span class="u-margin--right">{$ selectedItems.length $} Selected</span>
+                    <p>{$ selectedItems.length $} Selected</p>
                     <div data-maas-cta="action.options" data-ng-model="action.option">
                     </div>
                 </div>
@@ -25,24 +25,22 @@
                     <span data-ng-pluralize count="action.progress.errors" when="{'one': 'pod', 'other': 'pods'}"></span>,
                     see listing for specific error for each pod.
                 </p>
-                <div class="">
-                    <button class="p-button--base is-inline" data-ng-click="actionCancel()">Cancel</button>
-                    <button class="is-inline" data-ng-class="action.option.name === 'delete' ? 'button--destructive' : 'button--positive'" data-ng-click="actionGo()" data-ng-if="!hasActionsFailed()">
-                        <span data-ng-if="action.option.name === 'refresh'">Refresh {$ selectedItems.length $}
-                            <span data-ng-pluralize count="selectedItems.length" when="{'one': 'pod', 'other': 'pods'}"></span>
-                        </span>
-                        <span data-ng-if="action.option.name === 'delete'">Delete {$ selectedItems.length $}
-                            <span data-ng-pluralize count="selectedItems.length" when="{'one': 'pod', 'other': 'pods'}"></span>
-                        </span>
-                    </button>
-                    <button class="p-button--neutral is-inline" data-ng-click="actionGo()" data-ng-if="hasActionsFailed()">Retry</button>
-                </div>
+                <button class="p-button--base is-inline" data-ng-click="actionCancel()">Cancel</button>
+                <button class="is-inline" data-ng-class="action.option.name === 'delete' ? 'button--destructive' : 'button--positive'" data-ng-click="actionGo()" data-ng-if="!hasActionsFailed()">
+                    <span data-ng-if="action.option.name === 'refresh'">Refresh {$ selectedItems.length $}
+                        <span data-ng-pluralize count="selectedItems.length" when="{'one': 'pod', 'other': 'pods'}"></span>
+                    </span>
+                    <span data-ng-if="action.option.name === 'delete'">Delete {$ selectedItems.length $}
+                        <span data-ng-pluralize count="selectedItems.length" when="{'one': 'pod', 'other': 'pods'}"></span>
+                    </span>
+                </button>
+                <button class="p-button--neutral is-inline" data-ng-click="actionGo()" data-ng-if="hasActionsFailed()">Retry</button>
             </form>
         </div>
         <div class="row">
             <div class="col-12" data-ng-if="hasActionsInProgress()">
                 <p class="">
-                    <i class="p-icon--spinner u-animation--spin"></i>
+                    <i class="p-icon--spinner"></i>
                     Finished performing {$ action.option.sentence $} on {$ action.progress.completed $} of {$ action.progress.total $} pods.
                 </p>
             </div>
