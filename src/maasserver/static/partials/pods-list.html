@@ -39,14 +39,14 @@
         </div>
         <div class="row">
             <div class="col-12" data-ng-if="hasActionsInProgress()">
-                <p class="">
-                    <i class="p-icon--spinner"></i>
+                <p>
+                    <i class="p-icon--spinner u-animation--spin"></i>
                     Finished performing {$ action.option.sentence $} on {$ action.progress.completed $} of {$ action.progress.total $} pods.
                 </p>
             </div>
         </div>
     </div>
-    <div class="" data-ng-class="{ 'u-hide': !add.open }">
+    <div data-ng-class="{ 'u-hide': !add.open }">
         <hr />
         <maas-obj-form obj="add.obj" manager="podManager" manager-method="createItem"
             table-form="true" save-on-blur="false" after-save="cancelAddPod" data-ng-if="add.open">
