@@ -159,4 +159,10 @@
   .u-float--none {
     float: none !important;
   }
+
+  // XXX Ant: 25.01.18 Can be removed when this issue is resolved
+  // https://github.com/vanilla-framework/vanilla-framework/issues/1542
+  .p-navigation--sidebar .sidebar__content {
+    position: relative;
+  }
 }
