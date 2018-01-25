@@ -29,12 +29,12 @@
             <table class="p-table-expanding" style="overflow: visible;">
                 <thead data-ng-if="windowWidth >= 769" sticky sticky-class="table__head--sticky" offset="88" media-query="min-width: 768px">
                     <tr>
-                        <th class="col-3"><a href="" data-ng-click="sortTable('hostname')" data-ng-class="{'is-sorted': predicate === 'hostname', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Name</a></th>
+                        <th class="col-2"><a href="" data-ng-click="sortTable('hostname')" data-ng-class="{'is-sorted': predicate === 'hostname', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Name</a></th>
                         <th class="col-2"><a href="" data-ng-click="sortTable('mac_address')" data-ng-class="{'is-sorted': predicate === 'mac_address', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">MAC address</a></th>
                         <th class="col-2"><a href="" data-ng-click="sortTable('ip')" data-ng-class="{'is-sorted': predicate === 'ip', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">IP</a></thdiv>
                         <th class="col-2"><a href="" data-ng-click="sortTable('observer_hostname')" data-ng-class="{'is-sorted': predicate === 'observer_hostname', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Rack</a></th>
                         <th class="col-2"><a href="" data-ng-click="sortTable('last_seen')" data-ng-class="{'is-sorted': predicate === 'last_seen', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Last seen</a></th>
-                        <th class="col-1">Actions</th>
+                        <th class="col-2 u-align--right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,7 +56,7 @@
                     <div vs-repeat vs-scroll-parent="window">
                         <tr data-ng-repeat="discovery in discoveredDevices | orderBy:predicate:reverse track by discovery.first_seen"
                         data-ng-class="{'is-active' : discovery.first_seen === selectedDevice}">
-                            <td class="col-3" aria-label="Name" data-ng-if="discovery.first_seen !== selectedDevice">
+                            <td class="col-2" aria-label="Name" data-ng-if="discovery.first_seen !== selectedDevice">
                                 {$ getDiscoveryName(discovery) $}
                                 <div class="p-tooltip p-tooltip--top-center" aria-describedby="tp-hdcp">
                                     <i data-ng-show="discovery.is_external_dhcp === true" class="p-icon--information ng-hide"></i>
@@ -77,7 +77,7 @@
                             <td class="col-2" aria-label="Last seen" data-ng-if="discovery.first_seen !== selectedDevice">
                                 {$ discovery.last_seen $}
                             </td>
-                            <td class="col-1" data-ng-if="discovery.first_seen !== selectedDevice">
+                            <td class="col-2" data-ng-if="discovery.first_seen !== selectedDevice">
                                 <div class="u-align--right">
                                     <button class="p-button--neutral" data-ng-if="windowWidth >= 769"
                                         data-ng-click="toggleSelected(discovery.first_seen)">
