@@ -30,11 +30,6 @@
     background-color: $color-x-light;
   }
 
-  [class^="ng-"],
-  [class^="yui3-"] {
-    margin-top: 0 !important;
-  }
-
   // XXX Can be remove when this Vanilla issue is resolved
   // https://github.com/vanilla-framework/vanilla-framework/issues/1505
   [class^="p-icon--"],

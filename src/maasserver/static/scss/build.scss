@@ -14,6 +14,7 @@
 @import 'patterns_tabs';
 @import 'patterns_onoffswitch';
 @import 'patterns_table-expanding';
+@import 'patterns_card';
 
 // Include local patterns
 @include maas;
@@ -24,3 +25,4 @@
 @include maas-tabs;
 @include maas-onoffswitch;
 @include maas-table-expanding;
+@include maas-cards;
