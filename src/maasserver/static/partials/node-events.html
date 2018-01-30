@@ -1,5 +1,5 @@
 <div data-ng-hide="loaded">
-    <header class="p-strip--light is-shallow is-bordered page-header" sticky media-query="min-width: 769px">
+    <header class="p-strip--light is-shallow is-bordered page-header" media-query="min-width: 769px">
         <div class="row">
             <h1 class="page-header__title">Loading...</h1>
         </div>
@@ -32,7 +32,7 @@
                     <input type="submit" class="search__submit" />
                 </div>
                 <table id="events-listing" window-width>
-                    <thead data-ng-if="windowWidth >= 769" sticky sticky-class="table__head--sticky" offset="88" media-query="min-width: 768px">
+                    <thead data-ng-if="windowWidth >= 769" offset="88" media-query="min-width: 768px">
                         <tr>
                             <th class="table-col--1"></th>
                             <th class="table-col--79">Event</th>

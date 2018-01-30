@@ -1,4 +1,4 @@
-<header class="p-strip--light is-shallow is-bordered page-header" sticky media-query="min-width: 769px" window-width>
+<header class="p-strip--light is-shallow is-bordered page-header" media-query="min-width: 769px" window-width>
     <div class="row">
         <div class="col-8">
             <h1 class="page-header__title">Network discovery</h1>
@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-12">
             <table class="p-table-expanding" style="overflow: visible;">
-                <thead data-ng-if="windowWidth >= 769" sticky sticky-class="table__head--sticky" offset="88" media-query="min-width: 768px">
+                <thead data-ng-if="windowWidth >= 769" offset="88" media-query="min-width: 768px">
                     <tr>
                         <th class="col-2"><a href="" data-ng-click="sortTable('hostname')" data-ng-class="{'is-sorted': predicate === 'hostname', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Name</a></th>
                         <th class="col-2"><a href="" data-ng-click="sortTable('mac_address')" data-ng-class="{'is-sorted': predicate === 'mac_address', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">MAC address</a></th>
