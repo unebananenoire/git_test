@@ -70,7 +70,7 @@
                     <i data-ng-if="showFailedTestWarning(node)" class="icon icon--warning tooltip tooltip--left" aria-label="Machine has failed tests; use with caution!"></i>
                 </span>
             </td>
-            <td aria-label="Owner">{$ node.owner $}</td>
+            <td aria-label="Owner">&nbsp;{$ node.owner $}</td>
             <td class="u-align--right u-hide--small p-tooltip p-tooltip--top-right" aria-label="CPU">
                 <span data-maas-script-status="script-status" data-script-status="node.cpu_test_status" data-ng-if="node.cpu_test_status !== 2" aria-describedby="node-cpu-tooltip-{$ node.fqdn $}"></span>
                 {$ node.cpu_count $}
