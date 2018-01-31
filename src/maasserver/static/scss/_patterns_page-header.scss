@@ -1,6 +1,9 @@
 @mixin maas-page-header {
   .page-header {
-    padding: 1.5rem 0 !important;
+    padding: 1.5rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 
     &__title {
       @include vf-heading-2;
