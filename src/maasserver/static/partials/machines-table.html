@@ -60,14 +60,23 @@
             <td class="u-hide--small">
                 <i data-ng-if="showSpinner(node)" class="p-icon--spinner u-animation--spin u-hide--small"></i>
                 <i data-ng-if="showNodeStatus(node)" data-maas-script-status="script-status" data-script-status="node.other_test_status" class="tooltip tooltip--left" aria-label="{$ node.other_test_status_tooltip $}"></i>
-                <i data-ng-if="showFailedTestWarning(node)" class="icon icon--warning u-hide--small tooltip tooltip--left" aria-label="Machine has failed tests; use with caution!"></i>
+                <span class="p-tooltip p-tooltip--top-right">
+                    <i data-ng-if="showFailedTestWarning(node)" class="p-icon--warning u-hide--small" aria-describedby="failed-test-warning-tooltip-{$ node.fqdn $}"></i>
+                    <span class="p-tooltip__message" role="tooltip" id="failed-test-warning-tooltip-{$ node.fqdn $}">Machine has failed tests; use with caution!</span>
+                </span>
             </td>
             <td class="status u-text--truncate" aria-label="{$ node.status_tooltip $}">
                 {$ getStatusText(node) $}
                 <span class="u-hide--medium u-hide--large">
                     <i data-ng-if="showSpinner(node)" class="p-icon--spinner u-animation--spin"></i>
-                    <i data-ng-if="showNodeStatus(node)" data-maas-script-status="script-status" data-script-status="node.other_test_status" class="tooltip tooltip--left" aria-label="{$ node.other_test_status_tooltip $}"></i>
-                    <i data-ng-if="showFailedTestWarning(node)" class="icon icon--warning tooltip tooltip--left" aria-label="Machine has failed tests; use with caution!"></i>
+                    <span class="p-tooltip p-tooltip--top-right">
+                        <i data-ng-if="showNodeStatus(node)" data-maas-script-status="script-status" data-script-status="node.other_test_status" aria-labelledby="{$ node.other_test_status_tooltip $}"></i>
+                        <span class="p-tooltip__message" role="tooltip" id="other-status-tooltip-{$ node.fqdn $}">{$ node.other_test_status_tooltip $}</span>
+                    </span>
+                    <span class="p-tooltip p-tooltip--top-right">
+                        <i data-ng-if="showFailedTestWarning(node)" class="p-icon--warning" aria-describedby="failed-test-tooltip-large-{$ node.fqdn $}"></i>
+                        <span class="p-tooltip__message" role="tooltip" id="failed-test-tooltip-large-{$ node.fqdn $}">{$ node.other_test_status_tooltip $}</span>
+                    </span>
                 </span>
             </td>
             <td aria-label="Owner">&nbsp;{$ node.owner $}</td>
