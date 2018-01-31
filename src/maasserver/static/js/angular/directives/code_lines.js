@@ -31,10 +31,9 @@
 
                  // Each line is to be wrapped by a span which is style & given
                  // its appropriate line number
-                 classes = "code-block__line u-whitespace--prewrap";
                  $.each(lines, function() {
-                   insert += '<code class="' + classes + '">' +
-                   this + '</code>\n';
+                   insert += '<code><span class="code-line">' +
+                   this + '</span></code>\n';
                  });
 
                  // Re-insert the contents
