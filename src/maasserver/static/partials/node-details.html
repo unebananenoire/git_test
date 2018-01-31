@@ -6,7 +6,7 @@
     </header>
 </div>
 <div data-ng-if="loaded">
-    <header sticky use-placeholder="true" media-query="min-width: 769px" class="p-strip--light is-shallow is-bordered page-header">
+    <header sticky use-placeholder="true" media-query="min-width: 769px" class="p-strip--light is-shallow page-header u-no-padding--bottom">
         <div class="row">
             <div class="col-8">
                 <h1 class="page-header__title">
@@ -84,7 +84,7 @@
                             </div>
                             <div class="p-form__group">
                                 <label class="p-form__label" for="skipStorage">Retain storage configuration</label>
-                                <div class="p-form__control u-clearfix"></div>
+                                <div class="p-form__control u-clearfix">
                                     <input id="skipStorage" type="checkbox"
                                         data-ng-model="commissionOptions.skipStorage">
                                 </div>
@@ -211,9 +211,8 @@
                 </div>
             </div>
         </div>
-    </header>
-    <div class="u-no-margin--top" sticky use-placeholder="true" media-query="min-width: 769px" offset="89" data-ng-class="{ 'u-visibility--hidden': action.option }">
-        <nav class="p-tabs u-no-margin--top">
+
+        <nav class="p-tabs">
             <ul class="p-tabs__list" role="tablist">
                 <li class="p-tabs__item" role="presentation">
                     <a role="tab" class="p-tabs__link" data-ng-if="!isController && !isDevice"
@@ -277,7 +276,8 @@
                 </li>
             </ul>
         </nav>
-    </div>
+    </header>
+    
     <section class="p-strip is-shallow" data-ng-if="section.area === 'summary'">
       <div class="row">
         <div data-ng-if="isSuperUser()">
