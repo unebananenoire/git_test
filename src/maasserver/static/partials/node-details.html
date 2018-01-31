@@ -1995,10 +1995,11 @@
                                         <div class="table__row"
                                             data-ng-if="availableMode !== null && activeMode !== 'multi'"
                                             data-ng-class="{ 'is-active': availableMode !== null && activeMode !== 'multi' }">
-                                            <div data-ng-if="availableMode === 'edit'">
-                                                <div class="table__data u-float--right">
-                                                    <button class="button--base button--inline" data-ng-click="availableCancel(item)">Cancel</button>
-                                                    <button class="button--positive button--inline"
+                                            <div data-ng-if="availableMode === 'edit'" class="row">
+                                                <hr />
+                                                <div class="col-12 u-align--right">
+                                                    <button class="p-button--base" data-ng-click="availableCancel(item)">Cancel</button>
+                                                    <button class="p-button--positive u-no-margin--top"
                                                         data-ng-disabled="isMountPointInvalid(item.$options.mountPoint) || isNameInvalid(item)"
                                                         data-ng-click="availableConfirmEdit(item)">Save</button>
                                                 </div>
@@ -2012,18 +2013,20 @@
                                                     <button class="button--destructive button--inline" data-ng-click="availableConfirmDelete(item)">Remove</button>
                                                 </div>
                                             </div>
-                                              <div data-ng-if="availableMode === 'partition'">
-                                                <div class="table__data u-float--right">
-                                                    <button class="button--base button--inline" data-ng-click="availableCancel(item)">Cancel</button>
-                                                    <button class="button--positive button--inline"
+                                            <div data-ng-if="availableMode === 'partition'" class="row">
+                                                <hr />
+                                                <div class="col-12 u-align--right">
+                                                    <button class="p-button--base" data-ng-click="availableCancel(item)">Cancel</button>
+                                                    <button class="p-button--positive u-no-margin--top"
                                                         data-ng-disabled="isAddPartitionSizeInvalid(item) || isMountPointInvalid(item.$options.mountPoint)"
                                                         data-ng-click="availableConfirmPartition(item)">Add partition</button>
                                                 </div>
                                             </div>
-                                            <div data-ng-if="availableMode === 'logical-volume'">
-                                                <div class="table__data u-float--right">
-                                                    <button class="button--base button--inline" data-ng-click="availableCancel(item)">Cancel</button>
-                                                    <button class="button--positive button--inline"
+                                            <div data-ng-if="availableMode === 'logical-volume'" class="row">
+                                                <hr />
+                                                <div class="col-12 u-align--right">
+                                                    <button class="p-button--base" data-ng-click="availableCancel(item)">Cancel</button>
+                                                    <button class="p-button--positive u-no-margin--top"
                                                         data-ng-disabled="isLogicalVolumeNameInvalid(item) || isAddLogicalVolumeSizeInvalid(item) || isMountPointInvalid(item.$options.mountPoint)"
                                                         data-ng-click="availableConfirmLogicalVolume(item)">Add logical volume</button>
                                                 </div>
@@ -2214,137 +2217,113 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="table__row is-active">
-                                        <div class="table__data table-col--100">
-                                            <div class="table__row table__row--head is-active u-border--none u-display--desktop">
-                                                <div class="table__header table-col--15">Name</div>
-                                                <div class="table__header table-col--15">Size</div>
-                                                <div class="table__header table-col--15">Device type</div>
-                                                <div class="table__header table-col--10">Active</div>
-                                                <div class="table__header table-col--15">
-                                                    <span data-ng-show="showSparesColumn()">Spare (Maximum {$ getTotalNumberOfAvailableSpares() $})</span>
+                                    </td>
+                                </tr>
+                                <tr data-ng-if="availableMode === 'volume-group'">
+                                    <div class="row">
+                                        <td class="col-1">
+                                            <input type="checkbox" class="checkbox" id="vg-create" disabled="disabled" checked />
+                                            <label for="vg-create"></label>
+                                        </td>
+                                        <td class="col-2 p-form-validation"
+                                            data-ng-class="{ 'is-error': isNewDiskNameInvalid() }">
+                                            <input type="text" class="p-form-validation__input"
+                                                data-ng-model="availableNew.name">
+                                        </td>
+                                        <td class="col-9"></td>
+                                        <td class="p-table-expanding__panel">
+                                            <div class="row" data-ng-if="windowWidth <= 768">
+                                                <div class="col-8">
+                                                    <h2 data-ng-click="availableCancel()">Creating volume group</h2>
                                                 </div>
-                                                <div class="table__header table-col--30"></div>
-                                            </div>
-                                            <div class="table__row u-border--none is-active"
-                                                data-ng-repeat="device in availableNew.devices">
-                                                <div class="table__data table__data--children u-padding--top-none table-col--15" aria-label="Name">{$ device.name $}</div>
-                                                <div class="table__data table__data--children u-padding--top-none table-col--15" aria-label="Size">{$ device.size_human $}</div>
-                                                <div class="table__data table__data--children u-padding--top-none table-col--15" aria-label="Tyoe">{$ getDeviceType(device) $}</div>
-                                                <div class="table__data table__data--children u-padding--top-none table-col--10" aria-label="Active">
-                                                    <input type="radio" id="{$ device.name $}-active" name="{$ device.name $}-options"
-                                                        data-ng-checked="isActiveRAIDMember(device)"
-                                                        data-ng-click="setAsActiveRAIDMember(device)">
-                                                    <label for="{$ device.name $}-active"></label>
+                                                <div class="col-4 u-align--right">
+                                                    <button data-ng-click="availableCancel()" class="p-button">
+                                                        <i class="p-icon--close">Cancel</i>
+                                                    </button>
                                                 </div>
-                                                <div class="table__data table__data--children u-padding--top-none table-col--15" aria-label="Spare" data-ng-show="showSparesColumn()">
-                                                    <input type="radio" name="{$ device.name $}-options" id="{$ device.name $}-spare"
-                                                        data-ng-checked="isSpareRAIDMember(device)"
-                                                        data-ng-click="setAsSpareRAIDMember(device)"
-                                                        data-ng-disabled="getNumberOfRemainingSpares() <= 0">
-                                                    <label for="{$ device.name $}-spare"></label>
+                                            </div>
+                                            <form class="p-form p-form--stacked">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="p-form__group p-form-validation u-hide--large">
+                                                            <label for="new-vg-name" class="p-form__label">Name</label>
+                                                            <div class="p-form__controls">
+                                                                <input type="text" class="p-form-validation__input" id="new-vg-name"
+                                                                    data-ng-class="{ 'is-error': isNewDiskNameInvalid() }"
+                                                                    data-ng-model="availableNew.name">
+                                                            </div>
+                                                        </div>
+                                                        <dl>
+                                                            <dt>Size</dt>
+                                                            <dd>{$ getNewVolumeGroupSize() $}</dd>
+                                                            <dt>Type</dt>
+                                                            <dd>Volume group</dd>
+                                                        </dl>
+                                                    </div>
                                                 </div>
-                                                <div class="table__data u-display--desktop u-padding--top-none table-col--30"></div>
+                                            </form>
+                                            <div class="row">
+                                                <table>
+                                                    <tr class="u-hide u-show--large">
+                                                        <th class="col-2">Name</th>
+                                                        <th class="col-2">Size</th>
+                                                        <th class="col-2">Device type</th>
+                                                        <th class="col-6"></th>
+                                                    </tr>
+                                                    <tr data-ng-repeat="device in availableNew.devices">
+                                                        <td class="col-2" aria-label="Name">{$ device.name $}</td>
+                                                        <td class="col-2" aria-label="Size">{$ device.size_human $}</td>
+                                                        <td class="col-2" aria-label="Device type">{$ getDeviceType(device) $}</td>
+                                                        <td class="col-6 u-hide u-show--large"></td>
+                                                    </tr>
+                                                </table>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="table__row is-active">
-                                        <div class="table__data u-float--right">
-                                            <button class="button--base button--inline"
-                                                data-ng-click="availableCancel()">Cancel</button>
-                                            <button class="button--positive button--inline"
-                                                data-ng-disabled="!createRAIDCanSave()"
-                                                data-ng-click="availableConfirmCreateRAID()">Create RAID</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="table__row is-active" data-ng-if="availableMode === 'volume-group'">
-                                <div class="table__data table-col--3">
-                                    <input type="checkbox" class="checkbox" id="vg-create" disabled="disabled" checked />
-                                    <label for="vg-create"></label>
-                                </div>
-                                <div class="table__data table-col--15">
-                                    <input type="text" class="table__input"
-                                        data-ng-class="{ 'has-error': isNewDiskNameInvalid() }"
-                                        data-ng-model="availableNew.name">
-                                </div>
-                                <div class="table__data table-col--82"></div>
-                                <div class="table__dropdown">
-                                    <div class="table__dropdown-title">
-                                        <h2 data-ng-click="availableCancel()" class="u-float--left">Creating volume group</h2>
-                                        <button data-ng-click="availableCancel()" class="icon icon--remove u-float--right u-margin--top-small u-margin--right-small"></button>
-                                    </div>
-                                    <div class="table__row form form--stack is-active">
-                                        <div class="table__data table-col--100">
-                                            <div class="p-form__fieldset six-col">
-                                                <div class="p-form__group u-display--mobile">
-                                                    <label for="new-vg-name">Name</label>
-                                                    <input type="text" class="three-col" id="new-vg-name"
-                                                        data-ng-class="{ 'has-error': isNewDiskNameInvalid() }"
-                                                        data-ng-model="availableNew.name">
+                                            <div class="row">
+                                                <div class="col-12 u-align--right">
+                                                    <button class="p-button--base"
+                                                        data-ng-click="availableCancel()">Cancel</button>
+                                                    <button class="p-button--positive"
+                                                        data-ng-disabled="!createVolumeGroupCanSave()"
+                                                        data-ng-click="availableConfirmCreateVolumeGroup()">Create volume group</button>
                                                 </div>
-                                                <dl>
-                                                    <dt class="two-col">Size</dt>
-                                                        <dd class="four-col last-col">{$ getNewVolumeGroupSize() $}</dd>
-                                                    <dt class="two-col">Type</dt>
-                                                        <dd class="four-col last-col">Volume group</dd>
-                                                </dl>
                                             </div>
-                                        </div>
+                                        </td>
                                     </div>
-                                    <div class="table__row is-active">
-                                        <div class="table__data table-col--100">
-                                            <div class="table__row is-active u-border--none table__row--head u-display--desktop">
-                                                <div class="table__header table-col--15">Name</div>
-                                                <div class="table__header table-col--15">Size</div>
-                                                <div class="table__header table-col--15">Device type</div>
-                                                <div class="table__header table-col--55"></div>
-                                            </div>
-                                            <div class="table__row is-active u-border--none"
-                                                data-ng-repeat="device in availableNew.devices">
-                                                <div class="table__data table__data--children u-padding--top-none table-col--15" aria-label="Name">{$ device.name $}</div>
-                                                <div class="table__data table__data--children u-padding--top-none table-col--15" aria-label="Size">{$ device.size_human $}</div>
-                                                <div class="table__data table__data--children u-padding--top-none table-col--15" aria-label="Device type">{$ getDeviceType(device) $}</div>
-                                                <div class="table__data table__data--children u-padding--top-none table-col--55 u-display--desktop"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="table__row is-active">
-                                        <div class="table__data u-float--right">
-                                            <button class="button--base button--inline"
-                                                data-ng-click="availableCancel()">Cancel</button>
-                                            <button class="button--positive button--inline"
-                                                data-ng-disabled="!createVolumeGroupCanSave()"
-                                                data-ng-click="availableConfirmCreateVolumeGroup()">Create volume group</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <button class="button--secondary button--inline tooltip"
-                        aria-label="Select two or more physical devices to create a RAID"
-                        data-ng-disabled="!canCreateRAID()"
-                        data-ng-hide="isAllStorageDisabled() || !isSuperUser()"
-                        data-ng-click="createRAID()">Create RAID</button>
-                    <button class="button--secondary button--inline tooltip"
-                        aria-label="Select one or more devices to create a volume group"
-                        data-ng-disabled="!canCreateVolumeGroup()"
-                        data-ng-hide="isAllStorageDisabled() || !isSuperUser()"
-                        data-ng-click="createVolumeGroup()">Create volume group</button>
-                    <button class="button--secondary button--inline tooltip"
-                        aria-label="Select one device to create a cache set"
-                        data-ng-disabled="!canCreateCacheSet()"
-                        data-ng-hide="isAllStorageDisabled() || !isSuperUser()"
-                        data-ng-click="createCacheSet()">Create cache Set</button>
-                    <button class="button--secondary button--inline tooltip"
-                        aria-label="{$ getCannotCreateBcacheMsg() $}"
-                        data-ng-class="{ tooltip: !canCreateBcache() }"
-                        data-ng-disabled="!canCreateBcache()"
-                        data-ng-hide="isAllStorageDisabled() || !isSuperUser()"
-                        data-ng-click="createBcache()">Create bcache</button>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <button class="p-button--neutral p-tooltip p-tooltip--top-center"
+                            data-ng-disabled="!canCreateRAID()"
+                            data-ng-hide="isAllStorageDisabled() || !isSuperUser()"
+                            data-ng-click="createRAID()">
+                            Create RAID
+                            <span class="p-tooltip__message" role="tooltip">Select two or more physical devices to create a RAID</span>
+                        </button>
+                        <button class="p-button--neutral p-tooltip p-tooltip--top-center"
+                            data-ng-disabled="!canCreateVolumeGroup()"
+                            data-ng-hide="isAllStorageDisabled() || !isSuperUser()"
+                            data-ng-click="createVolumeGroup()">
+                            Create volume group
+                            <span class="p-tooltip__message" role="tooltip">Select one or more devices to create a volume group</span>
+                        </button>
+                        <button class="p-button--neutral p-tooltip p-tooltip--top-center"
+                            data-ng-disabled="!canCreateCacheSet()"
+                            data-ng-hide="isAllStorageDisabled() || !isSuperUser()"
+                            data-ng-click="createCacheSet()">
+                            Create cache Set
+                            <span class="p-tooltip__message" role="tooltip">Select one device to create a cache set</span>
+                        </button>
+                        <button class="p-button--neutral p-tooltip p-tooltip--top-center"
+                            data-ng-class="{ p-tooltip: !canCreateBcache() }"
+                            data-ng-disabled="!canCreateBcache()"
+                            data-ng-hide="isAllStorageDisabled() || !isSuperUser()"
+                            data-ng-click="createBcache()">
+                            Create bcache
+                            <span class="p-tooltip__message" role="tooltip">{$ getCannotCreateBcacheMsg() $}</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="twelve-col">
                     <h3>Used disks and partitions</h3>
