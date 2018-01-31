@@ -14,8 +14,9 @@
   <script type="text/javascript" src="{% url "merge" filename="maas-settings-yui.js" %}?v={{files_version}}"></script>
 {% endblock %}
 
+{% block page-header-classes %}u-no-padding--bottom{% endblock %}
 {% block page-navigation %}
-<nav class="p-tabs u-no-margin--top">
+<nav class="p-tabs">
     <ul class="p-tabs__list" role="tablist">
         <li class="p-tabs__item" role="presentation">
             <a href="{% url 'settings' %}" class="p-tabs__link" role="tab" aria-selected="true">General</a>

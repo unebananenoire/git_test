@@ -1,11 +1,11 @@
-<header class="p-strip--light is-shallow is-bordered page-header" media-query="min-width: 769px">
+<header class="p-strip--light is-shallow is-bordered page-header u-no-padding--bottom" media-query="min-width: 769px">
     <div class="row">
         <div class="col-8">
             <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
             <h1 class="page-header__title">Nodes</h1>
 
             <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
-            <p class="page-header__status" data-ng-show="loading"><span class="u-text--loading"><i class="p-icon--spinner u-animation--spin"></i> Loading...</span></p>
+            <p class="page-header__status u-no-margin--top" data-ng-show="loading"><span class="u-text--loading"><i class="p-icon--spinner u-animation--spin"></i> Loading...</span></p>
         </div>
 
         <div class="col-4">
@@ -76,8 +76,8 @@
         </div>
     </div>
 
-    <div class="row u-no-margin--top">
-        <div data-ng-repeat="tab in ['nodes', 'switches']">
+    <div class="row u-no-margin--top"> 
+        <div class="u-no-margin--top" data-ng-repeat="tab in ['nodes', 'switches']">
             <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
             <div class="page-header__dropdown" data-ng-class="{ 'u-hide': !tabs[tab].actionOption }">
                 <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
@@ -675,49 +675,49 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
             </div>
         </div>
     </div>
+    <div media-query="min-width: 769px" class="p-strip is-shallow u-no-padding--bottom" data-ng-class="{ 'u-off-screen': tabs.nodes.actionOption || addHardwareScope.viewable || tabs.devices.actionOption || addDeviceScope.viewable || tabs.controllers.actionOption || tabs.controllers.addController }">
+        <nav class="p-tabs">
+            <ul class="p-tabs__list" role="tablist">
+                <li class="p-tabs__item" role="presentation">
+                    <a href="" class="p-tabs__link p-tooltip p-tooltip--btm-right"
+                        data-ng-class="{ 'is-active': currentpage === 'nodes'}"
+                        data-ng-click="toggleTab('nodes')">
+                        {$ nodes.length $} <ng-pluralize count="nodes.length" when="{'one': 'Machine', 'other': 'Machines'}"></ng-pluralize>
+                        <span class="p-tooltip__message" role="tooltip">A deployable node managed by MAAS.</span>
+                    </a>
+                </li>
+                <li class="p-tabs__item" role="presentation">
+                    <a href="" class="p-tabs__link p-tooltip p-tooltip--top-center"
+                        data-ng-class="{ 'is-active': currentpage === 'devices'}"
+                        data-ng-click="toggleTab('devices')">
+                        {$ devices.length $} <ng-pluralize count="devices.length" when="{'one': 'Device', 'other': 'Devices'}"></ng-pluralize>
+                        <span class="p-tooltip__message" role="tooltip">A node known to MAAS, but is not deployable.</span>
+                    </a>
+                </li>
+                <li class="p-tabs__item" role="presentation">    
+                    <a href="" class="p-tabs__link p-tooltip p-tooltip--top-center"
+                        data-ng-if="isSuperUser()"
+                        data-ng-class="{ 'is-active': currentpage === 'controllers'}"
+                        data-ng-click="toggleTab('controllers')">
+                        {$ controllers.length $} <ng-pluralize count="controllers.length" when="{'one': 'Controller', 'other': 'Controllers'}"></ng-pluralize>
+                        <span class="p-tooltip__message" role="tooltip">A node that provides MAAS services.</span>
+                    </a>
+                </li>
+                <li class="p-tabs__item" role="presentation">       
+                    <a href="" class="p-tabs__link p-tooltip p-tooltip--top-center"
+                        data-ng-if="showswitches"
+                        data-ng-class="{ 'is-active': currentpage === 'switches'}"
+                        data-ng-click="toggleTab('switches')">
+                        {$ switches.length $} <ng-pluralize count="switches.length" when="{'one': 'Switch', 'other': 'Switches'}"></ng-pluralize>
+                        <span class="p-tooltip__message" role="tooltip">A node that is a network switch.</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
-<div media-query="min-width: 769px" offset="89" class="p-strip is-shallow u-no-padding--top" data-ng-class="{ 'u-off-screen': tabs.nodes.actionOption || addHardwareScope.viewable || tabs.devices.actionOption || addDeviceScope.viewable || tabs.controllers.actionOption || tabs.controllers.addController }">
-    <nav class="p-tabs">
-        <ul class="p-tabs__list" role="tablist">
-            <li class="p-tabs__item" role="presentation">
-                <a href="" class="p-tabs__link p-tooltip p-tooltip--btm-right"
-                    data-ng-class="{ 'is-active': currentpage === 'nodes'}"
-                    data-ng-click="toggleTab('nodes')">
-                    {$ nodes.length $} <ng-pluralize count="nodes.length" when="{'one': 'Machine', 'other': 'Machines'}"></ng-pluralize>
-                    <span class="p-tooltip__message" role="tooltip">A deployable node managed by MAAS.</span>
-                </a>
-            </li>
-            <li class="p-tabs__item" role="presentation">
-                <a href="" class="p-tabs__link p-tooltip p-tooltip--top-center"
-                    data-ng-class="{ 'is-active': currentpage === 'devices'}"
-                    data-ng-click="toggleTab('devices')">
-                    {$ devices.length $} <ng-pluralize count="devices.length" when="{'one': 'Device', 'other': 'Devices'}"></ng-pluralize>
-                    <span class="p-tooltip__message" role="tooltip">A node known to MAAS, but is not deployable.</span>
-                </a>
-            </li>
-            <li class="p-tabs__item" role="presentation">    
-                <a href="" class="p-tabs__link p-tooltip p-tooltip--top-center"
-                    data-ng-if="isSuperUser()"
-                    data-ng-class="{ 'is-active': currentpage === 'controllers'}"
-                    data-ng-click="toggleTab('controllers')">
-                    {$ controllers.length $} <ng-pluralize count="controllers.length" when="{'one': 'Controller', 'other': 'Controllers'}"></ng-pluralize>
-                    <span class="p-tooltip__message" role="tooltip">A node that provides MAAS services.</span>
-                </a>
-            </li>
-            <li class="p-tabs__item" role="presentation">       
-                <a href="" class="p-tabs__link p-tooltip p-tooltip--top-center"
-                    data-ng-if="showswitches"
-                    data-ng-class="{ 'is-active': currentpage === 'switches'}"
-                    data-ng-click="toggleTab('switches')">
-                    {$ switches.length $} <ng-pluralize count="switches.length" when="{'one': 'Switch', 'other': 'Switches'}"></ng-pluralize>
-                    <span class="p-tooltip__message" role="tooltip">A node that is a network switch.</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
-<div class="p-strip u-no-padding--top u-no-padding--bottom">
+<div class="p-strip is-shallow u-no-padding--bottom">
     <div class="row">
         <maas-notifications></maas-notifications>
     </div>
