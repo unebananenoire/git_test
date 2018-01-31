@@ -1,28 +1,26 @@
-<div media-query="min-width: 769px">
-    <header class="p-strip--light is-shallow is-bordered page-header u-no-padding--bottom">
-        <div class="row">
-            <h1 class="page-header__title">Settings</h1>
-            <p class="page-header__status" data-ng-show="loading"><span class="u-text--loading">
-                <i class="p-icon--spinner u-animation--spin"></i> Loading...</span>
-            </p>
-        </div>
-        <nav class="p-tabs">
-            <ul class="p-tabs__list" role="tablist">
-                <li class="p-tabs__item" role="presentation">
-                    <a href="settings/" class="p-tabs__link" role="tab">General</a>
-                </li>
-                <li class="p-tabs__item" role="presentation">
-                    <a href="#/settings/dhcp" class="p-tabs__link" role="tab"
-                        data-ng-class="{ 'is-active': currentpage === 'dhcp'}">DHCP snippets</a>
-                </li>
-                <li class="p-tabs__item" role="presentation">
-                    <a href="#/settings/repositories" class="p-tabs__link" role="tab"
-                        data-ng-class="{ 'is-active': currentpage === 'repositories'}">Package repositories</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-</div>
+<header class="p-strip--light is-shallow is-bordered page-header u-no-padding--bottom">
+    <div class="row">
+        <h1 class="page-header__title">Settings</h1>
+        <p class="page-header__status" data-ng-show="loading"><span class="u-text--loading">
+            <i class="p-icon--spinner u-animation--spin"></i> Loading...</span>
+        </p>
+    </div>
+    <nav class="p-tabs">
+        <ul class="p-tabs__list" role="tablist">
+            <li class="p-tabs__item" role="presentation">
+                <a href="settings/" class="p-tabs__link" role="tab">General</a>
+            </li>
+            <li class="p-tabs__item" role="presentation">
+                <a href="#/settings/dhcp" class="p-tabs__link" role="tab"
+                    data-ng-class="{ 'is-active': currentpage === 'dhcp'}">DHCP snippets</a>
+            </li>
+            <li class="p-tabs__item" role="presentation">
+                <a href="#/settings/repositories" class="p-tabs__link" role="tab"
+                    data-ng-class="{ 'is-active': currentpage === 'repositories'}">Package repositories</a>
+            </li>
+        </ul>
+    </nav>
+</header>
 
 <div data-ng-show="!loading && currentpage === 'dhcp'" width-width>
     <section class="p-strip">
