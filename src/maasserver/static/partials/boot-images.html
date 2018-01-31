@@ -92,13 +92,13 @@
                     <ul class="col-3 p-list">
                         <li  class="p-list__item" data-ng-repeat="release in getUbuntuLTSReleases() | orderBy:'-title'">
                             <input type="checkbox" id="{$ release.name $}" data-ng-checked="isSelected('releases', release)" data-ng-click="toggleSelection('releases', release)" data-ng-disabled="saving">
-                            <label for="{$ release.name $}">{$ release.title $}</label>
+                            <label for="{$ release.name $}" class="u-no-margin--top">{$ release.title $}</label>
                         </li>
                     </ul>
                     <ul class="col-3 p-list">
                         <li class="p-list__item" data-ng-repeat="release in getUbuntuNonLTSReleases() | orderBy:'-title'">
                             <input type="checkbox" id="{$ release.name $}" data-ng-checked="isSelected('releases', release)" data-ng-click="toggleSelection('releases', release)" data-ng-disabled="saving">
-                            <label for="{$ release.name $}">{$ release.title $}</label>
+                            <label for="{$ release.name $}" class="u-no-margin--top">{$ release.title $}</label>
                         </li>
                     </ul>
                 </div>
@@ -108,7 +108,7 @@
                 <ul class="p-list is-split">
                     <li class="p-list__item" data-ng-repeat="arch in getArchitectures() | orderBy:'title'">
                         <input type="checkbox" id="{$ arch.name $}" data-ng-checked="isSelected('arches', arch)" data-ng-click="toggleSelection('arches', arch)" data-ng-disabled="saving">
-                        <label for="{$ arch.name $}">{$ arch.title $}</label>
+                        <label for="{$ arch.name $}" class="u-no-margin--top">{$ arch.title $}</label>
                     </li>
                 </ul>
             </div>
