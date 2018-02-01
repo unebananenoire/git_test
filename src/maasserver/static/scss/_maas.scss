@@ -60,6 +60,11 @@
   }
 
   table {
+    input[type="radio"],
+    input[type="checkbox"] {
+      float: none;
+    }
+
     th,
     td {
       display: table-cell !important;
@@ -160,5 +165,13 @@
   // https://github.com/vanilla-framework/vanilla-framework/issues/1542
   .p-navigation--sidebar .sidebar__content {
     position: relative;
+  }
+
+  .p-contextual-menu__dropdown {
+    display: block;
+  }
+
+  .p-form__controls {
+    margin-top: 0;
   }
 }
