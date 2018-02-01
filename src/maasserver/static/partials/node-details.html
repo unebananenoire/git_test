@@ -790,7 +790,7 @@
                                 <th class="col-1"><span data-ng-if="!isDevice">VLAN</span></th>
                                 <th class="col-2">Subnet</th>
                                 <th class="col-2">IP Address</th>
-                                <th class="col-1 u-align--right">Actions</th>
+                                <th class="col-1 u-align--center">Actions</th>
                             </tr>
                         </thead>
                         <tbody data-selected-rows>
@@ -854,7 +854,7 @@
                                 </td>
                                 <td class="col-1">
                                     <div class="p-contextual-menu" toggle-ctrl data-ng-hide="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd()">
-                                        <button class="p-contextual-menu__toggle" data-ng-click="toggleMenu()">Actions</button>
+                                        <button class="p-contextual-menu__toggle p-button--base" data-ng-click="toggleMenu()"><i class="p-icon--contextual-menu">Actions</i></button>
                                         <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled">
                                             <button class="p-contextual-menu__link"
                                                 aria-label="Add Alias or VLAN"
@@ -1684,7 +1684,7 @@
                         <h3>Available cache sets</h3>
                     </div>
                     <div class="row">
-                        <table>
+                        <table class="p-table-expanding">
                             <thead>
                                 <tr>
                                     <th class="col-1"></th>
@@ -1730,7 +1730,7 @@
                                                 </div>
                                                 <div class="col-4 u-align--right">
                                                     <button class="p-button--base" type="button" data-ng-click="cacheSetCancel()">Cancel</button>
-                                                    <button class="p-button--negative" data-ng-click="cacheSetConfirmDelete(cacheset)">Remove</button>
+                                                    <button class="p-button--negative u-no-margin--top" data-ng-click="cacheSetConfirmDelete(cacheset)">Remove</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -2472,7 +2472,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <form class="p-form p-form--stacked">
+                                                <div class="p-form p-form--stacked">
                                                     <div class="row">
                                                         <div class="col-6">
                                                             <div class="p-form__group p-form-validation u-hide--large">
@@ -2497,7 +2497,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <table>
