@@ -882,8 +882,8 @@
                                         <div class="col-7"></div>
                                     </div>
                                 </td>
-                                <td class="p-table-expanding__panel" data-ng-if="!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)">
-                                    <div class="row" data-ng-if="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving">
+                                <td class="p-table-expanding__panel" data-ng-if="(!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)) && (isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving)">
+                                    <div class="row">
                                         <div class="table__dropdown-title" data-ng-if="windowWidth <= 768">
                                             <h2 data-ng-click="cancel()" class="u-float--left">
                                                 <span data-ng-if="canAddAlias(newInterface.parent)">Adding alias</span>
