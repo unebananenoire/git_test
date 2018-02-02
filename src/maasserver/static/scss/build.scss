@@ -12,7 +12,7 @@
 @import 'patterns_navigation';
 @import 'patterns_page-header';
 @import 'patterns_tabs';
-@import 'patterns_onoffswitch';
+@import 'patterns_switch';
 @import 'patterns_table-expanding';
 @import 'patterns_card';
 @import 'patterns_meter';
@@ -25,7 +25,7 @@
 @include maas-navigation;
 @include maas-page-header;
 @include maas-tabs;
-@include maas-onoffswitch;
+@include maas-switch;
 @include maas-table-expanding;
 @include maas-cards;
 @include maas-meter;
