@@ -124,10 +124,6 @@
     padding: .5rem 0;
   }
 
-  td.p-table-expanding__panel {
-    padding: 0;
-  }
-
   dl dt:first-of-type {
     margin-top: 0;
     padding-top: 0;
@@ -140,7 +136,7 @@
     margin-top: 0;
   }
 
-  // Local variant for notification patter
+  // Local variant for notification pattern
   .p-notification,
   .p-notification--negative,
   .p-notification--positive,
