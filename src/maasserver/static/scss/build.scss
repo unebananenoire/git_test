@@ -16,6 +16,7 @@
 @import 'patterns_table-expanding';
 @import 'patterns_card';
 @import 'patterns_meter';
+@import 'patterns_strips';
 
 // Include local patterns
 @include maas;
@@ -28,3 +29,4 @@
 @include maas-table-expanding;
 @include maas-cards;
 @include maas-meter;
+@include maas-p-strip;

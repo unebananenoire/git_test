@@ -107,78 +107,70 @@
                 </div>
             </div>
 
-            <table data-ng-if="pods.length > 0">
+            <table class="p-table-expanding" data-ng-if="pods.length > 0">
                 <thead>
                     <tr>
-                        <th data-ng-if="isSuperUser()">
-                            <input type="checkbox" class="checkbox" data-ng-click="toggleCheckAll()" data-ng-checked="allViewableChecked" id="check-all-pods" data-ng-disabled="add.open || hasActionsInProgress()" />
-                            <label for="check-all-pods" class="checkbox-label"></label>
+                        <th class="col-1">
+                            <div data-ng-if="isSuperUser()">
+                                <input type="checkbox" class="checkbox" data-ng-click="toggleCheckAll()" data-ng-checked="allViewableChecked" id="check-all-pods" data-ng-disabled="add.open || hasActionsInProgress()" />
+                                <label for="check-all-pods" class="checkbox-label"></label>
+                            </div>
                         </th>
-                        <th data-ng-if="isSuperUser()">
-                            <a href=""  class="table__header-link" data-ng-click="sortTable('name')" data-ng-class="{'is-sorted': predicate === 'name', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">
-                                <span title="Name">Name</span>
-                            </a>
-                        </th>
-                        <th data-ng-if="!isSuperUser()">
+                        <th class="col-2">
                             <a href="" class="table__header-link" data-ng-click="sortTable('name')" data-ng-class="{'is-sorted': predicate === 'name', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">
                                 <span title="Name">Name</span>
                             </a>
                         </th>
-                        <th>
+                        <th class="col-2">
                             <a href="" class="table__header-link" data-ng-click="sortTable('type')" data-ng-class="{'is-sorted': predicate === 'type', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Type</a>
                         </th>
-                        <th>
+                        <th class="col-2">
                             <a href="" class="table__header-link" data-ng-click="sortTable('available.local_storage')" data-ng-class="{'is-sorted': predicate === 'available.local_storage', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Local storage (GiB)</a>
                         </th>
-                        <th>
+                        <th class="col-2">
                             <a href="" class="table__header-link" data-ng-click="sortTable('available.iscsi_storage')" data-ng-class="{'is-sorted': predicate === 'available.iscsi_storage', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">iSCSI storage (GiB)</a>
                         </th>
-                        <th>
+                        <th class="col-1">
                             <a href="" class="table__header-link" data-ng-click="sortTable('available.cores')" data-ng-class="{'is-sorted': predicate === 'available.cores', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Cores</a>
                         </th>
-                        <th>
+                        <th class="col-1">
                             <a href="" class="table__header-link" data-ng-click="sortTable('available.memory')" data-ng-class="{'is-sorted': predicate === 'available.memory', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">RAM (GiB)</a>
                         </th>
-                        <th>
+                        <th class="col-1 u-align--right">
                             <a href="" class="table__header-link" data-ng-click="sortTable('composed_machines')" data-ng-class="{'is-sorted': predicate === 'composed_machines', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Composed machines</a>
                         </th>
                     </tr>
                 </thead>
                 <tbody vs-repeat vs-scroll-parent="window">
                     <tr data-ng-repeat="pod in filteredItems = (pods | nodesFilter:search | orderBy:predicate:reverse) track by pod.id" data-ng-class="{ selected: pod.$selected, 'is-active': pod.$selected && pod.action_failed }">
-                        <td data-ng-if="isSuperUser()" aria-label="Select pod">
+                        <td class="col-1" data-ng-if="isSuperUser()" aria-label="Select pod">
                             <input type="checkbox" class="checkbox" data-ng-click="toggleChecked(pod)" data-ng-checked="pod.$selected" id="{$ pod.id $}" data-ng-disabled="add.open || hasActionsInProgress()"/>
                           <label for="{$ pod.id $}" class="checkbox-label"></label>
                         </td>
-                        <td data-ng-if="isSuperUser()" aria-label="Name">
+                        <td class="col-2" aria-label="Name">
                             <a href="#/pod/{$ pod.id $}">{$ pod.name $}</a>
                         </td>
-                        <td data-ng-if="!isSuperUser()">
-                            <div class="table__data table-col--20" aria-label="Name">
-                                <a href="#/pod/{$ pod.id $}">{$ pod.name $}</a>
-                            </div>
-                        </td>
-                        <td aria-label="Type">
+                        <td class="col-2" aria-label="Type">
                             {$ getPowerTypeTitle(pod.type) $}
                         </td>
-                        <td aria-label="Local storage (GiB)">
+                        <td class="col-2" aria-label="Local storage (GiB)">
                             {$ pod.available.local_storage_gb $} free <div class="u-text--subtle">of {$ pod.total.local_storage_gb $}</div>
                         </td>
-                        <td aria-label="iSCSI storage (GiB)">
+                        <td class="col-2" aria-label="iSCSI storage (GiB)">
                             {$ pod.available.iscsi_storage_gb || '0' $} free <div class="u-text--subtle">of {$ pod.total.iscsi_storage_gb || '0' $}</div>
                         </td>
-                        <td aria-label="Cores">
+                        <td class="col-1" aria-label="Cores">
                             {$ pod.available.cores $} free <div class="u-text--subtle">of {$ pod.total.cores $}</div>
                         </td>
-                        <td aria-label="RAM (GiB)">
+                        <td class="col-1" aria-label="RAM (GiB)">
                             {$ pod.available.memory_gb $} free <div class="u-text--subtle">of {$ pod.total.memory_gb $}</div>
                         </td>
-                        <td aria-label="Composed machines">
+                        <td class="col-1 u-align--right" aria-label="Composed machines">
                             {$ pod.composed_machines_count $}
                         </td>
-                        <td class="table__dropdown" data-ng-if="pod.$selected && pod.action_failed">
+                        <td class="p-table-expanding__panel" data-ng-if="pod.$selected && pod.action_failed">
                             <div aria-label="label" class="table__data">
-                                <i class="icon icon--error"></i> {$ pod.action_error $}
+                                <p><i class="p-icon--error">Error:</i> {$ pod.action_error $}</p>
                             </div>
                         </td>
                     </tr>
