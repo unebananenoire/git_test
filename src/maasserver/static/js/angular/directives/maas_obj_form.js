@@ -917,6 +917,14 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                 }
                 inputWrapper.append(errorsElement);
 
+                // Help text elements
+                if (attrs.helpText) {
+                    var helpTextElement = angular.element(
+                        '<p>' + attrs.helpText + '</p>');
+                    helpTextElement.addClass("p-form-help-text");
+                    inputWrapper.append(helpTextElement);
+                }
+
                 // Called by controller to clear all errors.
                 scope.clearErrors = function() {
                     inputElement.removeClass("ng-dirty");

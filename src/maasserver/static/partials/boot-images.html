@@ -1,6 +1,5 @@
-
 <form class="form">
-    <div class="p-strip is-bordered" data-ng-if="!loading">
+    <div data-ng-if="!loading" data-ng-class="{'p-strip is-bordered': design === 'page', 'p-card--highlighted col-12': design === 'card'}">
         <div class="row">
             <div class="col-8">
                 <h2 class="u-vertically-center"><i class="{$ getTitleIcon() $}"></i>&nbsp;Ubuntu</h2>
@@ -166,7 +165,7 @@
     </div>
 </form>
 
-<div class="p-strip" data-ng-if="ubuntu_core.images.length">
+<div data-ng-if="ubuntu_core.images.length" data-ng-class="{'p-strip': design === 'page'}">
     <div class="row">
         <div class="col-8">
             <h2>Ubuntu Core</h2>
@@ -213,14 +212,14 @@
     </div>
 </div>
 
-<div class="p-strip" data-ng-if="design === 'page' && other.images.length && !source.isNew">
+<div data-ng-if="design === 'page' && other.images.length && !source.isNew" data-ng-class="{'p-strip': design === 'page'}">
     <div class="row">
-        <div class="col-4">
+        <div class="col-6">
             <h2>Other Images</h2>
             <ul class="p-list is-split" data-ng-if="isSuperUser() && !source.tooMany">
                 <li class="p-list__item" data-ng-repeat="image in other.images | orderBy:['-title']">
                     <input type="checkbox" id="{$ image.name $}" data-ng-checked="image.checked" data-ng-click="toggleOtherSelection(image)" data-ng-disabled="saving">
-                    <label for="{$ image.name $}">{$ image.title $}</label>
+                    <label for="{$ image.name $}" class="u-no-margin--top">{$ image.title $}</label>
                 </li>
             </ul>
         </div>
@@ -308,7 +307,7 @@
         </table>
     </div>
 </div>
-<div class="p-strip" data-ng-if="design === 'page' && customImages.length">
+<div data-ng-if="design === 'page' && customImages.length" data-ng-class="{'p-strip': design === 'page'}">
     <div class="row">
         <h2>Custom Images</h2>
         <table class="p-table-expanding">
