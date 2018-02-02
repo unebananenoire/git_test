@@ -9,19 +9,15 @@
             </div>
         </div>
         <div class="row" data-ng-if="isSuperUser() && !source.tooMany">
-            <div class="col-4">
-                <h3>Choose source</h3>
-                <ul class="p-list is-split">
-                    <li>
-                        <input type="radio" data-ng-model="source.source_type" id="source_maas" value="maas.io" data-ng-change="sourceChanged()" data-ng-disabled="saving">
-                        <label class="u-no-margin--top" for="source_maas">maas.io</label>
-                    </li>
-                    <li>
-                        <input type="radio" data-ng-model="source.source_type" id="source_custom" value="custom" data-ng-change="sourceChanged()" data-ng-disabled="saving">
-                        <label for="source_custom" class="u-no-margin--top">Custom</label>
-                    </li>
-                </ul>
-            </div>
+            <h3>Choose source</h3>
+            <p>
+                <input type="radio" data-ng-model="source.source_type" id="source_maas" value="maas.io" data-ng-change="sourceChanged()" data-ng-disabled="saving">
+                <label class="u-no-margin--top" for="source_maas">maas.io</label>
+            </p>
+            <p>
+                <input type="radio" data-ng-model="source.source_type" id="source_custom" value="custom" data-ng-change="sourceChanged()" data-ng-disabled="saving">
+                <label for="source_custom" class="u-no-margin--top">Custom</label>
+            </p>            
         </div>
         <div class="row" data-ng-if="isSuperUser() && !source.tooMany && showMirrorPath()">
             <div class="col-8">
