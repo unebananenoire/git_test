@@ -206,4 +206,9 @@
     appearance: none;
     padding-right: 2.3rem;
   }
+  
+  maas-obj-field[type="password"] {
+    background: transparent;
+    border: 0;
+  }
 }
