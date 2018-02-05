@@ -27,14 +27,15 @@
 
                  // Count the line contents
                  var lines = element.html().split('\n'),
-                     insert = "";
+                     insert = "<code>";
 
                  // Each line is to be wrapped by a span which is style & given
                  // its appropriate line number
                  $.each(lines, function() {
-                   insert += '<code><span class="code-line">' +
-                   this + '</span></code>\n';
+                   insert += '<span class="code-line">' +
+                   this + '</span>\n';
                  });
+                 insert += "</code>";
 
                  // Re-insert the contents
                  element.html(insert);
