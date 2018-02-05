@@ -50,7 +50,8 @@
     overflow: hidden;
   }
 
-  maas-obj-field[type="text"] {
+  maas-obj-field[type="text"],
+  maas-obj-field[type="password"] {
     background-color: transparent;
     border: 0;
     border-radius: 0;

@@ -357,7 +357,7 @@
                 <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
                 <section class="page-header__section col-12" data-ng-show="showMachine()">
                     <p class="page-header__message page-header__message--error ng-hide" data-ng-show="error">{$ error $}</p>
-                    <div class="page-header__controls">
+                    <div class="page-header__controls p-strip u-align--right">
                         <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
                         <button class="p-button--neutral"
                             data-ng-disabled="machineHasError()"
@@ -371,7 +371,7 @@
                 <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
                 <section class="page-header__section col-12 ng-hide" data-ng-show="showChassis()">
                     <p class="page-header__message page-header__message--error ng-hide" data-ng-show="error">{$ error $}</p>
-                    <div class="page-header__controls">
+                    <div class="page-header__controls p-strip u-align--right">
                         <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
                         <button class="p-button--neutral"
                             data-ng-disabled="chassisHasErrors()"
@@ -406,7 +406,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="page-header__controls">
+                        <div class="page-header__controls p-strip u-align--right">
                             <button class="p-button--base" data-ng-click="actionCancel('devices')">Cancel</button>
                             <button class="p-button--positive" data-ng-click="actionGo('devices')">
                                 <span data-ng-if="tabs.devices.actionOption.name === 'set-zone'">Set zone for {$ tabs.devices.selectedItems.length $}
@@ -479,8 +479,8 @@
                                 <th class="col-3">MAC address</th>
                                 <th class="col-3">IP assignment</th>
                                 <th class="col-2">Subnet</th>
-                                <th class="col-3">IP address</th>
-                                <th class="col-1">Actions</th>
+                                <th class="col-2">IP address</th>
+                                <th class="col-2">Actions</th>
                             </tr>
                         </thead>
                         <tbody vs-repeat vs-scroll-parent="window">
@@ -507,8 +507,8 @@
                                         <option value="" disabled selected>Select subnet</option>
                                     </select>
                                 </td>
-                                <td class="col-3" aria-label="IP address">
-                                    <div class="p-form-validation" data-ng-class="{ 'is-error': ipHasError(interface) }">
+                                <td class="col-2" aria-label="IP address">
+                                    <div class="p-form-validation u-no-margin--top" data-ng-class="{ 'is-error': ipHasError(interface) }">
                                         <input type="text" id="ip-address" placeholder="000.000.000.000"
                                             class="p-form-validation__input"
                                             data-ng-model="interface.ipAddress"
@@ -519,7 +519,7 @@
                                             data-ng-show="interface.ipAssignment.name === 'static'">
                                     </div>
                                 </td>
-                                <td class="col-1 u-align--right">
+                                <td class="col-2">
                                     <a class="p-button--neutral"
                                         data-ng-click="deleteInterface(interface)"
                                         data-ng-hide="isPrimaryInterface(interface)">Delete</a>
@@ -540,7 +540,7 @@
                             <span class="p-notification__status">Error:</span> {$ error $}
                         </p>
                     </div>
-                    <div class="u-align--right">
+                    <div class="p-strip u-align--right">
                         <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
                         <button class="p-button--neutral"
                             data-ng-class="{ disabled: deviceHasError() }"
@@ -578,7 +578,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="page-header__controls" data-ng-if="tabs.controllers.actionOption.name !== 'test'">
+                    <div class="page-header__controls p-strip u-align--right" data-ng-if="tabs.controllers.actionOption.name !== 'test'">
                         <button class="p-button--base" data-ng-click="actionCancel('controllers')">Cancel</button>
                         <button class="p-button--positive" data-ng-click="actionGo('controllers')">
                             <span data-ng-if="tabs.controllers.actionOption.name === 'set-zone'">Set zone for {$ tabs.controllers.selectedItems.length $}
@@ -610,7 +610,7 @@
                     </form>
                 </div>
                 <div class="page-header__section col-12" data-ng-hide="isActionError('controllers') || hasActionsInProgress('controllers')" data-ng-if="tabs.controllers.actionOption.name === 'test'">
-                    <div class="page-header__controls">
+                    <div class="page-header__controls p-strip u-align--right">
                         <button class="p-button--base" data-ng-click="actionCancel('controllers')">Cancel</button>
                         <button class="p-button--positive" data-ng-click="actionGo('controllers')">
                             <span>Test {$ tabs.controllers.selectedItems.length $}
@@ -661,8 +661,7 @@ sudo apt install maas-rack-controller
 # don't have access to the URL, use a different IP address to allow connection.
 sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tabs.controllers.registerSecret $}</code></pre>
                 </div>
-                <hr />
-                <div class="u-align--right col-12 ng-hide" data-ng-show="tabs.controllers.addController">
+                <div class="p-strip u-align--right ng-hide" data-ng-show="tabs.controllers.addController">
                         <a href="" class="p-button--neutral"
                             data-ng-click="tabs.controllers.addController = false">Close</a>
                 </div>

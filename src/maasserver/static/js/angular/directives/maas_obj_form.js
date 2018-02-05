@@ -338,8 +338,8 @@ angular.module('MAAS').directive('maasObjForm', ['JSONService',
             transclude: true,
             template: (
                 '<form class="form" data-ng-class="{saving: saving, ' +
-                '\'form--inline\': inline, ' +
-                '\'form--stack\': tableForm}" ' +
+                '\'p-form--inline\': inline, ' +
+                '\'p-form--stacked\': tableForm}" ' +
                 'ng-transclude></form>'),
             controller: ['$scope', MAASFormController]
         };
