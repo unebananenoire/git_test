@@ -47,23 +47,22 @@
         </div>
     </div>
     <div data-ng-class="{ 'u-hide': !add.open }">
-        <hr />
         <maas-obj-form obj="add.obj" manager="podManager" manager-method="createItem"
-            table-form="true" save-on-blur="false" after-save="cancelAddPod" data-ng-if="add.open">
+            table-form="true" save-on-blur="false" after-save="cancelAddPod" data-ng-if="add.open"
+            class="p-form--stacked">
             <div class="row">
                 <h3 class="page-header__dropdown-title">Add pod</h3>
             </div>
             <div class="row">
-                <div class="p-form__fieldset col-6">
+                <div class="col-6">
                     <maas-obj-field type="text" key="name" label="Name" label-width="two" input-width="three" placeholder="Name (optional)"></maas-obj-field>
                 </div>
-                <div class="p-form__fieldset col-6">
+                <div class="col-6">
                     <maas-pod-parameters></maas-pod-parameters>
                 </div>
             </div>
-            <div class="row">
+            <div class="row u-no-margin--top">
                 <div class="col-12">
-                    <hr />
                     <p maas-obj-hide-saving><maas-obj-errors></maas-obj-errors></p>
                     <p maas-obj-show-saving><maas-obj-saving>Trying to connect and discover pod</maas-obj-saving></p>
                     <div class="page-header__controls" maas-obj-hide-saving>
