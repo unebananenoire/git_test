@@ -2,7 +2,7 @@
     <div data-ng-if="!loading" data-ng-class="{'p-strip is-bordered': design === 'page', 'p-card--highlighted col-12': design === 'card'}">
         <div class="row">
             <div class="col-8">
-                <h2 class="u-vertically-center"><i class="{$ getTitleIcon() $}"></i>&nbsp;Ubuntu</h2>
+                <h2 class="u-vertically-center"><span data-ng-if="design === 'card'"><i class="{$ getTitleIcon() $}"></i>&nbsp;</span>Ubuntu</h2>
                 <p data-ng-if="isSuperUser() && !source.tooMany">
                     Select images and architecture to be imported and kept in sync daily. Images will be available for deploying to machines managed by MAAS.
                 </p>
@@ -10,14 +10,16 @@
         </div>
         <div class="row" data-ng-if="isSuperUser() && !source.tooMany">
             <h3>Choose source</h3>
-            <p>
+        </div>
+        <div class="row">
+            <div class="col-2">
                 <input type="radio" data-ng-model="source.source_type" id="source_maas" value="maas.io" data-ng-change="sourceChanged()" data-ng-disabled="saving">
                 <label class="u-no-margin--top" for="source_maas">maas.io</label>
-            </p>
-            <p>
+            </div>
+            <div class="col-2">
                 <input type="radio" data-ng-model="source.source_type" id="source_custom" value="custom" data-ng-change="sourceChanged()" data-ng-disabled="saving">
                 <label for="source_custom" class="u-no-margin--top">Custom</label>
-            </p>            
+            </div>
         </div>
         <div class="row" data-ng-if="isSuperUser() && !source.tooMany && showMirrorPath()">
             <div class="col-8">
@@ -28,8 +30,14 @@
         <div class="row" data-ng-if="isSuperUser() && !source.tooMany && showMirrorPath()">
             <div class="col-8">
                 <div class="row">
-                    <div class="col-5">
-                        <input type="text" name="mirrorUrl" placeholder="e.g. http:// or https://" data-ng-model="source.url" data-ng-change="sourceChanged()">
+                    <div class="col-5  p-form-validation u-no-margin--top" data-ng-class="{ 'is-error': !source.connecting && source.errorMessage }">
+                        <input class="p-form-validation__input" type="text" name="mirrorUrl" placeholder="e.g. http:// or https://" data-ng-model="source.url" data-ng-change="sourceChanged()">
+                        <div class="p-form-validation__message" data-ng-if="!source.connecting && source.errorMessage">
+                              <p class="p-notification__response">
+                                  <span class="p-notification__status">Error:</span>{$ source.errorMessage $}
+                                  <a class="p-notification__action" data-ng-if="source.source_type === 'maas.io'" data-ng-click="connect()">Retry</a>
+                              </p>
+                        </div>
                     </div>
                     <div class="col-3">
                         <button class="p-button--neutral" aria-label="Toggle advanced URL controls" data-ng-click="toggleAdvancedOptions()" >
@@ -68,12 +76,6 @@
 
         <div class="row" data-ng-if="showConnectBlock()">
             <div class="col-8">
-                <div class="p-notification--negative" data-ng-if="!source.connecting && source.errorMessage">
-                      <p class="p-notification__response">
-                          <span class="p-notification__status">Error:</span>{$ source.errorMessage $}
-                          <a class="p-notification__action" data-ng-if="source.source_type === 'maas.io'" data-ng-click="connect()">Retry</a>
-                      </p>
-                </div>
                 <p data-ng-if="source.connecting">
                     <i class="p-icon--spinner u-animation--spin"></i> Connecting
                 </p>
