@@ -198,4 +198,11 @@
   .p-form__controls {
     margin-top: 0;
   }
+
+  select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 2.3rem;
+  }
 }
