@@ -15,6 +15,7 @@ $status-waiting:       $color-caution;
 
 @mixin maas-icons {
   .p-icon {
+    padding-right: $sp-small;
 
     &--edit {
       @extend %icon;
@@ -68,5 +69,9 @@ $status-waiting:       $color-caution;
 
   .icon--pass {
     @extend .p-icon--success;
+  }
+
+  [class^="p-icon"] {
+    margin-right: $sp-small;
   }
 }
