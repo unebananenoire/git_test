@@ -6,7 +6,7 @@
     </header>
 </div>
 <div class="ng-hide u-no-margin--top" data-ng-show="loaded" data-window-width>
-    <header class="p-strip--light is-shallow is-bordered page-header" media-query="min-width: 769px">
+    <header class="p-strip--light is-shallow is-bordered page-header u-no-padding--bottom" media-query="min-width: 769px">
         <div class="row">
             <div class="col-8">
                 <h1 class="page-header__title">{$ pod.name $}</h1>
@@ -125,15 +125,19 @@
                 </form>
             </div>
         </div>
-    </header>
-    <div class="page-navigation" media-query="min-width: 769px" offset="89" data-ng-class="{ 'u-visibility--hidden': action.option }">
-        <div class="wrapper--inner">
-            <nav class="page-navigation__links" role="tablist" aria-multiselectable="true">
-                <button role="tab" class="page-navigation__link" data-ng-class="{ 'is-active': section.area === 'summary'}" data-ng-click="section.area = 'summary'">{$ pod.composed_machines_count $} composed machines</button>
-                <button role="tab" class="page-navigation__link" data-ng-if="isSuperUser()" data-ng-class="{ 'is-active': section.area === 'power'}" data-ng-click="section.area= 'power'">Power</button>
+        <div class="p-strip is-shallow u-no-padding--bottom" media-query="min-width: 769px" offset="89" data-ng-class="{ 'u-hide': action.option }">       
+            <nav class="p-tabs">
+                <ul class="p-tabs__list" role="tablist">
+                    <li class="p-tabs__item" role="presentation">
+                        <a href="" role="tab" class="p-tabs__link" data-ng-class="{ 'is-active': section.area === 'summary'}" data-ng-click="section.area = 'summary'">{$ pod.composed_machines_count $} composed machines</a>
+                    </li>
+                    <li class="p-tabs__item" role="presentation">
+                        <a href="" role="tab" class="p-tabs__link" data-ng-if="isSuperUser()" data-ng-class="{ 'is-active': section.area === 'power'}" data-ng-click="section.area= 'power'">Power</a>
+                    </li>
+                </nav>
             </nav>
         </div>
-    </div>
+    </header>
 
     <section class="p-strip" data-ng-if="section.area === 'summary'">
         <div class="row">
@@ -185,15 +189,15 @@
             </div>
         </div>
     </section>
-    <section class="row u-padding--top" data-ng-if="pod && section.area === 'power'">
-        <div class="wrapper--inner">
+    <section class="p-strip" data-ng-if="pod && section.area === 'power'">
+        <div class="row">
             <maas-obj-form obj="pod" manager="podManager" manager-method="updateItem"
                 table-form="true" save-on-blur="true">
                 <div class="col-6">
-                    <div class="form__fieldset col-6">
+                    <div class="col-6">
                         <dl>
-                            <dt class="two-col">Type</dt>
-                            <dd class="four-col">{$ getPodTypeTitle() $}</dd>
+                            <dt>Type</dt>
+                            <dd>{$ getPodTypeTitle() $}</dd>
                         </dl>
                     </div>
                 </div>
