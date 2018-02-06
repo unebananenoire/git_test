@@ -17,24 +17,24 @@
                         data-ng-disabled="!canEdit()"
                         data-maas-editing="editHeader()"></span>
                     <span ng-click="editHeaderDomain()" data-ng-show="!canEdit()">{$ header.hostname.value $}</span>
-                    <span class="page-header__title-dot ng-hide" data-ng-show="header.editing || header.editing_domain">.</span>
+                    <span class="page-header__title-dot u-no-margin--top ng-hide" data-ng-show="header.editing || header.editing_domain">.</span>
                     <select class="page-header__title-domain ng-hide"
                         data-ng-show="header.editing || header.editing_domain"
                         data-ng-model="header.domain.selected"
                         data-ng-options="domain as domain.name for domain in header.domain.options">
                     </select>
                 </h1>
-                <button class="button--base ng-hide"
+                <button class="p-button--base u-no-margin--top ng-hide"
                     data-ng-show="header.editing || header.editing_domain"
                     data-ng-click="cancelEditHeader()">Cancel</button>
-                <button class="button--positive ng-hide"
+                <button class="p-button--positive ng-hide"
                     data-ng-show="header.editing || header.editing_domain"
                     data-ng-disabled="editHeaderInvalid()"
                     data-ng-click="saveEditHeader()">Save</button>
 
                 <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
                 <div class="page-header__status u-no-margin--top" data-ng-if="!isController && !isDevice && !header.editing">
-                    <ul class="p-inline-list">
+                    <ul class="p-inline-list u-no-margin--top">
                         <li class="p-inline-list__item">{$ node.status $}</li>
                         <li class="p-inline-list__item">
                             <i class="p-icon--power-{$ getPowerStateClass() $}"></i> {$ getPowerStateText() $}
