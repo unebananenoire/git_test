@@ -765,16 +765,15 @@
                     <table class="p-table-expanding">
                         <thead>
                             <tr>
-                                <th class="col-1" data-ng-if="!isDevice"></th>
                                 <th class="col-2">
                                     <span data-ng-if="!isDevice">
-                                        <a class="table__header-link is-active"
+                                        <a class="p-link--strong"
                                             data-ng-class="{ 'is-active': tableInfo.column == 'name' }"
                                             data-ng-click="tableInfo.column = 'name'">
                                             Name
                                         </a>
                                         <span> | </span>
-                                        <a class="table__header-link" data-ng-class="{ 'is-active': tableInfo.column == 'mac' }"
+                                        <a data-ng-class="{ 'p-link--strong': tableInfo.column == 'mac' }"
                                             data-ng-click="tableInfo.column = 'mac'">
                                             MAC
                                         </a>
@@ -788,7 +787,7 @@
                                     <span data-ng-if="isDevice">IP Assignment</span>
                                 </th>
                                 <th class="col-1"><span data-ng-if="!isDevice">VLAN</span></th>
-                                <th class="col-2">Subnet</th>
+                                <th class="col-3">Subnet</th>
                                 <th class="col-2">IP Address</th>
                                 <th class="col-1 u-align--center">Actions</th>
                             </tr>
@@ -796,24 +795,24 @@
                         <tbody data-selected-rows>
                             <tr data-ng-class="{ disabled: isDisabled(), 'is-active': isInterfaceSelected(interface) && (!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)), noEdit: cannotEditInterface(interface) }"
                                 data-ng-repeat="interface in interfaces | removeInterfaceParents:newBondInterface:isAllNetworkingDisabled() | removeInterfaceParents:newBridgeInterface:isAllNetworkingDisabled()">
-                                <td class="col-1" data-ng-if="!isDevice" aria-label="Select">
-                                      <input type="checkbox" class="checkbox" id="{$ getUniqueKey(interface) $}"
-                                          data-ng-hide="isAllNetworkingDisabled()"
-                                          data-ng-checked="isInterfaceSelected(interface)"
-                                          data-ng-click="toggleInterfaceSelect(interface)"
-                                          data-ng-disabled="isDisabled()"
-                                          data-ng-if="!isController && !isAllNetworkingDisabled()">
-                                      <label for="{$ getUniqueKey(interface) $}"></label>
-                                </td>
-                                <td class="col-2" aria-label="Name" data-ng-if="!isDevice" data-ng-show="tableInfo.column == 'name'"
+                                <td class="col-2" aria-label="Name" data-ng-if="!isDevice"
                                     data-ng-class="{ 'is-error': isInterfaceNameInvalid(editInterface) }">
-                                    <span data-ng-if="!isEditing(interface)">{$ interface.name $}</span>
-                                    <input type="text" class="p-form-validation__input"
-                                        data-ng-if="isEditing(interface) && interface.type !== 'vlan'"
-                                        data-ng-model="editInterface.name">
-                                </td>
-                                <td class="col-2 ng-hide" data-ng-if="!isDevice" data-ng-show="tableInfo.column == 'mac'">
-                                    {$ interface.mac_address $}
+                                    <ul class="p-inline-list u-no-margin--top">
+                                        <li class="p-inline-list__item" data-ng-if="!isController && !isAllNetworkingDisabled()">
+                                            <input type="checkbox" class="checkbox" id="{$ getUniqueKey(interface) $}"
+                                            data-ng-hide="isAllNetworkingDisabled()"
+                                            data-ng-checked="isInterfaceSelected(interface)"
+                                            data-ng-click="toggleInterfaceSelect(interface)"
+                                            data-ng-disabled="isDisabled()">
+                                        </li>
+                                        <li class="p-inline-list__item">
+                                            <span data-ng-if="!isEditing(interface)" data-ng-show="tableInfo.column == 'name'">{$ interface.name $}</span>
+                                            <span class="ng-hide" data-ng-show="tableInfo.column == 'mac'">{$ interface.mac_address $}</span>
+                                            <input type="text" class="p-form-validation__input"
+                                                data-ng-if="isEditing(interface) && interface.type !== 'vlan'"
+                                                data-ng-model="editInterface.name">
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td class="col-1" data-ng-if="isDevice">{$ interface.mac_address $}</td>
                                 <td class="col-1 u-align--center" aria-label="Boot interface">
@@ -835,7 +834,7 @@
                                 <td class="col-1" aria-label="VLAN">
                                     <span data-ng-if="!isDevice && !isEditing(interface)">{$ getVLANText(interface.vlan) $}</span>
                                 </td>
-                                <td class="col-2" aria-label="Subnet">
+                                <td class="col-3" aria-label="Subnet">
                                     <span data-ng-if="!isEditing(interface) && ((isDevice && interface.subnet) || (interface.fabric && !interface.discovered[0].subnet_id))">{$ getSubnetText(interface.subnet) $}</span>
                                     <span data-ng-if="isAllNetworkingDisabled() && interface.discovered[0].subnet_id">
                                         {$ getSubnetText(getSubnet(interface.discovered[0].subnet_id)) $}
