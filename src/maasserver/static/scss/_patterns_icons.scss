@@ -6,11 +6,11 @@ $status-succeeded:     $color-positive;
 $status-waiting:       $color-caution;
 
 @mixin maas-icon-edit($color) {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='22' height='22' viewBox='0 0 22 22' xmlns='http://www.w3.org/2000/svg'%3e%3ctitle%3eedit%3c/title%3e%3cg fill='#{$color}' fill-rule='evenodd'%3e%3cpath d='M17 15h5v1h-5zm-3 3h8v1h-8zm-3 3h11v1H11zm5.75-21L3.47 13.517S.956 17.465 0 21.987v.004l.002.004V22c4.532-.955 8.48-3.472 8.48-3.472L22 5.25 16.75 0zM4.51 14.555L7.454 17.5c-.2.114-2.99 2.064-5.544 2.602V20.093l-.002-.003c.537-2.546 2.485-5.334 2.602-5.537v.002z'/%3e%3cpath d='M2.234 18l1.85 1.85L1 21'/%3e%3c/g%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='22' height='22' viewBox='0 0 22 22' xmlns='http://www.w3.org/2000/svg'%3e%3ctitle%3eedit%3c/title%3e%3cg fill='" + rgba($color, 1) + "' fill-rule='evenodd'%3e%3cpath d='M17 15h5v1h-5zm-3 3h8v1h-8zm-3 3h11v1H11zm5.75-21L3.47 13.517S.956 17.465 0 21.987v.004l.002.004V22c4.532-.955 8.48-3.472 8.48-3.472L22 5.25 16.75 0zM4.51 14.555L7.454 17.5c-.2.114-2.99 2.064-5.544 2.602V20.093l-.002-.003c.537-2.546 2.485-5.334 2.602-5.537v.002z'/%3e%3cpath d='M2.234 18l1.85 1.85L1 21'/%3e%3c/g%3e%3c/svg%3e");
 }
 
 @mixin maas-icon-power-on($color) {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2215%22%20width%3D%2214%22%3E%3Cpath%20d%3D%22M11.04%202.323l-.324%202.268a5.017%205.017%200%200%201%201.352%203.426c0%202.787-2.274%205.056-5.068%205.056s-5.067-2.269-5.067-5.056a5.02%205.02%200%200%201%201.351-3.426L2.96%202.323A6.935%206.935%200%200%200%200%208.017C0%2011.868%203.14%2015%207%2015s7-3.132%207-6.983a6.933%206.933%200%200%200-2.96-5.694zM6%200h2v7H6V0z%22%20fill%3D%22%230E8420%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2215%22%20width%3D%2214%22%3E%3Cpath%20d%3D%22M11.04%202.323l-.324%202.268a5.017%205.017%200%200%201%201.352%203.426c0%202.787-2.274%205.056-5.068%205.056s-5.067-2.269-5.067-5.056a5.02%205.02%200%200%201%201.351-3.426L2.96%202.323A6.935%206.935%200%200%200%200%208.017C0%2011.868%203.14%2015%207%2015s7-3.132%207-6.983a6.933%206.933%200%200%200-2.96-5.694zM6%200h2v7H6V0z%22%20fill%3D%22" + encodecolor($color) + "%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
 }
 
 @mixin maas-icons {
@@ -57,8 +57,7 @@ $status-waiting:       $color-caution;
     }
   }
 
-  .p-icon--power-error,
-  .icon--power-error {
+  .p-icon--power-error {
     @extend .p-icon--error;
   }
 
@@ -67,11 +66,23 @@ $status-waiting:       $color-caution;
     @include maas-icon-power-on(rgba($color-positive, .999999));
   }
 
-  .icon--pass {
+  .p-icon--power-off {
+    @extend %icon;
+    @include maas-icon-power-on(rgba($color-mid-light, .999999));
+  }
+
+  .p-icon--pass {
     @extend .p-icon--success;
   }
 
+  .p-icon--info {
+    @extend .p-icon--information;
+  }
+
   [class^="p-icon"] {
-    margin-right: $sp-small;
+    margin-right: $sp-x-small;
   }
 }
+
+
+//TODO: do something about p-icon--none

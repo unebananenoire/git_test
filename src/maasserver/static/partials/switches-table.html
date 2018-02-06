@@ -49,7 +49,7 @@
                 <a href="#/node/{$ node.link_type $}/{$ node.system_id $}" class="extra-macs" data-ng-show="node.extra_macs.length">(+{$ node.extra_macs.length $})</a>
             </td>
             <td class="powerstate u-upper-case--first" aria-label="Power state">
-                <span title="{$ node.power_state $}" data-ng-if="node.power_state != 'unknown'" class="icon icon--power-{$ node.power_state $} u-margin--right-tiny"></span> {$ node.power_state $}
+                <span title="{$ node.power_state $}" data-ng-if="node.power_state != 'unknown'" class="p-icon--power-{$ node.power_state $} u-margin--right-tiny"></span> {$ node.power_state $}
             </td>
             <td class="table-col--3 u-display--desktop"><i data-ng-if="showSpinner(node)" class="p-icon--spinner u-animation--spin u-display--desktop"></i></td>
             <td class="status u-text--truncate" aria-label="Status">{$ getStatusText(node) $} <span class="u-display--mobile"><i data-ng-if="showSpinner(node)" class="p-icon--spinner u-animation--spin u-margin--left-tiny"></i></span></td>

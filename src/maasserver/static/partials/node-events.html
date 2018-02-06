@@ -43,7 +43,7 @@
                         <tr
                             data-ng-repeat="event in events | filter:search | orderByDate:'created':'id' track by event.id">
                             <td class="table-col--1 u-padding--right-none u-padding--left-none">
-                                <span class="icon icon--{$ event.type.level $}"></span>
+                                <span class="p-icon--{$ event.type.level $}"></span>
                             </td>
                             <td class="table-col--79">
                                 {$ getEventText(event) $}
