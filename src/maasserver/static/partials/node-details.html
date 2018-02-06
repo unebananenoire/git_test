@@ -277,7 +277,7 @@
             </ul>
         </nav>
     </header>
-    
+
     <section class="p-strip is-shallow" data-ng-if="section.area === 'summary'">
       <div class="row">
         <div data-ng-if="isSuperUser()">
@@ -291,7 +291,7 @@
                 data-ng-if="!isController && !isDevice && hasInvalidArchitecture() && isRackControllerConnected() && hasUsableArchitectures()">
                 <p class="p-notification__response">
                     <span class="p-notification__status">Error:</span> This machine currently has an invalid architecture. Update the architecture of this machine to make it deployable.
-                </p 
+                </p
             </div>
             <div class="p-notification--negative"
                 data-ng-if="!isController && !isDevice && hasInvalidArchitecture() && isRackControllerConnected() && !hasUsableArchitectures()">
@@ -597,28 +597,28 @@
                 <ul class="p-list-tree" aria-multiselectable="true" role="tablist">
                     <li class="p-list-tree__item">
                         <span>
-                            <span class="icon icon--{$ getServiceClass(services.regiond) $}"></span>
+                            <span class="p-icon--{$ getServiceClass(services.regiond) $}"></span>
                             &nbsp;regiond
                             <span data-ng-if="services.regiond.status_info"> &mdash; {$ services.regiond.status_info $}</span>
                         </span>
                     </li>
                     <li class="p-list-tree__item">
                         <span>
-                            <span class="icon icon--{$ getServiceClass(services.bind9) $}"></span>
+                            <span class="p-icon--{$ getServiceClass(services.bind9) $}"></span>
                             &nbsp;bind9
                             <span data-ng-if="services.bind9.status_info"> &mdash; {$ services.bind9.status_info $}</span>
                         </span>
                     </li>
                     <li class="p-list-tree__item">
                         <span>
-                            <span class="icon icon--{$ getServiceClass(services.proxy) $}"></span>
+                            <span class="p-icon--{$ getServiceClass(services.proxy) $}"></span>
                             &nbsp;proxy
                             <span data-ng-if="services.proxy.status_info"> &mdash; {$ services.proxy.status_info $}</span>
                         </span>
                     </li>
                     <li class="p-list-tree__item" data-ng-if="services.ntp_region">
                         <span>
-                            <span class="icon icon--{$ getServiceClass(services.ntp_region) $}"></span>
+                            <span class="p-icon--{$ getServiceClass(services.ntp_region) $}"></span>
                             &nbsp;ntp
                             <span data-ng-if="services.ntp_region.status_info"> &mdash; {$ services.ntp_region.status_info $}</span>
                         </span>
@@ -632,21 +632,21 @@
                 <ul class="p-list-tree" aria-multiselectable="true" role="tablist">
                     <li class="p-list-tree__item p-list-tree__item--group">
                         <span>
-                            <span class="icon icon--{$ getServiceClass(services.rackd) $}"></span>
+                            <span class="p-icon--{$ getServiceClass(services.rackd) $}"></span>
                             &nbsp;rackd
                             <span data-ng-if="services.rackd.status_info"> &mdash; {$ services.rackd.status_info $}</span>
                         </span>
                         <ul class="p-list-tree" role="tabpanel" aria-hidden="true">
                             <li class="p-list-tree__item">
                                 <span>
-                                    <span class="icon icon--{$ getServiceClass(services.http) $}"></span>
+                                    <span class="p-icon--{$ getServiceClass(services.http) $}"></span>
                                     &nbsp;http
                                     <span data-ng-if="services.http.status_info"> &mdash; {$ services.http.status_info $}</span>
                                 </span>
                             </li>
                             <li class="p-list-tree__item">
                                 <span>
-                                    <span class="icon icon--{$ getServiceClass(services.tftp) $}"></span>
+                                    <span class="p-icon--{$ getServiceClass(services.tftp) $}"></span>
                                     &nbsp;tftp
                                     <span data-ng-if="services.tftp.status_info"> &mdash; {$ services.tftp.status_info $}</span>
                                 </span>
@@ -655,28 +655,28 @@
                     </li>
                     <li class="p-list-tree__item">
                         <span>
-                            <span class="icon icon--{$ getServiceClass(services.dhcpd) $}"></span>
+                            <span class="p-icon--{$ getServiceClass(services.dhcpd) $}"></span>
                             &nbsp;dhcpd
                             <span data-ng-if="services.dhcpd.status_info"> &mdash; {$ services.dhcpd.status_info $}</span>
                         </span>
                     </li>
                     <li class="p-list-tree__item">
                         <span>
-                            <span class="icon icon--{$ getServiceClass(services.dhcpd6) $}"></span>
+                            <span class="p-icon--{$ getServiceClass(services.dhcpd6) $}"></span>
                             &nbsp;dhcpd6
                             <span data-ng-if="services.dhcpd6.status_info"> &mdash; {$ services.dhcpd6.status_info $}</span>
                         </span>
                     </li>
                     <li class="p-list-tree__item">
                         <span>
-                            <span class="icon icon--{$ getServiceClass(services.tgt) $}"></span>
+                            <span class="p-icon--{$ getServiceClass(services.tgt) $}"></span>
                             &nbsp;tgt
                             <span data-ng-if="services.tgt.status_info"> &mdash; {$ services.tgt.status_info $}</span>
                         </span>
                     </li>
                     <li class="p-list-tree__item" data-ng-if="services.ntp_rack">
                         <span>
-                            <span class="icon icon--{$ getServiceClass(services.ntp_rack) $}"></span>
+                            <span class="p-icon--{$ getServiceClass(services.ntp_rack) $}"></span>
                             &nbsp;ntp
                             <span data-ng-if="services.ntp_rack.status_info"> &mdash; {$ services.ntp_rack.status_info $}</span>
                         </span>
@@ -872,7 +872,7 @@
                                     </div>
                                 </td>
                                 <td class="p-table-expanding__panel" data-ng-if="isShowingMembers(interface)">
-                                    <div class="row" data-ng-class="{ 'is-active': isShowingMembers(interface) }" 
+                                    <div class="row" data-ng-class="{ 'is-active': isShowingMembers(interface) }"
                                         data-ng-repeat="member in interface.members"
                                         data-ng-show="isShowingMembers(interface)">
                                         <div class="col-1"></div>
@@ -1398,7 +1398,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="p-form__group p-form-validation" data-ng-if="newInterface.mode == 'static'" 
+                                                <div class="p-form__group p-form-validation" data-ng-if="newInterface.mode == 'static'"
                                                     data-ng-class="{ 'is-error': isIPAddressInvalid(newInterface) }">
                                                     <label for="ip-address" class="p-form__label">IP address</label>
                                                     <div class="p-form__control">
@@ -1418,7 +1418,7 @@
                                                     data-ng-class="{ 'is-error': isMACAddressInvalid(newInterface.mac_address, true) }">
                                                     <label for="mac" class="p-form__label">MAC address</label>
                                                     <div class="p-form__control">
-                                                        <input name="mac" type="text" 
+                                                        <input name="mac" type="text"
                                                             class="p-form-validation__input"
                                                             placeholder="00:00:00:00:00:00"
                                                             data-ng-model="newInterface.mac_address"
@@ -1561,7 +1561,7 @@
                                 <td class="col-2" aria-label="Mount options">{$ filesystem.mount_options $}</td>
                                 <td class="col-2 u-align--right">
                                     <div class="p-contextual-menu" toggle-ctrl data-ng-if="!isAllStorageDisabled()">
-                                        <button class="p-contextual-menu__toggle" aria-controls="#{$ item.name $}-menu" 
+                                        <button class="p-contextual-menu__toggle" aria-controls="#{$ item.name $}-menu"
                                             data-ng-click="toggleMenu()" aria-haspopup="true">View actions</button>
                                         <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled" id="{$ item.name $}-menu">
                                             <a href="" class="p-contextual-menu__link"
@@ -1611,7 +1611,7 @@
                             <tr class="is-active" data-ng-if="dropdown" data-ng-switch="dropdown">
                                 <!-- Adding a new TMPFS or RAMFPS file system -->
                                 <td class="p-table-expanding__panel" data-ng-controller="NodeAddSpecialFilesystemController" data-ng-switch-when="special">
-                                    <div class="row" data-ng-if="windowWidth <= 768">    
+                                    <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-8">
                                             <h2 data-ng-click="cancel()">Adding filesystem</h2>
                                         </div>
@@ -1836,7 +1836,7 @@
                                     <td class="col-2 u-align--right">
                                         <div class="p-contextual-menu" toggle-ctrl
                                             data-ng-if="canAddLogicalVolume(item) || canAddPartition(item) || canEdit(item) || canDelete(item)">
-                                            <button class="p-contextual-menu__toggle" aria-controls="#{$ item.name $}-menu" 
+                                            <button class="p-contextual-menu__toggle" aria-controls="#{$ item.name $}-menu"
                                                 data-ng-click="toggleMenu()" aria-haspopup="true">View actions</button>
                                             <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled" id="{$ item.name $}-menu">
                                                 <a href="" class="p-contextual-menu__link"
@@ -1858,7 +1858,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="p-table-expanding__panel" 
+                                    <td class="p-table-expanding__panel"
                                         data-ng-if="(availableMode === 'edit' || availableMode === 'format-mount' || availableMode === 'partition' || availableMode === 'logical-volume' || availableMode === 'delete') && item.$selected">
                                         <div class="row" data-ng-if="windowWidth <= 768">
                                             <div class="col-8">
@@ -2017,7 +2017,7 @@
                                                         <span>Partition</span>
                                                     </div>
                                                 </div>
-                                                <div class="p-form__group p-form-validation" 
+                                                <div class="p-form__group p-form-validation"
                                                     data-ng-class="{ 'is-error': isAddPartitionSizeInvalid(item) }">
                                                     <label class="p-form__label" for="size">Size</label>
                                                     <div class="p-form__controls">
@@ -2636,18 +2636,14 @@
                 <table data-ng-if="node.events.length">
                     <thead>
                         <tr>
-                            <th class="col-1"></th>
-                            <th class="col-9">Event</th>
+                            <th class="col-10">Event</th>
                             <th class="col-2">Time</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
                             data-ng-repeat="event in node.events | orderByDate:'created':'id' | limitTo:events.limit">
-                            <td class="col-1" aria-label="{$ event.type.level $}">
-                                <span class="p-icon--{$ event.type.level $}"></span>
-                            </td>
-                            <td class="col-9" aria-label="Event">{$ getEventText(event) $}</td>
+                            <td class="col-10" aria-label="Event"><span class="p-icon--{$ event.type.level $}"></span>{$ getEventText(event) $}</td>
                             <td class="col-2" aria-label="Created">{$ event.created $}</td>
                         </tr>
                     </tbody>

@@ -55,7 +55,7 @@
                 <a href="#/node/{$ node.system_id $}" class="extra-macs" data-ng-show="node.extra_macs.length">(+{$ node.extra_macs.length $})</a>
             </td>
             <td class="powerstate u-upper-case--first" aria-label="Power state">
-                <span data-ng-if="node.power_state != 'unknown'" class="icon icon--power-{$ node.power_state $} u-margin--right-tiny"></span> {$ node.power_state $}
+                <span data-ng-if="node.power_state != 'unknown'" class="p-icon--power-{$ node.power_state $} u-margin--right-tiny"></span> {$ node.power_state $}
             </td>
             <td class="u-hide--small">
                 <i data-ng-if="showSpinner(node)" class="p-icon--spinner u-animation--spin u-hide--small"></i>
@@ -69,28 +69,28 @@
                 {$ getStatusText(node) $}
                 <span class="u-hide--medium u-hide--large">
                     <i data-ng-if="showSpinner(node)" class="p-icon--spinner u-animation--spin"></i>
-                    <span class="p-tooltip p-tooltip--top-right">
+                    <span class="p-tooltip p-tooltip--left">
                         <i data-ng-if="showNodeStatus(node)" data-maas-script-status="script-status" data-script-status="node.other_test_status" aria-labelledby="{$ node.other_test_status_tooltip $}"></i>
                         <span class="p-tooltip__message" role="tooltip" id="other-status-tooltip-{$ node.fqdn $}">{$ node.other_test_status_tooltip $}</span>
                     </span>
-                    <span class="p-tooltip p-tooltip--top-right">
+                    <span class="p-tooltip p-tooltip--left">
                         <i data-ng-if="showFailedTestWarning(node)" class="p-icon--warning" aria-describedby="failed-test-tooltip-large-{$ node.fqdn $}"></i>
                         <span class="p-tooltip__message" role="tooltip" id="failed-test-tooltip-large-{$ node.fqdn $}">{$ node.other_test_status_tooltip $}</span>
                     </span>
                 </span>
             </td>
             <td aria-label="Owner">&nbsp;{$ node.owner $}</td>
-            <td class="u-align--right u-hide--small p-tooltip p-tooltip--top-right" aria-label="CPU">
+            <td class="u-align--right u-hide--small p-tooltip p-tooltip--left" aria-label="CPU">
                 <span data-maas-script-status="script-status" data-script-status="node.cpu_test_status" data-ng-if="node.cpu_test_status !== 2" aria-describedby="node-cpu-tooltip-{$ node.fqdn $}"></span>
                 {$ node.cpu_count $}
                 <span class="p-tooltip__message" role="tooltip" id="node-cpu-tooltip-{$ node.fqdn $}">{$ node.cpu_test_status_tooltip $}</span>
             </td>
-            <td class="u-align--right u-hide--small p-tooltip p-tooltip--top-right" aria-label="Memory">
+            <td class="u-align--right u-hide--small p-tooltip p-tooltip--left" aria-label="Memory">
                 <span data-maas-script-status="script-status" data-script-status="node.memory_test_status" data-ng-if="node.memory_test_status !== 2" aria-describedby="node-memory-tooltip-{$ node.fqdn $}"></span>
                 {$ node.memory $}
                 <span class="p-tooltip__message" role="tooltip" id="node-memory-tooltip-{$ node.fqdn $}">{$ node.memory_test_status_tooltip $}</span>
             </td>
-            <td class="u-align--right u-hide--small p-tooltip p-tooltip--top-right" aria-label="Disks">
+            <td class="u-align--right u-hide--small p-tooltip p-tooltip--left" aria-label="Disks">
                 <span class="" data-maas-script-status="script-status" data-script-status="node.storage_test_status" data-ng-if="node.storage_test_status !== 2" aria-describedby="disk-count-tooltip-{$ node.fqdn $}">
                 </span>
                 {$ node.physical_disk_count $}

@@ -190,7 +190,7 @@
                     <tr data-ng-repeat="row in group.spaces.orphanVLANs">
                         <td aria-label="Space">
                             <a data-ng-if="$index === 0" href="#/space/{$ row.space.id $}">(undefined)</a>
-                            <span data-ng-if="$index === 0" class="icon icon--warning tooltip tooltip--right u-margin--left-small u-display--desktop"
+                            <span data-ng-if="$index === 0" class="p-icon--warning tooltip tooltip--right u-margin--left-small u-display--desktop"
                               aria-label="MAAS integrations require a space in order to determine the purpose of a network.&#xa;Define a space for each subnet by selecting the space on the VLAN details page.&#xa;If an approprate space does not exist, one may be created on this page."></span>
                         </td>
                         <td>
