@@ -965,7 +965,7 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                 if(attrs.subtleText) {
                     var subtleTextElement = $compile(
                         angular.element(
-                            '<span class="u-text--subtle" ' +
+                            '<span class="p-form-help-text" ' +
                             'data-ng-bind="subtleText"></span>'))(scope);
                     inputWrapper.append(subtleTextElement);
                 }
