@@ -582,7 +582,7 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                         && attrs.labelInfo.length > 0) {
                         var infoElement = angular.element('<i/>');
                         infoElement.addClass('icon');
-                        infoElement.addClass('icon--info');
+                        infoElement.addClass('p-icon--information');
                         infoElement.addClass('tooltip tooltip--left');
                         infoElement.addClass('u-margin--left-tiny');
                         if(attrs.labelLeft === "true") {
@@ -1070,7 +1070,7 @@ angular.module('MAAS').directive('maasObjSaving', function() {
             transclude: true,
             template: [
               '<span data-ng-if="saving">',
-                '<i class="icon icon--loading u-animation--spin"></i>',
+                '<i class="p-icon--loading u-animation--spin"></i>',
                 '<span data-ng-transclude></span>',
               '</span>'].join(''),
             link: function(scope, element, attrs, controller) {

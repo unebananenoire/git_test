@@ -13,7 +13,7 @@ angular.module('MAAS').run(['$templateCache', function ($templateCache) {
         '<header id="error-header" class="page-header" data-ng-show="show()">',
             '<div class="row">',
                 '<h1 class="page-header__title">',
-                    '<span class="icon icon--loading u-animation--spin ',
+                    '<span class="p-icon--loading u-animation--spin ',
                         'u-margin--right-small"',
                         'data-ng-hide="clientError"></span>',
                     '{$ getTitle() $}',

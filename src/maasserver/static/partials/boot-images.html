@@ -114,7 +114,7 @@
             <table data-ng-if="showImagesTable()">
                 <thead>
                     <tr>
-                        <th colspan="2">Release</th>
+                        <th>Release</th>
                         <th>Architecture</th>
                         <th>Size</th>
                         <th>Status</th>
@@ -123,20 +123,18 @@
                 </thead>
                 <tbody>
                     <tr data-ng-if="!ltsIsSelected()">
-                        <td colspan="6" aria-label="Error">
+                        <td colspan="5" aria-label="Error">
                             <i class="p-icon--error">Error: </i> Select at least one 14.04+ LTS release and one architecture.
                         </td>
                     </tr>
                     <tr data-ng-if="!commissioningSeriesSelected()">
-                        <td colspan="6" aria-label="Error">
+                        <td colspan="5" aria-label="Error">
                             <i class="p-icon--error">Error: </i> Ubuntu {$ bootResources.ubuntu.commissioning_series $} must be selected as it is the operating system used for commissioning.
                         </td>
                     </tr>
                     <tr data-ng-repeat="image in ubuntuImages | orderBy:['-title', 'arch']" data-ng-class="{'is-active': canBeRemoved(image) && ubuntuDeleteId === image.resourceId}">
-                        <td>
-                            <i class="{$ image.icon $}"></i>
-                        </td>
                         <td aria-label="Release">
+                            <i class="{$ image.icon $}"></i>
                             {$ image.title $} <span class="p-tooltip__message" role="tooltip" id="tooltip-{$ image.resourceId}" data-ng-if="canBeRemoved(image)"><i class="p-icon--warning p-tooltip p-tooltip--top-right"  aria-describedby="tooltip-{$ image.resourceId}">Image no longer exists at the source.</span></i>
                         </td>
                         <td aria-label="Architecture">{$ image.arch $}</td>
@@ -180,7 +178,7 @@
             <table class="p-table-expanding">
                 <thead>
                     <tr>
-                        <th colspan="2">Name</th>
+                        <th>Name</th>
                         <th>Architecture</th>
                         <th>Size</th>
                         <th>Status</th>
@@ -188,13 +186,10 @@
                 </thead>
                 <tbody>
                     <tr data-ng-if="!ubuntuCoreImages.length">
-                        <td colspan="5">No images have been selected for syncing.</td>
+                        <td colspan="4">No images have been selected for syncing.</td>
                     </tr>
                     <tr data-ng-repeat="image in ubuntuCoreImages | orderBy:['-title', 'arch']">
-                        <td>
-                            <i class="{$ image.icon $}"></i>
-                        </td>
-                        <td aria-label="Name">{$ image.title $}</td>
+                        <td aria-label="Name"><i class="{$ image.icon $}"></i>{$ image.title $}</td>
                         <td aria-label="Architecture">{$ image.arch $}</td>
                         <td aria-label="Size">{$ image.size $}</td>
                         <td aria-label="Status">{$ image.status $}</td>
@@ -227,7 +222,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="2">Release</th>
+                        <th>Release</th>
                         <th>Architecture</th>
                         <th>Size</th>
                         <th>Status</th>
@@ -235,15 +230,13 @@
                 </thead>
                 <tbody>
                     <tr data-ng-if="!otherImages.length">
-                        <td colspan="5">
+                        <td colspan="4">
                             No images have been selected for syncing.
                         </td>
                     </tr>
                     <tr data-ng-repeat="image in otherImages | orderBy:['-title', 'arch']">
-                        <td>
-                            <i class="{$ image.icon $}"></i>
-                        </td>
                         <td aria-label="Release">
+                            <i class="{$ image.icon $}"></i>
                             {$ image.title $}
                         </td>
                         <td aria-label="Architecture">{$ image.arch $}</td>

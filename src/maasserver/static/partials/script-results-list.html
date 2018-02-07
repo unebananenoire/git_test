@@ -13,7 +13,6 @@
                     <table class="p-table-expanding">
                         <thead>
                             <tr>
-                                <th class="col-1"></th>
                                 <th class="col-3">Name</th>
                                 <th class="col-2">Tags</th>
                                 <th class="col-1">Runtime</th>
@@ -24,10 +23,8 @@
                         </thead>
                         <tbody>
                             <tr data-ng-repeat="result in results" data-ng-class="{'is-active': result.showing_results || result.showing_history}">
-                                <td class="col-1" aria-label="Status">
-                                    <span data-maas-script-status="script-status" data-script-status="result.status"></span>
-                                </td>
                                 <td class="col-3" data-ng-click="result.showing_results = !result.showing_results" aria-label="Name">
+                                    <span data-maas-script-status="script-status" data-script-status="result.status"></span>
                                     {$ result.name $}
                                     <button class="p-button--base u-float--right" data-ng-class="{'p-icon--chevron': !result.showing_results, 'p-icon--close': result.showing_results}" data-ng-if="!result.showing_history"></button>
                                 </td>
