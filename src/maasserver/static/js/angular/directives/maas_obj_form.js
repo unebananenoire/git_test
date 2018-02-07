@@ -578,28 +578,29 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                     element.append(labelElement);
 
                     // Add a label info icon with tooltip.
-                    if(angular.isString(attrs.labelInfo)
-                        && attrs.labelInfo.length > 0) {
-                        var infoElement = angular.element('<i/>');
-                        infoElement.addClass('icon');
-                        infoElement.addClass('p-icon--information');
-                        infoElement.addClass('tooltip tooltip--left');
-                        infoElement.addClass('u-margin--left-tiny');
-                        if(attrs.labelLeft === "true") {
-                          infoElement.addClass('icon--left');
-                          infoElement.removeClass('u-margin--left-tiny');
-                        }
-                        infoElement.attr('aria-label', attrs.labelInfo);
-                        labelElement.text(labelElement.text() + ' ');
-                        labelElement.append(infoElement);
+                    if(angular.isString(attrs.labelInfo) && attrs.labelInfo.length > 0) {
+                        var infoWrapper = angular.element('<span>&nbsp;</span>');
+                        infoWrapper.addClass('p-tooltip p-tooltip--btm-right');
+
+                        var infoIcon = angular.element('<i/>');
+                        infoIcon.addClass('p-icon--information');
+                        infoIcon.attr('aria-describedby', attrs.key + '-tooptip');
+
+                        var infoTooltip = angular.element('<p></p>');
+                        infoTooltip.addClass('p-tooltip__message');
+                        infoTooltip.text(attrs.labelInfo);
+                        infoTooltip.attr('id', attrs.key + '-tooptip');
+
+                        infoWrapper.append(infoIcon);
+                        infoWrapper.append(infoTooltip);
+
+                        labelElement.append(infoWrapper);
 
                         // prevents the icon from being clickable
-                        infoElement.bind('click', function (evt) {
+                        infoIcon.bind('click', function (evt) {
                             evt.preventDefault();
                         });
                     }
-
-
                 }
 
                 // Add the wrapper for the input.
