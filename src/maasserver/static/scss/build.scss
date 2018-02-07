@@ -18,6 +18,7 @@
 @import 'patterns_card';
 @import 'patterns_meter';
 @import 'patterns_strips';
+@import 'patterns_tag-input';
 
 // Include local patterns
 @include maas;
@@ -31,3 +32,4 @@
 @include maas-cards;
 @include maas-meter;
 @include maas-p-strip;
+@include maas-tag-input;
