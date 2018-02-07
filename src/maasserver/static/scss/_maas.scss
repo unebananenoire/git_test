@@ -206,7 +206,7 @@
     appearance: none;
     padding-right: 2.3rem;
   }
-  
+
   maas-obj-field[type="password"] {
     background: transparent;
     border: 0;
@@ -214,5 +214,22 @@
 
   .p-list-tree .p-list-tree::after {
     display: none !important;
+  }
+
+  .editable {
+    padding: .5rem 1rem;
+    border: 1px solid transparent;
+
+    &:hover,
+    &.editmode {
+      border: 1px solid $color-mid-light;
+    }
+  }
+
+  .page-header__title-domain {
+    display: inline-block;
+    width: auto;
+    font-size: 2.25rem;
+    line-height: 1.167;
   }
 }
