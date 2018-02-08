@@ -498,7 +498,7 @@
                     </div>
                     <div class="p-form__group">
                         <label class="p-form__label">Tags</label>
-                        <div class="p-form__control">
+                        <div class="p-form__control tags--inline">
                             <span data-ng-repeat="tag in node.tags" data-ng-hide="summary.editing">
                                 <a href="#/nodes/?query=tags:({$ tag $})">{$ tag $}</a>
                             </span>
@@ -773,8 +773,7 @@
                             <tr>
                                 <th class="col-2">
                                     <span data-ng-if="!isDevice">
-                                        <a class="p-link--strong"
-                                            data-ng-class="{ 'is-active': tableInfo.column == 'name' }"
+                                        <a data-ng-class="{ 'p-link--strong': tableInfo.column == 'name' }"
                                             data-ng-click="tableInfo.column = 'name'">
                                             Name
                                         </a>
@@ -804,7 +803,7 @@
                                 <td class="col-2" aria-label="Name" data-ng-if="!isDevice"
                                     data-ng-class="{ 'is-error': isInterfaceNameInvalid(editInterface) }">
                                     <ul class="p-inline-list u-no-margin--top">
-                                        <li class="p-inline-list__item" data-ng-if="!isController && !isAllNetworkingDisabled()">
+                                        <li class="p-inline-list__item" data-ng-if="!isController && !isAllNetworkingDisabled() && !isEditing(interface)">
                                             <input type="checkbox" class="checkbox" id="{$ getUniqueKey(interface) $}"
                                             data-ng-hide="isAllNetworkingDisabled()"
                                             data-ng-checked="isInterfaceSelected(interface)"
@@ -814,7 +813,7 @@
                                         <li class="p-inline-list__item">
                                             <span data-ng-if="!isEditing(interface)" data-ng-show="tableInfo.column == 'name'">{$ interface.name $}</span>
                                             <span class="ng-hide" data-ng-show="tableInfo.column == 'mac'">{$ interface.mac_address $}</span>
-                                            <input type="text" class="p-form-validation__input"
+                                            <input type="text" class="p-form-validation__input u-no-margin--top"
                                                 data-ng-if="isEditing(interface) && interface.type !== 'vlan'"
                                                 data-ng-model="editInterface.name">
                                         </li>
@@ -858,7 +857,7 @@
                                     </span>
                                 </td>
                                 <td class="col-1">
-                                    <div class="p-contextual-menu" toggle-ctrl data-ng-hide="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd()">
+                                    <div class="p-contextual-menu" toggle-ctrl  data-ng-if="!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)">
                                         <button class="p-contextual-menu__toggle p-button--base" data-ng-click="toggleMenu()"><i class="p-icon--contextual-menu">Actions</i></button>
                                         <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled">
                                             <button class="p-contextual-menu__link"
@@ -869,7 +868,7 @@
                                                 data-ng-if="!cannotEditInterface(interface)"
                                                 aria-label="Edit"
                                                 data-ng-click="toggleMenu(); edit(interface)">Edit {$ getInterfaceTypeText(interface) $}</button>
-                                            <button class="p-contextual-menu__link u-text--error"
+                                            <button class="p-contextual-menu__link"
                                                 data-ng-if="canBeRemoved()"
                                                 aria-label="Remove"
                                                 data-ng-click="toggleMenu(); quickRemove(interface)">Remove {$ getInterfaceTypeText(interface) $}&hellip;</button>
@@ -887,8 +886,9 @@
                                         <div class="col-7"></div>
                                     </div>
                                 </td>
-                                <td class="p-table-expanding__panel" data-ng-if="(!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)) && (isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving)">
-                                    <div class="row">
+                                
+                                <td class="p-table-expanding__panel" data-ng-if="!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)">
+                                    <div class="row" data-ng-if="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving">
                                         <div class="table__dropdown-title" data-ng-if="windowWidth <= 768">
                                             <h2 data-ng-click="cancel()" class="u-float--left">
                                                 <span data-ng-if="canAddAlias(newInterface.parent)">Adding alias</span>
@@ -920,7 +920,7 @@
                                                     </div>
                                                     <div class="p-form__group" data-ng-if="newInterface.type !== 'alias'">
                                                         <label class="p-form__label">Tags</label>
-                                                        <div class="p-form__control">
+                                                        <div class="p-form__control tags--inline">
                                                             <tags-input data-ng-model="newInterface.tags" allow-tags-pattern="[\w-]+"></tags-input>
                                                         </div>
                                                     </div>
@@ -1052,7 +1052,7 @@
                                                             disable-label="false"></maas-obj-field>
                                                     </div>
                                                 </div>
-                                                <div class="row is-active">
+                                                <div class="row u-no-margin--top">
                                                     <hr />
                                                     <div class="u-float--left">
                                                         <maas-obj-errors></maas-obj-errors>
@@ -1067,7 +1067,7 @@
                                                 </div>
                                             </maas-obj-form>
                                         </div>
-                                        <div class="row is-active" data-ng-if="isShowingDeleteConfirm()">
+                                        <div class="row is-active" data-ng-if="isShowingDeleteConfirm() && isInterfaceSelected(interface)">
                                             <div class="col-8">
                                                 <p><span class="p-icon--warning">Warning:</span> Are you sure you want to remove this {$ getRemoveTypeText(interface) $}?</p>
                                             </div>
@@ -1155,7 +1155,7 @@
                                                 </div>
                                                 <div class="p-form__group">
                                                     <label class="p-form__label">Tags</label>
-                                                    <div class="p-form__control">
+                                                    <div class="p-form__control tags--inline">
                                                         <tags-input data-ng-model="newBondInterface.tags" allow-tags-pattern="[\w-]+"></tags-input>
                                                     </div>
                                                 </div>
@@ -1267,7 +1267,7 @@
                                                 </div>
                                                 <div class="p-form__group">
                                                     <label class="p-form__label">Tags</label>
-                                                    <div class="p-form__control">
+                                                    <div class="p-form__control tags--inline">
                                                         <tags-input data-ng-model="newBridgeInterface.tags" allow-tags-pattern="[\w-]+"></tags-input>
                                                     </div>
                                                 </div>
@@ -1356,7 +1356,7 @@
                                                 </div>
                                                 <div class="p-form__group">
                                                     <label class="p-form__label">Tags</label>
-                                                    <div class="p-form__control">
+                                                    <div class="p-form__control tags--inline">
                                                         <tags-input data-ng-model="newInterface.tags" allow-tags-pattern="[\w-]+"></tags-input>
                                                     </div>
                                                 </div>
@@ -1910,7 +1910,7 @@
                                                 </div>
                                                 <div class="p-form__group" data-ng-if="item.$options.editingTags">
                                                     <label for="tags" class="p-form__label">Tags</label>
-                                                    <div class="p-form__control">
+                                                    <div class="p-form__control tags--inline">
                                                         <tags-input data-ng-model="item.$options.tags" data-ng-if="item.$options.editingTags" allow-tags-pattern="[\w-]+"></tags-input>
                                                     </div>
                                                 </div>
@@ -2103,7 +2103,7 @@
                                                 </dl>
                                                 <div class="p-form__group">
                                                     <label for="tags" class="p-form__label">Tags</label>
-                                                    <div class="p-form__controls">
+                                                    <div class="p-form__controls tags--inline">
                                                         <tags-input data-ng-model="item.$options.tags" allow-tags-pattern="[\w-]+"></tags-input>
                                                     </div>
                                                 </div>
@@ -2233,7 +2233,7 @@
                                                     </div>
                                                     <div class="p-form__group">
                                                         <label class="p-form__label">Tags</label>
-                                                        <div class="p-form__controls">
+                                                        <div class="p-form__controls tags--inline">
                                                             <tags-input data-ng-model="availableNew.tags" allow-tags-pattern="[\w-]+"></tags-input>
                                                         </div>
                                                     </div>
@@ -2368,7 +2368,7 @@
                                                     </div>
                                                     <div class="p-form__group">
                                                         <label class="p-form__label">Tags</label>
-                                                        <div class="p-form__controls">
+                                                        <div class="p-form__controls tags--inline">
                                                             <tags-input data-ng-model="availableNew.tags" allow-tags-pattern="[\w-]+"></tags-input>
                                                         </div>
                                                     </div>
