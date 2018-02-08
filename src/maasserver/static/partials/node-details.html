@@ -787,7 +787,7 @@
                                     </span>
                                     <span data-ng-if="isDevice">MAC</span>
                                 </th>
-                                <th class="col-1"><span data-ng-if="!isController && !isDevice">PXE</span></th>
+                                <th class="col-1 u-align--center"><span data-ng-if="!isController && !isDevice">PXE</span></th>
                                 <th class="col-1"><span data-ng-if="!isDevice">Type</span></th>
                                 <th class="col-1">
                                     <span data-ng-if="!isDevice">Fabric</span>
@@ -825,7 +825,8 @@
                                 <td class="col-1 u-align--center" aria-label="Boot interface">
                                     <span class="u-hide u-show--large">
                                         <input type="radio" name="bootInterface" id="{$ interface.name $}" checked
-                                            data-ng-if="!isController && !isDevice && isBootInterface(interface)">
+                                            data-ng-if="!isController && !isDevice && isBootInterface(interface)"
+                                            class="u-no-margin--right">
                                         <label for="{$ interface.name $}"></label>
                                     </span>
                                     <span class="u-hide--large" data-ng-if="!isController && !isDevice && isBootInterface(interface)">Yes</span>
@@ -1310,16 +1311,12 @@
                                 </td>
                             </tr>
                             <tr class="is-active ng-hide" data-ng-show="isShowingCreatePhysical()">
-                                <td class="col-1" data-ng-if="!isDevice">
-                                    <input type="checkbox" class="checkbox" id="interface-create" disabled="disabled" checked />
-                                    <label for="interface-create"></label>
-                                </td>
                                 <td class="col-2 p-form-validation" data-ng-if="!isDevice"
                                     data-ng-class="{ 'is-error': isInterfaceNameInvalid(newInterface) }">
                                     <input type="text" class="p-form-validation__input"
                                         data-ng-model="newInterface.name">
                                 </td>
-                                <td class="col-9"></td>
+                                <td class="col-10"></td>
                                 <td class="p-table-expanding__panel">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-8">
