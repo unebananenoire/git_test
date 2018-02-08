@@ -233,4 +233,9 @@
     font-size: 2.25rem;
     line-height: 1.167;
   }
+
+  //Fix for action buttons in headers
+  .p-inline-list__item div {
+    display: inline-block;
+  }
 }
