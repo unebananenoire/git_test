@@ -55,12 +55,12 @@
                         <td class="col-4" aria-label="Applies to" data-ng-if="editSnippet !== snippet">
                             <span>{$ getSnippetAppliesToText(snippet) $}</span>
                         </td>
-                        <td class="col-1" aria-label="Enabled" data-ng-if="editSnippet !== snippet">
+                        <td class="col-1" aria-label="Enabled" data-ng-if="editSnippet !== snippet && deleteSnippet !== snippet">
                             <div class="onoffswitch">
                                 <input type="checkbox" name="enabled" class="onoffswitch-checkbox u-float-none" id="enabled-{$ snippet.id $}"
                                     data-ng-model="snippet.enabled"
                                     data-ng-change="snippetToggle(snippet)">
-                                <label class="onoffswitch-label" for="enabled-{$ snippet.id $}">
+                                <label class="onoffswitch-label u-no-margin--top" for="enabled-{$ snippet.id $}">
                                     <span class="onoffswitch-inner"></span>
                                     <span class="onoffswitch-switch"></span>
                                 </label>
@@ -124,8 +124,8 @@
                                                 disable-label="true" rows="10"></maas-obj-field>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-8">
+                                    <div class="row u-equal-height">
+                                        <div class="col-8 u-vertically-center">
                                             <maas-obj-errors></maas-obj-errors>
                                         </div>
                                         <div class="col-4 u-align--right">
@@ -142,8 +142,8 @@
                                 <h2 data-ng-click="snippetExitRemove(snippet)" class="u-float--left">Removing {$ snippet.name $}</h2>
                                 <button data-ng-click="snippetExitRemove(snippet)" class="p-icon--close u-float--right"></button>
                             </div>
-                            <div class="row u-no-margin--top">
-                                <div class="col-6">
+                            <div class="row u-no-margin--top u-equal-height">
+                                <div class="col-6 u-vertically-center">
                                     <p><i class="p-icon--warning">Warning:</i> Are you sure you want to remove this snippet?</p>
                                 </div>
                                 <div class="col-6 u-align--right">
@@ -165,23 +165,23 @@
                                     <div class="col-2">
                                         <label for="name" class="u-hide u-show--small">Name</label>
                                         <maas-obj-field type="text" key="name" placeholder="Name"
-                                            disable-label="true" input-class="table__input u-margin--none" class="u-margin--bottom-none"></maas-obj-field>
+                                            disable-label="true" input-class="table__input" class="u-no-margin--top"></maas-obj-field>
                                     </div>
                                     <div class="col-2">
                                         <label for="Select type" class="u-hide u-show--small">Select type</label>
-                                        <maas-obj-field type="options" key="type" class="u-margin--bottom-none" placeholder="Select type"
-                                            disable-label="true" input-class="table__input u-margin--none"
+                                        <maas-obj-field type="options" key="type" class="u-no-margin--top" placeholder="Select type"
+                                            disable-label="true" input-class="table__input"
                                             options="type for type in snippetTypes"></maas-obj-field>
                                     </div>
                                     <div class="col-4">
                                         <label for="subnet" class="u-hide u-show--small" data-ng-if="newSnippet.$maasForm.getValue('type') === 'Subnet'">Choose subnet</label>
                                         <label for="node" class="u-hide u-show--small" data-ng-if="newSnippet.$maasForm.getValue('type') === 'Node'">Choose node</label>
                                         <maas-obj-field type="options" key="subnet" placeholder="Choose subnet"
-                                            disable-label="true" input-class="table__input u-margin--none"
+                                            disable-label="true" input-class="table__input"
                                             options="subnet.id as getSubnetName(subnet) for subnet in subnets"
                                             data-ng-if="newSnippet.$maasForm.getValue('type') === 'Subnet'"></maas-obj-field>
                                         <maas-obj-field type="options" key="node" placeholder="Choose node"
-                                            disable-label="true" input-class="table__input u-margin--none"
+                                            disable-label="true" input-class="table__input"
                                             options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)"
                                             data-ng-if="newSnippet.$maasForm.getValue('type') === 'Node'">
                                         </maas-obj-field>
@@ -194,7 +194,7 @@
                                                     <input type="checkbox" name="enabled" class="onoffswitch-checkbox" id="newEnabled"
                                                         data-ng-model="newSnippet.data.enabled"
                                                         data-ng-disabled="newSnippet.saving" checked>
-                                                    <label class="onoffswitch-label" for="newEnabled">
+                                                    <label class="onoffswitch-label u-no-margin--top" for="newEnabled">
                                                         <span class="onoffswitch-inner"></span>
                                                         <span class="onoffswitch-switch"></span>
                                                     </label>
@@ -227,7 +227,7 @@
                                                 <input type="checkbox" name="enabled" class="onoffswitch-checkbox" id="newEnabled"
                                                     data-ng-model="newSnippet.data.enabled"
                                                     data-ng-disabled="newSnippet.saving" checked>
-                                                <label class="onoffswitch-label" for="newEnabled">
+                                                <label class="onoffswitch-label u-no-margin--top" for="newEnabled">
                                                     <span class="onoffswitch-inner"></span>
                                                     <span class="onoffswitch-switch"></span>
                                                 </label>
@@ -345,7 +345,7 @@
                                 <input type="checkbox" name="enabled" class="onoffswitch-checkbox" id="enabled-repo-{$ repository.id $}"
                                     data-ng-model="repository.enabled"
                                     data-ng-change="repositoryEnabledToggle(repository)">
-                                <label class="onoffswitch-label" for="enabled-repo-{$ repository.id $}">
+                                <label class="onoffswitch-label u-no-margin--top" for="enabled-repo-{$ repository.id $}">
                                     <span class="onoffswitch-inner"></span>
                                     <span class="onoffswitch-switch"></span>
                                 </label>
@@ -355,7 +355,7 @@
                                 data-ng-if="isMirror(repository)">
                                 <input type="checkbox" name="enabled" class="onoffswitch-checkbox u-float-none" id="enabled-repo-{$ repository.id $}"
                                     data-ng-model="repository.enabled">
-                                <label class="onoffswitch-label" for="enabled-repo-{$ repository.id $}">
+                                <label class="onoffswitch-label u-no-margin--top" for="enabled-repo-{$ repository.id $}">
                                     <span class="onoffswitch-inner"></span>
                                     <span class="onoffswitch-switch"></span>
                                 </label>

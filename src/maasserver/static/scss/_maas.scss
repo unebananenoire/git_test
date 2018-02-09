@@ -74,6 +74,13 @@
       float: none;
     }
 
+    form {
+      input[type="radio"],
+      input[type="checkbox"] {
+        float: left;
+      }
+    }
+
     th,
     td {
       display: table-cell !important;
