@@ -55,14 +55,24 @@
               <button type="button" name="button" class="button--neutral u-float--right" data-ng-click="enterEditSummary()" data-ng-if="!editSummary">Edit</button>
             </div>
         </div>
-        <div class="row u-no-margin--top">
-            <div data-ng-if="!editSummary">
-                <dl class="col-6">
-                    <dt>Name</dt>
-                    <dd>{$ space.name $}</dd>
-                    <dt>Description</dt>
-                    <dd>{$ space.description $}</dd>
-                </dl>
+        <div class="form p-form--stacked row" data-ng-if="!editSummary">
+            <div class="col-6">
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p><strong>Name</strong></p>
+                    </div>
+                    <div class="p-form__control">
+                        <p>{$ space.name $}</p>
+                    </div>
+                </div>
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p><strong>Description</strong></p>
+                    </div>
+                    <div class="p-form__control">
+                        <p>{$ space.description $}</p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">

@@ -63,11 +63,6 @@
     min-height: 175px;
   }
 
-  td.p-table-expanding__panel {
-    position: relative;
-    top: -1px;
-  }
-
   .p-table-expanding__panel {
     background-color: $color-x-light;
     margin-left: 0 !important;
@@ -237,5 +232,9 @@
   //Fix for action buttons in headers
   .p-inline-list__item div {
     display: inline-block;
+  }
+
+  .col-12 {
+    width: 100%;
   }
 }
