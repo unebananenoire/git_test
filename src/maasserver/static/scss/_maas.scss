@@ -229,8 +229,7 @@
     line-height: 1.167;
   }
 
-  //Fix for action buttons in headers
-  .p-inline-list__item div {
-    display: inline-block;
+  .col-12 {
+    width: 100%;
   }
 }
