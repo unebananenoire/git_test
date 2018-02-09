@@ -23,95 +23,164 @@
             </div>
         </div>
         <div class="u-no-margin--top" data-ng-class="{ 'is-open': actionOption.name }">
-            <div class="row">
-                <section class="page-header__section col-12 ng-hide" data-ng-show="!actionError && actionOption.name === 'map_subnet'">
-                    <p class="page-header__message page-header__message--info">
-                        You will start mapping your subnet. Go to the <a href="#/dashboard">dashboard</a> to see the discovered items.
-                    </p>
-                    <div class="page-header__controls">
-                        <button class="button--base" type="button" data-ng-click="cancelAction()">Cancel</button>
-                        <button class="button--positive" data-ng-click="actionGo()">Map subnet</button>
+            <section class="ng-hide" data-ng-show="!actionError && actionOption.name === 'map_subnet'">
+                <hr />
+                <div class="row">
+                    <div class="col-8">
+                        <p>
+                            You will start mapping your subnet. Go to the <a href="#/dashboard">dashboard</a> to see the discovered items.
+                        </p>
                     </div>
-                </section>
-            </div>
-            <div class="row u-no-margin--top">
-                <section class="page-header__section col-12 ng-hide" data-ng-show="!actionError && actionOption.name == 'delete'">
-                    <p class="page-header__message page-header__message--error">
-                        Are you sure you want to delete this subnet and release all IP addresses assigned within its range?
-                    </p>
-                    <div class="page-header__controls">
-                        <button class="button--base" type="button" data-ng-click="cancelAction()">Cancel</button>
-                        <button class="button--negative" data-ng-click="actionGo()">Delete subnet</button>
+                    <div class="col-4 u-align--right">
+                        <button class="p-button--base" type="button" data-ng-click="cancelAction()">Cancel</button>
+                        <button class="p-button--positive" data-ng-click="actionGo()">Map subnet</button>
                     </div>
-                </section>
-            </div>
-            <div class="row u-no-margin--top">
-                <section class="page-header__section col-12 ng-hide" data-ng-show="actionError">
-                    <p class="page-header__message page-header__message--error">{$ actionError $}</p>
-                    <div class="page-header__controls">
-                        <button class="button--base" type="button" data-ng-click="cancelAction()">Cancel</button>
-                        <button class="button--neutral" data-ng-click="actionRetry()">Retry</button>
+                </div>
+            </section>
+            <section class="ng-hide" data-ng-show="!actionError && actionOption.name == 'delete'">
+                <hr />
+                <div class="row">
+                    <div class="col-8">
+                        <p>
+                            Are you sure you want to delete this subnet and release all IP addresses assigned within its range?
+                        </p>
                     </div>
-                </section>
-            </div>
+                    <div class="col-4 u-align--right">
+                        <button class="p-button--base" type="button" data-ng-click="cancelAction()">Cancel</button>
+                        <button class="p-button--negative" data-ng-click="actionGo()">Delete subnet</button>
+                    </div>
+                </div>
+            </section>
+            <section class="ng-hide" data-ng-show="actionError">
+                <hr />
+                <div class="row">
+                    <div class="col-8">
+                        <p>{$ actionError $}</p>
+                    </div>
+                    <div class="col-4 u-align--right">
+                        <button class="p-button--base" type="button" data-ng-click="cancelAction()">Cancel</button>
+                        <button class="p-button--neutral" data-ng-click="actionRetry()">Retry</button>
+                    </div>
+                </div>
+            </section>
             <!-- End of "Take action" dropdown -->
         </div>
     </header>
     <section class="p-strip">
         <div class="row">
             <div class="col-12">
-                <h2 class="u-float--left">Subnet summary</h2>
-                <button type="button" name="button" class="p-button--neutral u-float--right" data-ng-click="enterEditSummary()" data-ng-if="editSummary != true">Edit</button>
+                <div class="col-8">
+                    <h2 class="u-float--left">Subnet summary</h2>
+                </div>
+                <div class="col-4 u-align--right">
+                    <button type="button" name="button" class="p-button--neutral" data-ng-click="enterEditSummary()" data-ng-if="editSummary != true">Edit</button>
+                </div>
             </div>
         </div>
-        <div class="row" data-ng-if="editSummary != true">
-            <dl class="col-6">
-                <dt>Name</dt>
-                    <dd>{$ subnet.name $}</dd>
-                <dt>CIDR</dt>
-                    <dd>{$ subnet.cidr $}</dd>
-                <dt>Gateway IP</dt>
-                    <dd data-ng-if="subnet.gateway_ip">{$ subnet.gateway_ip $}</dd>
-                    <dd data-ng-if="!subnet.gateway_ip">&nbsp;</dd>
-                <dt>DNS</dt>
-                    <dd data-ng-if="subnet.dns_servers">{$ subnet.dns_servers $}</dd>
-                    <dd data-ng-if="!subnet.dns_servers">&nbsp;</dd>
-                <dt>Description</dt>
-                    <dd data-ng-if="subnet.description">{$ subnet.description $}</dd>
-                    <dd data-ng-if="!subnet.description">&nbsp;</dd>
-            </dl>
-            <dl class="col-6">
-                <dt>Managed allocation
-                    <span data-ng-if="subnet.managed == false" class="p-tooltip p-tooltip--top-center">
-                        <i class="p-icon--information">Help:</i>
-                        <span class="p-tooltip__message" role="tooltip">MAAS allocates IP addresses only from&#xa;the reserved ranges on this subnet.</span>
-                    </span>
-
-                    <span data-ng-if="subnet.managed == true" class="p-tooltip p-tooltip--top-center">
-                        <i class="p-icon--information">Help:</i>
-                        <span class="p-tooltip__message" role="tooltip">MAAS allocates IP addresses from&#xa;this subnet, excluding the reserved&#xa;and dynamic ranges.</span>
-                    </span>
-                </dt>
-                    <dd>
+        <div class="form p-form--stacked row" data-ng-if="editSummary != true">
+            <div class="col-6">
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p><strong>Name</strong></p>
+                    </div>
+                    <div class="p-form__control">
+                        <p>{$ subnet.name $}</p>
+                    </div>
+                </div>
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p><strong>CIDR</strong></p>
+                    </div>
+                    <div class="p-form__control">
+                        <p>{$ subnet.cidr $}</span>
+                    </div>
+                </div>
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p><strong>Gateway IP</strong></p>
+                    </div>
+                    <div class="p-form__control">
+                        <p data-ng-if="subnet.gateway_ip">{$ subnet.gateway_ip $}</p>
+                        <p data-ng-if="!subnet.gateway_ip">&nbsp;</p>
+                    </div>
+                </div>
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p><strong>DNS</strong></p>
+                    </div>
+                    <div class="p-form__control">
+                        <p data-ng-if="subnet.dns_servers">{$ subnet.dns_servers $}</p>
+                        <p data-ng-if="!subnet.dns_servers">&nbsp;</p>
+                    </div>
+                </div>
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p><strong>Description</strong></p>
+                    </div>
+                    <div class="p-form__control">
+                        <p data-ng-if="subnet.description">{$ subnet.description $}</p>
+                        <p data-ng-if="!subnet.description">&nbsp;</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p>
+                            <strong>Managed allocation</strong>
+                            <span data-ng-if="subnet.managed == false" class="p-tooltip p-tooltip--btm-right">
+                                <i class="p-icon--information">Help:</i>
+                                <span class="p-tooltip__message" role="tooltip">MAAS allocates IP addresses only from&#xa;the reserved ranges on this subnet.</span>
+                            </span>
+                
+                            <span data-ng-if="subnet.managed == true" class="p-tooltip p-tooltip--btm-right">
+                                <i class="p-icon--information">Help:</i>
+                                <span class="p-tooltip__message" role="tooltip">MAAS allocates IP addresses from&#xa;this subnet, excluding the reserved&#xa;and dynamic ranges.</span>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="p-form__control">
                         <span data-ng-if="subnet.managed == false">Disabled</span>
                         <span data-ng-if="subnet.managed == true">Enabled</span>
-                    </dd>
-                <dt>Active discovery
-                    <span data-ng-if="subnet.managed == true" class="p-tooltip p-tooltip--top-center">
-                        <i class="p-icon--information">Help:</i>
-                        <span class="p-tooltip__message" role="tooltip">When enabled, MAAS will scan this subnet {$ active_discovery_interval | lowercase $}&#xa;to discover hosts that have not been discovered passively.</span>
-                    </span>
-                    <dd>
+                    </div>
+                </div>
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p>
+                            <strong>Active discovery</strong>
+                            <span data-ng-if="subnet.managed == true" class="p-tooltip p-tooltip--btm-right">
+                                <i class="p-icon--information u-no-margin--right">Help:</i>
+                                <span class="p-tooltip__message" role="tooltip">When enabled, MAAS will scan this subnet {$ active_discovery_interval | lowercase $}&#xa;to discover hosts that have not been discovered passively.</span>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="p-form__control">
                         <span data-ng-if="subnet.active_discovery == false">Disabled</span>
                         <span data-ng-if="subnet.active_discovery == true">Enabled</span>
-                    </dd>
-                <dt>Fabric</dt>
-                    <dd>{$ subnet.fabric_name $}</dd>
-                <dt>VLAN</dt>
-                    <dd>{$ subnet.vlan_name $}</dd>
-                <dt>Space</dt>
-                    <dd>
-                        <a data-ng-if="space !== null" href="#/space/{$ space.id $}">{$ space.name $}</a>,
+                    </div>
+                </div>
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p><strong>Fabric</strong></p>
+                    </div>
+                    <div class="p-form__control">
+                        <p>{$ subnet.fabric_name $}</p>
+                    </div>
+                </div>
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p><strong>VLAN</strong></p>
+                    </div>
+                    <div class="p-form__control">
+                        <p>{$ subnet.vlan_name $}</p>
+                    </div>
+                </div>
+                <div class="p-form__group">
+                    <div class="p-form__label">
+                        <p><strong>Space</strong></p>
+                    </div>
+                    <div class="p-form__control">
+                        <a data-ng-if="space !== null" href="#/space/{$ space.id $}">{$ space.name $}</a>
                         <span data-ng-if="space === null">
                             (undefined)
                             <span class="p-tooltip p-tooltip--top-center">
@@ -119,29 +188,29 @@
                                 <span class="p-tooltip__message" role="tooltip">This subnet does not belong to a space.&#xa;MAAS integrations require a space in order to determine the purpose of a network.</span>
                             </span>
                         </span>
-                    </dd>
-            </dl>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <maas-obj-form data-ng-if="editSummary == true" obj="subnet" manager="subnetManager" table-form="true" save-on-blur="false" after-save="exitEditSummary" data-ng-disabled="!isSuperUser()">
                 <div class="row">
                     <div class="col-6">
                         <maas-obj-field type="text" key="name" label="Name" placeholder="Subnet name"
-                            label-width="2" input-width="5"></maas-obj-field>
+                            label-width="2" input-width="4"></maas-obj-field>
                         <maas-obj-field type="text" key="cidr" label="CIDR" placeholder="Subnet CIDR"
-                            label-width="2" input-width="5"></maas-obj-field>
+                            label-width="2" input-width="4"></maas-obj-field>
                         <maas-obj-field type="text" key="gateway_ip" label="Gateway IP" placeholder="Gateway IP"
-                            label-width="2" input-width="5"></maas-obj-field>
+                            label-width="2" input-width="4"></maas-obj-field>
                         <maas-obj-field type="text" key="dns_servers" label="DNS" placeholder="DNS nameservers for subnet"
-                            label-width="2" input-width="5"></maas-obj-field>
+                            label-width="2" input-width="4"></maas-obj-field>
                         <maas-obj-field type="textarea" key="description" label="Description" placeholder="Subnet description"
-                            label-width="2" input-width="5"></maas-obj-field>
+                            label-width="2" input-width="4"></maas-obj-field>
                     </div>
                     <div class="col-6">
                         <maas-obj-field type="onoffswitch" key="managed" label="Managed allocation"
-                                        label-width="2" input-width="3"
-                                        label-info="When enabled, MAAS will assume it may take full control of DHCP and&#xa;IP address management on this subnet. When disabled, MAAS will only&#xa;allocate addresses from reserved IP ranges on this subnet, and will not&#xa;include this subnet's dynamic ranges in the DHCP configuration.">
-
+                            label-width="3" input-width="3"
+                            label-info="When enabled, MAAS will assume it may take full control of DHCP and&#xa;IP address management on this subnet. When disabled, MAAS will only&#xa;allocate addresses from reserved IP ranges on this subnet, and will not&#xa;include this subnet's dynamic ranges in the DHCP configuration.">
                         </maas-obj-field>
                         <span data-ng-if="subnet.$maasForm.getValue('managed') != subnet.managed">
                             <div class="col-2">&nbsp;</div>
@@ -164,20 +233,21 @@
                         <maas-obj-field type="options" key="vlan" class="u-margin--bottom" label="VLAN" placeholder="Choose VLAN"
                             options="v.id as getVLANName(v) for v in vlans | filterByFabric:subnet.fabric"
                             label-width="2" input-width="5"></maas-obj-field>
-                        <dl>
-                            <dt class="col-2">Space</dt>
-                                <dd class="col-5">
-                                    <a data-ng-if="space !== null" href="#/space/{$ space.id $}">{$ space.name $}</a>, 
-                                    <span data-ng-if="space === null">
-                                        (undefined)
-
-                                        <span data-ng-if="subnet.managed == true" class="p-tooltip p-tooltip--top-center">
-                                            <i class="p-icon--warning">Warning:</i>
-                                            <span class="p-tooltip__message" role="tooltip">This subnet does not belong to a space.&#xa;MAAS integrations require a space in order to determine the purpose of a network.</span>
-                                        </span>
+                        <div class="p-form__group">
+                            <div class="p-form__label">
+                                <p>Space</p>
+                            </div>
+                            <div class="p-form__control">
+                                <a data-ng-if="space !== null" href="#/space/{$ space.id $}">{$ space.name $}</a>
+                                <span data-ng-if="space === null">
+                                    (undefined)
+                                    <span class="p-tooltip p-tooltip--top-center">
+                                        <i class="p-icon--warning">Warning:</i>
+                                        <span class="p-tooltip__message" role="tooltip">This subnet does not belong to a space.&#xa;MAAS integrations require a space in order to determine the purpose of a network.</span>
                                     </span>
-                                </dd>
-                        </dl>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -206,104 +276,107 @@
                         <th class="col-3">Gateway IP</th>
                         <th class="col-4">Destination</th>
                         <th class="col-2">Metric</th>
-                        <th class="col-3 u-align--right">Actions</th>
+                        <th class="col-3">Actions</th>
                         <th class="u-hide"><!-- empty cell required for validation --></th>
                         <th class="u-hide"><!-- empty cell required for validation --></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr data-ng-repeat="staticRoute in (subnetStaticRoutes = staticRoutes | filterBySubnet:subnet:'source' | orderBy:'gateway_ip')"
-                        data-ng-class="{'is-active': isStaticRouteInEditMode(staticRoute) || isStaticRouteInDeleteMode(staticRoute)}">
-                        <maas-obj-form obj="staticRoute" manager="staticRoutesManager" table-form="true"
-                            save-on-blur="false" after-save="ipRangeClearEditMode">
-                            <td class="col-3" aria-label="Gateway IP">
-                                <span data-ng-if="!isStaticRouteInEditMode(staticRoute)">{$ staticRoute.gateway_ip $}</span>
-                                <maas-obj-field type="text" key="gateway_ip" placeholder="Gateway IP"
-                                    disable-label="true" input-class="table__input u-margin--none"
-                                    data-ng-if="isStaticRouteInEditMode(staticRoute)"></maas-obj-field>
-                            </td>
-                            <td class="col-4" aria-label="Destination">{$ getSubnetCIDR(staticRoute.destination) $}</td>
-                            <td class="col-2" aria-label="Metric">{$ staticRoute.metric $}</td>
-                            <td class="col-3 u-align--right">
-                                <button class="table__controls-action" aria-label="Edit static route"
-                                    data-ng-click="toggleMenu(); staticRouteToggleEditMode(staticRoute)"
-                                    data-ng-if="!isStaticRouteInDeleteMode(staticRoute) && !isStaticRouteInEditMode(staticRoute)">Edit</button>
-                                <button class="table__controls-action u-text--error" aria-label="Remove static route"
-                                    data-ng-click="toggleMenu(); staticRouteEnterDeleteMode(staticRoute)"
-                                    data-ng-if="!isStaticRouteInDeleteMode(staticRoute) && !isStaticRouteInEditMode(staticRoute)">Remove</button>
-                            </td>
-                            <td class="p-table-expanding__panel" data-ng-if="isStaticRouteInDeleteMode(staticRoute)">
-                                <div data-ng-if="windowWidth <= 768">
-                                    <h2 data-ng-click="staticRouteCancelDelete()" class="u-float--left">Remove {$ staticRoute.gateway_ip $}</h2>
-                                    <i data-ng-click="staticRouteCancelDelete()" class="p-icon--close u-float--right"></i>
+                    data-ng-class="{'is-active': isStaticRouteInEditMode(staticRoute) || isStaticRouteInDeleteMode(staticRoute)}">
+                        <td class="col-3" aria-label="Gateway IP" data-ng-if="!isStaticRouteInEditMode(staticRoute)">
+                            <span>{$ staticRoute.gateway_ip $}</span>
+                        </td>
+                        <td class="col-4" aria-label="Destination" data-ng-if="!isStaticRouteInEditMode(staticRoute)">{$ getSubnetCIDR(staticRoute.destination) $}</td>
+                        <td class="col-2" aria-label="Metric" data-ng-if="!isStaticRouteInEditMode(staticRoute)">{$ staticRoute.metric $}</td>
+                        <td class="col-3" data-ng-if="!isStaticRouteInEditMode(staticRoute)">
+                            <button class="table__controls-action" aria-label="Edit static route"
+                                data-ng-click="toggleMenu(); staticRouteToggleEditMode(staticRoute)"
+                                data-ng-if="!isStaticRouteInDeleteMode(staticRoute) && !isStaticRouteInEditMode(staticRoute)">Edit</button>
+                            <button class="table__controls-action u-text--error" aria-label="Remove static route"
+                                data-ng-click="toggleMenu(); staticRouteEnterDeleteMode(staticRoute)"
+                                data-ng-if="!isStaticRouteInDeleteMode(staticRoute) && !isStaticRouteInEditMode(staticRoute)">Remove</button>
+                        </td>
+                        <td class="p-table-expanding__panel" data-ng-if="isStaticRouteInDeleteMode(staticRoute)">
+                            <div data-ng-if="windowWidth <= 768">
+                                <h2 data-ng-click="staticRouteCancelDelete()" class="u-float--left">Remove {$ staticRoute.gateway_ip $}</h2>
+                                <i data-ng-click="staticRouteCancelDelete()" class="p-icon--close u-float--right"></i>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><i class="p-icon--warning">Warning:</i> Are you sure you want to remove this static route?</p>
                                 </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <p><i class="p-icon--warning">Warning:</i> Are you sure you want to remove this static route?</p>
-                                    </div>
-                                    <div class="col-6 u-align--right">
-                                        <button class="p-button--base" type="button" data-ng-click="staticRouteCancelDelete()">Cancel</button>
-                                        <button class="p-button--negative" data-ng-click="staticRouteConfirmDelete()">Remove</button>
-                                    </div>
+                                <div class="col-6 u-align--right">
+                                    <button class="p-button--base" type="button" data-ng-click="staticRouteCancelDelete()">Cancel</button>
+                                    <button class="p-button--negative" data-ng-click="staticRouteConfirmDelete()">Remove</button>
                                 </div>
-                            </td>
-                            <td class="p-table-expanding__panel" data-ng-if="isStaticRouteInEditMode(staticRoute)">
+                            </div>
+                        </td>
+                        <td class="p-table-expanding__panel" data-ng-if="isStaticRouteInEditMode(staticRoute)">
+                            <maas-obj-form obj="staticRoute" manager="staticRoutesManager" table-form="true"
+                                save-on-blur="false" after-save="ipRangeClearEditMode">
                                 <div data-ng-if="windowWidth <= 768">
                                     <h2 data-ng-click="staticRouteToggleEditMode(staticRoute)" class="u-float--left">Editing {$ staticRoute.gateway_ip $}</h2>
                                     <i data-ng-click="staticRouteToggleEditMode(staticRoute)" class="p-icon--close u-float--right"></i>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
-                                        <maas-obj-field type="options" key="destination" label="Destination"
+                                    <div class="col-3">
+                                        <maas-obj-field type="text" key="gateway_ip" placeholder="Gateway IP"
+                                            disable-label="true" input-class="table__input u-margin--none"
+                                            data-ng-if="isStaticRouteInEditMode(staticRoute)"></maas-obj-field>
+                                    </div>
+                                    <div class="col-4">
+                                        <maas-obj-field type="options" key="destination" disable-label="true"
                                             label-width="2" input-width="3" placeholder="Choose destination"
                                             options="dest.id as dest.cidr for dest in subnets | filterSource:subnet"></maas-obj-field>
                                     </div>
-                                    <div class="col-6">
-                                        <maas-obj-field type="text" key="metric" label="Metric"
+                                    <div class="col-2">
+                                        <maas-obj-field type="text" key="metric" disable-label="true"
                                             label-width="2" input-width="3"></maas-obj-field>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <hr />
+                                <div class="row u-no-margin--top">
                                     <div class="col-6">
                                         <maas-obj-errors></maas-obj-errors>
                                     </div>
                                     <div class="col-6 u-align--right">
                                         <button class="p-button--base" type="button" data-ng-click="staticRouteToggleEditMode(staticRoute)">Cancel</button>
-                                        <button class="p-button--positive" maas-obj-save>Save static route</button>
+                                        <button class="p-button--positive u-no-margin--top" maas-obj-save>Save static route</button>
                                     </div>
                                 </div>
-                            </td>
-                        </maas-obj-form>
+                            </maas-obj-form>
+                        </td>
                     </tr>
                     <tr data-ng-if="subnetStaticRoutes.length === 0 && !newStaticRoute">
                         <td col-span="6">No static routes have been added to this subnet.</td>
                     </tr>
                     <tr class="is-active" data-ng-if="newStaticRoute">
-                        <maas-obj-form obj="newStaticRoute" manager="staticRoutesManager" manager-method="createItem"
-                            table-form="true" save-on-blur="false" after-save="cancelAddStaticRoute">
-                            <td class="col-4" data-ng-if="windowWidth >= 769">
-                                <maas-obj-field type="text" key="gateway_ip" placeholder="Gateway IP" disable-label="true"></maas-obj-field>
-                            </td>
-                            <td class="col-8"></td>
-                            <td class="p-table-expanding__panel">
+                        <td class="p-table-expanding__panel">
+                            <maas-obj-form obj="newStaticRoute" manager="staticRoutesManager" manager-method="createItem"
+                                table-form="true" save-on-blur="false" after-save="cancelAddStaticRoute">
                                 <div data-ng-if="windowWidth <= 768">
                                     <h2 data-ng-click="cancelAddStaticRoute()" class="u-float--left">Adding static route</h2>
                                     <i data-ng-click="cancelAddStaticRoute()" class="p-icon--close u-float--right"></i>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-3">
+                                        <maas-obj-field type="text" key="gateway_ip" placeholder="Gateway IP" disable-label="true"></maas-obj-field>
+                                    </div>
+                                    <div class="col-4">
                                         <div data-ng-if="windowWidth <= 768">
                                             <maas-obj-field type="text" key="gateway_ip" label="Gateway IP" label-width="2" input-width="3" placeholder="Gateway IP"></maas-obj-field>
                                         </div>
-                                        <maas-obj-field type="options" key="destination" label="Destination"
+                                        <maas-obj-field type="options" key="destination" disable-label="true"
                                             label-width="2" input-width="3" placeholder="Choose destination"
                                             options="dest.id as dest.cidr for dest in subnets | filterSource:subnet"></maas-obj-field>
                                     </div>
-                                    <div class="col-6">
-                                        <maas-obj-field type="text" key="metric" label="Metric"
+                                    <div class="col-2">
+                                        <maas-obj-field type="text" key="metric" disable-label="true"
                                             label-width="2" input-width="3"></maas-obj-field>
                                     </div>
                                 </div>
+                                <hr />
                                 <div class="row u-no-margin--top">
                                     <div class="col-6">
                                         <maas-obj-errors></maas-obj-errors>
@@ -313,8 +386,8 @@
                                         <button class="p-button--positive u-no-margin--top" maas-obj-save>Save static route</button>
                                     </div>
                                 </div>
-                            </td>
-                        </maas-obj-form>
+                            </maas-obj-form>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -331,23 +404,40 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <dl>
-                    <dt>Subnet addresses</dt>
-                        <dd>{$ subnet.statistics.total_addresses $}</dd>
-                    <dt>Availability</dt>
-                        <dd>{$ subnet.statistics.num_available $} ({$ subnet.statistics.available_string $})</dd>
-                </dl>
+                <div class="row">
+                    <div class="col-2">
+                        <p><strong>Subnet addresses</strong></p>
+                    </div>
+                    <div class="col-4">
+                        <p>{$ subnet.statistics.total_addresses $}</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <p><strong>Availability</strong></p>
+                    </div>
+                    <div class="col-4">
+                        <p>{$ subnet.statistics.num_available $} ({$ subnet.statistics.available_string $})</p>
+                    </div>
+                </div>
             </div>
             <div class="col-6">
-                <dl>
+                <div class="row">
                     <!-- XXX mpontillo we don't have data for "Reserved" yet. -->
                     <!-- <dt class="u-hide ng-hide">Reserved</dt>
                         <dd class="u-hide ng-hide">10%</dd> -->
-                    <dt>Used</dt>
-                        <dd>{$ subnet.statistics.usage_string $}</dd>
-                </dl>
+                    <div class="col-2">
+                        <p><strong>Used</strong></p>
+                    </div>
+                    <div class="col-4">
+                        <p>{$ subnet.statistics.usage_string $}</p>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
+    <section class="p-strip">
         <div class="row">
             <div class="col-12">
                 <h2>Reserved</h2>
@@ -356,6 +446,8 @@
         <div class="row">
             <maas-ip-ranges subnet="subnet"></maas-ip-ranges>
         </div>
+    </section>
+    <section class="p-strip">
         <div class="row">
             <div class="col-6">
                 <h2>Used</h2>
