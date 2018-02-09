@@ -39,7 +39,7 @@
                         <th class="col-2">Type</th> 
                         <th class="col-4">Applies to</th>
                         <th class="col-1">Enabled</th>
-                        <th class="col-3 u-align--right">Actions</th>
+                        <th class="col-3">Actions</th>
                         <th class="u-hide"><!-- empty cell required for validation --></th>
                     </tr>
                 </thead>
@@ -55,8 +55,8 @@
                         <td class="col-4" aria-label="Applies to" data-ng-if="editSnippet !== snippet">
                             <span>{$ getSnippetAppliesToText(snippet) $}</span>
                         </td>
-                        <td class="col-1" aria-label="Enabled" data-ng-if="editSnippet !== snippet && deleteSnippet !== snippet">
-                            <div class="onoffswitch">
+                        <td class="col-1" aria-label="Enabled" data-ng-if="editSnippet !== snippet">
+                            <div class="onoffswitch" data-ng-if="deleteSnippet !== snippet">
                                 <input type="checkbox" name="enabled" class="onoffswitch-checkbox u-float-none" id="enabled-{$ snippet.id $}"
                                     data-ng-model="snippet.enabled"
                                     data-ng-change="snippetToggle(snippet)">
@@ -66,7 +66,8 @@
                                 </label>
                             </div>
                         </td>
-                        <td class="col-3 u-align--right" data-ng-if="editSnippet !== snippet && deleteSnippet !== snippet">
+                        <td class="col-3" data-ng-if="editSnippet !== snippet">
+                            <span data-ng-if="deleteSnippet !== snippet">
                             <button aria-label="Edit {$ snippet.name $}"
                                 data-ng-click="toggleMenu(); snippetEnterEdit(snippet)">Edit</button>
                             <button aria-label="Remove {$ snippet.name $}"
