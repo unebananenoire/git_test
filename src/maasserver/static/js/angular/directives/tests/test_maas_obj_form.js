@@ -448,7 +448,7 @@ describe("maasObjForm", function() {
             var input = angular.element(
                 onoff.find("input.onoffswitch-checkbox"));
             var label = angular.element(
-                onoff.find("label.onoffswitch-label"));
+                onoff.find("label.onoffswitch-label u-no-margin--top"));
             expect(onoff.length).toBe(1);
             expect(input.length).toBe(1);
             expect(label.length).toBe(1);
