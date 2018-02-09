@@ -239,4 +239,11 @@
   .col-12 {
     width: 100%;
   }
+  
+  // Can be removed when the settings section is updated
+  .errorlist {
+    list-style: none;
+    display: inline-block;
+    margin-left: 0;
+  }
 }
