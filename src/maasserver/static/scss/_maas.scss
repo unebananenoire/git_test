@@ -74,6 +74,13 @@
       float: none;
     }
 
+    form {
+      input[type="radio"],
+      input[type="checkbox"] {
+        float: left;
+      }
+    }
+
     th,
     td {
       display: table-cell !important;
@@ -236,5 +243,12 @@
 
   .col-12 {
     width: 100%;
+  }
+  
+  // Can be removed when the settings section is updated
+  .errorlist {
+    list-style: none;
+    display: inline-block;
+    margin-left: 0;
   }
 }
