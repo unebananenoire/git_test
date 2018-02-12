@@ -66,17 +66,25 @@
                 <h2 class="ng-binding">Output</h2>
                 <nav class="p-tabs">
                     <ul class="p-tabs__list">
-                        <li class="p-tabs__item" data-ng-class="{ 'is-active': output === 'combined' }">
-                            <a href="" class="p-tabs__link" data-ng-click="get_result_data('combined')">combined</a>
+                        <li class="p-tabs__item">
+                            <a href="" class="p-tabs__link"
+                                data-ng-class="{ 'is-active': output === 'combined' }"
+                                data-ng-click="get_result_data('combined')">combined</a>
                         </li>
-                        <li class="p-tabs__item" data-ng-class="{ 'is-active': output === 'stdout' }">
-                            <a href="" class="p-tabs__link" data-ng-click="get_result_data('stdout')">stdout</a>
+                        <li class="p-tabs__item">
+                            <a href="" class="p-tabs__link" 
+                                data-ng-class="{ 'is-active': output === 'stdout' }"
+                                data-ng-click="get_result_data('stdout')">stdout</a>
                         </li>
-                        <li class="p-tabs__item" data-ng-class="{ 'is-active': output === 'stderr' }">
-                            <a href="" class="p-tabs__link" data-ng-click="get_result_data('stderr')">stderr</a>
+                        <li class="p-tabs__item">
+                            <a href="" class="p-tabs__link" 
+                                data-ng-class="{ 'is-active': output === 'stderr' }"
+                                data-ng-click="get_result_data('stderr')">stderr</a>
                         </li>
-                        <li class="p-tabs__item" data-ng-class="{ 'is-active': output === 'result' }">
-                            <a href="" class="p-tabs__link" data-ng-click="get_result_data('result')">yaml</a>
+                        <li class="p-tabs__item">
+                            <a href="" class="p-tabs__link" 
+                                data-ng-class="{ 'is-active': output === 'result' }"
+                                data-ng-click="get_result_data('result')">yaml</a>
                         </li>
                     </ul>
                 </nav>
