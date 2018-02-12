@@ -861,7 +861,7 @@
                                 </td>
                                 <td class="col-1">
                                     <div class="p-contextual-menu" toggle-ctrl  data-ng-if="!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)">
-                                        <button class="p-contextual-menu__toggle p-button--base" data-ng-click="toggleMenu()"><i class="p-icon--contextual-menu">Actions</i></button>
+                                        <button class="p-contextual-menu__toggle p-button--base" data-ng-click="toggleMenu()"><i class="p-icon--contextual-menu u-no-margin--right">Actions</i></button>
                                         <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled">
                                             <button class="p-contextual-menu__link"
                                                 aria-label="Add Alias or VLAN"
@@ -1772,7 +1772,7 @@
                                     <th class="col-1">Filesystem</th>
                                     <th class="col-1">Tags</th>
                                     <th class="col-1">Health</th>
-                                    <th class="col-2 u-align--right">Actions</th>
+                                    <th class="col-1 u-align--center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1818,7 +1818,7 @@
                                     <td class="col-1" aria-label="Device type">
                                         <span data-ng-hide="availableMode === 'edit' && item.$selected">{$ getDeviceType(item) $}</span>
                                     </td>
-                                    <td class="col-1" aria-label="Filesystem">
+                                    <td class="col-2" aria-label="Filesystem">
                                         <span data-ng-hide="availableMode === 'edit' && item.$selected">{$ item.fstype $}</span>
                                     </td>
                                     <td class="col-1" aria-label="Tags">
@@ -1833,11 +1833,11 @@
                                         <span data-ng-if="item.test_status === 6">Degraded</span>
                                         <span data-ng-if="item.test_status === -1">Unknown</span>
                                     </td>
-                                    <td class="col-2 u-align--right">
+                                    <td class="col-1 u-align--right">
                                         <div class="p-contextual-menu" toggle-ctrl
                                             data-ng-if="canAddLogicalVolume(item) || canAddPartition(item) || canEdit(item) || canDelete(item)">
-                                            <button class="p-contextual-menu__toggle" aria-controls="#{$ item.name $}-menu"
-                                                data-ng-click="toggleMenu()" aria-haspopup="true">View actions</button>
+                                            <button class="p-contextual-menu__toggle p-button--base" aria-controls="#{$ item.name $}-menu"
+                                                data-ng-click="toggleMenu()" aria-haspopup="true"><i class="p-icon--contextual-menu u-no-margin--right">Actions</i></button>
                                             <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled" id="{$ item.name $}-menu">
                                                 <a href="" class="p-contextual-menu__link"
                                                     aria-label="Add logical volume"
