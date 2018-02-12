@@ -46,7 +46,8 @@
 </div>
 <div class="row">
     <div class="col-10">
-        <form class="p-form p-form--inline">
+        <form class="p-form">
+          <div class="p-form--inline">
             <div class="p-form__group">
                 <label class="p-form__label" for="source">Source</label>
                 <select class="p-form__control" id="source" data-ng-model="add.source" data-ng-disabled="add.saving">
@@ -66,7 +67,8 @@
             <div class="p-form__group">
                 <button type="submit" class="p-button--positive" data-ng-disabled="!canImportKeys()" data-ng-click="importKeys()">Import</button>
             </div>
-            <p data-ng-if="add.error" class="p-form-validation__message"><strong>Error:</strong> {$ add.error $}</p>
+          </div>
+          <p data-ng-if="add.error" class="p-form-validation__message"><strong>Error:</strong> {$ add.error $}</p>
         </form>
     </div>
 </div>
