@@ -1752,14 +1752,13 @@
                         <table class="p-table-expanding">
                             <thead>
                                 <tr>
-                                    <th class="col-1">
-                                        <input type="checkbox" class="checkbox" id="available-check-all"
+                                    <th class="col-3">
+                                        <input type="checkbox" class="checkbox u-float--left" id="available-check-all"
+                                            data-ng-hide="isAvailableDisabled()"
                                             data-ng-checked="availableAllSelected"
                                             data-ng-click="toggleAvailableAllSelect()"
                                             data-ng-disabled="isAvailableDisabled()" />
                                         <label for="available-check-all"></label>
-                                    </th>
-                                    <th class="col-2">
                                         <a data-ng-click="tableInfo.column = 'name'" data-ng-class="{'p-link--soft': tableInfo.column === 'name'}">Name</a>
                                         <span class="divide"> | </span>
                                         <a data-ng-click="tableInfo.column = 'model'" data-ng-class="{'p-link--soft': tableInfo.column === 'model'}">Model</a>
@@ -1784,24 +1783,23 @@
                                 </tr>
                                 <tr data-ng-repeat="item in available | removeAvailableByNew:availableNew"
                                     data-ng-class="{ 'is-active': item.$selected }">
-                                    <td class="col-1" aria-label="Select device">
-                                        <input type="checkbox" class="checkbox" id="{$ item.name $}"
+                                    <td class="col-3 p-form-validation" aria-label="Name"
+                                        data-ng-class="{ 'is-error': isNameInvalid(item) }">
+                                        <input type="checkbox" class="checkbox u-float--left" id="{$ item.name $}"
+                                            data-ng-hide="isAvailableDisabled()"
                                             data-ng-checked="item.$selected"
                                             data-ng-click="toggleAvailableSelect(item)"
                                             data-ng-disabled="isAvailableDisabled()" />
                                         <label for="{$ item.name $}" ></label>
-                                    </td>
-                                    <td class="col-2 p-form-validation" data-ng-show="tableInfo.column === 'name'" aria-label="Name"
-                                        data-ng-class="{ 'is-error': isNameInvalid(item) }">
-                                        <span data-ng-hide="availableMode === 'edit' && item.$selected">{$ item.name $}</span>
+                                        <span data-ng-show="tableInfo.column === 'name'" data-ng-hide="availableMode === 'edit' && item.$selected">{$ item.name $}</span>
+                                        <span data-ng-show="tableInfo.column === 'model'">{$ item.model $}</span>
+                                        <span data-ng-show="tableInfo.column === 'serial'">{$ item.serial $}</span>
                                         <input type="text" class="p-form-validation__input"
                                             data-ng-model="item.name"
                                             data-ng-show="availableMode === 'edit' && item.$selected"
                                             data-ng-disabled="item.type === 'partition' || isAllStorageDisabled() || !isSuperUser()"
                                             data-ng-change="nameHasChanged(item)">
                                     </td>
-                                    <td class="col-2 ng-hide" data-ng-show="tableInfo.column === 'model'">{$ item.model $}</td>
-                                    <td class="col-2 ng-hide" data-ng-show="tableInfo.column === 'serial'">{$ item.serial $}</td>
                                     <td class="col-1" aria-label="Firmware Version">{$ item.firmware_version $}</td>
                                     <td class="col-1 u-align--center" aria-label="Boot">
                                         <input type="radio" name="boot-disk" id="{$ item.name $}-boot"
