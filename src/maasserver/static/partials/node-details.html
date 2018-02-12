@@ -1704,7 +1704,7 @@
                                     <td class="col-4" aria-label="Used by">{$ cacheset.used_by $}</td>
                                     <td class="col-2">
                                         <div toggle-ctrl data-ng-if="canDeleteCacheSet(cacheset)">
-                                            <button class="p-button--negative" aria-label="Remove"
+                                            <button class="p-button" aria-label="Remove"
                                                 data-ng-show="canDeleteCacheSet(cacheset)"
                                                 data-ng-click="toggleMenu(); quickCacheSetDelete(cacheset)">Remove cacheset</button>
                                         </div>
@@ -1752,7 +1752,6 @@
                                 <tr>
                                     <th class="col-1">
                                         <input type="checkbox" class="checkbox" id="available-check-all"
-                                            data-ng-hide="isAllStorageDisabled()"
                                             data-ng-checked="availableAllSelected"
                                             data-ng-click="toggleAvailableAllSelect()"
                                             data-ng-disabled="isAvailableDisabled()" />
@@ -1784,7 +1783,6 @@
                                     data-ng-class="{ 'is-active': item.$selected }">
                                     <td class="col-1" aria-label="Select device">
                                         <input type="checkbox" class="checkbox" id="{$ item.name $}"
-                                            data-ng-hide="isAllStorageDisabled()"
                                             data-ng-checked="item.$selected"
                                             data-ng-click="toggleAvailableSelect(item)"
                                             data-ng-disabled="isAvailableDisabled()" />
@@ -2314,7 +2312,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="is-active row" data-ng-if="availableMode === 'raid'">
+                                <tr class="is-active" data-ng-if="availableMode === 'raid'">
                                     <td class="col-1">
                                         <input type="checkbox" class="checkbox" id="raid-create" disabled="disabled" checked />
                                         <label for="raid-create"></label>
@@ -2336,7 +2334,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <div class="p-form p-form--stacked">
+                                        <div class="p-form p-form--stacked row">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="p-form__group u-hide--large">
@@ -2569,8 +2567,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th class="col-1"></th>
-                                <th class="col-2">
+                                <th class="col-3">
                                     <a data-ng-click="tableInfo.column = 'name'" data-ng-class="{'p-link--soft': tableInfo.column === 'name'}">Name</a>
                                     <span class="divide"> | </span>
                                     <a data-ng-click="tableInfo.column = 'model'" data-ng-class="{'p-link--soft': tableInfo.column === 'model'}">Model</a>
@@ -2590,8 +2587,7 @@
                                 </td>
                             </tr>
                             <tr data-ng-repeat="item in used" class="table__row details__used">
-                                <td class="col-1 u-hide u-show--large"></td>
-                                <td class="col-2" aria-label="Name">
+                                <td class="col-3" aria-label="Name">
                                     <span data-ng-show="tableInfo.column === 'name'">{$ item.name $}</span>
                                     <span data-ng-show="tableInfo.column === 'model'">{$ item.model $}</span>
                                     <span data-ng-show="tableInfo.column === 'serial'">{$ item.serial $}</span>
