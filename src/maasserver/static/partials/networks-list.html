@@ -73,9 +73,10 @@
                   </div>
             </maas-obj-form>
         </section>
-        <maas-obj-form obj="newObject" manager="subnetManager" manager-method="createItem" class="p-form--stacked row ng-hide"
-            table-form="true" save-on-blur="false" pre-process="actionSubnetPreSave" after-save="cancelAction" data-ng-show="actionOption.name == 'add_subnet'">
-            <section class="row u-no-margin--bottom">
+        <section class="row ng-hide" data-ng-show="actionOption.name == 'add_subnet'">
+        <maas-obj-form obj="newObject" manager="subnetManager" manager-method="createItem" class="p-form--stacked"
+            table-form="true" save-on-blur="false" pre-process="actionSubnetPreSave" after-save="cancelAction">
+            <section class="row">
               <div class="col-6">
                 <maas-obj-field
                     subtle="false" type="text" key="name" label="Name" placeholder="Name (optional)"
