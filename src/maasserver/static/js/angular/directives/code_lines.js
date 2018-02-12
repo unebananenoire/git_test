@@ -33,7 +33,7 @@
                  // its appropriate line number
                  $.each(lines, function() {
                    insert += '<span class="code-line">' +
-                   this + '</span>\n';
+                   this + '</span>';
                  });
                  insert += "</code>";
 
