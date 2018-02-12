@@ -707,10 +707,10 @@
                             <tr>
                                 <th class="col-2">Fabric</th>
                                 <th class="col-2">VLAN</th>
-                                <th class="col-2">DHCP</th>
-                                <th class="col-4">Subnets</th>
-                                <th class="col-1">Primary rack</th>
-                                <th class="col-1">Secondary rack</th>
+                                <th class="col-1">DHCP</th>
+                                <th class="col-3">Subnets</th>
+                                <th class="col-2">Primary rack</th>
+                                <th class="col-2">Secondary rack</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -721,19 +721,19 @@
                                 <td class="col-2">
                                     <a href="#/vlan/{$ vlanRow['vlan'].id $}">{$ getVLANText(vlanRow['vlan']) $}</a>
                                 </td>
-                                <td class="col-2">
+                                <td class="col-1">
                                     <p data-ng-if="vlanRow.vlan.dhcp_on === true || vlanRow.vlan.relay_vlan !== null || vlanRow.vlan.external_dhcp === true">Enabled</p>
                                     <p data-ng-if="vlanRow.vlan.dhcp_on !== true && vlanRow.vlan.relay_vlan === null">Disabled</p>
                                 </td>
-                                <td class="col-4">
-                                    <span data-ng-repeat="subnet in vlanRow['subnets']">
-                                        <a href="#/subnet/{$ subnet.id $}">{$ getSubnetText(subnet) $}</a>
-                                    </span>
+                                <td class="col-3">
+                                    <div class="u-no-margin--top" data-ng-repeat="subnet in vlanRow['subnets']">
+                                      <a href="#/subnet/{$ subnet.id $}">{$ getSubnetText(subnet) $}</a>
+                                    </div>
                                 </td>
-                                <td class="col-1">
+                                <td class="col-2">
                                     <a href="#/node/controller/{$ vlanRow['primary_rack'].system_id $}">{$ vlanRow['primary_rack'].fqdn $}</a>
                                 </td>
-                                <td class="col-1">
+                                <td class="col-2">
                                     <a href="#/node/controller/{$ vlanRow['secondary_rack'].system_id $}">{$ vlanRow['secondary_rack'].fqdn $}</a>
                                 </td>
                             </tr>
