@@ -72,12 +72,12 @@
                                             <table>
                                                 <tbody>
                                                     <tr data-ng-repeat="item in result.history_list">
-                                                        <td class="col-2" aria-label="Status">
+                                                        <td class="col-3" aria-label="Name">
                                                             <span data-maas-script-status="script-status" data-script-status="item.status"></span>
+                                                            {$ result.name $}
                                                         </td>
-                                                        <td class="col-2" aria-label="Name">{$ result.name $}</td>
                                                         <td class="col-2" aria-label="Tags">{$ result.tags $}</td>
-                                                        <td class="col-2" aria-label="Runtime"><span data-maas-script-run-time="script-runtime" data-start-time="item.starttime" data-run-time="{{item.runtime}}" data-estimated-run-time="{{item.estimated_runtime}}" data-script-status="item.status"></span></td>
+                                                        <td class="col-1" aria-label="Runtime"><span data-maas-script-run-time="script-runtime" data-start-time="item.starttime" data-run-time="{{item.runtime}}" data-estimated-run-time="{{item.estimated_runtime}}" data-script-status="item.status"></span></td>
                                                         <td class="col-2" aria-label="Date">{$ item.updated $}</td>
                                                         <td class="col-2" aria-label="Status">
                                                             <!-- Only link to the testing result when we've received it. This is indicated with status 2(passed), 3(failed), 4(timedout), 6(degraded), 8(failed installing)-->
