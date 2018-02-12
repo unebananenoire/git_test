@@ -388,7 +388,7 @@ $(scss_output): bin/sass $(scss_theme) $(scss_input) $(scss_deps)
 
 $(scss_theme): prefix = include/nodejs
 $(scss_theme):
-	$(npm_install) --prefix $(prefix) vanilla-framework@1.6.3
+	$(npm_install) --prefix $(prefix) vanilla-framework@1.6.6
 
 clean-styles:
 	$(RM) $(scss_output)
