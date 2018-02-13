@@ -125,7 +125,7 @@
     position: relative;
   }
 
-  .p-contextual-menu__dropdown type="button" {
+  .p-contextual-menu__dropdown {
     display: block;
   }
 
@@ -139,7 +139,7 @@
     appearance: none;
     padding-right: 2.3rem;
   }
-  
+
   maas-obj-field[type="password"] {
     background: transparent;
     border: 0;
@@ -165,6 +165,11 @@
     width: auto;
     font-size: 2.25rem;
     line-height: 1.167;
+  }
+
+  //Fix for action buttons in headers
+  .p-inline-list__item div {
+    display: inline-block;
   }
 
   .col-12 {
