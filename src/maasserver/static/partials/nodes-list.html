@@ -899,16 +899,18 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
         <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
         <div class="col-9 ng-hide" data-ng-show="currentpage === 'nodes'">
             <form>
-                <div id="search-bar" class="p-search">
+                <div id="search-bar" class="p-search-box">
                     <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
                     <input
-                        type="search" placeholder="Search nodes" class="p-search__input"
+                        type="search" placeholder="Search nodes" class="p-search-box__input"
                         data-ng-model="tabs.nodes.search" data-ng-change="updateFilters('nodes')"
                         data-ng-class="{ error: !tabs.nodes.searchValid }"
                         data-ng-disabled="tabs.nodes.actionOption" />
-                    <input type="reset" class="p-search__submit"
-                        data-ng-class="{ 'search__submit--close': tabs.nodes.search.length > 0 }"
-                        data-ng-click="clearSearch('nodes')" />
+                    <button type="reset" class="p-search-box__reset" alt="reset" 
+                        data-ng-click="clearSearch('nodes')"
+                        data-ng-show="tabs.nodes.search.length > 0"><i class="p-icon--close"></i></button>
+                    <button type="submit" class="p-search-box__button" alt="search"><i class="p-icon--search"></i></button>
+
                 </div>
                 <maas-machines-table id="nodes-listing" search="tabs.nodes.search" ng-disabled="hasActionsInProgress('nodes')"
                   machine-has-error="!supportsAction($machine, 'nodes')" on-listing-change="onNodeListingChanged($machines, 'nodes')"
@@ -916,27 +918,35 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
             </form>
         </div>
         <div class="col-9" class="ng-hide" data-ng-show="currentpage === 'devices'">
-            <div class="p-search">
-                <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
-                <input
-                    type="search" placeholder="Search devices" class="p-search__input"
-                    data-ng-model="tabs.devices.search" data-ng-change="updateFilters('devices')"
-                    data-ng-class="{ error: !tabs.devices.searchValid }"
-                    data-ng-disabled="tabs.devices.actionOption" />
-                <input type="reset" class="p-search__submit"
-                    data-ng-class="{ 'search__submit--close': tabs.devices.search.length > 0 }"
-                    data-ng-click="clearSearch('devices')" />
+            <div class="p-form-validation"
+                data-ng-class="{ 'is-error': !tabs.devices.searchValid }">
+                <div class="p-search-box">
+                    <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
+                    <input
+                        type="search" placeholder="Search devices" 
+                        class="p-search-boxh__input p-form-validation__input"
+                        data-ng-model="tabs.devices.search" 
+                        data-ng-change="updateFilters('devices')"
+                        data-ng-disabled="tabs.devices.actionOption" />
+                    <button type="reset" class="p-search-box__reset" alt="reset"
+                        data-ng-show="tabs.nodes.search.length > 0"
+                        data-ng-click="clearSearch('devices')">
+                        <i class="p-icon--close">Reset</i>
+                    </button>
+                    <button type="submit" class="p-search-box__button" alt="search">
+                        <i class="p-icon--search">Search</i>
+                    </button>
+                </div>
             </div>
             <table class="p-table-expanding">
                 <thead>
                     <tr>
-                        <th class="col-1">
-                            <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
-                            <input type="checkbox" class="u-float--none" data-ng-click="toggleCheckAll('devices')" data-ng-checked="tabs.devices.allViewableChecked" id="check-all-devices" data-ng-disabled="hasActionsInProgress('devices')" />
-                            <label for="check-all-devices" class="p-form__label u-no-margin--top"></label>
-                        </th>
                         <th class="col-2">
                             <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
+                            <span class="u-float--left">
+                                <input type="checkbox" class="u-float--none" data-ng-click="toggleCheckAll('devices')" data-ng-checked="tabs.devices.allViewableChecked" id="check-all-devices" data-ng-disabled="hasActionsInProgress('devices')" />
+                                <label for="check-all-devices" class="p-form__label u-no-margin--top"></label>
+                            </span>
                             <a href="" data-ng-click="sortTable('fqdn', 'devices')" data-ng-class="{'is-sorted': tabs.devices.predicate === 'fqdn', 'sort-asc': tabs.devices.reverse === false, 'sort-desc': tabs.devices.reverse === true}">
                                 <span title="Fully Qualified Domain Name">FQDN</span>
                             </a>
@@ -949,7 +959,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                         <th class="col-2">
                             <a href="" data-ng-click="sortTable('ip_assignment', 'devices')" data-ng-class="{'is-sorted': tabs.devices.predicate === 'ip_assignment', 'sort-asc': tabs.devices.reverse === false, 'sort-desc': tabs.devices.reverse === true}">IP Assignment</a>
                         </th>
-                        <th class="col-1">
+                        <th class="col-2">
                             <a href="" data-ng-click="sortTable('ip_address', 'devices')" data-ng-class="{'is-sorted': tabs.devices.predicate === 'ip_address', 'sort-asc': tabs.devices.reverse === false, 'sort-desc': tabs.devices.reverse === true}">IP Address</a>
                         </th>
                         <th class="col-1">
@@ -963,11 +973,11 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                     <tr
                         data-ng-repeat="device in tabs.devices.filtered_items = (devices | nodesFilter:tabs.devices.search | orderBy:tabs.devices.predicate:tabs.devices.reverse) track by device.system_id"
                         data-ng-class="{ 'table--error': !supportsAction(device, 'devices'), selected: device.$selected }">
-                        <td class="col-1" aria-label="Select device">
-                            <input type="checkbox" class="u-float--none" data-ng-click="toggleChecked(device, 'devices')" data-ng-checked="device.$selected" id="{$ device.fqdn $}" data-ng-disabled="hasActionsInProgress('devices')"/>
-                            <label for="{$ device.fqdn $}" class="p-form__label u-no-margin--top"></label>
-                        </td>
                         <td class="col-2" aria-label="FQDN">
+                            <span class="u-float--left">
+                                <input type="checkbox" class="u-float--none" data-ng-click="toggleChecked(device, 'devices')" data-ng-checked="device.$selected" id="{$ device.fqdn $}" data-ng-disabled="hasActionsInProgress('devices')"/>
+                                <label for="{$ device.fqdn $}" class="p-form__label u-no-margin--top"></label>
+                            </span>
                             <a href="#/node/device/{$ device.system_id $}">{$ device.fqdn $}</a>
                         </td>
                         <td class="col-2" aria-label="MAC">
@@ -975,7 +985,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                             <span class="extra-macs" data-ng-show="device.extra_macs.length">(+{$ device.extra_macs.length $})</span>
                         </td>
                         <td class="col-2" aria-label="IP Assignment">{$ getDeviceIPAssignment(device.ip_assignment) $}</td>
-                        <td class="col-1" aria-label="IP Address">{$ device.ip_address $}</td>
+                        <td class="col-2" aria-label="IP Address">{$ device.ip_address $}</td>
                         <td class="col-1" aria-label="Owner">{$ device.owner $}</td>
                     </tr>
                 </tbody>
@@ -983,26 +993,32 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
         </div>
     </div>
     <div class="row ng-hide"  data-ng-show="currentpage === 'controllers'">
-        <div class="p-search">
-            <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
-            <input
-                type="search" placeholder="Search controllers" class="p-search__input"
-                data-ng-model="tabs.controllers.search" data-ng-change="updateFilters('controllers')"
-                data-ng-class="{ error: !tabs.controllers.searchValid }"
-                data-ng-disabled="tabs.controllers.actionOption" />
-            <input type="submit" class="p-search__submit"
-                data-ng-class="{ 'search__submit--close': tabs.controllers.search.length > 0 }"
-                data-ng-click="clearSearch('controllers')" />
+        <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
+        <div class="p-form-validation" data-ng-class="{ 'is-error': !tabs.controllers.searchValid }">
+                <div class="p-search-box">
+                <input
+                    type="search" placeholder="Search controllers" class="p-search-box__input p-form-validation__input"
+                    data-ng-model="tabs.controllers.search" data-ng-change="updateFilters('controllers')"
+                    data-ng-disabled="tabs.controllers.actionOption" />
+                <button type="reset" class="p-search-box__reset" alt="reset"
+                    data-ng-show="tabs.controllers.search.length > 0"
+                    data-ng-click="clearSearch('controllers')">
+                    <i class="p-icon--close">Reset</i>
+                </button>
+                <button type="submit" class="p-search-box__button" alt="search">
+                    <i class="p-icon--search">Search</i>
+                </button>
+            </div>
         </div>
             <table>
                 <thead>
                     <tr>
-                        <th class="col-1">
-                            <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
-                            <input type="checkbox" class="u-float--none" data-ng-click="toggleCheckAll('controllers')" data-ng-checked="tabs.controllers.allViewableChecked" id="check-all-controllers" data-ng-disabled="hasActionsInProgress('controllers')" />
-                            <label for="check-all-controllers" class="p-form__label u-no-margin--top"></label>
-                        </th>
                         <th class="col-2">
+                            <span class="u-float--left">
+                                <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
+                                <input type="checkbox" class="u-float--none" data-ng-click="toggleCheckAll('controllers')" data-ng-checked="tabs.controllers.allViewableChecked" id="check-all-controllers" data-ng-disabled="hasActionsInProgress('controllers')" />
+                                <label for="check-all-controllers" class="p-form__label u-no-margin--top"></label>
+                            </span>
                             <a href="" data-ng-click="sortTable('fqdn', 'controllers')" data-ng-class="{'is-sorted': tabs.controllers.predicate === 'fqdn', 'sort-asc': tabs.controllers.reverse === false, 'sort-desc': tabs.controllers.reverse === true}">
                                 <span title="Fully Qualified Domain Name">Name</span>
                             </a>
@@ -1010,7 +1026,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                         <th class="col-1 u-align--center">
                             <span title="Status">Status</span>
                         </th>
-                        <th class="col-2">
+                        <th class="col-3">
                             <a href="" data-ng-click="sortTable('node_type_display', 'controllers')" data-ng-class="{'is-sorted': tabs.controllers.predicate === 'node_type_display', 'sort-asc': tabs.controllers.reverse === false, 'sort-desc': tabs.controllers.reverse === true}">
                                 <span title="Controller Type">Type</span>
                             </a>
@@ -1033,15 +1049,15 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                     <tr
                         data-ng-repeat="controller in tabs.controllers.filtered_items = (controllers | nodesFilter:tabs.controllers.search | orderBy:tabs.controllers.predicate:tabs.controllers.reverse) track by controller.system_id"
                         data-ng-class="{ 'table--error': !supportsAction(controller, 'controllers'), selected: controller.$selected }">
-                        <td class="col-1" aria-label="Select controller">
-                            <input type="checkbox" class="u-float--none" data-ng-click="toggleChecked(controller, 'controllers')" data-ng-checked="controller.$selected" id="{$ controller.fqdn $}" data-ng-disabled="hasActionsInProgress('controllers')"/>
-                            <label for="{$ controller.fqdn $}" class="p-form__label u-no-margin--top"></label>
-                        </td>
                         <td class="col-2" aria-label="FQDN">
+                            <span class="u-float--left">
+                                <input type="checkbox" class="u-float--none" data-ng-click="toggleChecked(controller, 'controllers')" data-ng-checked="controller.$selected" id="{$ controller.fqdn $}" data-ng-disabled="hasActionsInProgress('controllers')"/>
+                                <label for="{$ controller.fqdn $}" class="p-form__label u-no-margin--top"></label>
+                            </span>
                             <a href="#/node/controller/{$ controller.system_id $}">{$ controller.fqdn $}</a>
                         </td>
                         <td class="col-1 u-align--center" data-maas-controller-status="controller" data-maas-services="services" aria-label="Status"></td>
-                        <td class="col-2" aria-label="Type">{$ controller.node_type_display $}</td>
+                        <td class="col-3" aria-label="Type">{$ controller.node_type_display $}</td>
                         <td class="col-2" aria-label="Version">
                             <div data-ng-show="controller.version">
                                 {$ controller.version__short $}
@@ -1064,17 +1080,25 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
         </div>
     </div>
     <div class="row ng-hide" data-ng-show="currentpage === 'switches'">
-        <div class="p-search">
+        <form class="p-search-box">
+            <div class="p-form-validation"
+                data-ng-class="{ 'is-error': !tabs.switches.searchValid }">
             <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
             <input
-                type="search" placeholder="Search switches" class="p-search__input"
-                data-ng-model="tabs.switches.search" data-ng-change="updateFilters('switches')"
-                data-ng-class="{ error: !tabs.switches.searchValid }"
+                type="search" placeholder="Search switches" 
+                class="p-search-box__input p-form-validation__input"
+                data-ng-model="tabs.switches.search" 
+                data-ng-change="updateFilters('switches')"
                 data-ng-disabled="tabs.switches.actionOption" />
-            <input type="submit" class="p-search__submit"
-                data-ng-class="{ 'search__submit--close': tabs.switches.search.length > 0 }"
-                data-ng-click="clearSearch('switches')" />
-        </div>
+            <button type="reset" class="p-search-box__reset" alt="reset"
+                data-ng-show="tabs.switches.search.length > 0"
+                data-ng-click="clearSearch('switches')">
+                <i class="p-icon--close"></i>
+            </button>
+            <button type="submit" class="p-search-box__button" alt="search">
+                <i class="p-icon--search"></i>
+            </button>
+        </form>
         <maas-switches-table id="switches-listing" search="tabs.switches.search" ng-disabled="hasActionsInProgress('switches')"
             switch-has-error="!supportsAction($switch_, 'switches')" on-listing-change="onNodeListingChanged($switches, 'switches')"
             on-check-all="toggleCheckAll('switches')" on-check="toggleChecked($switch_, 'switches')"></maas-switches-table>
