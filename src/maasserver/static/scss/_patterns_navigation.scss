@@ -16,7 +16,6 @@
     }
   }
 
-
   .p-navigation {
     border-bottom: 0;
     
@@ -26,18 +25,28 @@
         position: relative;
       }
     }
+    
 
     .p-navigation__links {
+      &:last-of-type {
+        border-right-color: lighten($color-navigation-background, 20);
+      }
+
       &--right {
         @extend .p-navigation__links;
 
         @media (min-width: $breakpoint-navigation-threshold) {
-          float: right !important;
+          justify-content: flex-end;
+          margin-left: auto;
         }
       }
 
       .p-navigation__link {
         border-color: lighten($color-navigation-background, 20);
+
+        &.is-selected > a {
+          border-bottom-color: $color-brand;
+        }
 
         &:first-child {
           border-top: 0;

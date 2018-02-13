@@ -80,6 +80,8 @@
 <div class="p-strip">
     <div class="row">
         <maas-notifications></maas-notifications>
+    </div>
+    <div class="row">
         <div class="col-12">
             <div data-ng-if="!loading && pods.length == 0" class="p-heading-icon">
                 <div class="p-heading-icon__header">
@@ -107,7 +109,8 @@
                     <h3 class="p-heading-icon__title">You have not added any pods yet. <button class="p-button--positive is-inline ng-scope" data-ng-click="add.open = true" data-ng-if="!add.open">Add pod</button></h3>
                 </div>
             </div>
-
+        </div>
+        <div class="row">
             <table class="p-table-expanding" data-ng-if="pods.length > 0">
                 <thead>
                     <tr>
@@ -122,7 +125,7 @@
                                 <span title="Name">Name</span>
                             </a>
                         </th>
-                        <th class="col-2">
+                        <th class="col-1">
                             <a href="" class="table__header-link" data-ng-click="sortTable('type')" data-ng-class="{'is-sorted': predicate === 'type', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Type</a>
                         </th>
                         <th class="col-2">
@@ -137,7 +140,7 @@
                         <th class="col-1">
                             <a href="" class="table__header-link" data-ng-click="sortTable('available.memory')" data-ng-class="{'is-sorted': predicate === 'available.memory', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">RAM (GiB)</a>
                         </th>
-                        <th class="col-1 u-align--right">
+                        <th class="col-2 u-align--right">
                             <a href="" class="table__header-link" data-ng-click="sortTable('composed_machines')" data-ng-class="{'is-sorted': predicate === 'composed_machines', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">Composed machines</a>
                         </th>
                     </tr>
@@ -151,7 +154,7 @@
                         <td class="col-2" aria-label="Name">
                             <a href="#/pod/{$ pod.id $}">{$ pod.name $}</a>
                         </td>
-                        <td class="col-2" aria-label="Type">
+                        <td class="col-1" aria-label="Type">
                             {$ getPowerTypeTitle(pod.type) $}
                         </td>
                         <td class="col-2" aria-label="Local storage (GiB)">
@@ -166,7 +169,7 @@
                         <td class="col-1" aria-label="RAM (GiB)">
                             {$ pod.available.memory_gb $} free <div class="u-text--subtle">of {$ pod.total.memory_gb $}</div>
                         </td>
-                        <td class="col-1 u-align--right" aria-label="Composed machines">
+                        <td class="col-2 u-align--right" aria-label="Composed machines">
                             {$ pod.composed_machines_count $}
                         </td>
                         <td class="p-table-expanding__panel" data-ng-if="pod.$selected && pod.action_failed">

@@ -16,38 +16,8 @@
     }
   }
 
-  // XXX Utility to remove max-width
-  // Issue: https://github.com/vanilla-framework/vanilla-framework/issues/1502
-  .u-remove-max-width {
-    max-width: none;
-  }
-
   body {
     background-color: $color-light;
-  }
-
-  @mixin vf-notification {
-    background-color: $color-x-light;
-    border: 0;
-    border-color: $color-mid-dark;
-    border-radius: .125rem;
-    border-style: solid;
-    border-top-width: 3px;
-    box-shadow: 0 1px 5px 1px transparentize($color-x-dark, .8);
-    color: $color-dark;
-    display: flex;
-    font-size: $sp-medium;
-    overflow: hidden;
-    padding: .625rem;
-    text-align: center;
-  }
-
-
-  // XXX Can be remove when this Vanilla issue is resolved
-  // https://github.com/vanilla-framework/vanilla-framework/issues/1505
-  [class^="p-icon--"],
-  [class*=" p-icon--"] {
-    overflow: hidden;
   }
 
   maas-obj-field[type="text"],
@@ -132,26 +102,6 @@
     padding-top: 0;
   }
 
-  // XXX Can be remove when this Vanilla issue is resolved
-  // https://github.com/vanilla-framework/vanilla-framework/issues/1509
-  .p-tooltip__message {
-    max-width: none;
-    margin-top: 0;
-  }
-
-  // Local variant for notification pattern
-  .p-notification,
-  .p-notification--negative,
-  .p-notification--positive,
-  .p-notification--caution {
-    width: 100%;
-    font-size: 1rem;
-
-    .p-notification__response {
-      padding-left: 1.5rem;
-    }
-  }
-
   .p-navigation--sidebar {
     background: $color-x-light;
 
@@ -161,31 +111,12 @@
     }
   }
 
-  .p-search {
-    position: relative;
-
-    &__submit {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background-color: transparent;
-      background-image: url("../assets/images/9cc42dcc-magnifying_glass.svg");
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: 20px;
-      text-indent: -999em;
-      display: block;
-      width: 20px;
-      height: 20px;
-      overflow: hidden;
-      padding: 0;
-      border: 0;
-      margin-top: 0;
-    }
-  }
-
   .u-float--none {
     float: none !important;
+  }
+
+  .u-remove-max-width {
+    max-width: none;
   }
 
   // XXX Ant: 25.01.18 Can be removed when this issue is resolved
