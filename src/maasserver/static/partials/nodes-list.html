@@ -1,5 +1,4 @@
 <header class="p-strip--light is-shallow is-bordered page-header u-no-padding--bottom" media-query="min-width: 769px">
-<!--####################### TOP ROW #########################################-->
     <div class="row">
         <div class="col-8">
             <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
@@ -8,8 +7,6 @@
             <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
             <p class="page-header__status u-no-margin--top" data-ng-show="loading"><span class="u-text--loading"><i class="p-icon--spinner u-animation--spin"></i> Loading...</span></p>
         </div>
-
-        <!--####################### NUMBER OF SELECTED NODES #########################################-->
         <div class="col-4 ng-hide" data-ng-show="currentpage === 'nodes'">
             <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
             <div class="page-header__controls u-float--right">
@@ -83,8 +80,6 @@
             </div>
         </div>
     </div>
-<!--####################### /TOP ROW #########################################-->
-<!--####################### FORM ROW #########################################-->
     <div data-ng-repeat="tab in ['nodes', 'switches']">
         <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
         <div class="page-header__dropdown" data-ng-class="{ 'u-hide': !tabs[tab].actionOption }">
@@ -95,28 +90,28 @@
                 </div>
             </div>
             <section class="page-header__section row u-no-margin--top" data-ng-hide="isActionError(tab) || hasActionsInProgress(tab)">
-                <div class="col-6">
-                    <form class="p-form p-form--stacked">
-                        <div class="p-form__group ng-hide" data-ng-show="tabs[tab].actionOption.name === 'commission' || tabs[tab].actionOption.name === 'test'">
-                            <label class="p-form__label" for="{$ tab $}-enableSSH">Allow SSH access and prevent machine from powering off</label>
-                            <div class="p-form__control u-clearfix">
-                                <input id="{$ tab $}-enableSSH" type="checkbox"
-                                    data-ng-model="tabs[tab].commissionOptions.enableSSH">
-                            </div>
-                        </div>
+                <div class="col-12">
+                    <form class="p-form p-form--inline">
                         <div class="p-form__group ng-hide" data-ng-show="tabs[tab].actionOption.name === 'commission'">
-                            <label class="p-form__label" for="{$ tab $}-skipNetworking">Retain network configuration</label>
                             <div class="p-form__control u-clearfix">
                                 <input id="{$ tab $}-skipNetworking" type="checkbox"
                                     data-ng-model="tabs[tab].commissionOptions.skipNetworking">
                             </div>
+                            <label class="p-form__label" for="{$ tab $}-skipNetworking">Retain network configuration</label>
                         </div>
                         <div class="p-form__group ng-hide" data-ng-show="tabs[tab].actionOption.name === 'commission'">
-                            <label class="p-form__label" for="{$ tab $}-skipStorage">Retain storage configuration</label>
                             <div class="p-form__control u-clearfix">
                                 <input id="{$ tab $}-skipStorage" type="checkbox"
                                     data-ng-model="tabs[tab].commissionOptions.skipStorage">
                             </div>
+                            <label class="p-form__label" for="{$ tab $}-skipStorage">Retain storage configuration</label>
+                        </div>
+                        <div class="p-form__group ng-hide" data-ng-show="tabs[tab].actionOption.name === 'commission' || tabs[tab].actionOption.name === 'test'">
+                            <div class="p-form__control u-clearfix">
+                                <input id="{$ tab $}-enableSSH" type="checkbox"
+                                    data-ng-model="tabs[tab].commissionOptions.enableSSH">
+                            </div>
+                            <label class="p-form__label" for="{$ tab $}-enableSSH">Allow SSH access and prevent machine powering off</label>
                         </div>
                         <div class="p-form__group ng-hide" data-ng-show="tabs[tab].actionOption.name === 'deploy'">
                             <label for="image" class="p-form__label">Choose your image</label>
@@ -141,7 +136,7 @@
                 </div>
                 <div class="page-header__controls col-6 u-align--right" data-ng-if="tabs[tab].actionOption.name !== 'commission' && tabs[tab].actionOption.name !== 'test'">
                     <button class="p-button--base" data-ng-click="actionCancel(tab)">Cancel</button>
-                    <button class="" data-ng-class="tabs[tab].actionOption.name === 'delete' ? 'p-button--negative' : 'p-button--positive'" data-ng-click="actionGo(tab)" data-ng-hide="hasActionsFailed(tab)">
+                    <button data-ng-class="tabs[tab].actionOption.name === 'delete' ? 'p-button--negative' : 'p-button--positive'" data-ng-click="actionGo(tab)" data-ng-hide="hasActionsFailed(tab)">
                         <span data-ng-if="tabs[tab].actionOption.name === 'acquire'">Acquire {$ tabs[tab].selectedItems.length $}
                             <span data-ng-pluralize count="tabs[tab].selectedItems.length" when="{'one': 'machine', 'other': 'machines'}"></span>
                         </span>
@@ -198,9 +193,10 @@
                 </form>
             </section>
             <section class="page-header__section row" data-ng-hide="isActionError(tab) || hasActionsInProgress(tab)" data-ng-if="tabs[tab].actionOption.name === 'commission' || tabs[tab].actionOption.name ==='test'">
+                <hr />
                 <form class="p-form p-form--stacked">
                     <div class="col-8">
-                        <div class="p-form__group">
+                        <div class="p-form__group u-vertically-center">
                             <label class="p-form__label" for="{$ tab $}-testing-scripts">Hardware tests</label>
                             <div class="p-form__control">
                                 <span id="{$ tab $}-testing-scripts" data-maas-script-select="script" data-script-type="2" data-ng-model="tabs[tab].testSelection" class="tags--inline"></span>
@@ -210,9 +206,10 @@
                 </form>
             </section>
             <section class="page-header__section row" data-ng-hide="isActionError(tab) || hasActionsInProgress(tab)" data-ng-if="tabs[tab].actionOption.name === 'commission' || tabs[tab].actionOption.name === 'test'">
+                <hr />
                 <div class="page-header__controls">
                     <button class="p-button--base" data-ng-click="actionCancel(tab)">Cancel</button>
-                    <button class="" data-ng-class="tabs[tab].actionOption.name === 'delete' ? 'p-button--negative' : 'p-button--positive'" data-ng-click="actionGo(tab)" data-ng-hide="hasActionsFailed(tab)">
+                    <button data-ng-class="tabs[tab].actionOption.name === 'delete' ? 'p-button--negative' : 'p-button--positive'" data-ng-click="actionGo(tab)" data-ng-hide="hasActionsFailed(tab)">
                         <span data-ng-if="tabs[tab].actionOption.name === 'commission'">Commission {$ tabs[tab].selectedItems.length $}
                             <span data-ng-pluralize count="tabs[tab].selectedItems.length" when="{'one': 'machine', 'other': 'machines'}"></span>
                         </span>
@@ -265,9 +262,9 @@
         </div>
     </div>
 
-    <!--####################### ADD MACHINE FORM #########################################-->
     <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
-    <div class="page-header__dropdown" data-ng-class="{ 'u-hide': !addHardwareScope.viewable }" data-ng-controller="AddHardwareController">
+    <div class="page-header__dropdown row" data-ng-class="{ 'u-hide': !addHardwareScope.viewable }" data-ng-controller="AddHardwareController">
+        <hr />
         <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
         <section class="page-header__section ng-hide" data-ng-show="showMachine()">
             <h3 class="page-header__dropdown-title">Add machine</h3>
@@ -319,16 +316,16 @@
                     </div>
                     <div class="p-form__group" data-ng-repeat="mac in machine.macs">
                         <label for="mac-address" class="p-form__label col-2"><span data-ng-hide="mac !== machine.macs[0]">MAC Address</span>&nbsp;</label>
-                        <div class="p-form__group-input col-3">
-                            <input type="text" id="mac-address" placeholder="00:00:00:00:00:00"
+                        <div class="p-form__group-input col-3 p-search-box">
+                            <input type="text" id="mac-address" placeholder="00:00:00:00:00:00" class="p-search-box__input"
                                 maxlength="17"
                                 data-ng-class="{ 'has-error': mac.error }"
                                 data-ng-model="mac.mac"
                                 data-ng-pattern="macAddressRegex"
                                 data-ng-change="validateMac(mac)"
                                 mac-address>
-                            <span class="p-form__group-remove" title="Delete MAC"
-                                data-ng-hide="mac === machine.macs[0]" data-ng-click="removeMac(mac)"></span>
+                            <button type="reset" title="Delete MAC" class="p-search-box__button"
+                                data-ng-hide="mac === machine.macs[0]" data-ng-click="removeMac(mac)"><i class="p-icon--close"></i></button>
                         </div>
                     </div>
                     <div class="p-form__group">
@@ -368,6 +365,7 @@
         <section class="page-header__section col-12" data-ng-show="showMachine()">
             <p class="page-header__message page-header__message--error ng-hide" data-ng-show="error">{$ error $}</p>
             <div class="page-header__controls p-strip u-align--right">
+                <hr />
                 <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
                 <button class="p-button--neutral"
                     data-ng-disabled="machineHasError()"
@@ -382,6 +380,7 @@
         <section class="page-header__section col-12 ng-hide" data-ng-show="showChassis()">
             <p class="page-header__message page-header__message--error ng-hide" data-ng-show="error">{$ error $}</p>
             <div class="page-header__controls p-strip u-align--right">
+                <hr />
                 <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
                 <button class="p-button--neutral"
                     data-ng-disabled="chassisHasErrors()"
@@ -394,13 +393,13 @@
 
         <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
         <section class="page-header__section row" data-ng-hide="architectures.length">
+            <hr />
             <p class="page-header__message page-header__message--error">
                 Cannot add {$ mode $} until boot images have been imported. To fix, visit the <a href="#/images">images page</a>.
             </p>
         </section>
     </div>
 
-    <!--####################### SET ZONE / DELETE FORM #########################################-->
     <!-- XXX blake_r 2015-04-02 - Need to add e2e test. -->
     <div class="page-header__dropdown" data-ng-class="{ 'u-hide': !tabs.devices.actionOption }">
         <!-- XXX blake_r 2015-04-02 - Need to add e2e test. -->
@@ -456,7 +455,6 @@
         </div>
     </div>
 
-    <!--####################### ADD DEVICE FORM #########################################-->
     <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
     <div class="page-header__dropdown" data-ng-class="{ 'u-hide': !addDeviceScope.viewable }" data-ng-controller="AddDeviceController">
         <section class="page-header__section">
@@ -617,7 +615,7 @@
         <div class="page-header__section col-12 ng-hide" data-ng-hide="isActionError('controllers') || hasActionsInProgress('controllers')" data-ng-if="tabs.controllers.actionOption.name === 'test'">
             <form class="p-form p-form--stacked">
                 <div class="col-8">
-                    <div class="p-form__group">
+                    <div class="p-form__group u-vertically-center">
                         <label for="testing-scripts">Hardware Tests</label>
                         <span id="testing-scripts" data-maas-script-select="script" data-script-type="2" data-ng-model="tabs.nodes.testSelection" class="tags--inline"></span>
                     </div>
@@ -665,7 +663,6 @@
         </div>
     </div>
 
-    <!--####################### ADD RACK CONTROLLER #########################################-->
     <div class="page-header__dropdown u-no-margin--top" data-ng-class="{ 'u-hide': !tabs.controllers.addController }">
         <!-- XXX blake_r 2015-05-07 - Need to add e2e test. -->
         <div class="page-header__section col-12 ng-hide" data-ng-show="tabs.controllers.addController">
@@ -683,13 +680,8 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                     data-ng-click="tabs.controllers.addController = false">Close</a>
         </div>
     </div>
-    <!--####################### /FORM ROW #########################################-->
 
-    <!--####################### TABS #########################################-->
-
-
-
-    <div media-query="min-width: 769px" class="p-strip is-shallow u-no-padding--bottom" data-ng-class="{ 'u-off-screen': tabs.nodes.actionOption || addHardwareScope.viewable || tabs.devices.actionOption || addDeviceScope.viewable || tabs.controllers.actionOption || tabs.controllers.addController }">
+    <div media-query="min-width: 769px" class="p-strip is-shallow u-no-padding--bottom">
         <nav class="p-tabs">
             <ul class="p-tabs__list" role="tablist">
                 <li class="p-tabs__item" role="presentation">
@@ -730,27 +722,6 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
         </nav>
     </div>
 </header>
-
-<!--####################### /TABS #########################################-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--####################### MAIN PAGE CONTENT #########################################-->
 
 <div class="p-strip is-shallow u-no-padding--bottom">
     <div class="row">
