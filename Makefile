@@ -27,7 +27,6 @@ js_enums := src/maasserver/static/js/enums.js
 
 # MAAS SASS stylesheets. The first input file (maas-styles.css) imports
 # the others, so is treated specially in the target definitions.
-scss_theme := include/nodejs/node_modules/vanilla-framework
 scss_input := src/maasserver/static/scss/build.scss
 scss_deps := $(wildcard src/maasserver/static/scss/_*.scss)
 scss_output := src/maasserver/static/css/build.css
@@ -398,10 +397,6 @@ styles: clean-styles $(scss_output)
 $(scss_output): bin/sass $(scss_input) $(scss_deps)
 	bin/sass --include-path=src/maasserver/static/scss \
 	    --output-style compressed $(scss_input) -o $(dir $@)
-
-$(scss_theme): prefix = include/nodejs
-$(scss_theme):
-	$(npm_install) --prefix $(prefix) vanilla-framework@1.6.6
 
 clean-styles:
 	$(RM) $(scss_output)
