@@ -21,6 +21,7 @@
 @import 'patterns_tag-input';
 @import 'patterns_forms';
 @import 'patterns_notification';
+@import 'patterns_footer';
 
 // Include local patterns
 @include maas;
@@ -37,3 +38,4 @@
 @include maas-tag-input;
 @include maas-p-forms;
 @include maas-p-notifications;
+@include maas-p-sticky-footer;
