@@ -80,9 +80,9 @@
             </div>
         </div>
     </div>
-    <div data-ng-repeat="tab in ['nodes', 'switches']">
+    <div data-ng-repeat="tab in ['nodes', 'switches']" data-ng-class="{ 'u-hide': !tabs[tab].actionOption }">
         <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
-        <div class="page-header__dropdown" data-ng-class="{ 'u-hide': !tabs[tab].actionOption }">
+        <div class="page-header__dropdown">
             <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
             <div class="row">
                 <div class="col-12">
@@ -269,7 +269,7 @@
     </div>
 
     <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
-    <div class="page-header__dropdown row" data-ng-class="{ 'u-hide': !addHardwareScope.viewable }" data-ng-controller="AddHardwareController">
+    <div class="page-header__dropdown row u-no-margin--top" data-ng-class="{ 'u-hide': !addHardwareScope.viewable }" data-ng-controller="AddHardwareController">
         <hr />
         <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
         <section class="page-header__section ng-hide" data-ng-show="showMachine()">
@@ -370,7 +370,7 @@
         <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
         <section class="page-header__section col-12" data-ng-show="showMachine()">
             <p class="page-header__message page-header__message--error ng-hide" data-ng-show="error">{$ error $}</p>
-            <div class="page-header__controls p-strip u-align--right">
+            <div class="page-header__controls p-strip u-align--right u-no-padding--bottom">
                 <hr />
                 <button class="p-button--base" type="button" data-ng-click="cancel()">Cancel</button>
                 <button class="p-button--neutral"
@@ -385,7 +385,7 @@
         <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
         <section class="page-header__section col-12 ng-hide" data-ng-show="showChassis()">
             <p class="page-header__message page-header__message--error ng-hide" data-ng-show="error">{$ error $}</p>
-            <div class="page-header__controls p-strip u-align--right">
+            <div class="page-header__controls p-strip u-align--right u-no-padding--bottom">
                 <hr />
                 <button class="p-button--base" type="button" data-ng-click="cancel()">Cancel</button>
                 <button class="p-button--neutral"
@@ -399,7 +399,6 @@
 
         <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
         <section class="page-header__section row" data-ng-hide="architectures.length">
-            <hr />
             <p class="page-header__message page-header__message--error">
                 Cannot add {$ mode $} until boot images have been imported. To fix, visit the <a href="#/images">images page</a>.
             </p>
@@ -463,7 +462,7 @@
 
     <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
     <div class="page-header__dropdown" data-ng-class="{ 'u-hide': !addDeviceScope.viewable }" data-ng-controller="AddDeviceController">
-        <section class="page-header__section">
+        <section class="page-header__section row">
             <hr />
             <h3 class="page-header__dropdown-title">Add device</h3>
             <form class="p-form p-form--stacked">
@@ -556,7 +555,7 @@
                     <span class="p-notification__status">Error:</span> {$ error $}
                 </p>
             </div>
-            <div class="p-strip u-align--right">
+            <div class="u-align--right">
                 <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
                 <button class="p-button--neutral"
                     data-ng-class="{ disabled: deviceHasError() }"
@@ -669,7 +668,7 @@
         </div>
     </div>
 
-    <div class="page-header__dropdown u-no-margin--top" data-ng-class="{ 'u-hide': !tabs.controllers.addController }">
+    <div class="page-header__dropdown row u-no-margin--top" data-ng-class="{ 'u-hide': !tabs.controllers.addController }">
         <!-- XXX blake_r 2015-05-07 - Need to add e2e test. -->
         <div class="page-header__section col-12 ng-hide" data-ng-show="tabs.controllers.addController">
             <hr />
@@ -681,7 +680,7 @@ sudo apt install maas-rack-controller
 # don't have access to the URL, use a different IP address to allow connection.
 sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tabs.controllers.registerSecret $}</code></pre>
         </div>
-        <div class="p-strip u-align--right ng-hide" data-ng-show="tabs.controllers.addController">
+        <div class="u-align--right ng-hide" data-ng-show="tabs.controllers.addController">
                 <a href="" class="p-button--neutral"
                     data-ng-click="tabs.controllers.addController = false">Close</a>
         </div>
