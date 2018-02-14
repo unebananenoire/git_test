@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4 u-align--right">
+                            <div class="col-4">
                                 <div class="page-header__controls" data-ng-if="action.option.name !== 'commission' && action.option.name !== 'test'">
                                     <button class="p-button--base" data-ng-click="actionCancel()">Cancel</button>
                                     <button class="p-button--neutral u-no-margin--top" data-ng-class="action.option.name === 'delete' ? 'p-button--negative' : 'p-button--positive'" data-ng-click="actionGo('nodes')" data-ng-hide="hasActionsFailed('nodes')">
@@ -889,7 +889,7 @@
                                         <div class="col-7"></div>
                                     </div>
                                 </td>
-                                
+
                                 <td class="p-table-expanding__panel" data-ng-if="!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)">
                                     <div class="row" data-ng-if="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving">
                                         <div class="table__dropdown-title" data-ng-if="windowWidth <= 768">
