@@ -351,16 +351,18 @@
                                     <span class="onoffswitch-switch"></span>
                                 </label>
                             </div>
-                            <div class="onoffswitch p-tooltip p-tooltip--top-center"
+                            <div class="onoffswitch"
                                 disabled="disabled"
                                 data-ng-if="isMirror(repository)">
-                                <input type="checkbox" name="enabled" class="onoffswitch-checkbox u-float-none" id="enabled-repo-{$ repository.id $}"
-                                    data-ng-model="repository.enabled">
-                                <label class="onoffswitch-label u-no-margin--top" for="enabled-repo-{$ repository.id $}">
-                                    <span class="onoffswitch-inner"></span>
-                                    <span class="onoffswitch-switch"></span>
-                                </label>
-                                <span class="p-tooltip__message" role="tooltip">Default Ubuntu repositories cannot be disabled</span>
+                                <span class="p-tooltip p-tooltip--top-center">
+                                    <input type="checkbox" name="enabled" class="onoffswitch-checkbox u-float-none" id="enabled-repo-{$ repository.id $}"
+                                        data-ng-model="repository.enabled">
+                                    <label class="onoffswitch-label u-no-margin--top" for="enabled-repo-{$ repository.id $}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                    <span class="p-tooltip__message" role="tooltip">Default Ubuntu repositories cannot be disabled</span>
+                                </span>
                             </div>
                         </td>
                         <td class="col-3" data-ng-if="editRepository !== repository">
