@@ -1091,10 +1091,11 @@ describe("maasObjForm", function() {
         fit("icon add with tooltip added in label", function() {
             var label = directive.find("label");
             var icon = label.find("i");
-            expect(label.text()).toBe("key ");
+            var p = label.find("p");
+            expect(label.contents().get(0).nodeValue).toBe("key");
             expect(icon.hasClass("p-icon--information")).toBe(true);
-            expect(icon.hasClass("p-tooltip")).toBe(true);
-            expect(icon.attr('aria-label')).toBe("My Info");
+            expect(p.hasClass("p-tooltip__message")).toBe(true);
+            expect(p.text()).toBe("My Info");
         });
 
         it('should call preventDefault on click', function() {
