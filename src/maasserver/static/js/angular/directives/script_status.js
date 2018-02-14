@@ -7,7 +7,7 @@
 angular.module('MAAS').run(['$templateCache', function ($templateCache) {
     // Inject the script_status.html into the template cache.
     $templateCache.put('directive/templates/script_status.html', [
-        '<span class="p-icon" data-ng-class="icon" data-ng-show="show"></span>'
+        '<span data-ng-class="icon" data-ng-show="show"></span>'
     ].join(''));
 }]);
 
