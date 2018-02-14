@@ -1088,14 +1088,12 @@ describe("maasObjForm", function() {
             directive = compileDirective(html);
         });
 
-        it("icon add with tooltip added in label", function() {
+        fit("icon add with tooltip added in label", function() {
             var label = directive.find("label");
             var icon = label.find("i");
             expect(label.text()).toBe("key ");
-            expect(icon.hasClass("icon")).toBe(true);
-            expect(icon.hasClass("icon--info")).toBe(true);
-            expect(icon.hasClass("icon--left")).toBe(true);
-            expect(icon.hasClass("tooltip")).toBe(true);
+            expect(icon.hasClass("p-icon--information")).toBe(true);
+            expect(icon.hasClass("p-tooltip")).toBe(true);
             expect(icon.attr('aria-label')).toBe("My Info");
         });
 

@@ -10,7 +10,7 @@ angular.module('MAAS').run(['$templateCache', function ($templateCache) {
       '<div data-ng-repeat="category in categories"',
         ' data-ng-init="notifications = categoryNotifications[category]">',
         // 1 notification.
-        '<div class="row" data-ng-if="notifications.length == 1">',
+        '<span class="row" data-ng-if="notifications.length == 1">',
           '<ul class="p-list" data-ng-class="{\'is-open\': shown}">',
             '<li data-ng-repeat="notification in notifications"',
             ' class="p-notification" data-ng-class="categoryClasses[notification.category]">',
@@ -21,7 +21,7 @@ angular.module('MAAS').run(['$templateCache', function ($templateCache) {
               '</p>',
             '</li>',
           '</ul>',
-        '</div>',
+        '</span>',  
         // 2 or more notifications.
         '<div class="row p-notification--group" data-ng-if="notifications.length >= 2"',
         ' data-ng-init="shown = false">',

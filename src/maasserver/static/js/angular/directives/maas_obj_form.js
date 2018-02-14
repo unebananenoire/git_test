@@ -982,16 +982,16 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                             ':first').addClass('u-border--information');
                         inputWrapper.append(
                             '<i class="obj-saving icon ' +
-                            'icon--loading u-animation--spin"></i>');
-                        inputWrapper.addClass('tooltip');
-                        inputWrapper.addClass('tooltip--bottom');
+                            'p-icon--spinner u-animation--spin"></i>');
+                        inputWrapper.addClass('p-tooltip');
+                        inputWrapper.addClass('p-tooltip--bottom');
                         inputWrapper.attr('aria-label', 'Saving');
                     } else {
                       inputWrapper.children(
                           ':first').removeClass('u-border--information');
                         inputWrapper.find('i.obj-saving').remove();
-                        inputWrapper.removeClass('tooltip');
-                        inputWrapper.removeClass('tooltip--right');
+                        inputWrapper.removeClass('p-tooltip');
+                        inputWrapper.removeClass('p-tooltip--right');
                         inputWrapper.removeAttr('aria-label');
                     }
                 });
