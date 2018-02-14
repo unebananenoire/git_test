@@ -155,7 +155,7 @@ describe("maasNotifications", function() {
             // Now we add an additional "info" message.
             theNotificationsManager._items.push(exampleAdditionalNotification);
             $scope.$digest();
-            
+
             // A category title can now be found at the point where we
             // previously found the "info" message.
             var messagesExpected2 = angular.copy(messagesExpected1);

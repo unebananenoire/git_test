@@ -13,7 +13,8 @@ MAASUI.utils = (function() {
    * @param {Object} fn - the function to run
    */
   var ready = function(fn) {
-    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+    if (document.attachEvent ? document.readyState === "complete" :
+        document.readyState !== "loading") {
       fn();
     } else {
       document.addEventListener('DOMContentLoaded', fn);
@@ -61,7 +62,8 @@ MAASUI.utils = (function() {
       if (el.classList) {
         el.classList.remove(className);
       } else {
-        el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        el.className = el.className.replace(new RegExp(
+          '(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
       }
     } else {
       return false;
@@ -83,7 +85,8 @@ MAASUI.utils = (function() {
     if (el.classList) {
       hasClass = el.classList.contains(className);
     } else {
-      hasClass = new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+      hasClass = new RegExp(
+        '(^| )' + className + '( |$)', 'gi').test(el.className);
     }
 
     return hasClass;
@@ -136,16 +139,17 @@ MAASUI.dropdown = (function() {
     dropdowns = document.querySelectorAll('.' + wrapperClassname);
 
     Array.prototype.forEach.call(dropdowns, function(dropdown, i) {
-      //Add click event for dropdown toggling
+      // Add click event for dropdown toggling.
       dropdown.addEventListener("click", click);
 
-      //Add click event to all dropdown links to close menus
+      // Add click event to all dropdown links to close menus.
       var sublinks = dropdown.querySelectorAll('.' + menuItemClassName);
       Array.prototype.forEach.call(sublinks, function(link, i) {
         link.addEventListener("click", closeAllMenus);
       });
 
-      //Add click event for whole document to close all menus when anything else is clicked
+      // Add click event for whole document to close all menus when
+      // anything else is clicked.
       document.addEventListener('click', function(event) {
         var isClickInside = dropdown.contains(event.target);
         if (!isClickInside) {

@@ -578,13 +578,16 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                     element.append(labelElement);
 
                     // Add a label info icon with tooltip.
-                    if(angular.isString(attrs.labelInfo) && attrs.labelInfo.length > 0) {
-                        var infoWrapper = angular.element('<span>&nbsp;</span>');
+                    if(angular.isString(attrs.labelInfo)
+                            && attrs.labelInfo.length > 0) {
+                        var infoWrapper = angular.element(
+                            '<span>&nbsp;</span>');
                         infoWrapper.addClass('p-tooltip p-tooltip--btm-right');
 
                         var infoIcon = angular.element('<i/>');
                         infoIcon.addClass('p-icon--information');
-                        infoIcon.attr('aria-describedby', attrs.key + '-tooptip');
+                        infoIcon.attr(
+                            'aria-describedby', attrs.key + '-tooptip');
 
                         var infoTooltip = angular.element('<p></p>');
                         infoTooltip.addClass('p-tooltip__message');
@@ -946,7 +949,8 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                         inputElement.addClass("p-form-validation__input");
                         angular.forEach(errors, function(error) {
                             errorsElement.append(
-                              '<li class="p-form-validation__message"><strong>Error:</strong> ' + error + '</li>'
+                              '<li class="p-form-validation__message">' +
+                              '<strong>Error:</strong> ' + error + '</li>'
                             );
                         });
                         // Set the input in focus but outside of the current
@@ -1048,7 +1052,9 @@ angular.module('MAAS').directive('maasObjErrors', function() {
                     if(errors.length > 0) {
                         angular.forEach(errors, function(error) {
                             ul.append(
-                              '<li class="p-list__item"><i class="p-icon--error"></i> ' + error + '</li>'
+                              '<li class="p-list__item">' +
+                              '<i class="p-icon--error"></i> ' +
+                              error + '</li>'
                             );
                         });
                     }
