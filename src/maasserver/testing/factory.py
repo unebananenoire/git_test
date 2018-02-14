@@ -34,6 +34,7 @@ from maasserver.enum import (
     BOOT_RESOURCE_FILE_TYPE,
     BOOT_RESOURCE_TYPE,
     CACHE_MODE_TYPE,
+    ENDPOINT_CHOICES,
     FILESYSTEM_FORMAT_TYPE_CHOICES,
     FILESYSTEM_GROUP_TYPE,
     FILESYSTEM_TYPE,
@@ -94,6 +95,8 @@ from maasserver.models import (
     RegionControllerProcess,
     RegionControllerProcessEndpoint,
     RegionRackRPCConnection,
+    ResourcePool,
+    Role,
     Service,
     Space,
     SSHKey,
@@ -102,6 +105,8 @@ from maasserver.models import (
     StaticRoute,
     Subnet,
     Tag,
+    UserGroup,
+    UserGroupMembership,
     VersionedTextFile,
     VirtualBlockDevice,
     VLAN,
@@ -132,6 +137,7 @@ from maastesting.factory import TooManyRandomRetries
 from maastesting.typecheck import typed
 from metadataserver.enum import (
     HARDWARE_TYPE_CHOICES,
+    RESULT_TYPE,
     RESULT_TYPE_CHOICES,
     SCRIPT_PARALLEL_CHOICES,
     SCRIPT_STATUS,
@@ -717,14 +723,17 @@ class Factory(maastesting.factory.Factory):
             domain=domain)
         dnsrr.save()
         if ip_addresses:
-            dnsrr.ip_addresses = ip_addresses
+            dnsrr.ip_addresses.set(ip_addresses)
             dnsrr.save()
         return dnsrr
 
     def make_Script(
             self, name=None, title=None, description=None, tags=None,
             script_type=None, hardware_type=None, parallel=None, timeout=None,
-            destructive=False, default=False, script=None, **kwargs):
+            destructive=False, default=False, script=None, may_reboot=None,
+            recommission=None, for_hardware=None, **kwargs):
+        if for_hardware is None:
+            for_hardware = []
         if name is None:
             name = self.make_name('name')
         if title is None:
@@ -741,6 +750,12 @@ class Factory(maastesting.factory.Factory):
             parallel = self.pick_choice(SCRIPT_PARALLEL_CHOICES)
         if timeout is None:
             timeout = timedelta(seconds=random.randint(0, 600))
+        if may_reboot is None:
+            may_reboot = factory.pick_bool()
+        if recommission and script_type == SCRIPT_TYPE.COMMISSIONING:
+            recommission = factory.pick_bool()
+        else:
+            recommission = False
         if script is None:
             script = VersionedTextFile.objects.create(
                 data=self.make_script_content())
@@ -748,7 +763,8 @@ class Factory(maastesting.factory.Factory):
             name=name, title=title, description=description, tags=tags,
             script_type=script_type, hardware_type=hardware_type,
             parallel=parallel, timeout=timeout, destructive=destructive,
-            default=default, script=script, **kwargs)
+            default=default, script=script, may_reboot=may_reboot,
+            recommission=recommission, for_hardware=for_hardware, **kwargs)
 
     def make_ScriptSet(self, last_ping=None, node=None, result_type=None):
         if last_ping is None:
@@ -768,15 +784,17 @@ class Factory(maastesting.factory.Factory):
         if script_set is None:
             script_set = self.make_ScriptSet()
         if script is None and script_name is None:
-            script = self.make_Script()
+            if script_set.result_type == RESULT_TYPE.COMMISSIONING:
+                script = self.make_Script(
+                    script_type=SCRIPT_TYPE.COMMISSIONING)
+            else:
+                script = self.make_Script(script_type=SCRIPT_TYPE.TESTING)
         if script is not None:
             script_name = script.name
         if status is None:
             status = self.pick_choice(SCRIPT_STATUS_CHOICES)
-        if status in (
-                SCRIPT_STATUS.PENDING, SCRIPT_STATUS.INSTALLING,
-                SCRIPT_STATUS.RUNNING):
-            # Pending and running script results shouldn't have results stored.
+        if status == SCRIPT_STATUS.PENDING:
+            # Pending results shouldn't have results stored.
             if output is None:
                 output = b''
             if stdout is None:
@@ -785,8 +803,6 @@ class Factory(maastesting.factory.Factory):
                 stderr = b''
             if result is None:
                 result = b''
-            if status == SCRIPT_STATUS.RUNNING and started is None:
-                started = datetime.now()
         else:
             if exit_status is None:
                 exit_status = random.randint(0, 255)
@@ -805,7 +821,8 @@ class Factory(maastesting.factory.Factory):
             if started is None:
                 started = datetime.now() - timedelta(
                     seconds=random.randint(1, 500))
-            if ended is None:
+            if ended is None and status not in (
+                    SCRIPT_STATUS.RUNNING, SCRIPT_STATUS.INSTALLING):
                 ended = datetime.now()
         return ScriptResult.objects.create(
             script_set=script_set, script=script,
@@ -990,16 +1007,57 @@ class Factory(maastesting.factory.Factory):
 
     def make_User(
             self, username=None, password='test', email=None,
-            completed_intro=True):
+            completed_intro=True, groups=()):
         if username is None:
             username = self.make_username()
         if email is None:
             email = self.make_email()
         user = User.objects.create_user(
             username=username, password=password, email=email)
+        for group in groups:
+            UserGroupMembership.objects.create(
+                user=user, group=group)
         user.userprofile.completed_intro = completed_intro
         user.userprofile.save()
         return user
+
+    def make_UserGroup(self, name=None, description=None,
+                       users=()):
+        if name is None:
+            name = self.make_name('usergroup')
+        if description is None:
+            description = self.make_string()
+        group = UserGroup(name=name, description=description)
+        group.save()
+        for user in users:
+            UserGroupMembership.objects.create(user=user, group=group)
+        return group
+
+    def make_ResourcePool(self, name=None, description=None,
+                          nodes=None, users=None):
+        if name is None:
+            name = self.make_name('resourcepool')
+        if description is None:
+            description = self.make_string()
+        pool = ResourcePool(name=name, description=description)
+        pool.save()
+        if nodes is not None:
+            for node in nodes:
+                node.pool = pool
+                node.save()
+        if users is not None:
+            for user in users:
+                pool.grant_user(user)
+        return pool
+
+    def make_Role(self, name=None, description=None):
+        if name is None:
+            name = self.make_name('role')
+        if description is None:
+            description = self.make_string()
+        role = Role(name=name, description=description)
+        role.save()
+        return role
 
     def make_KeySource(self, protocol=None, auth_id=None, auto_update=False):
         if protocol is None:
@@ -1324,16 +1382,26 @@ class Factory(maastesting.factory.Factory):
 
     def make_IPRange(
             self, subnet=None, start_ip=None, end_ip=None, comment=None,
-            user=None, type=IPRANGE_TYPE.DYNAMIC):
+            user=None, alloc_type=None):
+        if alloc_type is None:
+            alloc_type = (
+                IPRANGE_TYPE.RESERVED if user else IPRANGE_TYPE.DYNAMIC)
+
         if subnet is None and start_ip is None and end_ip is None:
             subnet = self.make_ipv4_Subnet_with_IPRanges()
-            return subnet.get_dynamic_ranges().first()
+            iprange = subnet.get_dynamic_ranges().first()
+            iprange.comment = comment
+            iprange.user = user
+            iprange.type = alloc_type
+            iprange.save()
+            return iprange
+
         # If any of these values are provided, they must all be provided.
         assert subnet is not None
         assert start_ip is not None
         assert end_ip is not None
         iprange = IPRange(
-            subnet=subnet, start_ip=start_ip, end_ip=end_ip, type=type,
+            subnet=subnet, start_ip=start_ip, end_ip=end_ip, type=alloc_type,
             comment=comment, user=user)
         iprange.save()
         return iprange
@@ -1372,13 +1440,13 @@ class Factory(maastesting.factory.Factory):
                 subnet.vlan.dhcp_on = True
                 subnet.vlan.save()
             self.make_IPRange(
-                subnet, type=IPRANGE_TYPE.DYNAMIC,
+                subnet, alloc_type=IPRANGE_TYPE.DYNAMIC,
                 start_ip=str(IPAddress(network.first + 2)),
                 end_ip=str(IPAddress(network.first + range_size + 2)))
         # Create a "static range" for this Subnet.
         if not with_static_range:
             self.make_IPRange(
-                subnet, type=IPRANGE_TYPE.RESERVED,
+                subnet, alloc_type=IPRANGE_TYPE.RESERVED,
                 start_ip=str(IPAddress(network.last - range_size - 2)),
                 end_ip=str(IPAddress(network.last - 2)))
         return reload_object(subnet)
@@ -1653,17 +1721,35 @@ class Factory(maastesting.factory.Factory):
         return EventType.objects.create(
             name=name, description=description, level=level)
 
-    def make_Event(self, node=None, type=None, action=None, description=None):
-        if node is None:
-            node = self.make_Node()
+    def make_Event(self, type=None, node=None, user=None, ip_address=None,
+                   endpoint=None, user_agent=None, action=None,
+                   description=None):
         if type is None:
             type = self.make_EventType()
+        if node is None:
+            node = self.make_Node()
+            node_hostname = ''
+        else:
+            node_hostname = node.hostname
+        if user is None:
+            user = self.make_User()
+            username = ''
+        else:
+            username = user.username
+        if ip_address is None:
+            ip_address = factory.make_ipv4_address()
+        if endpoint is None:
+            endpoint = self.pick_choice(ENDPOINT_CHOICES)
+        if user_agent is None:
+            user_agent = factory.make_name('user_agent')
         if action is None:
             action = self.make_name('action')
         if description is None:
             description = self.make_name('desc')
         return Event.objects.create(
-            node=node, type=type, action=action, description=description)
+            type=type, node=node, node_hostname=node_hostname, user=user,
+            username=username, ip_address=ip_address, endpoint=endpoint,
+            user_agent=user_agent, action=action, description=description)
 
     @typed
     def make_LargeFile(self, content: bytes=None, size=512):
@@ -1883,7 +1969,7 @@ class Factory(maastesting.factory.Factory):
     def make_PhysicalBlockDevice(
             self, node=None, name=None, size=None, block_size=None,
             tags=None, model=None, serial=None, id_path=None,
-            formatted_root=False):
+            formatted_root=False, firmware_version=None):
         if node is None:
             node = self.make_Node()
         if name is None:
@@ -1909,9 +1995,12 @@ class Factory(maastesting.factory.Factory):
         else:
             model = ""
             serial = ""
+        if firmware_version is None:
+            firmware_version = factory.make_name('firmware_version')
         block_device = PhysicalBlockDevice.objects.create(
             node=node, name=name, size=size, block_size=block_size,
-            tags=tags, model=model, serial=serial, id_path=id_path)
+            tags=tags, model=model, serial=serial, id_path=id_path,
+            firmware_version=firmware_version)
         if formatted_root:
             partition = self.make_Partition(
                 partition_table=(

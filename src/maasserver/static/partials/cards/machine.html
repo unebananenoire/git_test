@@ -1,6 +1,8 @@
 <header class="p-card__header">
   <h2 class="p-heading--four">Overview</h2>
-  <h3 class="p-heading--three">{$ node.status $}
+  <h3 class="p-heading--three">
+    <i class="p-icon--locked">Locked:</i> 
+    {$ node.status $}
     <span ng-if="node.show_os_info">(<span data-maas-release-name="node.osystem + '/' + node.distro_series"></span>)</span>
   </h3>
   <p data-ng-if="showFailedTestWarning()"><i class="p-icon--warning">Warning:</i> Machine has failed tests; use with caution!</p>
@@ -12,6 +14,12 @@
   <p data-ng-if="node.show_os_info && node.third_party_driver">Third Party Driver: {$ node.third_party_driver.module $} "{$ node.third_party_driver.comment $}"</p>
   <p>Domain: {$ header.domain.selected.name $}</p>
   <p>Zone: {$ summary.zone.selected.name $}</p>
+  <p>System vendor: {$ node.metadata.system_vendor || "Unknown" $}</p>
+  <p>System product: {$ node.metadata.system_product || "Unknown" $}</p>
+  <p>System version: {$ node.metadata.system_version || "Unknown" $}</p>
+  <p>System serial: {$ node.metadata.system_serial || "Unknown" $}</p>
+  <p>Mainboard firmware version: {$ node.metadata.mainboard_firmware_version || "Unknown" $}</p>
+  <p>Mainboard firmware date: {$ node.metadata.mainboard_firmware_date || "Unknown" $}</p>
   <p data-ng-if="node.power_type">Power type: {$ node.power_type $}</p>
 </div>
 <footer class="p-card__footer">

@@ -1,4 +1,4 @@
-# Copyright 2012-2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2012-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Node objects."""
@@ -24,6 +24,7 @@ import random
 import re
 import socket
 from socket import gethostname
+from typing import List
 from urllib.parse import urlparse
 import uuid
 
@@ -119,6 +120,7 @@ from maasserver.models.licensekey import LicenseKey
 from maasserver.models.ownerdata import OwnerData
 from maasserver.models.partitiontable import PartitionTable
 from maasserver.models.physicalblockdevice import PhysicalBlockDevice
+from maasserver.models.resourcepool import ResourcePool
 from maasserver.models.service import Service
 from maasserver.models.staticipaddress import StaticIPAddress
 from maasserver.models.subnet import Subnet
@@ -187,7 +189,10 @@ from provisioningserver.refresh import (
     get_sys_info,
     refresh,
 )
-from provisioningserver.refresh.node_info_scripts import IPADDR_OUTPUT_NAME
+from provisioningserver.refresh.node_info_scripts import (
+    IPADDR_OUTPUT_NAME,
+    LIST_MODALIASES_OUTPUT_NAME,
+)
 from provisioningserver.rpc.cluster import (
     AddChassis,
     DisableAndShutoffRackd,
@@ -453,7 +458,9 @@ class BaseNodeManager(Manager, NodeQueriesMixin):
                 NODE_TYPE.REGION_AND_RACK_CONTROLLER,
                 ]))
         if perm == NODE_PERMISSION.VIEW:
-            return nodes.filter(Q(owner__isnull=True) | Q(owner=user))
+            pools = ResourcePool.objects.get_user_resource_pools(user)
+            return nodes.filter(
+                Q(owner__isnull=True, pool__in=pools) | Q(owner=user))
         elif perm == NODE_PERMISSION.EDIT:
             return nodes.filter(owner=user)
         elif perm == NODE_PERMISSION.ADMIN:
@@ -756,6 +763,10 @@ class RegionControllerManager(ControllerManager):
         if node.owner is None:
             node.owner = get_worker_user()
             update_fields.append("owner")
+        if node.pool:
+            # controllers aren't assigned to pools
+            node.pool = None
+            update_fields.append('pool')
         if len(update_fields) > 0:
             node.save(update_fields=update_fields)
         # Always cast to a region controller.
@@ -862,6 +873,10 @@ class Node(CleanSave, TimestampedModel):
     hostname = CharField(
         max_length=255, default='', blank=True, unique=True,
         validators=[validate_hostname])
+
+    pool = ForeignKey(
+        ResourcePool, default=None, null=True, blank=True, editable=True,
+        on_delete=PROTECT)
 
     # What Domain do we use for this host unless the individual StaticIPAddress
     # record overrides it?
@@ -1280,10 +1295,10 @@ class Node(CleanSave, TimestampedModel):
         # Avoid circular imports.
         from maasserver.models.event import Event
         Event.objects.register_event_and_event_type(
-            self.system_id, type_name, type_level=event_details.level,
+            type_name, type_level=event_details.level,
             type_description=event_details.description,
-            event_action=action,
-            event_description=description)
+            event_action=action, event_description=description,
+            system_id=self.system_id)
 
     def storage_layout_issues(self):
         """Return any errors with the storage layout.
@@ -1566,11 +1581,25 @@ class Node(CleanSave, TimestampedModel):
         elif self.domain is None:
             self.domain = Domain.objects.get_default_domain()
 
+    def clean_pool(self, prev):
+        # Only machines can be in resource pools.
+        if self.is_machine:
+            if not self.pool:
+                self.pool = ResourcePool.objects.get_default_resource_pool()
+            elif self.owner and not ResourcePool.objects.user_can_access_pool(
+                    self.owner, self.pool):
+                raise ValidationError(
+                    "User doesn't have access to the resource pool")
+        elif self.pool:
+            raise ValidationError(
+                {'pool': ["Can't assign to a resource pool."]})
+
     def clean(self, *args, **kwargs):
         super(Node, self).clean(*args, **kwargs)
         prev = get_one(Node.objects.filter(pk=self.pk))
         self.prev_bmc_id = prev.bmc_id if prev else None
         self.clean_hostname_domain(prev)
+        self.clean_pool(prev)
         self.clean_status(prev)
         self.clean_architecture(prev)
         self.clean_boot_disk(prev)
@@ -1741,26 +1770,12 @@ class Node(CleanSave, TimestampedModel):
         from maasserver.models.switch import Switch
         return Switch.objects.filter(node=self).exists()
 
-    def set_metadata(self, key, value):
-        """Set (add or overwrite) Node metadata with `key` to `value`."""
-        # Avoid circular imports.
-        from maasserver.models.nodemetadata import NodeMetadata
-        try:
-            metadata_row = NodeMetadata.objects.get(node=self, key=key)
-            metadata_row.value = value
-            metadata_row.save()
-        except NodeMetadata.DoesNotExist:
-            metadata_row = NodeMetadata.objects.create(
-                node=self, key=key, value=value)
-        return metadata_row
-
     def get_metadata(self):
         """Return all Node metadata key, value pairs as a dict."""
-        # Avoid circular imports.
-        from maasserver.models.nodemetadata import NodeMetadata
-        metadata_entries = NodeMetadata.objects.filter(node=self).values(
-            'key', 'value')
-        return {item['key']: item['value'] for item in metadata_entries}
+        return {
+            item.key: item.value
+            for item in self.nodemetadata_set.all()
+        }
 
     def accept_enlistment(self, user):
         """Accept this node's (anonymous) enlistment.
@@ -3706,14 +3721,15 @@ class Node(CleanSave, TimestampedModel):
         event_details = EVENT_DETAILS[
             EVENT_TYPES.NODE_POWER_QUERY_FAILED]
         Event.objects.register_event_and_event_type(
-            self.system_id, EVENT_TYPES.NODE_POWER_QUERY_FAILED,
+            EVENT_TYPES.NODE_POWER_QUERY_FAILED,
             type_level=event_details.level, event_action='',
             type_description=event_details.description,
             event_description=(
                 '(%s) - Aborting %s and reverting to %s. Unable to '
                 'power control the node. Please check power '
                 'credentials.' % (
-                    user, stat[self.status], stat[old_status])))
+                    user, stat[self.status], stat[old_status])),
+            system_id=self.system_id)
 
         self.status = old_status
         self.save()
@@ -4248,6 +4264,21 @@ class Node(CleanSave, TimestampedModel):
         """Returns a QuerySet of the latest installation results."""
         return self.get_latest_script_results.filter(
             script_set__result_type=RESULT_TYPE.INSTALLATION)
+
+    @property
+    def modaliases(self) -> List[str]:
+        """Return a list of modaliases from the node."""
+        script_set = self.current_commissioning_script_set
+        if script_set is None:
+            return []
+
+        script_result = script_set.find_script_result(
+            script_name=LIST_MODALIASES_OUTPUT_NAME)
+        if (script_result is None or
+                script_result.status != SCRIPT_STATUS.PASSED):
+            return []
+        else:
+            return script_result.stdout.decode('utf-8').splitlines()
 
 
 # Piston serializes objects based on the object class.
@@ -4896,6 +4927,9 @@ class Controller(Node):
             VLAN. Otherwise, creates the interfaces but does not create any
             links or VLANs.
         """
+        # Avoid circular imports
+        from metadataserver.builtin_scripts.hooks import parse_lshw_nic_info
+
         # Get all of the current interfaces on this controller.
         current_interfaces = {
             interface.id: interface
@@ -4921,6 +4955,7 @@ class Controller(Node):
         # Cache the neighbour discovery settings, since they will be used for
         # every interface on this Controller.
         discovery_mode = Config.objects.get_network_discovery_config()
+        extended_nic_info = parse_lshw_nic_info(self)
         for name in flatten(process_order):
             settings = interfaces[name]
             # Note: the interface that comes back from this call may be None,
@@ -4933,6 +4968,14 @@ class Controller(Node):
                 interface.update_discovery_state(discovery_mode, settings)
             if interface is not None and interface.id in current_interfaces:
                 del current_interfaces[interface.id]
+            extra_info = extended_nic_info.get(settings.get('mac_address'), {})
+            update_fields = []
+            for k, v in extra_info.items():
+                if getattr(interface, k, v) != v:
+                    setattr(interface, k, v)
+                    update_fields.append(k)
+            if update_fields:
+                interface.save(update_fields=update_fields)
 
         if not create_fabrics:
             # This could be an existing rack controller re-registering,

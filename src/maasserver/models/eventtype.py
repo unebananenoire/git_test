@@ -1,4 +1,4 @@
-# Copyright 2014-2016 Canonical Ltd.  This software is licensed under the
+# Copyright 2014-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """:class:`EventType` and friends."""
@@ -18,9 +18,11 @@ from django.db.models import (
 from maasserver import DefaultMeta
 from maasserver.models.cleansave import CleanSave
 from maasserver.models.timestampedmodel import TimestampedModel
+from provisioningserver.events import AUDIT
 
 # Describes how the log levels are displayed in the UI.
 LOGGING_LEVELS = {
+    AUDIT: 'AUDIT',
     logging.DEBUG: 'DEBUG',
     logging.INFO: 'INFO',
     logging.WARNING: 'WARNING',
@@ -29,6 +31,7 @@ LOGGING_LEVELS = {
 }
 
 LOGGING_LEVELS_BY_NAME = {
+    'AUDIT': AUDIT,
     'DEBUG': logging.DEBUG,
     'INFO': logging.INFO,
     'WARNING': logging.WARNING,

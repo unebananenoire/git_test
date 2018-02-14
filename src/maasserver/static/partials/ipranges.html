@@ -33,7 +33,7 @@
                             <p><span class="p-icon--warning">Warning:</span> Ensure all in-use IP addresses are registered in MAAS before releasing this range to avoid potential collisions. Are you sure you want to remove this IP range?</p>
                         </div>
                         <div class="col-6 u-align--right">
-                            <button class="p-button--base" data-ng-click="ipRangeCancelDelete()">Cancel</button>
+                            <button class="p-button--base" type="button" data-ng-click="ipRangeCancelDelete()">Cancel</button>
                             <button class="p-button--negative" data-ng-click="ipRangeConfirmDelete()">Remove</button>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                                 <maas-obj-errors></maas-obj-errors>
                             </div>
                             <div class="col-6 u-align--right">
-                                <button class="p-button--base" data-ng-click="ipRangeToggleEditMode(iprange)">Cancel</button>
+                                <button class="p-button--base" type="button" data-ng-click="ipRangeToggleEditMode(iprange)">Cancel</button>
                                 <button class="p-button--positive u-no-margin--top" maas-obj-save>Save</button>
                             </div>
                         </maas-obj-form>
@@ -115,7 +115,7 @@
                                 <maas-obj-errors></maas-obj-errors>
                             </div>
                             <div class="col-6 u-align--right">
-                                <button class="p-button--base" data-ng-click="cancelAddRange()">Cancel</button>
+                                <button class="p-button--base" type="button" data-ng-click="cancelAddRange()">Cancel</button>
                                 <button class="p-button--positive u-no-margin--top" maas-obj-save>Reserve</button>
                             </div>
                         </div>

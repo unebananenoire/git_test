@@ -63,6 +63,8 @@ __all__ = [
     'RegionControllerProcess',
     'RegionControllerProcessEndpoint',
     'RegionRackRPCConnection',
+    'ResourcePool',
+    'Role',
     'Service',
     'signals',
     'Space',
@@ -75,6 +77,8 @@ __all__ = [
     'Tag',
     'Template',
     'UnknownInterface',
+    'UserGroup',
+    'UserGroupMembership',
     'UserProfile',
     'VersionedTextFile',
     'VirtualBlockDevice',
@@ -164,6 +168,11 @@ from maasserver.models.regioncontrollerprocessendpoint import (
     RegionControllerProcessEndpoint,
 )
 from maasserver.models.regionrackrpcconnection import RegionRackRPCConnection
+from maasserver.models.resourcepool import (
+    create_resource_pool,
+    ResourcePool,
+)
+from maasserver.models.role import Role
 from maasserver.models.service import Service
 from maasserver.models.space import Space
 from maasserver.models.sshkey import SSHKey
@@ -175,6 +184,10 @@ from maasserver.models.switch import Switch
 from maasserver.models.tag import Tag
 from maasserver.models.template import Template
 from maasserver.models.user import create_user
+from maasserver.models.usergroup import (
+    UserGroup,
+    UserGroupMembership,
+)
 from maasserver.models.userprofile import UserProfile
 from maasserver.models.versionedtextfile import VersionedTextFile
 from maasserver.models.virtualblockdevice import VirtualBlockDevice
@@ -188,8 +201,9 @@ from maasserver.utils.django_urls import (
 from piston3.doc import HandlerDocumentation
 from provisioningserver.utils import is_instance_or_subclass
 
-# Connect the 'create_user' method to the post save signal of User.
+# Connect post-creation methods for models.
 post_save.connect(create_user, sender=User)
+post_save.connect(create_resource_pool, sender=ResourcePool)
 
 
 # Monkey patch django.contrib.auth.models.User to force email to be unique.
@@ -293,8 +307,12 @@ class MAASAuthorizationBackend(ModelBackend):
 
         if isinstance(obj, Node):
             if perm == NODE_PERMISSION.VIEW:
-                # Any registered user can view a node regardless of its state.
-                return True
+                # users can see unowned machines if they're in a pool they have
+                # access too.  Other types of Node are always visible.
+                return (
+                    obj.pool is None or
+                    ResourcePool.objects.user_can_access_pool(
+                        user, obj.pool))
             elif perm == NODE_PERMISSION.EDIT:
                 return obj.owner == user and not obj.locked
             elif perm == NODE_PERMISSION.LOCK:

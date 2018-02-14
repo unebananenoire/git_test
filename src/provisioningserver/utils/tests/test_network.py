@@ -83,7 +83,7 @@ from provisioningserver.utils.network import (
     resolves_to_loopback_address,
     reverseResolve,
 )
-from provisioningserver.utils.shell import call_and_check
+from provisioningserver.utils.shell import get_env_with_locale
 from testtools import ExpectedException
 from testtools.matchers import (
     Contains,
@@ -105,13 +105,6 @@ from twisted.names.error import (
     DomainError,
     ResolverError,
 )
-
-
-installed_curtin_version = call_and_check([
-    "dpkg-query", "--showformat=${Version}",
-    "--show", "python3-curtin"]).decode("ascii")
-installed_curtin_version = int(
-    installed_curtin_version.split("~bzr", 1)[1].split("-", 1)[0])
 
 
 class TestMakeNetwork(MAASTestCase):
@@ -246,6 +239,14 @@ class TestGetMACOrganization(MAASTestCase):
         organization = get_eui_organization(mock_eui)
         self.assertThat(organization, Is(None))
 
+    def test_get_eui_organization_returns_None_for_IndexError(self):
+        mock_eui = Mock()
+        mock_eui.oui = Mock()
+        mock_eui.oui.registration = Mock()
+        mock_eui.oui.registration.side_effect = IndexError
+        organization = get_eui_organization(mock_eui)
+        self.assertThat(organization, Is(None))
+
     def test_get_eui_organization_returns_none_for_invalid_mac(self):
         organization = get_eui_organization(EUI("FF:FF:b7:00:00:00"))
         self.assertThat(organization, Is(None))
@@ -276,9 +277,10 @@ class TestFindMACViaARP(MAASTestCase):
     def test__calls_ip_neigh(self):
         call_and_check = self.patch_call('')
         find_mac_via_arp(factory.make_ipv4_address())
+        env = get_env_with_locale(locale='C')
         self.assertThat(
             call_and_check,
-            MockCalledOnceWith(['ip', 'neigh'], env={'LC_ALL': 'C'}))
+            MockCalledOnceWith(['ip', 'neigh'], env=env))
 
     def test__works_with_real_call(self):
         find_mac_via_arp(factory.make_ipv4_address())

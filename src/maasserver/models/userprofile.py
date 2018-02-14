@@ -9,6 +9,7 @@ __all__ = [
 
 
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db.models import (
     BooleanField,
     CASCADE,
@@ -19,6 +20,7 @@ from django.db.models import (
 from django.shortcuts import get_object_or_404
 from maasserver import DefaultMeta
 from maasserver.exceptions import CannotDeleteUserException
+from maasserver.models import ResourcePool
 from maasserver.models.cleansave import CleanSave
 from piston3.models import Token
 
@@ -65,20 +67,21 @@ class UserProfile(CleanSave, Model):
     completed_intro = BooleanField(default=False)
 
     def delete(self):
-        addr_count = self.user.staticipaddress_set.count()
-        if addr_count:
-            msg = (
-                "User {} cannot be deleted: {} static IP address(es) "
-                "are still allocated to this user.").format(
-                    self.user.username, addr_count)
-            raise CannotDeleteUserException(msg)
-        nb_nodes = self.user.node_set.count()
-        if nb_nodes:
-            msg = (
-                "User {} cannot be deleted: {} node(s) are still "
-                "allocated to this user.").format(
-                    self.user.username, nb_nodes)
-            raise CannotDeleteUserException(msg)
+        # check owned resources
+        owned_resources = [
+            ('staticipaddress', 'static IP address(es)'),
+            ('iprange', 'IP range(s)'),
+            ('node', 'node(s)')]
+        messages = []
+        for attr, title in owned_resources:
+            count = getattr(self.user, attr + '_set').count()
+            if count:
+                messages.append('{} {}'.format(count, title))
+
+        if messages:
+            raise CannotDeleteUserException(
+                'User {} cannot be deleted: {} are still allocated'.format(
+                    self.user.username, ', '.join(messages)))
 
         if self.user.filestorage_set.exists():
             self.user.filestorage_set.all().delete()
@@ -89,15 +92,22 @@ class UserProfile(CleanSave, Model):
     def transfer_resources(self, new_owner):
         """Transfer owned resources to another user.
 
-        Nodes and static IP addresses owned by the user are transfered to the
-        new owner.
+        Nodes, static IP addresses and IP ranges owned by the user are
+        transfered to the new owner.
 
         :param new_owner: the UserProfile to transfer ownership to.
         :type new_owner: maasserver.models.UserProfile
 
         """
+        user_pools = ResourcePool.objects.get_user_resource_pools(new_owner)
+        nodes = self.user.node_set
+        if nodes.exists() and nodes.exclude(pool__in=user_pools).exists():
+            raise ValidationError(
+                "Can't transfer machines to new user,"
+                " user missing access target resource pool(s)")
         self.user.node_set.update(owner=new_owner)
         self.user.staticipaddress_set.update(user=new_owner)
+        self.user.iprange_set.update(user=new_owner)
 
     def get_authorisation_tokens(self):
         """Fetches all the user's OAuth tokens.

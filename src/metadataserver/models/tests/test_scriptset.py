@@ -8,6 +8,8 @@ from datetime import (
     timedelta,
 )
 import random
+from unittest import mock
+from unittest.mock import PropertyMock
 
 from django.core.exceptions import ValidationError
 from maasserver.enum import NODE_TYPE
@@ -159,6 +161,99 @@ class TestScriptSetManager(MAASServerTestCase):
         node = factory.make_Node()
         expected_scripts = list(NODE_INFO_SCRIPTS)
         expected_scripts.append(script.name)
+
+        script_set = ScriptSet.objects.create_commissioning_script_set(node)
+
+        self.assertItemsEqual(
+            expected_scripts,
+            [script_result.name for script_result in script_set])
+        self.assertEquals(RESULT_TYPE.COMMISSIONING, script_set.result_type)
+        self.assertEquals(
+            node.power_state, script_set.power_state_before_transition)
+
+    def test_create_commissioning_script_set_adds_for_hardware_matches_tag(
+            self):
+        script = factory.make_Script(
+            script_type=SCRIPT_TYPE.COMMISSIONING,
+            for_hardware=[random.choice([
+                "usb:174c:07d1",
+                "pci:8086:1918",
+                "modalias:pci:v00001A03d00001150sv000015D9*"
+            ])])
+        node = factory.make_Node()
+        to_mock = (
+            node.__module__ + "." +
+            node.__class__.__qualname__ +
+            ".modaliases"
+        )
+        with mock.patch(to_mock, new_callable=PropertyMock) as mods:
+            mods.return_value = [
+                'pci:v00008086d00001918sv000015D9sd00000888bc06sc00i00',
+                'usb:v174Cp07D1d1000dc00dsc00dp00ic08isc06ip50in00',
+                'pci:v00001A03d00001150sv000015D9sd00000888bc06sc04i00',
+            ]
+            expected_scripts = list(NODE_INFO_SCRIPTS)
+            expected_scripts.append(script.name)
+
+            script_set = ScriptSet.objects.create_commissioning_script_set(
+                node, script.tags)
+
+            self.assertItemsEqual(
+                expected_scripts,
+                [script_result.name for script_result in script_set])
+            self.assertEquals(
+                RESULT_TYPE.COMMISSIONING, script_set.result_type)
+            self.assertEquals(
+                node.power_state, script_set.power_state_before_transition)
+
+    def test_create_commissioning_scripts_with_for_hardware_ignores_wo_tag(
+            self):
+        factory.make_Script(
+            script_type=SCRIPT_TYPE.COMMISSIONING,
+            for_hardware=[random.choice([
+                "usb:174c:07d1",
+                "pci:8086:1918",
+                "modalias:pci:v00001A03d00001150sv000015D9*"
+            ])])
+        node = factory.make_Node()
+        to_mock = (
+            node.__module__ + "." +
+            node.__class__.__qualname__ +
+            ".modaliases"
+        )
+        with mock.patch(to_mock, new_callable=PropertyMock) as mods:
+            mods.return_value = [
+                'pci:v00008086d00001918sv000015D9sd00000888bc06sc00i00',
+                'usb:v174Cp07D1d1000dc00dsc00dp00ic08isc06ip50in00',
+                'pci:v00001A03d00001150sv000015D9sd00000888bc06sc04i00',
+            ]
+            expected_scripts = list(NODE_INFO_SCRIPTS)
+
+            other_script = factory.make_Script(
+                script_type=SCRIPT_TYPE.COMMISSIONING)
+            expected_scripts.append(other_script.name)
+            script_set = ScriptSet.objects.create_commissioning_script_set(
+                node, [other_script.name])
+
+            self.assertItemsEqual(
+                expected_scripts,
+                [script_result.name for script_result in script_set])
+            self.assertEquals(
+                RESULT_TYPE.COMMISSIONING, script_set.result_type)
+            self.assertEquals(
+                node.power_state, script_set.power_state_before_transition)
+
+    def test_create_commissioning_script_set_skips_non_matching_for_hardware(
+            self):
+        factory.make_Script(
+            script_type=SCRIPT_TYPE.COMMISSIONING,
+            for_hardware=[random.choice([
+                "usb:174c:07d1",
+                "pci:8086:1918",
+                "modalias:pci:v00001A03d00001150sv000015D9*"
+            ])])
+        node = factory.make_Node()
+        expected_scripts = list(NODE_INFO_SCRIPTS)
 
         script_set = ScriptSet.objects.create_commissioning_script_set(node)
 
@@ -744,6 +839,71 @@ class TestScriptSet(MAASServerTestCase):
         factory.make_ScriptResult(
             script_set=script_set, status=SCRIPT_STATUS.PENDING)
         self.assertEquals('', script_set.runtime)
+
+    def test_select_for_hardware_scripts_removes_if_not_selected(self):
+        script = factory.make_Script(
+            script_type=SCRIPT_TYPE.COMMISSIONING,
+            for_hardware=[random.choice([
+                "usb:174c:07d1",
+                "pci:8086:1918",
+                "modalias:pci:v00001A03d00001150sv000015D9*"
+            ])])
+        node = factory.make_Node()
+        script_set = ScriptSet.objects.create_commissioning_script_set(node)
+        script_set.add_pending_script(script)
+
+        script_set.select_for_hardware_scripts()
+
+        self.assertItemsEqual(
+            list(NODE_INFO_SCRIPTS),
+            [script_result.name for script_result in script_set])
+
+    def test_select_for_hardware_scripts_doesnt_remove_if_selected(self):
+        script = factory.make_Script(
+            script_type=SCRIPT_TYPE.COMMISSIONING,
+            for_hardware=[random.choice([
+                "usb:174c:07d1",
+                "pci:8086:1918",
+                "modalias:pci:v00001A03d00001150sv000015D9*"
+            ])])
+        node = factory.make_Node()
+        script_set = ScriptSet.objects.create_commissioning_script_set(
+            node, [script.name])
+
+        script_set.select_for_hardware_scripts()
+
+        self.assertItemsEqual(
+            list(NODE_INFO_SCRIPTS) + [script.name],
+            [script_result.name for script_result in script_set])
+
+    def test_select_for_hardware_scripts_adds(self):
+        script = factory.make_Script(
+            script_type=SCRIPT_TYPE.COMMISSIONING,
+            for_hardware=[random.choice([
+                "usb:174c:07d1",
+                "pci:8086:1918",
+                "modalias:pci:v00001A03d00001150sv000015D9*"
+            ])])
+        node = factory.make_Node()
+        script_set = ScriptSet.objects.create_commissioning_script_set(
+            node, [random.choice(script.tags)])
+
+        to_mock = (
+            node.__module__ + "." +
+            node.__class__.__qualname__ +
+            ".modaliases"
+        )
+        with mock.patch(to_mock, new_callable=PropertyMock) as mods:
+            mods.return_value = [
+                'pci:v00008086d00001918sv000015D9sd00000888bc06sc00i00',
+                'usb:v174Cp07D1d1000dc00dsc00dp00ic08isc06ip50in00',
+                'pci:v00001A03d00001150sv000015D9sd00000888bc06sc04i00',
+            ]
+            script_set.select_for_hardware_scripts()
+
+        self.assertItemsEqual(
+            list(NODE_INFO_SCRIPTS) + [script.name],
+            [script_result.name for script_result in script_set])
 
     def test_regenerate(self):
         node = factory.make_Node()

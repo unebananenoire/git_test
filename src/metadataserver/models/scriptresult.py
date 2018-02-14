@@ -35,6 +35,7 @@ from metadataserver.enum import (
     RESULT_TYPE,
     SCRIPT_STATUS,
     SCRIPT_STATUS_CHOICES,
+    SCRIPT_TYPE,
 )
 from metadataserver.fields import (
     Bin,
@@ -214,11 +215,10 @@ class ScriptResult(CleanSave, TimestampedModel):
     def store_result(
             self, exit_status=None, output=None, stdout=None, stderr=None,
             result=None, script_version_id=None, timedout=False):
-        # Don't allow ScriptResults to be overwritten unless the node is a
-        # controller. Controllers are allowed to overwrite their results to
-        # prevent new ScriptSets being created everytime a controller starts.
-        # This also allows us to avoid creating an RPC call for the rack
-        # controller to create a new ScriptSet.
+        # Controllers are allowed to overwrite their results during any status
+        # to prevent new ScriptSets being created everytime a controller
+        # starts. This also allows us to avoid creating an RPC call for the
+        # rack controller to create a new ScriptSet.
         if not self.script_set.node.is_controller:
             # Allow PENDING, INSTALLING, and RUNNING scripts incase the node
             # didn't inform MAAS the Script was being run, it just uploaded
@@ -226,11 +226,6 @@ class ScriptResult(CleanSave, TimestampedModel):
             assert self.status in (
                 SCRIPT_STATUS.PENDING, SCRIPT_STATUS.INSTALLING,
                 SCRIPT_STATUS.RUNNING)
-            assert self.output == b''
-            assert self.stdout == b''
-            assert self.stderr == b''
-            assert self.result == b''
-            assert self.script_version is None
 
         if timedout:
             self.status = SCRIPT_STATUS.TIMEDOUT
@@ -315,6 +310,18 @@ class ScriptResult(CleanSave, TimestampedModel):
                 self.script_set.node, None, err, post_process_hook,
                 node=self.script_set.node, output=self.stdout,
                 exit_status=self.exit_status)
+
+        if (self.status == SCRIPT_STATUS.PASSED and self.script and
+                self.script.script_type == SCRIPT_TYPE.COMMISSIONING and
+                self.script.recommission):
+            for script_result in self.script_set.scriptresult_set.filter(
+                    script_name__in=NODE_INFO_SCRIPTS):
+                script_result.status = SCRIPT_STATUS.PENDING
+                script_result.started = None
+                script_result.ended = None
+                script_result.save(
+                    update_fields=['status', 'started', 'ended'])
+
         self.save()
 
     @property

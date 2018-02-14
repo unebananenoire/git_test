@@ -27,7 +27,6 @@ js_enums := src/maasserver/static/js/enums.js
 
 # MAAS SASS stylesheets. The first input file (maas-styles.css) imports
 # the others, so is treated specially in the target definitions.
-scss_theme := include/nodejs/node_modules/vanilla-framework
 scss_input := src/maasserver/static/scss/build.scss
 scss_deps := $(wildcard src/maasserver/static/scss/_*.scss)
 scss_output := src/maasserver/static/css/build.css
@@ -37,9 +36,9 @@ scss_output := src/maasserver/static/css/build.css
 # which those commands appear.
 dbrun := bin/database --preserve run --
 
-# Disable progress when running npm and warning log levels.
-npm_install := NODE_ENV=production NPM_CONFIG_PROGRESS="false" npm install \
-	--loglevel error --cache-min 600
+# Path to install local nodejs.
+mkfile_dir := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+nodejs_path := $(mkfile_dir)/include/nodejs/bin:$(PATH)
 
 # For things that care, postgresfixture for example, we always want to
 # use the "maas" databases.
@@ -55,8 +54,8 @@ build: \
   bin/maas-common \
   bin/maas-rack \
   bin/maas-region \
-  bin/twistd.rack \
-  bin/twistd.region \
+  bin/rackd \
+  bin/regiond \
   bin/test.cli \
   bin/test.rack \
   bin/test.region \
@@ -77,14 +76,11 @@ install-dependencies: release := $(shell lsb_release -c -s)
 install-dependencies:
 	sudo DEBIAN_FRONTEND=noninteractive apt-get -y \
 	    --no-install-recommends install $(shell sort -u \
-	        $(addprefix required-packages/,base build dev doc $(release)) | sed '/^\#/d')
+	        $(addprefix required-packages/,base build dev doc) | sed '/^\#/d')
 	sudo DEBIAN_FRONTEND=noninteractive apt-get -y \
 	    purge $(shell sort -u required-packages/forbidden | sed '/^\#/d')
 
-.bzrignore: FORCE
-	LC_ALL=C.UTF-8 sort -f $@ --output $@
-
-.gitignore: .bzrignore
+.gitignore:
 	sed 's:^[.]/:/:' $^ > $@
 
 configure-buildout:
@@ -111,7 +107,7 @@ bin/test.parallel: \
 	$(buildout) install parallel-test
 	@touch --no-create $@
 
-bin/maas-region bin/twistd.region: \
+bin/maas-region bin/regiond: \
     bin/buildout buildout.cfg versions.cfg setup.py \
     $(js_enums) $(scss_output)
 	$(buildout) install region
@@ -148,12 +144,12 @@ bin/test.e2e: \
 # bin/maas-region is needed for South migration tests. bin/flake8 is
 # needed for checking lint and bin/sass is needed for checking css.
 bin/test.testing: \
-  bin/maas-region bin/flake8 bin/sass $(scss_theme) bin/buildout \
+  bin/maas-region bin/flake8 bin/sass bin/buildout \
   buildout.cfg versions.cfg setup.py
 	$(buildout) install testing-test
 	@touch --no-create $@
 
-bin/maas-rack bin/twistd.rack bin/maas-common: \
+bin/maas-rack bin/rackd bin/maas-common: \
   bin/buildout buildout.cfg versions.cfg setup.py
 	$(buildout) install rack
 	@touch --no-create $@
@@ -179,37 +175,56 @@ bin/coverage: bin/buildout buildout.cfg versions.cfg setup.py
 	$(buildout) install coverage
 	@touch --no-create bin/coverage
 
-define karma-deps
-  jasmine-core@2.4.1
-  karma@0.13.19
-  karma-chrome-launcher@0.2.2
-  karma-firefox-launcher@0.1.7
-  karma-jasmine@0.3.6
-  karma-opera-launcher@0.3.0
-  karma-phantomjs-launcher@0.2.3
-  karma-failed-reporter@0.0.3
-  karma-ng-html2js-preprocessor@1.0.0
-  phantomjs@2.1.7
+include/nodejs/bin/node:
+	mkdir -p include/nodejs
+	wget -O include/nodejs/nodejs.tar.gz https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.gz
+	tar -C include/nodejs/ -xf include/nodejs/nodejs.tar.gz --strip-components=1
+
+include/nodejs/yarn.tar.gz:
+	mkdir -p include/nodejs
+	wget -O include/nodejs/yarn.tar.gz https://yarnpkg.com/latest.tar.gz
+
+include/nodejs/bin/yarn: include/nodejs/yarn.tar.gz
+	tar -C include/nodejs/ -xf include/nodejs/yarn.tar.gz --strip-components=1
+
+include/nodejs/node_modules: include/nodejs/bin/node  include/nodejs/bin/yarn
+	PATH=$(nodejs_path) yarn --modules-folder include/nodejs/node_modules
+
+define BIN_KARMA
+#!/bin/sh
+export PATH=$(mkfile_dir)/include/nodejs/bin:$$PATH
+$(mkfile_dir)/include/nodejs/node_modules/karma/bin/karma $$@
 endef
 
-bin/karma: deps = $(strip $(karma-deps))
-bin/karma: prefix = include/nodejs
-bin/karma:
-	@mkdir -p $(@D) $(prefix)
-	$(npm_install) --prefix $(prefix) $(deps)
-	@ln -srf $(prefix)/node_modules/karma/bin/karma $@
+bin/karma: export BIN_KARMA:=$(BIN_KARMA)
+bin/karma: include/nodejs/node_modules
+	@mkdir -p bin/
+	@echo "$${BIN_KARMA}" > $@
+	@chmod +x $@
 
-bin/protractor: prefix = include/nodejs
-bin/protractor:
-	@mkdir -p $(@D) $(prefix)
-	$(npm_install) --prefix $(prefix) protractor@3.0.0
-	@ln -srf $(prefix)/node_modules/protractor/bin/protractor $@
+define BIN_PROTRACTOR
+#!/bin/sh
+export PATH=$(mkfile_dir)/include/nodejs/bin:$$PATH
+$(mkfile_dir)/include/nodejs/node_modules/protractor/bin/protractor $$@
+endef
 
-bin/sass: prefix = include/nodejs
-bin/sass:
-	@mkdir -p $(@D) $(prefix)
-	$(npm_install) --prefix $(prefix) node-sass@3.4.2
-	@ln -srf $(prefix)/node_modules/node-sass/bin/node-sass $@
+bin/protractor: export BIN_PROTRACTOR:=$(BIN_PROTRACTOR)
+bin/protractor: include/nodejs/node_modules
+	@mkdir -p bin/
+	@echo "$${BIN_PROTRACTOR}" > $@
+	@chmod +x $@
+
+define BIN_SASS
+#!/bin/sh
+export PATH=$(mkfile_dir)/include/nodejs/bin:$$PATH
+$(mkfile_dir)/include/nodejs/node_modules/node-sass/bin/node-sass $$@
+endef
+
+bin/sass: export BIN_SASS:=$(BIN_SASS)
+bin/sass: include/nodejs/node_modules
+	@mkdir -p bin/
+	@echo "$${BIN_SASS}" > $@
+	@chmod +x $@
 
 define test-scripts
   bin/test.cli
@@ -222,10 +237,7 @@ endef
 
 lxd:
 	utilities/configure-lxd-profile
-	utilities/create-lxd-xenial-image
-
-test+lxd: lxd $(strip $(test-scripts))
-	utilities/isolated-make-test
+	utilities/create-lxd-bionic-image
 
 test: bin/test.parallel bin/coverage
 	@$(RM) .coverage .coverage.*
@@ -277,11 +289,11 @@ coverage-report: coverage/index.html
 coverage.xml: bin/coverage .coverage
 	bin/coverage xml -o $@
 
-coverage/index.html: revno = $(or $(shell bzr revno 2>/dev/null),???)
+coverage/index.html: revno = $(or $(shell git rev-parse HEAD 2>/dev/null),???)
 coverage/index.html: bin/coverage .coverage
 	@$(RM) -r $(@D)
 	bin/coverage html \
-	    --title "Coverage for MAAS r$(revno)" \
+	    --title "Coverage for MAAS rev $(revno)" \
 	    --directory $(@D)
 
 .coverage:
@@ -301,7 +313,7 @@ lint-css:
 
 # Python lint checks are time-intensive, but flake8 now knows how to run
 # parallel jobs, and does so by default.
-lint-py: sources = setup.py src twisted
+lint-py: sources = setup.py src
 lint-py: bin/flake8
 	@find $(sources) -name '*.py' \
 	  ! -path '*/migrations/*' ! -path '*/south_migrations/*' -print0 \
@@ -311,7 +323,7 @@ lint-py: bin/flake8
 # be close to 10 but MAAS has many functions that are over that so we
 # start with a much higher number. Over time we can ratchet it down.
 lint-py-complexity: maximum=26
-lint-py-complexity: sources = setup.py src twisted
+lint-py-complexity: sources = setup.py src
 lint-py-complexity: bin/flake8
 	@find $(sources) -name '*.py' \
 	  ! -path '*/migrations/*' ! -path '*/south_migrations/*' \
@@ -319,7 +331,7 @@ lint-py-complexity: bin/flake8
 	  -print0 | xargs -r0 bin/flake8 --config=.flake8 --max-complexity=$(maximum)
 
 # Statically check imports against policy.
-lint-py-imports: sources = setup.py src twisted
+lint-py-imports: sources = setup.py src
 lint-py-imports:
 	@utilities/check-imports
 	@find $(sources) -name '*.py' \
@@ -339,7 +351,7 @@ lint-js:
 		| xargs -r0 -n20 -P4 $(pocketlint)
 
 # Apply automated formatting to all Python files.
-format: sources = $(wildcard *.py contrib/*.py) src twisted utilities etc
+format: sources = $(wildcard *.py contrib/*.py) src utilities etc
 format:
 	@find $(sources) -name '*.py' -print0 | xargs -r0 utilities/format-imports
 
@@ -382,13 +394,9 @@ $(js_enums): bin/py src/maasserver/utils/jsenums.py $(py_enums)
 
 styles: clean-styles $(scss_output)
 
-$(scss_output): bin/sass $(scss_theme) $(scss_input) $(scss_deps)
+$(scss_output): bin/sass $(scss_input) $(scss_deps)
 	bin/sass --include-path=src/maasserver/static/scss \
 	    --output-style compressed $(scss_input) -o $(dir $@)
-
-$(scss_theme): prefix = include/nodejs
-$(scss_theme):
-	$(npm_install) --prefix $(prefix) vanilla-framework@1.6.6
 
 clean-styles:
 	$(RM) $(scss_output)
@@ -397,7 +405,6 @@ clean: stop clean-failed
 	find . -type f -name '*.py[co]' -print0 | xargs -r0 $(RM)
 	find . -type d -name '__pycache__' -print0 | xargs -r0 $(RM) -r
 	find . -type f -name '*~' -print0 | xargs -r0 $(RM)
-	find . -type f -name dropin.cache -print0 | xargs -r0 $(RM)
 	$(RM) -r media/demo/* media/development media/development.*
 	$(RM) $(js_enums) $(js_enums).tmp
 	$(RM) src/maasserver/data/templates.py
@@ -483,7 +490,7 @@ endef
 # Development services.
 #
 
-service_names_region := database dns regiond regiond2 reloader
+service_names_region := database dns regiond reloader
 service_names_rack := rackd reloader
 service_names_all := $(service_names_region) $(service_names_rack)
 
@@ -518,10 +525,6 @@ run:
 	@services/run $(service_names_all)
 
 phony_services_targets += run-region run-rack run
-
-# This one's for the rapper, yo. Don't run the load-balancing regiond2.
-run+regiond:
-	@services/run $(filter-out regiond2,$(service_names_region)) +regiond
 
 phony_services_targets += run+regiond
 
@@ -570,13 +573,11 @@ services/dns/@deps: bin/py
 
 services/database/@deps: bin/database
 
-services/rackd/@deps: bin/twistd.rack bin/maas-rack bin/maas-common
+services/rackd/@deps: bin/rackd bin/maas-rack bin/maas-common
 
 services/reloader/@deps:
 
 services/regiond/@deps: bin/maas-region bin/maas-rack bin/maas-common
-
-services/regiond2/@deps: bin/maas-region bin/maas-rack bin/maas-common
 
 #
 # Package building
@@ -717,7 +718,7 @@ build/dev-snap/prime: build/dev-snap
 sync-dev-snap: build/dev-snap/prime
 	rsync -v --exclude 'maastesting' --exclude 'tests' --exclude 'testing' \
 		--exclude '*.pyc' --exclude '__pycache__' -r -u -l -t -W -L \
-		src/ build/dev-snap/prime/lib/python3.5/site-packages/
+		src/ build/dev-snap/prime/lib/python3.6/site-packages/
 	rsync -v -r -u -l -t -W -L \
 		src/maasserver/static/ build/dev-snap/prime/usr/share/maas/web/static/
 
@@ -752,7 +753,7 @@ phony := $(sort $(strip $(phony)))
 
 define secondary
   bin/py bin/buildout
-  bin/sass $(scss_theme)
+  bin/sass
   bin/sphinx bin/sphinx-build
 endef
 

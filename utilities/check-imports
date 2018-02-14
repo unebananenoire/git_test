@@ -213,6 +213,10 @@ RackControllerRule = Rule(
     Allow("formencode|formencode.**"),
     Allow("jsonschema|jsonschema.**"),
     Allow("lxml|lxml.**"),
+    # This is only allowed because of how `regiond` needs imports done
+    # after the reactor has been installed. The code handles those imports
+    # not being present when the machine is a rack controller only.
+    Allow("maasserver.plugin.*"),
     Allow("netaddr|netaddr.**"),
     Allow("netifaces|netifaces.*"),
     Allow("oauthlib.oauth1"),
@@ -224,6 +228,7 @@ RackControllerRule = Rule(
     Allow("tempita"),
     Allow("tftp|tftp.**"),
     Allow("twisted.**"),
+    Allow("uvloop"),
     Allow("yaml"),
     Allow("zope.interface|zope.interface.**"),
     Allow(StandardLibraries),
@@ -259,6 +264,7 @@ RegionControllerRule = Rule(
     Allow("lxml|lxml.**"),
     Allow("maascli.utils.parse_docstring"),
     Allow("maasserver|maasserver.**"),
+    Allow("macaroonbakery|macaroonbakery.**"),
     Allow("markupsafe|markupsafe.**"),
     Allow("metadataserver|metadataserver.**"),
     Allow("netaddr|netaddr.**"),

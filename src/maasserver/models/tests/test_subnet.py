@@ -69,6 +69,37 @@ from testtools.matchers import (
 )
 
 
+class TestSubnet(MAASServerTestCase):
+
+    def test_can_create_update_and_delete_subnet_with_attached_range(self):
+        subnet = factory.make_Subnet(
+            cidr="10.0.0.0/8", gateway_ip=None, dns_servers=[])
+        iprange = factory.make_IPRange(
+            subnet, start_ip="10.0.0.1", end_ip="10.255.255.254")
+        subnet.description = "foo"
+        subnet.save()
+        subnet.delete()
+        iprange.delete()
+
+    def test_can_create_update_and_delete_subnet_with_assigned_ips(self):
+        subnet = factory.make_Subnet(
+            cidr="10.0.0.0/8", gateway_ip=None, dns_servers=[])
+        iprange = factory.make_IPRange(
+            subnet, start_ip="10.0.0.1", end_ip="10.255.255.252")
+        static_ip = factory.make_StaticIPAddress(
+            "10.255.255.254", subnet=subnet,
+            alloc_type=IPADDRESS_TYPE.USER_RESERVED)
+        static_ip_2 = factory.make_StaticIPAddress(
+            "10.255.255.253", subnet=subnet,
+            alloc_type=IPADDRESS_TYPE.USER_RESERVED)
+        subnet.description = "foo"
+        subnet.save()
+        static_ip_2.delete()
+        subnet.delete()
+        iprange.delete()
+        static_ip.delete()
+
+
 class CreateCidrTest(MAASServerTestCase):
 
     def test_creates_cidr_from_ipv4_strings(self):
@@ -1025,7 +1056,7 @@ class TestSubnetGetLeastRecentlySeenUnknownNeighbour(MAASServerTestCase):
             ip="10.0.0.2", interface=rackif, updated=yesterday)
         factory.make_IPRange(
             subnet, start_ip="10.0.0.2", end_ip="10.0.0.2",
-            type=IPRANGE_TYPE.RESERVED)
+            alloc_type=IPRANGE_TYPE.RESERVED)
         discovery = subnet.get_least_recently_seen_unknown_neighbour()
         self.assertThat(discovery.ip, Equals("10.0.0.1"))
 
@@ -1047,7 +1078,7 @@ class TestSubnetGetLeastRecentlySeenUnknownNeighbour(MAASServerTestCase):
             ip="10.0.0.4", interface=rackif, updated=yesterday)
         factory.make_IPRange(
             subnet, start_ip="10.0.0.1", end_ip="10.0.0.2",
-            type=IPRANGE_TYPE.RESERVED)
+            alloc_type=IPRANGE_TYPE.RESERVED)
         discovery = subnet.get_least_recently_seen_unknown_neighbour()
         self.assertThat(discovery.ip, Equals("10.0.0.2"))
 
@@ -1081,7 +1112,7 @@ class TestSubnetGetNextIPForAllocation(MAASServerTestCase):
         if not self.managed:
             factory.make_IPRange(
                 subnet, start_ip=first, end_ip=last,
-                type=IPRANGE_TYPE.RESERVED)
+                alloc_type=IPRANGE_TYPE.RESERVED)
             subnet = reload_object(subnet)
         return subnet
 
@@ -1175,14 +1206,14 @@ class TestUnmanagedSubnets(MAASServerTestCase):
             managed=False)
         range1 = factory.make_IPRange(
             subnet, start_ip='10.0.0.1', end_ip='10.0.0.1',
-            type=IPRANGE_TYPE.RESERVED)
+            alloc_type=IPRANGE_TYPE.RESERVED)
         subnet = reload_object(subnet)
         ip = subnet.get_next_ip_for_allocation()
         self.assertThat(ip, Equals("10.0.0.1"))
         range1.delete()
         factory.make_IPRange(
             subnet, start_ip='10.0.0.6', end_ip='10.0.0.6',
-            type=IPRANGE_TYPE.RESERVED)
+            alloc_type=IPRANGE_TYPE.RESERVED)
         subnet = reload_object(subnet)
         ip = subnet.get_next_ip_for_allocation()
         self.assertThat(ip, Equals("10.0.0.6"))
@@ -1194,7 +1225,7 @@ class TestUnmanagedSubnets(MAASServerTestCase):
             managed=False)
         factory.make_IPRange(
             subnet, start_ip='10.0.0.3', end_ip='10.0.0.4',
-            type=IPRANGE_TYPE.RESERVED)
+            alloc_type=IPRANGE_TYPE.RESERVED)
         subnet = reload_object(subnet)
         ip = subnet.get_next_ip_for_allocation()
         self.assertThat(ip, Equals("10.0.0.3"))
@@ -1324,7 +1355,7 @@ class TestSubnetIPExhaustionNotifications(MAASServerTestCase):
                 start_ip=str(IPAddress(range_start)),
                 end_ip=str(IPAddress(range_end)),
                 subnet=self.subnet,
-                type=IPRANGE_TYPE.RESERVED)
+                alloc_type=IPRANGE_TYPE.RESERVED)
         else:
             # Dummy value so we allocate an IP below.
             range_end = self.ipnetwork.first
@@ -1356,7 +1387,7 @@ class TestSubnetIPExhaustionNotifications(MAASServerTestCase):
             start_ip=str(IPAddress(range_start)),
             end_ip=str(IPAddress(range_end)),
             subnet=self.subnet,
-            type=IPRANGE_TYPE.RESERVED)
+            alloc_type=IPRANGE_TYPE.RESERVED)
         ident = 'ip_exhaustion__subnet_%d' % self.subnet.id
         notification = get_one(Notification.objects.filter(ident=ident))
         notification_exists = notification is not None
@@ -1375,7 +1406,7 @@ class TestSubnetIPExhaustionNotifications(MAASServerTestCase):
             start_ip=str(IPAddress(range_start)),
             end_ip=str(IPAddress(range_end)),
             subnet=self.subnet,
-            type=IPRANGE_TYPE.RESERVED)
+            alloc_type=IPRANGE_TYPE.RESERVED)
         ident = 'ip_exhaustion__subnet_%d' % self.subnet.id
         notification = get_one(Notification.objects.filter(ident=ident))
         notification_exists = notification is not None
@@ -1399,7 +1430,7 @@ class TestSubnetIPExhaustionNotifications(MAASServerTestCase):
             start_ip=str(IPAddress(range_start)),
             end_ip=str(IPAddress(range_end)),
             subnet=self.subnet,
-            type=IPRANGE_TYPE.RESERVED)
+            alloc_type=IPRANGE_TYPE.RESERVED)
         ident = 'ip_exhaustion__subnet_%d' % self.subnet.id
         notification = get_one(Notification.objects.filter(ident=ident))
         notification_exists = notification is not None
@@ -1429,7 +1460,7 @@ class TestSubnetIPExhaustionNotifications(MAASServerTestCase):
                 start_ip=str(IPAddress(range_start)),
                 end_ip=str(IPAddress(range_end)),
                 subnet=self.subnet,
-                type=IPRANGE_TYPE.RESERVED)
+                alloc_type=IPRANGE_TYPE.RESERVED)
         else:
             # Dummy value so we allocate an IP below.
             range_end = self.ipnetwork.first

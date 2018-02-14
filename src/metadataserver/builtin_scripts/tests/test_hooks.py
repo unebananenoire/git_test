@@ -1,4 +1,4 @@
-# Copyright 2012-2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2012-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Test hooks."""
@@ -20,6 +20,7 @@ from maasserver.enum import (
 from maasserver.fields import MAC
 from maasserver.models.blockdevice import MIN_BLOCK_DEVICE_SIZE
 from maasserver.models.interface import Interface
+from maasserver.models.nodemetadata import NodeMetadata
 from maasserver.models.physicalblockdevice import PhysicalBlockDevice
 from maasserver.models.switch import Switch
 from maasserver.models.tag import Tag
@@ -27,6 +28,7 @@ from maasserver.models.vlan import VLAN
 from maasserver.testing.factory import factory
 from maasserver.testing.testcase import MAASServerTestCase
 from maasserver.utils.orm import reload_object
+from maastesting.testcase import MAASTestCase
 from metadataserver.builtin_scripts.hooks import (
     add_switch,
     add_switch_vendor_model_tags,
@@ -49,6 +51,7 @@ from metadataserver.builtin_scripts.hooks import (
 from metadataserver.enum import SCRIPT_TYPE
 from metadataserver.models import ScriptSet
 from netaddr import IPNetwork
+from provisioningserver.refresh.node_info_scripts import LSHW_OUTPUT_NAME
 from testtools.matchers import (
     Contains,
     ContainsAll,
@@ -215,10 +218,36 @@ class TestDetectSwitchVendorModel(MAASServerTestCase):
         self.assertThat(detected, Equals((None, None)))
 
 
-class TestFilterModaliases(MAASServerTestCase):
+TEST_MODALIASES = [
+    'pci:v00001A03d00001150sv000015D9sd00000888bc06sc04i00',
+    'pci:v00001A03d00002000sv000015D9sd00000888bc03sc00i00',
+    'pci:v00008086d00001533sv000015D9sd00001533bc02sc00i00',
+    'pci:v00008086d000015B7sv000015D9sd000015B7bc02sc00i00',
+    'pci:v00008086d00001918sv000015D9sd00000888bc06sc00i00',
+    'pci:v00008086d0000A102sv000015D9sd00000888bc01sc06i01',
+    'pci:v00008086d0000A118sv000015D9sd00000888bc06sc04i00',
+    'pci:v00008086d0000A119sv000015D9sd00000888bc06sc04i00',
+    'pci:v00008086d0000A11Asv000015D9sd00000888bc06sc04i00',
+    'pci:v00008086d0000A121sv000015D9sd00000888bc05sc80i00',
+    'pci:v00008086d0000A123sv000015D9sd00000888bc0Csc05i00',
+    'pci:v00008086d0000A12Fsv000015D9sd00000888bc0Csc03i30',
+    'pci:v00008086d0000A131sv000015D9sd00000888bc11sc80i00',
+    'pci:v00008086d0000A13Dsv000015D9sd00000888bc07sc00i02',
+    'pci:v00008086d0000A149sv000015D9sd00000888bc06sc01i00',
+    'pci:v00008086d0000A170sv000015D9sd00000888bc04sc03i00',
+    'usb:v0557p2419d0100dc00dsc00dp00ic03isc01ip01in00',
+    'usb:v0557p2419d0100dc00dsc00dp00ic03isc01ip02in01',
+    'usb:v0557p7000d0000dc09dsc00dp01ic09isc00ip00in00',
+    'usb:v174Cp07D1d1000dc00dsc00dp00ic08isc06ip50in00',
+    'usb:v1D6Bp0002d0410dc09dsc00dp01ic09isc00ip00in00',
+    'usb:v1D6Bp0003d0410dc09dsc00dp03ic09isc00ip00in00',
+]
+
+
+class TestFilterModaliases(MAASTestCase):
 
     scenarios = (
-        ('wildcard_multiple_match', {
+        ('modalias_wildcard_multiple_match', {
             'modaliases': [
                 "os:vendorCanonical:productUbuntu:version14.04",
                 "beverage:typeCoffee:variantEspresso",
@@ -228,12 +257,14 @@ class TestFilterModaliases(MAASServerTestCase):
             'candidates': [
                 'beverage:typeCoffee:*',
             ],
+            'pci': None,
+            'usb': None,
             'result': [
                 "beverage:typeCoffee:variantEspresso",
                 "beverage:typeCoffee:variantCappuccino",
             ]
         }),
-        ('multiple_wildcard_match', {
+        ('modalias_multiple_wildcard_match', {
             'modaliases': [
                 "os:vendorCanonical:productUbuntu:version14.04",
                 "beverage:typeCoffee:variantEspresso",
@@ -245,13 +276,14 @@ class TestFilterModaliases(MAASServerTestCase):
                 'os:*:productUbuntu:*',
                 'beverage:*ProperBritish'
             ],
+            'pci': None,
+            'usb': None,
             'result': [
-                "os:vendorCanonical:productUbuntu:version14.04",
                 "os:vendorCanonical:productUbuntu:version14.04",
                 "beverage:typeTea:variantProperBritish",
             ]
         }),
-        ('exact_match', {
+        ('modalias_exact_match', {
             'modaliases': [
                 "os:vendorCanonical:productUbuntu:version14.04",
                 "beverage:typeCoffee:variantEspresso",
@@ -261,15 +293,82 @@ class TestFilterModaliases(MAASServerTestCase):
             'candidates': [
                 'os:vendorCanonical:productUbuntu:version14.04',
             ],
+            'pci': None,
+            'usb': None,
             'result': [
                 "os:vendorCanonical:productUbuntu:version14.04",
+            ]
+        }),
+        ('pci_malformed_string', {
+            'modaliases': TEST_MODALIASES,
+            'candidates': None,
+            'pci': [
+                "8086"
+            ],
+            'usb': None,
+            'result': []
+        }),
+        ('pci_exact_match', {
+            'modaliases': TEST_MODALIASES,
+            'candidates': None,
+            'pci': [
+                "8086:1918"
+            ],
+            'usb': None,
+            'result': [
+                "pci:v00008086d00001918sv000015D9sd00000888bc06sc00i00",
+            ]
+        }),
+        ('pci_wildcard_match', {
+            'modaliases': TEST_MODALIASES,
+            'candidates': None,
+            'pci': [
+                "1a03:*"
+            ],
+            'usb': None,
+            'result': [
+                'pci:v00001A03d00001150sv000015D9sd00000888bc06sc04i00',
+                'pci:v00001A03d00002000sv000015D9sd00000888bc03sc00i00',
+            ]
+        }),
+        ('usb_malformed_string', {
+            'modaliases': TEST_MODALIASES,
+            'candidates': None,
+            'pci': None,
+            'usb': [
+                "174c"
+            ],
+            'result': []
+        }),
+        ('usb_exact_match', {
+            'modaliases': TEST_MODALIASES,
+            'candidates': None,
+            'pci': None,
+            'usb': [
+                "174c:07d1"
+            ],
+            'result': [
+                'usb:v174Cp07D1d1000dc00dsc00dp00ic08isc06ip50in00',
+            ]
+        }),
+        ('usb_wildcard_match', {
+            'modaliases': TEST_MODALIASES,
+            'candidates': None,
+            'pci': None,
+            'usb': [
+                "0557:*"
+            ],
+            'result': [
+                'usb:v0557p2419d0100dc00dsc00dp00ic03isc01ip01in00',
+                'usb:v0557p2419d0100dc00dsc00dp00ic03isc01ip02in01',
+                'usb:v0557p7000d0000dc09dsc00dp01ic09isc00ip00in00'
             ]
         }),
     )
 
     def test__filter_modaliases(self):
         matches = filter_modaliases(
-            self.modaliases, self.candidates)
+            self.modaliases, self.candidates, pci=self.pci, usb=self.usb)
         self.assertThat(matches, Equals(self.result))
 
 
@@ -632,14 +731,88 @@ class TestUpdateHardwareDetails(MAASServerTestCase):
         update_hardware_details(factory.make_Node(), b"garbage", exit_status=1)
         self.assertEqual("", logger.output)
 
+    def test_hardware_updates_node_attribs(self):
+        node = factory.make_Node()
+        system_vendor = factory.make_name('system_vendor')
+        system_product = factory.make_name('system_product')
+        system_version = factory.make_name('system_version')
+        system_serial = factory.make_name('system_serial')
+        mainboard_vendor = factory.make_name('mainboard_vendor')
+        mainboard_product = factory.make_name('mainboard_product')
+        mainboard_firmware_version = factory.make_name(
+            'mainboard_firmware_version')
+        mainboard_firmware_date = factory.make_name(
+            'mainboard_firmware_date')
+        xmlbytes = dedent("""\
+        <node>
+          <node class="system">
+            <vendor>%s</vendor>
+            <product>%s</product>
+            <version>%s</version>
+            <serial>%s</serial>
+          </node>
+          <node id="core">
+            <vendor>%s</vendor>
+            <product>%s</product>
+            <node id="firmware">
+              <version>%s</version>
+              <date>%s</date>
+            </node>
+          </node>
+        </node>
+        """ % (
+            system_vendor, system_product, system_version, system_serial,
+            mainboard_vendor, mainboard_product, mainboard_firmware_version,
+            mainboard_firmware_date)).encode()
+        update_hardware_details(node, xmlbytes, 0)
+
+        nmd = NodeMetadata.objects.get(node=node, key='system_vendor')
+        self.assertEquals(system_vendor, nmd.value)
+        nmd = NodeMetadata.objects.get(node=node, key='system_product')
+        self.assertEquals(system_product, nmd.value)
+        nmd = NodeMetadata.objects.get(node=node, key='system_version')
+        self.assertEquals(system_version, nmd.value)
+        nmd = NodeMetadata.objects.get(node=node, key='system_serial')
+        self.assertEquals(system_serial, nmd.value)
+
+        nmd = NodeMetadata.objects.get(node=node, key='mainboard_vendor')
+        self.assertEquals(mainboard_vendor, nmd.value)
+        nmd = NodeMetadata.objects.get(node=node, key='mainboard_product')
+        self.assertEquals(mainboard_product, nmd.value)
+        nmd = NodeMetadata.objects.get(
+            node=node, key='mainboard_firmware_version')
+        self.assertEquals(mainboard_firmware_version, nmd.value)
+        nmd = NodeMetadata.objects.get(
+            node=node, key='mainboard_firmware_date')
+        self.assertEquals(mainboard_firmware_date, nmd.value)
+
+    def test_hardware_ignores_empty_or_missing_node_attribs(self):
+        node = factory.make_Node()
+        xmlbytes = dedent("""\
+        <node>
+          <node class="system">
+            <vendor></vendor>
+            <product>0123456789</product>
+          </node>
+        </node>
+        """).encode()
+        update_hardware_details(node, xmlbytes, 0)
+
+        for key in [
+                'system_vendor', 'system_product', 'system_version',
+                'system_serial', 'mainboard_Vendor', 'mainboard_product',
+                'mainboard_firmware_version', 'mainboard_firmware_date']:
+            self.assertIsNone(NodeMetadata.objects.get(node=node, key=key))
+
 
 class TestParseCPUInfo(MAASServerTestCase):
 
     doctest_flags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
 
-    def test_parse_cpuinfo(self):
+    def test_parse_cpuinfo_speed_in_model(self):
         node = factory.make_Node()
         node.cpu_count = 2
+        node.cpu_speed = 9999
         node.save()
         # Sample lscpu output from a single socket, quad core with
         # hyperthreading CPU. Flags have been ommitted to avoid lint errors.
@@ -658,7 +831,7 @@ class TestParseCPUInfo(MAASServerTestCase):
         Model:                 60
         Model name:            Intel(R) Core(TM) i7-4910MQ CPU @ 2.90GHz
         Stepping:              3
-        CPU MHz:               1247.000
+        CPU MHz:               2893.284
         CPU max MHz:           3900.0000
         CPU min MHz:           800.0000
         BogoMIPS:              5786.32
@@ -682,7 +855,109 @@ class TestParseCPUInfo(MAASServerTestCase):
         7,3,0
         """).encode('utf-8')
         parse_cpuinfo(node, cpuinfo, 0)
-        self.assertEqual(8, reload_object(node).cpu_count)
+        node = reload_object(node)
+        self.assertEqual(8, node.cpu_count)
+        self.assertEqual(2900, node.cpu_speed)
+        nmd = NodeMetadata.objects.get(node=node, key='cpu_model')
+        self.assertEqual('Intel(R) Core(TM) i7-4910MQ CPU', nmd.value)
+
+    def test_parse_cpuinfo_max_speed(self):
+        node = factory.make_Node()
+        node.cpu_count = 2
+        node.cpu_speed = 9999
+        node.save()
+        # Sample lscpu output from a single socket, quad core with
+        # hyperthreading CPU. Flags have been ommitted to avoid lint errors.
+        cpuinfo = dedent("""\
+        Architecture:          x86_64
+        CPU op-mode(s):        32-bit, 64-bit
+        Byte Order:            Little Endian
+        CPU(s):                4
+        On-line CPU(s) list:   0-3
+        Thread(s) per core:    1
+        Core(s) per socket:    4
+        Socket(s):             1
+        NUMA node(s):          1
+        Vendor ID:             AuthenticAMD
+        CPU family:            22
+        Model:                 0
+        Model name:            AMD Athlon(tm) 5350 APU with Radeon(tm) R3
+        Stepping:              1
+        CPU MHz:               800.000
+        CPU max MHz:           2050.0000
+        CPU min MHz:           800.0000
+        BogoMIPS:              4092.20
+        Virtualization:        AMD-V
+        L1d cache:             32K
+        L1i cache:             32K
+        L2 cache:              2048K
+        NUMA node0 CPU(s):     0-3
+        # The following is the parsable format, which can be fed to other
+        # programs. Each different item in every column has an unique ID
+        # starting from zero.
+        # CPU,Core,Socket
+        0,0,0
+        1,1,0
+        2,2,0
+        3,3,0
+        """).encode('utf-8')
+        parse_cpuinfo(node, cpuinfo, 0)
+        node = reload_object(node)
+        self.assertEqual(4, node.cpu_count)
+        self.assertEqual(2050, node.cpu_speed)
+        nmd = NodeMetadata.objects.get(node=node, key='cpu_model')
+        self.assertEqual(
+            'AMD Athlon(tm) 5350 APU with Radeon(tm) R3', nmd.value)
+
+    def test_parse_cpuinfo_speed_current(self):
+        node = factory.make_Node()
+        node.cpu_count = 2
+        node.cpu_speed = 9999
+        node.save()
+        # Sample lscpu output from a single socket, quad core with
+        # hyperthreading CPU. Flags have been ommitted to avoid lint errors.
+        cpuinfo = dedent("""\
+        Architecture:          x86_64
+        CPU op-mode(s):        32-bit, 64-bit
+        Byte Order:            Little Endian
+        CPU(s):                8
+        On-line CPU(s) list:   0-7
+        Thread(s) per core:    2
+        Core(s) per socket:    4
+        Socket(s):             1
+        NUMA node(s):          1
+        Vendor ID:             GenuineIntel
+        CPU family:            6
+        Model:                 60
+        Model name:            Intel(R) Core(TM) i7-4910MQ CPU
+        Stepping:              3
+        CPU MHz:               2893.284
+        BogoMIPS:              5786.32
+        Virtualization:        VT-x
+        L1d cache:             32K
+        L1i cache:             32K
+        L2 cache:              256K
+        L3 cache:              8192K
+        NUMA node0 CPU(s):     0-7
+        # The following is the parsable format, which can be fed to other
+        # programs. Each different item in every column has an unique ID
+        # starting from zero.
+        # CPU,Core,Socket
+        0,0,0
+        1,0,0
+        2,1,0
+        3,1,0
+        4,2,0
+        5,2,0
+        6,3,0
+        7,3,0
+        """).encode('utf-8')
+        parse_cpuinfo(node, cpuinfo, 0)
+        node = reload_object(node)
+        self.assertEqual(8, node.cpu_count)
+        self.assertEqual(2900, node.cpu_speed)
+        nmd = NodeMetadata.objects.get(node=node, key='cpu_model')
+        self.assertEqual('Intel(R) Core(TM) i7-4910MQ CPU', nmd.value)
 
 
 class TestUpdateNodePhysicalBlockDevices(MAASServerTestCase):
@@ -690,7 +965,7 @@ class TestUpdateNodePhysicalBlockDevices(MAASServerTestCase):
     def make_block_device(
             self, name=None, path=None, id_path=None, size=None,
             block_size=None, model=None, serial=None, rotary=True, rpm=None,
-            removable=False, sata=False):
+            removable=False, sata=False, firmware_version=None):
         if name is None:
             name = factory.make_name('name')
         if path is None:
@@ -708,6 +983,8 @@ class TestUpdateNodePhysicalBlockDevices(MAASServerTestCase):
             serial = factory.make_name('serial')
         if rpm is None:
             rpm = random.choice(('4800', '5400', '10000', '15000'))
+        if firmware_version is None:
+            firmware_version = factory.make_name('firmware_version')
         return {
             "NAME": name,
             "PATH": path,
@@ -720,7 +997,8 @@ class TestUpdateNodePhysicalBlockDevices(MAASServerTestCase):
             "RM": "1" if removable else "0",
             "ROTA": "1" if rotary else "0",
             "SATA": "1" if sata else "0",
-            "RPM": "0" if not rotary else rpm
+            "RPM": "0" if not rotary else rpm,
+            "FIRMWARE_VERSION": firmware_version,
             }
 
     def test__does_nothing_when_exit_status_is_not_zero(self):
@@ -863,9 +1141,10 @@ class TestUpdateNodePhysicalBlockDevices(MAASServerTestCase):
         block_size = random.choice([512, 1024, 4096])
         model = factory.make_name('model')
         serial = factory.make_name('serial')
+        firmware_version = factory.make_name('firmware_version')
         device = self.make_block_device(
             name=name, size=size, block_size=block_size,
-            model=model, serial=serial)
+            model=model, serial=serial, firmware_version=firmware_version)
         node = factory.make_Node()
         json_output = json.dumps([device]).encode('utf-8')
         update_node_physical_block_devices(node, json_output, 0)
@@ -873,7 +1152,8 @@ class TestUpdateNodePhysicalBlockDevices(MAASServerTestCase):
             PhysicalBlockDevice.objects.filter(node=node).first(),
             MatchesStructure.byEquality(
                 name=name, id_path=id_path, size=size,
-                block_size=block_size, model=model, serial=serial))
+                block_size=block_size, model=model, serial=serial,
+                firmware_version=firmware_version))
 
     def test__creates_physical_block_device_with_path(self):
         name = factory.make_name('name')
@@ -881,9 +1161,11 @@ class TestUpdateNodePhysicalBlockDevices(MAASServerTestCase):
         block_size = random.choice([512, 1024, 4096])
         model = factory.make_name('model')
         serial = factory.make_name('serial')
+        firmware_version = factory.make_name('firmware_version')
         device = self.make_block_device(
             name=name, size=size, block_size=block_size,
-            model=model, serial=serial, id_path='')
+            model=model, serial=serial, id_path='',
+            firmware_version=firmware_version)
         node = factory.make_Node()
         json_output = json.dumps([device]).encode('utf-8')
         update_node_physical_block_devices(node, json_output, 0)
@@ -891,7 +1173,8 @@ class TestUpdateNodePhysicalBlockDevices(MAASServerTestCase):
             PhysicalBlockDevice.objects.filter(node=node).first(),
             MatchesStructure.byEquality(
                 name=name, id_path='/dev/%s' % name, size=size,
-                block_size=block_size, model=model, serial=serial))
+                block_size=block_size, model=model, serial=serial,
+                firmware_version=firmware_version))
 
     def test__creates_physical_block_device_with_path_for_missing_serial(self):
         name = factory.make_name('name')
@@ -1174,6 +1457,88 @@ class TestUpdateNodeNetworkInformation(MAASServerTestCase):
         self.assert_expected_interfaces_and_macs_exist(
             node_interfaces,
             expected_interfaces=self.EXPECTED_INTERFACES_XENIAL)
+
+    def test__adds_lshw_info(self):
+        """Test a node that has no previously known interfaces gets info from
+        lshw added.
+        """
+        node = factory.make_Node(with_empty_script_sets=True)
+
+        # Delete all Interfaces created by factory attached to this node.
+        Interface.objects.filter(node_id=node.id).delete()
+
+        vendor = factory.make_name('vendor')
+        product = factory.make_name('product')
+        firmware_version = factory.make_name('firmware_version')
+        lshw = node.current_commissioning_script_set.find_script_result(
+            script_name=LSHW_OUTPUT_NAME)
+        lshw_xml = dedent("""\
+        <node class="network">
+            <serial>00:00:00:00:00:01</serial>
+            <vendor>%s</vendor>
+            <product>%s</product>
+            <configuration>
+                <setting id="firmware" value="%s" />
+            </configuration>
+        </node>
+        """ % (vendor, product, firmware_version)).encode()
+        lshw.store_result(0, stdout=lshw_xml)
+
+        update_node_network_information(node, self.IP_ADDR_OUTPUT, 0)
+
+        nic = Interface.objects.get(mac_address='00:00:00:00:00:01')
+        self.assertEqual(vendor, nic.vendor)
+        self.assertEqual(product, nic.product)
+        self.assertEqual(firmware_version, nic.firmware_version)
+
+    def test__ignores_bad_lshw(self):
+        """Test a node that has no previous known interfaces ignores bad lshw
+        data.
+        """
+        node = factory.make_Node(with_empty_script_sets=True)
+
+        # Delete all Interfaces created by factory attached to this node.
+        Interface.objects.filter(node_id=node.id).delete()
+
+        lshw = node.current_commissioning_script_set.find_script_result(
+            script_name=LSHW_OUTPUT_NAME)
+        lshw.store_result(0, stdout=factory.make_string().encode())
+
+        update_node_network_information(node, self.IP_ADDR_OUTPUT, 0)
+
+        nic = Interface.objects.get(mac_address='00:00:00:00:00:01')
+        self.assertIsNone(nic.vendor)
+        self.assertIsNone(nic.product)
+        self.assertIsNone(nic.firmware_version)
+
+    def test__ignores_empty_or_missing_lshw_data(self):
+        """Test a node that has no previously known interfaces gets info from
+        lshw added.
+        """
+        node = factory.make_Node(with_empty_script_sets=True)
+
+        # Delete all Interfaces created by factory attached to this node.
+        Interface.objects.filter(node_id=node.id).delete()
+
+        lshw = node.current_commissioning_script_set.find_script_result(
+            script_name=LSHW_OUTPUT_NAME)
+        lshw_xml = dedent("""\
+        <node class="network">
+            <serial>00:00:00:00:00:01</serial>
+            <vendor></vendor>
+            <configuration>
+                <setting id="firmware" />
+            </configuration>
+        </node>
+        """).encode()
+        lshw.store_result(0, stdout=lshw_xml)
+
+        update_node_network_information(node, self.IP_ADDR_OUTPUT, 0)
+
+        nic = Interface.objects.get(mac_address='00:00:00:00:00:01')
+        self.assertIsNone(nic.vendor)
+        self.assertIsNone(nic.product)
+        self.assertIsNone(nic.firmware_version)
 
     def test__one_mac_missing(self):
         """Test whether we correctly detach a NIC that no longer appears to be

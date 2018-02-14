@@ -32,7 +32,7 @@
                         </p>
                     </div>
                     <div class="col-4 u-align--right">
-                        <button class="p-button--base" data-ng-click="cancelAction()">Cancel</button>
+                        <button class="p-button--base" type="button" data-ng-click="cancelAction()">Cancel</button>
                         <button class="p-button--positive" data-ng-click="actionGo()">Map subnet</button>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                         </p>
                     </div>
                     <div class="col-4 u-align--right">
-                        <button class="p-button--base" data-ng-click="cancelAction()">Cancel</button>
+                        <button class="p-button--base" type="button" data-ng-click="cancelAction()">Cancel</button>
                         <button class="p-button--negative" data-ng-click="actionGo()">Delete subnet</button>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                         <p>{$ actionError $}</p>
                     </div>
                     <div class="col-4 u-align--right">
-                        <button class="p-button--base" data-ng-click="cancelAction()">Cancel</button>
+                        <button class="p-button--base" type="button" data-ng-click="cancelAction()">Cancel</button>
                         <button class="p-button--neutral" data-ng-click="actionRetry()">Retry</button>
                     </div>
                 </div>
@@ -254,7 +254,7 @@
                         <maas-obj-errors></maas-obj-errors>
                     </div>
                     <div class="col-6 u-align--right">
-                        <button class="p-button--base"
+                        <button class="p-button--base" type="button"
                         data-ng-click="exitEditSummary()">Cancel</button>
                         <button class="p-button--positive" maas-obj-save>Save summary</button>
                     </div>
@@ -307,7 +307,7 @@
                                     <p><i class="p-icon--warning">Warning:</i> Are you sure you want to remove this static route?</p>
                                 </div>
                                 <div class="col-6 u-align--right">
-                                    <button class="p-button--base" data-ng-click="staticRouteCancelDelete()">Cancel</button>
+                                    <button class="p-button--base" type="button" data-ng-click="staticRouteCancelDelete()">Cancel</button>
                                     <button class="p-button--negative" data-ng-click="staticRouteConfirmDelete()">Remove</button>
                                 </div>
                             </div>
@@ -341,7 +341,7 @@
                                         <maas-obj-errors></maas-obj-errors>
                                     </div>
                                     <div class="col-6 u-align--right">
-                                        <button class="p-button--base" data-ng-click="staticRouteToggleEditMode(staticRoute)">Cancel</button>
+                                        <button class="p-button--base" type="button" data-ng-click="staticRouteToggleEditMode(staticRoute)">Cancel</button>
                                         <button class="p-button--positive u-no-margin--top" maas-obj-save>Save static route</button>
                                     </div>
                                 </div>
@@ -382,7 +382,7 @@
                                         <maas-obj-errors></maas-obj-errors>
                                     </div>
                                     <div class="col-6 u-align--right">
-                                        <button class="p-button--base" data-ng-click="cancelAddStaticRoute()">Cancel</button>
+                                        <button class="p-button--base" type="button" data-ng-click="cancelAddStaticRoute()">Cancel</button>
                                         <button class="p-button--positive u-no-margin--top" maas-obj-save>Save static route</button>
                                     </div>
                                 </div>

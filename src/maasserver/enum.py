@@ -1,4 +1,4 @@
-# Copyright 2012-2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2012-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Enumerations meaningful to the maasserver application."""
@@ -407,13 +407,13 @@ class BOOT_RESOURCE_FILE_TYPE:
     #: Root image in SquashFS form, does not need to be converted
     SQUASHFS_IMAGE = 'squashfs'
 
-    #: Boot Kernel (ISCSI kernel)
+    #: Boot Kernel
     BOOT_KERNEL = 'boot-kernel'
 
-    #: Boot Initrd (ISCSI initrd)
+    #: Boot Initrd
     BOOT_INITRD = 'boot-initrd'
 
-    #: Boot DTB (ISCSI dtb)
+    #: Boot DTB
     BOOT_DTB = 'boot-dtb'
 
     #: An uncompressed bootloader (PXELinux, GRUB, etc)
@@ -513,6 +513,9 @@ class FILESYSTEM_TYPE:
     #: BTRFS
     BTRFS = "btrfs"
 
+    #: ZFS
+    ZFSROOT = "zfsroot"
+
 
 # Django choices for FILESYSTEM_TYPE: sequence of tuples (key, UI
 # representation).
@@ -533,6 +536,7 @@ FILESYSTEM_TYPE_CHOICES = (
     (FILESYSTEM_TYPE.RAMFS, "ramfs"),
     (FILESYSTEM_TYPE.TMPFS, "tmpfs"),
     (FILESYSTEM_TYPE.BTRFS, "btrfs"),
+    (FILESYSTEM_TYPE.ZFSROOT, "zfsroot"),
     )
 
 
@@ -551,6 +555,7 @@ FILESYSTEM_FORMAT_TYPE_CHOICES = (
     (FILESYSTEM_TYPE.RAMFS, "ramfs"),
     (FILESYSTEM_TYPE.TMPFS, "tmpfs"),
     (FILESYSTEM_TYPE.BTRFS, "btrfs"),
+    (FILESYSTEM_TYPE.ZFSROOT, "zfsroot"),
     )
 
 
@@ -766,3 +771,15 @@ class NODE_METADATA:
     PHYSICAL_NAME = "physical-name"
     PHYSICAL_SERIAL_NUM = "physical-serial-num"
     VENDOR_NAME = "vendor-name"
+
+
+class ENDPOINT:
+
+    API = 0
+    UI = 1
+
+
+ENDPOINT_CHOICES = (
+    (ENDPOINT.API, "API"),
+    (ENDPOINT.UI, "WebUI"),
+)

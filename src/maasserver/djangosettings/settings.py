@@ -105,7 +105,8 @@ STATIC_LOCAL_SERVE = DEBUG
 
 AUTHENTICATION_BACKENDS = (
     'maasserver.models.MAASAuthorizationBackend',
-    )
+    'maasserver.views.macaroon_auth.MacaroonAuthenticationBackend',
+)
 
 # Database access configuration.
 try:
@@ -118,6 +119,7 @@ try:
                 'PASSWORD': config.database_pass,
                 'HOST': config.database_host,
                 'PORT': str(config.database_port),
+                'CONN_MAX_AGE': config.database_conn_max_age,
             }
         }
 except:

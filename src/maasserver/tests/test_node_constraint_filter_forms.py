@@ -19,10 +19,11 @@ from maasserver.enum import (
 from maasserver.models import (
     Domain,
     Machine,
+    Zone,
 )
 from maasserver.node_constraint_filter_forms import (
     AcquireNodeForm,
-    detect_nonexistent_zone_names,
+    detect_nonexistent_names,
     generate_architecture_wildcards,
     get_architecture_wildcards,
     get_storage_constraints_from_string,
@@ -109,35 +110,36 @@ class TestUtils(MAASServerTestCase):
             list(AcquireNodeForm().fields),
             ContainsAll(JUJU_ACQUIRE_FORM_FIELDS_MAPPING))
 
-    def test_detect_nonexistent_zone_names_returns_empty_if_no_names(self):
-        self.assertEqual([], detect_nonexistent_zone_names([]))
+    def test_detect_nonexistent_names_returns_empty_if_no_names(self):
+        self.assertEqual([], detect_nonexistent_names(Zone, []))
 
-    def test_detect_nonexistent_zone_names_returns_empty_if_all_OK(self):
+    def test_detect_nonexistent_names_returns_empty_if_all_OK(self):
         zones = [factory.make_Zone() for _ in range(3)]
         self.assertEqual(
             [],
-            detect_nonexistent_zone_names([zone.name for zone in zones]))
+            detect_nonexistent_names(Zone, [zone.name for zone in zones]))
 
-    def test_detect_nonexistent_zone_names_reports_unknown_zone_names(self):
+    def test_detect_nonexistent_names_reports_unknown_names(self):
         non_zone = factory.make_name('nonzone')
-        self.assertEqual([non_zone], detect_nonexistent_zone_names([non_zone]))
+        self.assertEqual(
+            [non_zone], detect_nonexistent_names(Zone, [non_zone]))
 
-    def test_detect_nonexistent_zone_names_is_consistent(self):
+    def test_detect_nonexistent_names_is_consistent(self):
         names = [factory.make_name('nonzone') for _ in range(3)]
         self.assertEqual(
-            detect_nonexistent_zone_names(names),
-            detect_nonexistent_zone_names(names))
+            detect_nonexistent_names(Zone, names),
+            detect_nonexistent_names(Zone, names))
 
-    def test_detect_nonexistent_zone_names_combines_good_and_bad_names(self):
+    def test_detect_nonexistent_names_combines_good_and_bad_names(self):
         zone = factory.make_Zone().name
         non_zone = factory.make_name('nonzone')
         self.assertEqual(
             [non_zone],
-            detect_nonexistent_zone_names([zone, non_zone]))
+            detect_nonexistent_names(Zone, [zone, non_zone]))
 
-    def test_detect_nonexistent_zone_names_asserts_parameter_type(self):
+    def test_detect_nonexistent_names_asserts_parameter_type(self):
         self.assertRaises(
-            AssertionError, detect_nonexistent_zone_names, "text")
+            AssertionError, detect_nonexistent_names, Zone, "text")
 
     def test_get_storage_constraints_from_string_returns_None_for_empty(self):
         self.assertEqual(None, get_storage_constraints_from_string(""))

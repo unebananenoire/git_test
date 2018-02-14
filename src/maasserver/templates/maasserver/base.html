@@ -24,7 +24,7 @@
     {% block head %}
     {% endblock %}
 </head>
-<body class="{% block layout-modifiers %}{% endblock %}">
+<body class="has-sticky-footer {% block layout-modifiers %}{% endblock %}">
     {% block html_includes %}{% endblock %}
     <header id="navigation" class="p-navigation p-dropdown">
         <div class="p-navigation__banner">
@@ -102,16 +102,12 @@
         </div>
         {% endif %}
         {% endif %}
-        <div class="row u-border--none" id="content">
-            <div class="wrapper--inner">
-                {% block content %}
-                {% endblock %}
-                <aside id="sidebar">
-                    {% block sidebar %}
-                    {% endblock %}
-                </aside>
-            </div>
-        </div>
+        {% block content %}
+        {% endblock %}
+        <aside id="sidebar">
+            {% block sidebar %}
+            {% endblock %}
+        </aside>
     </main>
     {% include "maasserver/footer.html" %}
     {% block js-conf %}

@@ -131,7 +131,7 @@
                                         </div>
                                         <div class="col-4 u-align--right">
                                             <button class="p-button--base u-no-margin--top"
-                                                data-ng-click="snippetExitEdit(snippet)">Cancel</button>
+                                                data-ng-click="snippetExitEdit(snippet)" type="button">Cancel</button>
                                             <button class="p-button--positive u-no-margin--top" maas-obj-save>Save snippet</button>
                                         </div>
                                     </div>
@@ -148,7 +148,7 @@
                                     <p><i class="p-icon--warning">Warning:</i> Are you sure you want to remove this snippet?</p>
                                 </div>
                                 <div class="col-6 u-align--right">
-                                    <button class="p-button--base" data-ng-click="snippetExitRemove(snippet)">Cancel</button>
+                                    <button class="p-button--base" type="button" data-ng-click="snippetExitRemove(snippet)">Cancel</button>
                                     <button class="p-button--negative" data-ng-click="snippetConfirmRemove(snippet)">Remove</button>
                                 </div>
                             </div>
@@ -248,7 +248,7 @@
                                         <maas-obj-errors></maas-obj-errors>
                                     </div>
                                     <div class="u-float--right">
-                                        <button class="p-button--base u-no-margin--top"
+                                        <button class="p-button--base u-no-margin--top" type="button"
                                             data-ng-click="snippetAddCancel()">Cancel</button>
                                         <button class="p-button--positive u-no-margin--top" maas-obj-save>Save snippet</button>
                                     </div>
@@ -351,16 +351,18 @@
                                     <span class="onoffswitch-switch"></span>
                                 </label>
                             </div>
-                            <div class="onoffswitch p-tooltip p-tooltip--top-center"
+                            <div class="onoffswitch"
                                 disabled="disabled"
                                 data-ng-if="isMirror(repository)">
-                                <input type="checkbox" name="enabled" class="onoffswitch-checkbox u-float-none" id="enabled-repo-{$ repository.id $}"
-                                    data-ng-model="repository.enabled">
-                                <label class="onoffswitch-label u-no-margin--top" for="enabled-repo-{$ repository.id $}">
-                                    <span class="onoffswitch-inner"></span>
-                                    <span class="onoffswitch-switch"></span>
-                                </label>
-                                <span class="p-tooltip__message" role="tooltip">Default Ubuntu repositories cannot be disabled</span>
+                                <span class="p-tooltip p-tooltip--top-center">
+                                    <input type="checkbox" name="enabled" class="onoffswitch-checkbox u-float-none" id="enabled-repo-{$ repository.id $}"
+                                        data-ng-model="repository.enabled">
+                                    <label class="onoffswitch-label u-no-margin--top" for="enabled-repo-{$ repository.id $}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                    <span class="p-tooltip__message" role="tooltip">Default Ubuntu repositories cannot be disabled</span>
+                                </span>
                             </div>
                         </td>
                         <td class="col-3" data-ng-if="editRepository !== repository">
@@ -449,7 +451,7 @@
                                                 <maas-obj-errors></maas-obj-errors>
                                             </div>
                                             <div class="u-float--right">
-                                                <button class="button--base"
+                                                <button class="button--base" type="button"
                                                     data-ng-click="repositoryExitEdit()">Cancel</button>
                                                 <button class="button--positive" maas-obj-save>Save repository</button>
                                             </div>
@@ -467,7 +469,7 @@
                                             <p><span class="p-icon--warning"></span> Are you sure you want to remove this repository?</p>
                                     </div>
                                     <div class=" u-float--right">
-                                            <button class="button--base" data-ng-click="repositoryExitRemove()">Cancel</button>
+                                            <button class="button--base" type="button" data-ng-click="repositoryExitRemove()">Cancel</button>
                                             <button class="button--destructive" data-ng-click="repositoryConfirmRemove()">Remove</button>
                                     </div>
                                 </div>
@@ -533,7 +535,7 @@
                                         <div class="u-float--right u-no-margin--top">
                                             <button class="p-button--base"
                                                 data-ng-click="repositoryAddCancel()">Cancel</button>
-                                            <button class="p-button--positive u-no-margin--top" maas-obj-save>Add repository</button>
+                                            <button class="p-button--positive u-no-margin--top" type="button" maas-obj-save>Add repository</button>
                                         </div>
                                     </div>
                                 </div>

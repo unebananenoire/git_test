@@ -2,17 +2,16 @@ Source: maas
 Section: net
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-Build-Depends: debhelper (>= 9~),
+Build-Depends: debhelper (>= 9.20160709),
                dh-apport,
                dh-exec,
                dh-python,
-               dh-systemd,
                po-debconf,
                python3-all,
                python3-django,
                python3-setuptools,
                python3-twisted
-Standards-Version: 3.9.7
+Standards-Version: 4.1.3
 X-Python3-Version: >= 3.5
 Homepage: http://maas.io/
 
@@ -68,8 +67,7 @@ Description: MAAS server common files
 
 Package: maas-region-api
 Architecture: all
-Depends: apache2,
-         bind9utils,
+Depends: bind9utils,
          iproute2,
          libjs-angularjs,
          libjs-yui3-full,
@@ -86,7 +84,7 @@ Depends: apache2,
          python3-maas-provisioningserver (= ${binary:Version}),
          python3-petname,
          python3-requests,
-         ubuntu-cloudimage-keyring,
+         ubuntu-keyring,
          ${misc:Depends},
          ${python3:Depends}
 Conflicts: maas-region-controller-min
@@ -102,6 +100,7 @@ Architecture: all
 Depends: avahi-utils,
          dbconfig-pgsql,
          iputils-ping,
+         python3-macaroonbakery (>= 1.1.0),
          maas-dns (= ${binary:Version}),
          maas-region-api (= ${binary:Version}),
          postgresql (>= 9.1),
@@ -150,6 +149,7 @@ Depends: archdetect-deb,
          python3-tempita,
          python3-twisted,
          python3-txtftp,
+         python3-uvloop,
          python3-yaml,
          python3-zope.interface,
          isc-dhcp-client,
@@ -214,7 +214,6 @@ Depends: authbind,
          python3-zope.interface,
          syslinux-common,
          tcpdump,
-         tgt,
          uuid-runtime,
          wget,
          ${misc:Depends},
@@ -239,8 +238,8 @@ Description: Rack Controller for MAAS
  network interfaces on one or two other nearby racks for high
  availability redundancy.
  .
- This package depends on the necessary components to provide iSCSI,
- DHCP, TFTP and power management.
+ This package depends on the necessary components to provide DHCP, TFTP
+ and power management.
 
 Package: python3-django-maas
 Section: python

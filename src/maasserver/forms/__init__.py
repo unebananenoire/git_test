@@ -1,4 +1,4 @@
-# Copyright 2012-2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2012-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Forms."""
@@ -93,6 +93,7 @@ from django.http import QueryDict
 from django.utils.safestring import mark_safe
 from lxml import etree
 from maasserver.api.utils import get_overridden_query_dict
+from maasserver.audit import create_audit_event
 from maasserver.clusterrpc.driver_parameters import (
     get_driver_choices,
     get_driver_parameters,
@@ -189,6 +190,7 @@ from netaddr import (
     IPNetwork,
     valid_ipv6,
 )
+from provisioningserver.events import EVENT_TYPES
 from provisioningserver.logger import get_maas_logger
 from provisioningserver.utils.network import make_network
 from provisioningserver.utils.twisted import (
@@ -1098,6 +1100,13 @@ class SSHKeyForm(KeyForm):
         model = SSHKey
         fields = ["key"]
 
+    def save(self, endpoint, request):
+        sshkey = super(SSHKeyForm, self).save()
+        create_audit_event(
+            EVENT_TYPES.AUTHORISATION, endpoint, request, None,
+            description=("SSH key created by '%(username)s'."))
+        return sshkey
+
 
 class SSLKeyForm(KeyForm):
     key = UnstrippedCharField(
@@ -1108,6 +1117,13 @@ class SSLKeyForm(KeyForm):
     class Meta:
         model = SSLKey
         fields = ["key"]
+
+    def save(self, endpoint, request):
+        sslkey = super(SSLKeyForm, self).save()
+        create_audit_event(
+            EVENT_TYPES.AUTHORISATION, endpoint, request, None,
+            description="SSL key created by '%(username)s'.")
+        return sslkey
 
 
 class MultipleMACAddressField(forms.MultiValueField):

@@ -1,10 +1,11 @@
-# Copyright 2012-2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2012-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Builtin script hooks, run upon receipt of ScriptResult"""
 
 __all__ = [
     'NODE_INFO_SCRIPTS',
+    'parse_lshw_nic_info',
     'update_node_network_information',
     ]
 
@@ -22,10 +23,12 @@ from maasserver.models.interface import (
     Interface,
     PhysicalInterface,
 )
+from maasserver.models.nodemetadata import NodeMetadata
 from maasserver.models.physicalblockdevice import PhysicalBlockDevice
 from maasserver.models.switch import Switch
 from maasserver.models.tag import Tag
 from maasserver.utils.orm import get_one
+from metadataserver.enum import SCRIPT_STATUS
 from provisioningserver.refresh.node_info_scripts import (
     BLOCK_DEVICES_OUTPUT_NAME,
     CPUINFO_OUTPUT_NAME,
@@ -42,16 +45,6 @@ from provisioningserver.utils.ipaddr import parse_ip_addr
 
 logger = logging.getLogger(__name__)
 
-
-# Some machines have a <size> element in their memory <node> with the total
-# amount of memory, and other machines declare the size of the memory in
-# individual memory banks. This expression is mean to cope with both.
-_xpath_memory_bytes = """\
-    sum(//node[@id='memory']/size[@units='bytes'] |
-        //node[starts-with(@id, 'memory:')]
-            /node[starts-with(@id, 'bank:')]/size[@units='bytes'])
-    div 1024 div 1024
-"""
 
 SWITCH_TAG_NAME = "switch"
 SWITCH_HARDWARE = [
@@ -83,7 +76,7 @@ SWITCH_HARDWARE = [
 SWITCH_OPENBMC_MAC = "02:00:00:00:00:02"
 
 
-def _create_default_physical_interface(node, ifname, mac):
+def _create_default_physical_interface(node, ifname, mac, **kwargs):
     """Assigns the specified interface to the specified Node.
 
     Creates or updates a PhysicalInterface that corresponds to the given MAC.
@@ -99,9 +92,54 @@ def _create_default_physical_interface(node, ifname, mac):
     fabric = Fabric.objects.get_default_fabric()
     vlan = fabric.get_default_vlan()
     interface = PhysicalInterface.objects.create(
-        mac_address=mac, name=ifname, node=node, vlan=vlan)
+        mac_address=mac, name=ifname, node=node, vlan=vlan, **kwargs)
 
     return interface
+
+
+def parse_lshw_nic_info(node):
+    """Parse lshw output for additional NIC information."""
+    nics = {}
+    script_set = node.current_commissioning_script_set
+    # Should never happen but just incase...
+    if not script_set:
+        return nics
+    script_result = script_set.find_script_result(script_name=LSHW_OUTPUT_NAME)
+    if not script_result or script_result.status != SCRIPT_STATUS.PASSED:
+        logger.error(
+            '%s: Unable to discover extended NIC information due to missing '
+            'passed output from %s' % (node.hostname, LSHW_OUTPUT_NAME))
+        return nics
+
+    try:
+        doc = etree.XML(script_result.stdout)
+    except etree.XMLSyntaxError:
+        logger.exception(
+            '%s: Unable to discover extended NIC information due to %s output '
+            'containing invalid XML' % (node.hostname, LSHW_OUTPUT_NAME))
+        return nics
+
+    evaluator = etree.XPathEvaluator(doc)
+
+    for e in evaluator('//node[@class="network"]'):
+        mac = e.find('serial')
+        if mac is None:
+            continue
+        else:
+            mac = mac.text
+        # Bridged devices may appear multiple times but only one element
+        # may contain firmware information.
+        if mac not in nics:
+            nics[mac] = {}
+        for field in ['vendor', 'product']:
+            value = get_xml_field_value(e.xpath, '//%s/text()' % field)
+            if value:
+                nics[mac][field] = value
+        firmware_version = get_xml_field_value(
+            e.xpath, "//configuration/setting[@id='firmware']/@value")
+        if firmware_version:
+            nics[mac]['firmware_version'] = firmware_version
+    return nics
 
 
 def update_node_network_information(node, output, exit_status):
@@ -128,6 +166,7 @@ def update_node_network_information(node, output, exit_status):
     # Get the MAC addresses of all connected interfaces.
     ip_addr_info = parse_ip_addr(output)
     current_interfaces = set()
+    extended_nic_info = parse_lshw_nic_info(node)
 
     for link in ip_addr_info.values():
         link_mac = link.get('mac')
@@ -140,9 +179,11 @@ def update_node_network_information(node, output, exit_status):
             continue
         else:
             ifname = link['name']
+            extra_info = extended_nic_info.get(link_mac, {})
             try:
                 interface = PhysicalInterface.objects.get(
                     mac_address=link_mac)
+                update_fields = []
                 if interface.node is not None and interface.node != node:
                     logger.warning(
                         "Interface with MAC %s moved from node %s to %s. "
@@ -151,16 +192,24 @@ def update_node_network_information(node, output, exit_status):
                          node.fqdn))
                     interface.delete()
                     interface = _create_default_physical_interface(
-                        node, ifname, link_mac)
+                        node, ifname, link_mac, **extra_info)
                 else:
                     # Interface already exists on this Node, so just update
-                    # the name.
+                    # the name and NIC info.
+                    update_fields = []
                     if interface.name != ifname:
                         interface.name = ifname
-                        interface.save(update_fields=['name', 'updated'])
+                        update_fields.append('name')
+                    for k, v in extra_info.items():
+                        if getattr(interface, k, v) != v:
+                            setattr(interface, k, v)
+                            update_fields.append(k)
+                    if update_fields:
+                        interface.save(
+                            update_fields=['updated', *update_fields])
             except PhysicalInterface.DoesNotExist:
                 interface = _create_default_physical_interface(
-                    node, ifname, link_mac)
+                    node, ifname, link_mac, **extra_info)
 
             current_interfaces.add(interface)
             ips = link.get('inet', []) + link.get('inet6', [])
@@ -200,6 +249,17 @@ def update_node_network_interface_tags(node, output, exit_status):
                 iface.save()
 
 
+def get_xml_field_value(evaluator, expression):
+    """Return an XML field or None if its not found."""
+    field = evaluator(expression)
+    # Supermicro uses 0123456789 as a place holder.
+    if (isinstance(field, list) and len(field) > 0 and
+            '0123456789' not in field[0].lower()):
+        return field[0]
+    else:
+        return None
+
+
 def update_hardware_details(node, output, exit_status):
     """Process the results of `LSHW_SCRIPT`.
 
@@ -223,11 +283,50 @@ def update_hardware_details(node, output, exit_status):
     else:
         # Same document, many queries: use XPathEvaluator.
         evaluator = etree.XPathEvaluator(doc)
-        memory = evaluator(_xpath_memory_bytes)
+
+        # Some machines have a <size> element in their memory <node> with the
+        # total amount of memory, and other machines declare the size of the
+        # memory in individual memory banks. This expression is mean to cope
+        # with both.
+        memory = evaluator("""\
+            sum(//node[@id='memory']/size[@units='bytes'] |
+            //node[starts-with(@id, 'memory:')]
+                /node[starts-with(@id, 'bank:')]/size[@units='bytes'])
+            div 1024 div 1024
+        """)
         if not memory or math.isnan(memory):
             memory = 0
         node.memory = memory
-        node.save()
+        node.save(update_fields=['memory'])
+
+        # This gathers the system vendor, product, version, and serial. Custom
+        # built machines and some Supermicro servers do not provide this
+        # information.
+        for key in ["vendor", "product", "version", "serial"]:
+            value = get_xml_field_value(
+                evaluator, "//node[@class='system']/%s/text()" % key)
+            if value:
+                NodeMetadata.objects.update_or_create(
+                    node=node, key="system_%s" % key,
+                    defaults={"value": value})
+
+        # Gather the mainboard information, all systems should have this.
+        for key in ["vendor", "product"]:
+            value = get_xml_field_value(
+                evaluator, "//node[@id='core']/%s/text()" % key)
+            if value:
+                NodeMetadata.objects.update_or_create(
+                    node=node, key="mainboard_%s" % key,
+                    defaults={"value": value})
+
+        for key in ["version", "date"]:
+            value = get_xml_field_value(
+                evaluator,
+                "//node[@id='core']/node[@id='firmware']/%s/text()" % key)
+            if value:
+                NodeMetadata.objects.update_or_create(
+                    node=node, key="mainboard_firmware_%s" % key,
+                    defaults={'value': value})
 
 
 def parse_cpuinfo(node, output, exit_status):
@@ -239,12 +338,46 @@ def parse_cpuinfo(node, output, exit_status):
         return
     assert isinstance(output, bytes)
     output = output.decode('ascii')
+
     cpu_count = len(
         re.findall(
             '^(?P<CPU>\d+),(?P<CORE>\d+),(?P<SOCKET>\d+)$',
             output, re.MULTILINE))
     node.cpu_count = cpu_count
-    node.save()
+
+    # Some CPU vendors(Intel) include the speed in the model. If so use that
+    # for the CPU speed as the speeds from lscpu are effected by CPU scaling.
+    m = re.search(
+        '^Model name:\s+(?P<model_name>.+)(\s@\s(?P<ghz>\d+\.\d+)GHz)$',
+        output, re.MULTILINE)
+    if m is not None:
+        cpu_model = m.group('model_name')
+        node.cpu_speed = int(float(m.group('ghz')) * 1000)
+    else:
+        m = re.search(
+            '^Model name:\s+(?P<model_name>.+)$', output, re.MULTILINE)
+        if m is not None:
+            cpu_model = m.group('model_name')
+        else:
+            cpu_model = None
+        # Try the max MHz if available.
+        m = re.search(
+            '^CPU max MHz:\s+(?P<mhz>\d+)(\.\d+)?$', output, re.MULTILINE)
+        if m is not None:
+            node.cpu_speed = int(m.group('mhz'))
+        else:
+            # Fall back on the current speed, round it to the nearest hundredth
+            # as the number may be effected by CPU scaling.
+            m = re.search(
+                '^CPU MHz:\s+(?P<mhz>\d+)(\.\d+)?$', output, re.MULTILINE)
+            if m is not None:
+                node.cpu_speed = round(int(m.group('mhz')) / 100) * 100
+
+    if cpu_model:
+        NodeMetadata.objects.update_or_create(
+            node=node, key='cpu_model', defaults={'value': cpu_model})
+
+    node.save(update_fields=['cpu_count', 'cpu_speed'])
 
 
 def set_virtual_tag(node, output, exit_status):
@@ -366,6 +499,7 @@ def update_node_physical_block_devices(node, output, exit_status):
             id_path = block_info["PATH"]
         size = int(block_info["SIZE"])
         block_size = int(block_info["BLOCK_SIZE"])
+        firmware_version = block_info.get("FIRMWARE_VERSION")
         tags = get_tags_from_block_info(block_info)
 
         # First check if there is an existing device with the same name.
@@ -376,7 +510,7 @@ def update_node_physical_block_devices(node, output, exit_status):
         for device in existing:
             # Use the device ID to ensure a unique temporary name.
             device.name = "%s.%d" % (device.name, device.id)
-            device.save()
+            device.save(update_fields=['name'])
 
         block_device = get_matching_block_device(
             previous_block_devices, serial, id_path)
@@ -391,6 +525,7 @@ def update_node_physical_block_devices(node, output, exit_status):
             block_device.id_path = id_path
             block_device.size = size
             block_device.block_size = block_size
+            block_device.firmware_version = firmware_version
             block_device.tags = tags
             block_device.save()
         else:
@@ -410,6 +545,7 @@ def update_node_physical_block_devices(node, output, exit_status):
                 tags=tags,
                 model=model,
                 serial=serial,
+                firmware_version=firmware_version,
                 )
 
     # Clear boot_disk if it is being removed.
@@ -418,7 +554,7 @@ def update_node_physical_block_devices(node, output, exit_status):
         boot_disk = None
     if node.boot_disk != boot_disk:
         node.boot_disk = boot_disk
-        node.save()
+        node.save(update_fields=['boot_disk'])
 
     # XXX ltrager 11-16-2017 - Don't regenerate ScriptResults on controllers.
     # Currently this is not needed saving us 1 database query. However, if
@@ -494,8 +630,11 @@ def add_switch(node, vendor, model):
     """Add Switch object representing the switch hardware."""
     switch, created = Switch.objects.get_or_create(node=node)
     logger.info("%s: detected as a switch." % node.hostname)
-    node.set_metadata(key=NODE_METADATA.VENDOR_NAME, value=vendor)
-    node.set_metadata(key=NODE_METADATA.PHYSICAL_MODEL_NAME, value=model)
+    NodeMetadata.objects.update_or_create(
+        node=node, key=NODE_METADATA.VENDOR_NAME, defaults={"value": vendor})
+    NodeMetadata.objects.update_or_create(
+        node=node, key=NODE_METADATA.PHYSICAL_MODEL_NAME,
+        defaults={"value": model})
     return switch
 
 
@@ -517,7 +656,8 @@ def update_node_fruid_metadata(node, output: bytes, exit_status):
     info = data.get("Information", {})
     for fruid_key, node_key in key_name_map.items():
         if fruid_key in info:
-            node.set_metadata(key=node_key, value=info[fruid_key])
+            NodeMetadata.objects.update_or_create(
+                node=node, key=node_key, defaults={"value": info[fruid_key]})
 
 
 def detect_switch_vendor_model(dmi_data):
@@ -596,19 +736,68 @@ def get_dmi_data(modaliases):
     return frozenset()
 
 
-def filter_modaliases(modaliases_discovered, candidates):
+def filter_modaliases(
+        modaliases_discovered, modaliases=None, pci=None, usb=None):
     """Determines which candidate modaliases match what was discovered.
 
     :param modaliases_discovered: The list of modaliases found on the node.
-    :param candidates: The candidate modaliases to match against. This
+    :param modaliases: The candidate modaliases to match against. This
         parameter must be iterable. Wildcards are accepted.
+    :param pci: A list of strings in the format <vendor>:<device>. May include
+        wildcards.
+    :param usb: A list of strings in the format <vendor>:<product>. May include
+        wildcards.
     :return: The list of modaliases on the node matching the candidate(s).
     """
+    patterns = []
+    if modaliases is not None:
+        patterns.extend(modaliases)
+    if pci is not None:
+        for pattern in pci:
+            try:
+                vendor, device = pattern.split(':')
+            except ValueError:
+                # Ignore malformed patterns.
+                continue
+            vendor = vendor.upper()
+            device = device.upper()
+            # v: vendor
+            # d: device
+            # sv: subvendor
+            # sd: subdevice
+            # bc: bus class
+            # sc: bus subclass
+            # i: interface
+            patterns.append(
+                "pci:v0000{vendor}d0000{device}sv*sd*bc*sc*i*".format(
+                    vendor=vendor, device=device))
+    if usb is not None:
+        for pattern in usb:
+            try:
+                vendor, product = pattern.split(':')
+            except ValueError:
+                # Ignore malformed patterns.
+                continue
+            vendor = vendor.upper()
+            product = product.upper()
+            # v: vendor
+            # p: product
+            # d: bcdDevice (device release number)
+            # dc: device class
+            # dsc: device subclass
+            # dp: device protocol
+            # ic: interface class
+            # isc: interface subclass
+            # ip: interface protocol
+            patterns.append(
+                "usb:v{vendor}p{product}d*dc*dsc*dp*ic*isc*ip*".format(
+                    vendor=vendor, product=product))
     matches = []
-    for candidate in candidates:
-        new_matches = fnmatch.filter(
-            modaliases_discovered, candidate)
-        matches.extend(new_matches)
+    for pattern in patterns:
+        new_matches = fnmatch.filter(modaliases_discovered, pattern)
+        for match in new_matches:
+            if match not in matches:
+                matches.append(match)
     return matches
 
 

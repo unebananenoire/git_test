@@ -20,4 +20,16 @@
       @include maas-strip;
     }
   }
+
+  .p-strip,
+  .p-strip--light,
+  .p-strip--dark {
+    &.is-shallow {
+      padding: $sp-small 0;
+    
+      @media only screen and (min-width: $breakpoint-large) {
+        padding: $sp-medium 0;
+      }
+    }
+  }
 }

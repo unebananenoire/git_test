@@ -72,7 +72,7 @@ from maasserver.preseed import (
 )
 from maasserver.utils import (
     find_rack_controller,
-    get_remote_ip,
+    get_default_region_ip,
 )
 from maasserver.utils.orm import (
     get_one,
@@ -102,7 +102,6 @@ from provisioningserver.events import (
     EVENT_TYPES,
 )
 from provisioningserver.logger import LegacyLogger
-from provisioningserver.utils.network import get_source_address
 import yaml
 
 
@@ -167,15 +166,6 @@ def get_queried_node(request, for_mac=None):
         return get_node_for_mac(for_mac)
 
 
-def get_default_region_ip(request):
-    """Returns the default reply address for the given HTTP request."""
-    remote_ip = get_remote_ip(request)
-    default_region_ip = None
-    if remote_ip is not None:
-        default_region_ip = get_source_address(remote_ip)
-    return default_region_ip
-
-
 def make_text_response(contents):
     """Create a response containing `contents` as plain text."""
     # XXX: Set a charset for text/plain. Django automatically encodes
@@ -225,10 +215,11 @@ def add_event_to_node_event_log(
 
     event_details = EVENT_DETAILS[type_name]
     return Event.objects.register_event_and_event_type(
-        node.system_id, type_name, type_level=event_details.level,
+        type_name, type_level=event_details.level,
         type_description=event_details.description,
         event_action=action,
-        event_description="'%s' %s" % (origin, description), created=created)
+        event_description="'%s' %s" % (origin, description),
+        system_id=node.system_id, created=created)
 
 
 def process_file(results, script_set, script_name, content, request):
@@ -933,13 +924,14 @@ class MAASScriptsHandler(OperationsHandler):
                 continue
 
             path = os.path.join(prefix, script_result.name)
+            md_item = {}
             if script_result.script is None:
                 # Check if its a builtin in commissioning script and pull the
                 # data from the source.
                 if script_result.name in NODE_INFO_SCRIPTS:
                     script = NODE_INFO_SCRIPTS[script_result.name]
                     add_file_to_tar(tar, path, script['content'], mtime)
-                    meta_data.append({
+                    md_item = {
                         'name': script_result.name,
                         'path': path,
                         'script_result_id': script_result.id,
@@ -949,7 +941,8 @@ class MAASScriptsHandler(OperationsHandler):
                         'hardware_type': script.get(
                             'hardware_type', HARDWARE_TYPE.NODE),
                         'packages': script.get('packages', {}),
-                    })
+                        'for_hardware': script.get('for_hardware', []),
+                    }
                 else:
                     # Script was deleted by the user and it is not a builtin
                     # commissioning script. Don't expect a result.
@@ -958,7 +951,7 @@ class MAASScriptsHandler(OperationsHandler):
             else:
                 content = script_result.script.script.data.encode()
                 add_file_to_tar(tar, path, content, mtime)
-                meta_data.append({
+                md_item = {
                     'name': script_result.name,
                     'path': path,
                     'script_result_id': script_result.id,
@@ -968,7 +961,25 @@ class MAASScriptsHandler(OperationsHandler):
                     'hardware_type': script_result.script.hardware_type,
                     'parameters': script_result.parameters,
                     'packages': script_result.script.packages,
-                })
+                    'for_hardware': script_result.script.for_hardware,
+                }
+            if script_result.status == SCRIPT_STATUS.PENDING:
+                md_item['has_started'] = False
+            else:
+                md_item['has_started'] = True
+                # If the script has already started send any results MAAS has
+                # received. The script runner will append these files and send
+                # them back when done.
+                out_path = os.path.join('out', '%s.%s' % (
+                    script_result.name, script_result.id))
+                add_file_to_tar(tar, out_path, script_result.output, mtime)
+                add_file_to_tar(
+                    tar, '%s.out' % out_path, script_result.stdout, mtime)
+                add_file_to_tar(
+                    tar, '%s.err' % out_path, script_result.stderr, mtime)
+                add_file_to_tar(
+                    tar, '%s.yaml' % out_path, script_result.result, mtime)
+            meta_data.append(md_item)
         return meta_data
 
     def read(self, request, version, mac=None):
@@ -989,7 +1000,25 @@ class MAASScriptsHandler(OperationsHandler):
         # django.middleware.gzip.GZipMiddleware.
         with tarfile.open(mode='w', fileobj=binary) as tar:
             # Commissioning scripts should only be run during commissioning.
-            if node.status == NODE_STATUS.COMMISSIONING:
+            if (node.status == NODE_STATUS.COMMISSIONING and
+                    node.current_commissioning_script_set is not None):
+                # Prefetch all the data we need.
+                qs = node.current_commissioning_script_set.scriptresult_set
+                qs = qs.select_related('script', 'script__script')
+                # After the script runner finishes sending all commissioning
+                # results it redownloads the script tar. It does this in-case
+                # a commissioning script discovers hardware associated with
+                # hardware identified in the for_hardware field of a script.
+                # select_for_hardware_scripts() processes the output of the
+                # builtin commissioning scripts and adds any associated script.
+                # This does not need to happen the first time the script runner
+                # downloads the tar as the region has not yet received new
+                # data.
+                for script_result in qs:
+                    if script_result.status != SCRIPT_STATUS.PENDING:
+                        script_set = node.current_commissioning_script_set
+                        script_set.select_for_hardware_scripts()
+                        break
                 meta_data = self._add_script_set_to_tar(
                     node.current_commissioning_script_set, tar,
                     'commissioning', mtime)
@@ -998,11 +1027,18 @@ class MAASScriptsHandler(OperationsHandler):
                         meta_data, key=itemgetter('name', 'script_result_id'))
 
             # Always send testing scripts.
-            meta_data = self._add_script_set_to_tar(
-                node.current_testing_script_set, tar, 'testing', mtime)
-            if meta_data != []:
-                tar_meta_data['testing_scripts'] = sorted(
-                    meta_data, key=itemgetter('name', 'script_result_id'))
+            if node.current_testing_script_set is not None:
+                # prefetch all the data we need
+                qs = node.current_testing_script_set.scriptresult_set
+                qs = qs.select_related('script', 'script__script')
+                meta_data = self._add_script_set_to_tar(
+                    qs, tar, 'testing', mtime)
+                if meta_data != []:
+                    tar_meta_data['testing_scripts'] = sorted(
+                        meta_data, key=itemgetter('name', 'script_result_id'))
+
+            if not tar_meta_data:
+                return HttpResponse(status=int(http.client.NO_CONTENT))
 
             add_file_to_tar(
                 tar, 'index.json', json.dumps({'1.0': tar_meta_data}).encode(),
@@ -1113,7 +1149,8 @@ class AnonMetaDataHandler(VersionIndexHandler):
         type_name = EVENT_TYPES.NODE_INSTALLATION_FINISHED
         event_details = EVENT_DETAILS[type_name]
         Event.objects.register_event_and_event_type(
-            node.system_id, type_name, type_level=event_details.level,
+            type_name, type_level=event_details.level,
             type_description=event_details.description,
-            event_description="Node disabled netboot")
+            event_description="Node disabled netboot",
+            system_id=node.system_id)
         return rc.ALL_OK

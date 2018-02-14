@@ -1,4 +1,4 @@
-# Copyright 2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2017-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Pod forms."""
@@ -13,6 +13,7 @@ import crochet
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import (
+    BooleanField,
     CharField,
     ChoiceField,
     IntegerField,
@@ -41,6 +42,7 @@ from maasserver.models import (
     Node,
     Pod,
     RackController,
+    ResourcePool,
     Zone,
 )
 from maasserver.node_constraint_filter_forms import (
@@ -158,6 +160,8 @@ class PodForm(MAASModelForm):
                         # Convert the BMC to a Pod and set as the instance for
                         # the PodForm.
                         bmc.bmc_type = BMC_TYPE.POD
+                        bmc.default_pool = (
+                            ResourcePool.objects.get_default_resource_pool())
                         return bmc.as_pod()
                     else:
                         # Pod already exists with the same power_type and
@@ -325,6 +329,8 @@ class ComposeMachineForm(forms.Form):
         self.fields['storage'] = CharField(
             validators=[storage_validator], required=False)
         self.initial['storage'] = 'root:8(local)'
+        self.fields['skip_commissioning'] = BooleanField(required=False)
+        self.initial['skip_commissioning'] = False
 
     def get_value_for(self, field):
         """Get the value for `field`. Use initial data if missing or set to
@@ -363,14 +369,16 @@ class ComposeMachineForm(forms.Form):
         raise AttributeError("Use `compose` instead of `save`.")
 
     def compose(
-            self, timeout=120, skip_commissioning=False,
-            creation_type=NODE_CREATION_TYPE.MANUAL):
+            self, timeout=120, creation_type=NODE_CREATION_TYPE.MANUAL,
+            skip_commissioning=None):
         """Compose the machine.
 
         Internal operation of this form is asynchronously. It will block the
         calling thread until the asynchronous operation is complete. Adjust
         `timeout` to minimize the maximum wait for the asynchronous operation.
         """
+        if skip_commissioning is None:
+            skip_commissioning = self.get_value_for('skip_commissioning')
 
         def create_and_sync(result):
             discovered_machine, pod_hints = result

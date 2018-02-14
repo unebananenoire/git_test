@@ -56,7 +56,10 @@ from provisioningserver.utils.dhclient import get_dhclient_info
 from provisioningserver.utils.ipaddr import get_ip_addr
 from provisioningserver.utils.iproute import get_ip_route
 from provisioningserver.utils.ps import running_in_container
-from provisioningserver.utils.shell import call_and_check
+from provisioningserver.utils.shell import (
+    call_and_check,
+    get_env_with_locale,
+)
 from provisioningserver.utils.twisted import synchronous
 from twisted.internet.defer import inlineCallbacks
 from twisted.internet.interfaces import IResolver
@@ -708,7 +711,8 @@ def find_mac_via_arp(ip: str) -> str:
     # just look for the string; we have to parse.
     ip = IPAddress(ip)
     # Use "C" locale; we're parsing output so we don't want any translations.
-    output = call_and_check(['ip', 'neigh'], env={'LC_ALL': 'C'})
+    output = call_and_check(
+        ['ip', 'neigh'], env=get_env_with_locale(locale='C'))
     output = output.decode("ascii").splitlines()
 
     for line in sorted(output):
@@ -945,6 +949,9 @@ def get_eui_organization(eui):
         # See bug #1628761. Due to corrupt data in the OUI database, and/or
         # the fact that netaddr assumes all the data is ASCII, sometimes
         # netaddr will raise an exception during this process.
+        return None
+    except IndexError:
+        # See bug #1748031; this is another way netaddr can fail.
         return None
     except NotRegisteredError:
         # This could happen for locally-administered MACs.

@@ -123,6 +123,8 @@
                                         <span data-ng-if="action.option.name === 'mark-broken'">Mark {$ type_name $}</span>
                                         <span data-ng-if="action.option.name === 'mark-fixed'">Mark {$ type_name $}</span>
                                         <span data-ng-if="action.option.name === 'override-failed-testing'">Override failed testing</span>
+                                        <span data-ng-if="action.option.name === 'lock'">Lock {$ type_name $}</span>
+                                        <span data-ng-if="action.option.name === 'unlock'">Unlock {$ type_name $}</span>
                                         <span data-ng-if="action.option.name === 'delete'">Delete {$ type_name $}</span>
                                         <span data-ng-if="action.option.name === 'import-images'">Import images</span>
                                     </button>
@@ -587,7 +589,7 @@
             </div>
             <div class="row">
                 <div class="col-12 u-align--right ng-hide" data-ng-show="power.editing">
-                    <button class="p-button--base"
+                    <button class="p-button--base" type="button"
                         data-ng-click="cancelEditPower()">Cancel</button>
                     <button class="p-button--positive"
                         data-ng-class="{ secondary: invalidPowerType() }"
@@ -1201,7 +1203,7 @@
                                     <div class="row">
                                         <hr />
                                         <div class="col-12 u-align--right">
-                                            <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
+                                            <button class="p-button--base" type="button" data-ng-click="cancel()">Cancel</button>
                                             <button class="p-button--positive u-no-margin--top"
                                                 data-ng-click="addBond()"
                                                 data-ng-disabled="cannotAddBond()">Save</button>
@@ -1593,7 +1595,7 @@
                                                 <p><span class="p-icon--warning">Warning:</span> Are you sure you want to unmount this filesystem?</p>
                                             </div>
                                             <div class="col-4 u-align--right">
-                                                <button class="p-button--base" data-ng-click="filesystemCancel()">Cancel</button>
+                                                <button class="p-button--base" type="button" data-ng-click="filesystemCancel()">Cancel</button>
                                                 <button class="p-button--neutral u-no-margin--top" data-ng-click="filesystemConfirmUnmount(filesystem)">Unmount</button>
                                             </div>
                                         </div>
@@ -1602,7 +1604,7 @@
                                                 <p><span class="p-icon--warning">Warning:</span> Are you sure you want to remove this {$ getRemoveTypeText(filesystem) $}?</p>
                                             </div>
                                             <div class="col-4 u-align--right">
-                                                <button class="p-button--base" data-ng-click="filesystemCancel(filesystem)">Cancel</button>
+                                                <button class="p-button--base" type="button" data-ng-click="filesystemCancel(filesystem)">Cancel</button>
                                                 <button class="p-button--negative u-no-margin--top" data-ng-click="filesystemConfirmDelete(filesystem)">Remove</button>
                                             </div>
                                         </div>
@@ -1661,7 +1663,7 @@
                                     <div class="row u-no-margin--top">
                                         <hr />
                                         <div class="u-align--right u-no-margin--top">
-                                            <button class="p-button--base"
+                                            <button class="p-button--base" type="button"
                                                 data-ng-click="cancel()">Cancel</button>
                                             <button class="p-button--neutral u-no-margin--top ng-binding"
                                                 data-ng-disabled="!canMount()"
@@ -1731,7 +1733,7 @@
                                                     <p><span class="p-icon--warning">Warning:</span> Are you sure you want to delete this cache set?</p>
                                                 </div>
                                                 <div class="col-4 u-align--right">
-                                                    <button class="p-button--base" data-ng-click="cacheSetCancel()">Cancel</button>
+                                                    <button class="p-button--base" type="button" data-ng-click="cacheSetCancel()">Cancel</button>
                                                     <button class="p-button--negative u-no-margin--top" data-ng-click="cacheSetConfirmDelete(cacheset)">Remove</button>
                                                 </div>
                                             </div>
@@ -1763,11 +1765,12 @@
                                         <span class="divide"> | </span>
                                         <a data-ng-click="tableInfo.column = 'serial'" data-ng-class="{'p-link--soft': tableInfo.column === 'serial'}">Serial</a>
                                     </th>
+                                    <th class="col-1">Fireware version</th>
                                     <th class="col-1 u-align--center">Boot</th>
                                     <th class="col-1">Size</th>
                                     <th class="col-1">Device Type</th>
-                                    <th class="col-2">Filesystem</th>
-                                    <th class="col-2">Tags</th>
+                                    <th class="col-1">Filesystem</th>
+                                    <th class="col-1">Tags</th>
                                     <th class="col-1">Health</th>
                                     <th class="col-1 u-align--center">Actions</th>
                                 </tr>
@@ -1797,6 +1800,7 @@
                                             data-ng-disabled="item.type === 'partition' || isAllStorageDisabled() || !isSuperUser()"
                                             data-ng-change="nameHasChanged(item)">
                                     </td>
+                                    <td class="col-1" aria-label="Firmware Version">{$ item.firmware_version $}</td>
                                     <td class="col-1 u-align--center" aria-label="Boot">
                                         <input type="radio" name="boot-disk" id="{$ item.name $}-boot"
                                             data-ng-click="setAsBootDisk(item)"
@@ -1817,7 +1821,7 @@
                                     <td class="col-2" aria-label="Filesystem">
                                         <span data-ng-hide="availableMode === 'edit' && item.$selected">{$ item.fstype $}</span>
                                     </td>
-                                    <td class="col-2" aria-label="Tags">
+                                    <td class="col-1" aria-label="Tags">
                                         <span class="table__tag" data-ng-repeat="tag in item.tags" data-ng-hide="item.$options.editingTags">
                                             <a href="#/node/?query=storage_tags:({$ tag.text $})">{$ tag.text $}</a>
                                         </span>
@@ -2140,7 +2144,7 @@
                                             <div data-ng-if="availableMode === 'edit'" class="row">
                                                 <hr />
                                                 <div class="col-12 u-align--right">
-                                                    <button class="p-button--base" data-ng-click="availableCancel(item)">Cancel</button>
+                                                    <button class="p-button--base" type="button" data-ng-click="availableCancel(item)">Cancel</button>
                                                     <button class="p-button--positive u-no-margin--top"
                                                         data-ng-disabled="isMountPointInvalid(item.$options.mountPoint) || isNameInvalid(item)"
                                                         data-ng-click="availableConfirmEdit(item)">Save</button>
@@ -2151,14 +2155,14 @@
                                                     <p><span class="p-icon--warning">Warning:</span> Are you sure you want to remove this {$ getRemoveTypeText(item) $}?</p>
                                                 </div>
                                                 <div class="col-4 u-align--right">
-                                                    <button class="p-button--base" data-ng-click="availableCancel(item)">Cancel</button>
+                                                    <button class="p-button--base" type="button" data-ng-click="availableCancel(item)">Cancel</button>
                                                     <button class="p-button--negative u-no-margin--top" data-ng-click="availableConfirmDelete(item)">Remove</button>
                                                 </div>
                                             </div>
                                             <div data-ng-if="availableMode === 'partition'" class="row">
                                                 <hr />
                                                 <div class="col-12 u-align--right">
-                                                    <button class="p-button--base" data-ng-click="availableCancel(item)">Cancel</button>
+                                                    <button class="p-button--base" type="button" data-ng-click="availableCancel(item)">Cancel</button>
                                                     <button class="p-button--positive u-no-margin--top"
                                                         data-ng-disabled="isAddPartitionSizeInvalid(item) || isMountPointInvalid(item.$options.mountPoint)"
                                                         data-ng-click="availableConfirmPartition(item)">Add partition</button>
@@ -2167,7 +2171,7 @@
                                             <div data-ng-if="availableMode === 'logical-volume'" class="row">
                                                 <hr />
                                                 <div class="col-12 u-align--right">
-                                                    <button class="p-button--base" data-ng-click="availableCancel(item)">Cancel</button>
+                                                    <button class="p-button--base" type="button" data-ng-click="availableCancel(item)">Cancel</button>
                                                     <button class="p-button--positive u-no-margin--top"
                                                         data-ng-disabled="isLogicalVolumeNameInvalid(item) || isAddLogicalVolumeSizeInvalid(item) || isMountPointInvalid(item.$options.mountPoint)"
                                                         data-ng-click="availableConfirmLogicalVolume(item)">Add logical volume</button>
@@ -2572,8 +2576,9 @@
                                     <span class="divide"> | </span>
                                     <a data-ng-click="tableInfo.column = 'serial'" data-ng-class="{'p-link--soft': tableInfo.column === 'serial'}">Serial</a>
                                 </th>
+                                <th class="col-1">Fireware version</th>
                                 <th class="col-1 u-align--center">Boot</th>
-                                <th class="col-2">Device type</th>
+                                <th class="col-1">Device type</th>
                                 <th class="col-3">Used for</th>
                                 <th class="col-3">Health</th>
                             </tr>
@@ -2590,6 +2595,7 @@
                                     <span data-ng-show="tableInfo.column === 'model'">{$ item.model $}</span>
                                     <span data-ng-show="tableInfo.column === 'serial'">{$ item.serial $}</span>
                                 </td>
+                                <td class="col-1" aria-label="Firmware version">{$ item.firmware_version $}</td>
                                 <td class="col-1 u-align--center" aria-label="Boot disk">
                                     <input type="radio" id="{$ item.name $}-boot" name="boot-disk"
                                         data-ng-click="setAsBootDisk(item)"
@@ -2598,7 +2604,7 @@
                                         data-ng-disabled="isBootDiskDisabled(item, 'used')">
                                     <label for="{$ item.name $}-boot"></label>
                                 </td>
-                                <td class="col-2" aria-label="Device type">{$ getDeviceType(item) $}</td>
+                                <td class="col-1" aria-label="Device type">{$ getDeviceType(item) $}</td>
                                 <td class="col-3" aria-label="Used for">{$ item.used_for $}</td>
                                 <td class="col-3" aria-label="Health">
                                     <span data-ng-if="item.type === 'physical'">

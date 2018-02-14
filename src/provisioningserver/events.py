@@ -1,4 +1,4 @@
-# Copyright 2014-2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2014-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Event catalog."""
@@ -49,6 +49,9 @@ from twisted.internet.defer import (
 
 maaslog = get_maas_logger("events")
 log = LegacyLogger()
+
+# AUDIT event logging level
+AUDIT = 0
 
 
 class EVENT_TYPES:
@@ -121,6 +124,20 @@ class EVENT_TYPES:
     REGION_IMPORT_INFO = "REGION_IMPORT_INFO"
     # Script result storage and lookup events
     SCRIPT_RESULT_ERROR = "SCRIPT_RESULT_ERROR"
+    # Authorisation events
+    AUTHORISATION = "AUTHORISATION"
+    # Settings events
+    SETTINGS = "SETTINGS"
+    # Node events
+    NODE = "NODE"
+    # Images events
+    IMAGES = "IMAGES"
+    # Pod events
+    POD = "POD"
+    # Networking events
+    NETWORKING = "NETWORKING"
+    # Zones events
+    ZONES = "ZONES"
 
 
 EventDetail = namedtuple("EventDetail", ("description", "level"))
@@ -348,6 +365,34 @@ EVENT_DETAILS = {
     EVENT_TYPES.SCRIPT_RESULT_ERROR: EventDetail(
         description=("Script result lookup or storage error"),
         level=ERROR,
+    ),
+    EVENT_TYPES.AUTHORISATION: EventDetail(
+        description=("Authorisation"),
+        level=AUDIT,
+    ),
+    EVENT_TYPES.SETTINGS: EventDetail(
+        description=("Settings"),
+        level=AUDIT,
+    ),
+    EVENT_TYPES.NODE: EventDetail(
+        description=("Node"),
+        level=AUDIT,
+    ),
+    EVENT_TYPES.IMAGES: EventDetail(
+        description=("Images"),
+        level=AUDIT,
+    ),
+    EVENT_TYPES.POD: EventDetail(
+        description=("Pod"),
+        level=AUDIT,
+    ),
+    EVENT_TYPES.NETWORKING: EventDetail(
+        description=("Networking"),
+        level=AUDIT,
+    ),
+    EVENT_TYPES.ZONES: EventDetail(
+        description=("Zones"),
+        level=AUDIT,
     ),
 }
 

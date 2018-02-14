@@ -1,4 +1,4 @@
-# Copyright 2015-2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2015-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """API handlers: `Interface`."""
@@ -74,6 +74,9 @@ DISPLAYED_INTERFACE_FIELDS = (
     'params',
     'discovered',
     'effective_mtu',
+    'vendor',
+    'product',
+    'firmware_version',
 )
 
 INTERFACES_PREFETCH = [
@@ -218,6 +221,9 @@ class InterfacesHandler(OperationsHandler):
         :param bond_xmit_hash_policy: The transmit hash policy to use for
             slave selection in balance-xor, 802.3ad, and tlb modes.
             (Default: layer2)
+        :param bond_num_grat_arp: The number of peer notifications (IPv4 ARP
+            or IPv6 Neighbour Advertisements) to be issued after a failover.
+            (Default: 1)
 
         Supported bonding modes (bond-mode):
         balance-rr - Transmit packets in sequential order from the first

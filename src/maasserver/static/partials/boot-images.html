@@ -289,7 +289,7 @@
                         <h2 data-ng-click="cancelRemove()" class="u-float--left">Remove image</h2>
                         <p><i class="p-icon--warning">Warning: </i> Are you sure you want to remove this image?</p>
                         <div class="u-float--right">
-                            <a class="p-button--neutral is-inline" data-ng-click="cancelRemove()">Cancel</a>
+                            <a class="p-button--neutral is-inline" type="button" data-ng-click="cancelRemove()">Cancel</a>
                             <button class="p-button--negative" data-ng-click="confirmRemove(image)">Remove</button>
                         </div>
                     </td>
@@ -333,7 +333,7 @@
                     <td class="p-table-expanding__panel" data-ng-if="isShowingDeleteConfirm(image)">
                         <h2 data-ng-click="cancelRemove()">Remove image</h2>
                         <p><i class="p-icon--warning">Warning: </i> Are you sure you want to remove this image?</p>
-                        <a class="p-button--neutral is-inline" data-ng-click="cancelRemove()">Cancel</a>
+                        <button class="p-button--neutral is-inline" type="button" data-ng-click="cancelRemove()">Cancel</button>
                         <button class="p-button--negative is-inline" data-ng-click="confirmRemove(image)">Remove</button>
                     </td>
                 </tr>

@@ -1,4 +1,4 @@
-/* Copyright 2015-2017 Canonical Ltd.  This software is licensed under the
+/* Copyright 2015-2018 Canonical Ltd.  This software is licensed under the
  * GNU Affero General Public License version 3 (see the file LICENSE).
  *
  * MAAS Node Details Controller
@@ -108,13 +108,6 @@ angular.module('MAAS').controller('NodeDetailsController', [
         // Events section.
         $scope.events = {
             limit: 10
-        };
-
-        // Machine output section.
-        $scope.machine_output = {
-            viewable: false,
-            selectedView: null,
-            views: []
         };
 
         // Updates the page title.
@@ -243,68 +236,6 @@ angular.module('MAAS').controller('NodeDetailsController', [
             }
         }
 
-        // Updates the machine output section.
-        function updateMachineOutput() {
-            // Set if it should even be viewable.
-            $scope.machine_output.viewable = (
-                angular.isString($scope.node.summary_xml) ||
-                angular.isString($scope.node.summary_yaml) ||
-                (angular.isArray($scope.node.installation_results) &&
-                    $scope.node.installation_results.length > 0));
-
-            // Grab the selected view name, so it can be kept the same if
-            // possible.
-            var viewName = null;
-            if(angular.isObject($scope.machine_output.selectedView)) {
-                viewName = $scope.machine_output.selectedView.name;
-            }
-
-            // If the viewName is empty, then a default one was not selected.
-            // We want the installation output to be the default if possible.
-            if(!angular.isString(viewName)) {
-                viewName = "installation";
-            }
-
-            // Setup the views that are viewable.
-            $scope.machine_output.views = [];
-            if(angular.isString($scope.node.summary_yaml)) {
-                $scope.machine_output.views.push({
-                    name: "summary_yaml",
-                    title: "Machine output (YAML)"
-                });
-            }
-            if(angular.isString($scope.node.summary_xml)) {
-                $scope.machine_output.views.push({
-                    name: "summary_xml",
-                    title: "Machine output (XML)"
-                });
-            }
-            if(angular.isArray($scope.node.installation_results) &&
-                $scope.node.installation_results.length > 0) {
-                $scope.machine_output.views.push({
-                    name: "installation",
-                    title: "Installation output"
-                });
-            }
-
-            // Set the selected view to its previous value or to the first
-            // entry in the views list.
-            var selectedView = null;
-            angular.forEach($scope.machine_output.views, function(view) {
-                if(view.name === viewName) {
-                    selectedView = view;
-                }
-            });
-            if(angular.isObject(selectedView)) {
-                $scope.machine_output.selectedView = selectedView;
-            } else if ($scope.machine_output.views.length > 0) {
-                $scope.machine_output.selectedView =
-                    $scope.machine_output.views[0];
-            } else {
-                $scope.machine_output.selectedView = null;
-            }
-        }
-
         // Update the devices array on the scope based on the device children
         // on the node.
         function updateDevices() {
@@ -394,13 +325,6 @@ angular.module('MAAS').controller('NodeDetailsController', [
 
             // Update the services when the services list is updated.
             $scope.$watch("node.service_ids", updateServices);
-
-            // Update the machine output view when summary, commissioning, or
-            // installation results are updated on the node.
-            $scope.$watch("node.summary_xml", updateMachineOutput);
-            $scope.$watch("node.summary_yaml", updateMachineOutput);
-            $scope.$watch("node.commissioning_results", updateMachineOutput);
-            $scope.$watch("node.installation_results", updateMachineOutput);
         }
 
         // Called when the node has been loaded.
@@ -410,7 +334,6 @@ angular.module('MAAS').controller('NodeDetailsController', [
 
             updateTitle();
             updateSummary();
-            updateMachineOutput();
             updateServices();
             startWatching();
 
@@ -739,11 +662,21 @@ angular.module('MAAS').controller('NodeDetailsController', [
             return $scope.power_types.length > 0;
         };
 
+        // Return true if the node is locked
+        $scope.isLocked = function() {
+            if ($scope.node === null) {
+                return false;
+            }
+
+            return $scope.node.locked;
+        };
+
         // Return true when the edit buttons can be clicked.
         $scope.canEdit = function() {
             return (
                 $scope.isRackControllerConnected() &&
-                $scope.isSuperUser());
+                    $scope.isSuperUser() &&
+                    ! $scope.isLocked());
         };
 
         // Called to edit the domain name.
@@ -978,54 +911,6 @@ angular.module('MAAS').controller('NodeDetailsController', [
             }
         };
 
-        // Return the commissioning summary output data.
-        $scope.getSummaryData = function(type) {
-            // Can be called by angular before the node is set in the scope,
-            // in that case return blank string. It will be called once the
-            // node is set to get the correct information.
-            if(!angular.isObject($scope.node)) {
-                return "";
-            }
-            return $scope.node["summary_" + type];
-        };
-
-        // Return the installation log data.
-        $scope.getInstallationData = function() {
-            // Can be called by angular before the node is set in the scope,
-            // in that case return blank string. It will be called once the
-            // node is set to get the correct information.
-            if(!angular.isObject($scope.node)) {
-                return "";
-            }
-            // It is possible for the node to have multiple installation
-            // results, but it is unused. Only one installation result will
-            // exists for a node. Grab the first one in the array.
-            var results = $scope.node.installation_results;
-            if(!angular.isArray(results) ||
-                    results.length === 0 || results[0].output === "") {
-                switch($scope.node.installation_status) {
-                    case 0:
-                        return "System is booting...";
-                    case 1:
-                        return "Installation has begun!";
-                    case 2:
-                        return ("Installation has succeeded but no " +
-                                "output was given.");
-                    case 3:
-                        return ("Installation has failed and no output was " +
-                                "given.");
-                    case 4:
-                        return "Installation failed after 40 minutes.";
-                    case 5:
-                        return "Installation was aborted.";
-                    default:
-                        return "";
-                }
-            } else {
-                return results[0].output;
-            }
-        };
-
         // true if power error prevents the provided action
         $scope.hasActionPowerError = function(actionName) {
             if(!$scope.hasPowerError()) {
@@ -1113,6 +998,11 @@ angular.module('MAAS').controller('NodeDetailsController', [
         // Only show a warning that tests have failed if there are failed tests
         // and the node isn't currently commissioning or testing.
         $scope.showFailedTestWarning = function() {
+            // Devices can't have failed tests and don't have status_code
+            // defined.
+            if($scope.node.node_type === 1 || !$scope.node.status_code) {
+                return false;
+            }
             switch($scope.node.status_code) {
                 // NEW
                 case 0:
@@ -1135,6 +1025,19 @@ angular.module('MAAS').controller('NodeDetailsController', [
             }
             return true;
         };
+
+        // Get the subtext for the CPU card. Only nodes commissioned after
+        // MAAS 2.4 will have the CPU speed.
+        $scope.getCPUSubtext = function() {
+            var label = $scope.node.cpu_count + " cores";
+            if(!$scope.node.cpu_speed || $scope.node.cpu_speed === 0) {
+                return label;
+            }else if($scope.node.cpu_speed < 1000) {
+                return label + " @ " + $scope.node.cpu_speed + " Mhz";
+            }else{
+                return label + " @ " + ($scope.node.cpu_speed / 1000) + " Ghz";
+            }
+        }
 
         // Load all the required managers.
         ManagerHelperService.loadManagers($scope, [

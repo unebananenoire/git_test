@@ -1,4 +1,4 @@
-# Copyright 2015-2016 Canonical Ltd.  This software is licensed under the
+# Copyright 2015-2017 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Tests for `maasserver.websockets.handlers.event`"""
@@ -36,6 +36,12 @@ class TestEventHandler(MAASServerTestCase):
         data = {
             "id": event.id,
             "node_id": event.node.id,
+            "node_hostname": event.node_hostname,
+            "user": event.user.id,
+            "username": event.username,
+            "ip_address": event.ip_address,
+            "endpoint": event.endpoint,
+            "user_agent": event.user_agent,
             "action": event.action,
             "description": event.description,
             "type": {
@@ -54,8 +60,8 @@ class TestEventHandler(MAASServerTestCase):
             for event in events
             ]
 
-    def make_event_in_the_past(self, node, days_old):
-        event = factory.make_Event(node=node)
+    def make_event_in_the_past(self, user, node, days_old):
+        event = factory.make_Event(user=user, node=node)
         event.created -= datetime.timedelta(days_old)
         event.save()
         return event
@@ -86,7 +92,7 @@ class TestEventHandler(MAASServerTestCase):
         handler = EventHandler(user, {})
         node = factory.make_Node()
         events = [
-            factory.make_Event(node=node)
+            factory.make_Event(user=user, node=node)
             for _ in range(3)
             ]
         # Other events.
@@ -94,14 +100,14 @@ class TestEventHandler(MAASServerTestCase):
             factory.make_Event()
         self.assertItemsEqual(
             self.dehydrate_events(events),
-            handler.list({"node_id": node.id}))
+            handler.list({"node_id": node.id, "user_id": user.id}))
 
     def test_list_returns_newest_event_first(self):
         user = factory.make_User()
         handler = EventHandler(user, {})
         node = factory.make_Node()
         events = [
-            factory.make_Event(node=node)
+            factory.make_Event(user=user, node=node)
             for _ in range(3)
             ]
         # Other events.
@@ -120,7 +126,7 @@ class TestEventHandler(MAASServerTestCase):
             for _ in range(3)
             ]
         # Event older than 30 days.
-        self.make_event_in_the_past(node, 31)
+        self.make_event_in_the_past(user, node, 31)
         self.assertItemsEqual(
             self.dehydrate_events(events),
             handler.list({"node_id": node.id}))
@@ -131,11 +137,11 @@ class TestEventHandler(MAASServerTestCase):
         node = factory.make_Node()
         maxdays = random.randint(3, 50)
         events = [
-            self.make_event_in_the_past(node, maxdays - 1)
+            self.make_event_in_the_past(user, node, maxdays - 1)
             for _ in range(3)
             ]
         for _ in range(3):
-            self.make_event_in_the_past(node, maxdays + 1)
+            self.make_event_in_the_past(user, node, maxdays + 1)
         self.assertItemsEqual(
             self.dehydrate_events(events),
             handler.list({"node_id": node.id, "max_days": maxdays}))
@@ -145,7 +151,7 @@ class TestEventHandler(MAASServerTestCase):
         handler = EventHandler(user, {})
         node = factory.make_Node()
         events = list(reversed([
-            factory.make_Event(node=node)
+            factory.make_Event(user=user, node=node)
             for _ in range(6)
             ]))
         expected_output = self.dehydrate_events(events[3:])
@@ -158,7 +164,7 @@ class TestEventHandler(MAASServerTestCase):
         handler = EventHandler(user, {})
         node = factory.make_Node()
         events = list(reversed([
-            factory.make_Event(node=node)
+            factory.make_Event(user=user, node=node)
             for _ in range(6)
             ]))
         expected_output = self.dehydrate_events(events[:3])
@@ -171,7 +177,7 @@ class TestEventHandler(MAASServerTestCase):
         handler = EventHandler(user, {})
         node = factory.make_Node()
         events = list(reversed([
-            factory.make_Event(node=node)
+            factory.make_Event(user=user, node=node)
             for _ in range(9)
             ]))
         expected_output = self.dehydrate_events(events[3:6])
@@ -255,7 +261,7 @@ class TestEventHandler(MAASServerTestCase):
         user = factory.make_User()
         handler = EventHandler(user, {})
         node = factory.make_Node()
-        event = factory.make_Event(node=node)
+        event = factory.make_Event(user=user, node=node)
         handler.cache["node_ids"].append(node.id)
         self.assertEqual(
             (

@@ -1,4 +1,4 @@
-# Copyright 2012-2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2012-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Test maasserver models."""
@@ -11,6 +11,7 @@ import email
 import os
 import random
 import re
+from textwrap import dedent
 from unittest.mock import (
     ANY,
     call,
@@ -81,7 +82,6 @@ from maasserver.models import (
     Machine,
     Node,
     node as node_module,
-    NodeMetadata,
     OwnerData,
     PhysicalInterface,
     RackController,
@@ -106,6 +106,7 @@ from maasserver.models.node import (
     generate_node_system_id,
     PowerInfo,
 )
+from maasserver.models.resourcepool import ResourcePool
 from maasserver.models.signals import power as node_query
 from maasserver.models.timestampedmodel import now
 from maasserver.models.user import create_auth_token
@@ -183,6 +184,7 @@ from provisioningserver.events import (
 )
 from provisioningserver.refresh.node_info_scripts import (
     IPADDR_OUTPUT_NAME,
+    LSHW_OUTPUT_NAME,
     NODE_INFO_SCRIPTS,
 )
 from provisioningserver.rpc.cluster import (
@@ -472,6 +474,15 @@ class TestMachineManager(MAASServerTestCase):
         self.assertEqual(
             [],
             list(Machine.objects.get_available_machines_for_acquisition(user)))
+
+    def test_get_available_machines_only_in_accessible_pools(self):
+        user = factory.make_User()
+        machine = self.make_machine()
+        # the user doesn't have access to this pool
+        self.make_machine(pool=factory.make_ResourcePool())
+        self.assertCountEqual(
+            Machine.objects.get_available_machines_for_acquisition(user),
+            [machine])
 
 
 class TestControllerManager(MAASServerTestCase):
@@ -1026,6 +1037,55 @@ class TestNode(MAASServerTestCase):
             ValidationError,
             factory.make_Node, hostname=bad_hostname)
 
+    def test_default_pool_for_machine(self):
+        node = factory.make_Node()
+        self.assertEqual(
+            node.pool, ResourcePool.objects.get_default_resource_pool())
+
+    def test_other_pool_for_machine(self):
+        pool = factory.make_ResourcePool()
+        node = factory.make_Node(pool=pool)
+        self.assertEqual(node.pool, pool)
+
+    def test_no_pool_for_device(self):
+        node = factory.make_Node(node_type=NODE_TYPE.DEVICE)
+        self.assertIsNone(node.pool)
+
+    def test_no_pool_assign_for_device(self):
+        pool = factory.make_ResourcePool()
+        self.assertRaises(
+            ValidationError, factory.make_Node, node_type=NODE_TYPE.DEVICE,
+            pool=pool)
+
+    def test_pool_and_owner_with_access(self):
+        pool = factory.make_ResourcePool()
+        user = factory.make_User()
+        pool.grant_user(user)
+        node = factory.make_Node(owner=user, pool=pool)
+        self.assertEqual(node.pool, pool)
+
+    def test_pool_and_owner_without_access(self):
+        pool = factory.make_ResourcePool()
+        user = factory.make_User()
+        self.assertRaises(
+            ValidationError, factory.make_Node, owner=user, pool=pool)
+
+    def test_update_pool(self):
+        pool = factory.make_ResourcePool()
+        user = factory.make_User()
+        pool.grant_user(user)
+        node = factory.make_Node(owner=user)
+        node.pool = pool
+        node.save()
+        self.assertEqual(node.pool, pool)
+
+    def test_update_pool_no_user_access(self):
+        pool = factory.make_ResourcePool()
+        user = factory.make_User()
+        node = factory.make_Node(owner=user)
+        node.pool = pool
+        self.assertRaises(ValidationError, node.save)
+
     def test_lock(self):
         user = factory.make_User()
         node = factory.make_Node(status=NODE_STATUS.DEPLOYED)
@@ -1243,26 +1303,13 @@ class TestNode(MAASServerTestCase):
         factory.make_Switch(node=node)
         self.assertTrue(node.is_switch())
 
-    def test_set_metadata(self):
-        node = factory.make_Node()
-        node.set_metadata("foo", "bar")
-        self.assertEqual(
-            "bar", NodeMetadata.objects.get(node=node, key="foo").value)
-
-    def test_set_metadata_overwrite(self):
-        node = factory.make_Node()
-        node.set_metadata("foo", "bar")
-        node.set_metadata("foo", "baz")
-        self.assertEqual(
-            "baz", NodeMetadata.objects.get(node=node, key="foo").value)
-
     def test_get_metadata_empty(self):
         node = factory.make_Node()
         self.assertEqual({}, node.get_metadata())
 
     def test_get_metadata(self):
         node = factory.make_Node()
-        node.set_metadata("foo", "bar")
+        factory.make_NodeMetadata(node=node, key="foo", value="bar")
         self.assertEqual({"foo": "bar"}, node.get_metadata())
 
     def test_get_osystem_returns_default_osystem(self):
@@ -4118,12 +4165,12 @@ class TestNode(MAASServerTestCase):
         event_description = "(%s) - %s" % (user.username, comment)
         node._register_request_event(user, event_name, event_action, comment)
         self.assertThat(log_mock, MockCalledOnceWith(
-            node.system_id,
             EVENT_TYPES.REQUEST_NODE_START,
             type_level=event_details.level,
             type_description=event_details.description,
             event_action=event_action,
-            event_description=event_description))
+            event_description=event_description,
+            system_id=node.system_id))
 
     def test__register_request_event_none_user_saves_comment_not_user(self):
         node = factory.make_Node()
@@ -4136,12 +4183,12 @@ class TestNode(MAASServerTestCase):
         event_description = "%s" % (comment)
         node._register_request_event(None, event_name, event_action, comment)
         self.assertThat(log_mock, MockCalledOnceWith(
-            node.system_id,
             EVENT_TYPES.REQUEST_NODE_START,
             type_level=event_details.level,
             type_description=event_details.description,
             event_action=event_action,
-            event_description=event_description))
+            event_description=event_description,
+            system_id=node.system_id))
 
     def test__status_message_returns_most_recent_event(self):
         # The first event won't be returned.
@@ -4806,12 +4853,14 @@ class NodeManagerTest(MAASServerTestCase):
         """get_nodes with perm=NODE_PERMISSION.VIEW lists the nodes a user
         has access to.
 
-        When run for a regular user it returns unowned nodes, and nodes
-        owned by that user.
+        When run for a regular user it returns unowned nodes in accessible
+        pools, and nodes owned by that user.
+
         """
         user = factory.make_User()
         visible_nodes = [self.make_node(owner) for owner in [None, user]]
         self.make_node(factory.make_User())
+        factory.make_Node(pool=factory.make_ResourcePool())
         self.assertItemsEqual(
             visible_nodes, Node.objects.get_nodes(user, NODE_PERMISSION.VIEW))
 
@@ -4857,7 +4906,10 @@ class NodeManagerTest(MAASServerTestCase):
         # Node that we'll exclude from from_nodes:
         factory.make_Node(owner=user)
         # Node that will be ignored on account of belonging to someone else:
-        invisible_node = factory.make_Node(owner=factory.make_User())
+        invisible_node1 = factory.make_Node(owner=factory.make_User())
+        # Node that will be ignored on account of being in a pool the user
+        # doesn't have access to
+        invisible_node2 = factory.make_Node(pool=factory.make_ResourcePool())
 
         self.assertItemsEqual(
             [matching_node],
@@ -4865,7 +4917,8 @@ class NodeManagerTest(MAASServerTestCase):
                 user, NODE_PERMISSION.VIEW,
                 from_nodes=Node.objects.filter(id__in=(
                     matching_node.id,
-                    invisible_node.id,
+                    invisible_node1.id,
+                    invisible_node2.id
                 ))))
 
     def test_get_nodes_with_edit_perm_for_user_lists_owned_nodes(self):
@@ -4942,6 +4995,7 @@ class NodeManagerTest(MAASServerTestCase):
         user_visible_nodes = [self.make_node(user), self.make_node(None)]
         admin_visible_nodes = user_visible_nodes + [
             self.make_node(factory.make_User()),
+            self.make_node(pool=factory.make_ResourcePool()),
             factory.make_RackController(owner=user),
             factory.make_RackController(owner=None),
             factory.make_RegionController(),
@@ -4954,6 +5008,24 @@ class NodeManagerTest(MAASServerTestCase):
         self.assertItemsEqual(
             user_visible_nodes,
             Node.objects.get_nodes(user, NODE_PERMISSION.VIEW))
+
+    def test_get_nodes_only_from_accessible_pools(self):
+        user = factory.make_User()
+        pool = factory.make_ResourcePool()
+        node = factory.make_Node()
+        # the user doesn't have access to the pool
+        factory.make_Node(pool=pool)
+        self.assertCountEqual(
+            Node.objects.get_nodes(user, NODE_PERMISSION.VIEW),
+            [node])
+
+    def test_get_nodes_no_accessible_pool(self):
+        user = factory.make_User()
+        default_pool = ResourcePool.objects.get_default_resource_pool()
+        default_pool.revoke_user(user)
+        factory.make_Node()
+        self.assertCountEqual(
+            Node.objects.get_nodes(user, NODE_PERMISSION.VIEW), [])
 
     def test_filter_nodes_by_spaces(self):
         # Create a throwaway node and a throwaway space.
@@ -5125,6 +5197,15 @@ class NodeManagerTest(MAASServerTestCase):
             node.system_id, user, NODE_PERMISSION.VIEW)
         self.assertEqual(node, rack)
         self.assertIsInstance(rack, RackController)
+
+    def test_get_node_or_404_user_not_in_pool(self):
+        pool = factory.make_ResourcePool()
+        user = factory.make_User()
+        node = factory.make_Node(pool=pool)
+        self.assertRaises(
+            PermissionDenied,
+            Node.objects.get_node_or_404,
+            node.system_id, user, NODE_PERMISSION.VIEW)
 
     def test_netboot_on(self):
         node = factory.make_Node(netboot=False)
@@ -7063,8 +7144,8 @@ class UpdateInterfacesMixin:
             with_beaconing=True, passes=2))
     )
 
-    def create_empty_controller(self):
-        return factory.make_Node(node_type=self.node_type).as_self()
+    def create_empty_controller(self, **kwargs):
+        return factory.make_Node(node_type=self.node_type, **kwargs).as_self()
 
     def update_interfaces(self, controller, interfaces, topology_hints=None):
         for _ in range(self.passes):
@@ -7610,6 +7691,48 @@ class TestUpdateInterfaces(MAASServerTestCase, UpdateInterfacesMixin):
                 alloc_type=IPADDRESS_TYPE.DHCP,
                 ip=None,
             ))
+
+    def test__new_physical_with_multiple_dhcp_link_with_lshw(self):
+        controller = self.create_empty_controller(with_empty_script_sets=True)
+        mac_address = factory.make_mac_address()
+        interfaces = {
+            "eth0": {
+                "type": "physical",
+                "mac_address": mac_address,
+                "parents": [],
+                "links": [
+                    {
+                        "mode": "dhcp",
+                    },
+                    {
+                        "mode": "dhcp",
+                    },
+                ],
+                "enabled": True,
+            },
+        }
+        vendor = factory.make_name('vendor')
+        product = factory.make_name('product')
+        firmware_version = factory.make_name('firmware_version')
+        lshw = controller.current_commissioning_script_set.find_script_result(
+            script_name=LSHW_OUTPUT_NAME)
+        lshw_xml = dedent("""\
+        <node class="network">
+            <serial>%s</serial>
+            <vendor>%s</vendor>
+            <product>%s</product>
+            <configuration>
+                <setting id="firmware" value="%s" />
+            </configuration>
+        </node>
+        """ % (mac_address, vendor, product, firmware_version)).encode()
+        lshw.store_result(0, stdout=lshw_xml)
+
+        self.update_interfaces(controller, interfaces)
+        eth0 = Interface.objects.get(name="eth0", node=controller)
+        self.assertEqual(vendor, eth0.vendor)
+        self.assertEqual(product, eth0.product)
+        self.assertEqual(firmware_version, eth0.firmware_version)
 
     def test__new_physical_with_existing_subnet_link_with_gateway(self):
         controller = self.create_empty_controller()

@@ -39,6 +39,7 @@ from maasserver.node_action import (
     Deploy,
     ExitRescueMode,
     ImportImages,
+    Lock,
     MarkBroken,
     MarkFixed,
     NodeAction,
@@ -50,6 +51,7 @@ from maasserver.node_action import (
     RPC_EXCEPTIONS,
     SetZone,
     Test,
+    Unlock,
 )
 import maasserver.node_action as node_action_module
 from maasserver.node_status import (
@@ -270,6 +272,22 @@ class TestNodeAction(MAASServerTestCase):
         node = factory.make_Node()
         self.assertFalse(MyAction(node, factory.make_User()).is_actionable())
 
+    def test_is_actionable_false_if_locked(self):
+
+        class MyAction(FakeNodeAction):
+            pass
+
+        node = factory.make_Node(status=NODE_STATUS.DEPLOYED, locked=True)
+        self.assertFalse(MyAction(node, factory.make_User()).is_actionable())
+
+    def test_is_actionable_true_if_allow_ed_when_locked(self):
+
+        class MyAction(FakeNodeAction):
+            allowed_when_locked = True
+
+        node = factory.make_Node(status=NODE_STATUS.DEPLOYED, locked=True)
+        self.assertTrue(MyAction(node, factory.make_User()).is_actionable())
+
     def test_delete_action_last_for_node(self):
         node = factory.make_Node()
         actions = compile_node_actions(
@@ -334,6 +352,15 @@ class TestCommissionAction(MAASServerTestCase):
         self.assertThat(
             node_start,
             MockCalledOnceWith(admin, ANY, ANY, allow_power_cycle=True))
+
+    def test_commission_raises_NodeActionError_if_not_in_accessible_pool(self):
+        pool = factory.make_ResourcePool()
+        node = factory.make_Node(pool=pool)
+        user = factory.make_admin()
+        action = Commission(node, user)
+        exception = self.assertRaises(NodeActionError, action.execute)
+        self.assertEqual(
+            str(exception), "User doesn't have access to the resource pool")
 
 
 class TestTest(MAASServerTestCase):
@@ -479,6 +506,15 @@ class TestAcquireNodeAction(MAASServerTestCase):
         self.assertThat(
             node_acquire.__exit__, MockCalledOnceWith(None, None, None))
 
+    def test_Acquire_raises_NodeActionError_if_not_in_accessible_pool(self):
+        pool = factory.make_ResourcePool()
+        node = factory.make_Node(pool=pool)
+        user = factory.make_admin()
+        action = Acquire(node, user)
+        exception = self.assertRaises(NodeActionError, action.execute)
+        self.assertEqual(
+            str(exception), "User doesn't have access to the resource pool")
+
 
 class TestDeployAction(MAASServerTestCase):
 
@@ -523,6 +559,15 @@ class TestDeployAction(MAASServerTestCase):
         self.expectThat(
             mock_node_start, MockCalledOnceWith(user))
 
+    def test_Deploy_raises_NodeActionError_if_not_in_accessible_pool(self):
+        pool = factory.make_ResourcePool()
+        node = factory.make_Node(pool=pool)
+        user = factory.make_admin()
+        action = Deploy(node, user)
+        exception = self.assertRaises(NodeActionError, action.execute)
+        self.assertEqual(
+            str(exception), "User doesn't have access to the resource pool")
+
     def test_Deploy_raises_NodeActionError_for_no_curtin_config(self):
         user = factory.make_User()
         node = factory.make_Node(
@@ -551,7 +596,7 @@ class TestDeployAction(MAASServerTestCase):
         error = self.assertRaises(
             NodeActionError, Deploy(node, user).execute, **extra)
         self.assertEqual(
-            "['%s is not a support operating system.']" % os_name,
+            '{} is not a support operating system.'.format(os_name),
             str(error))
 
     def test_Deploy_sets_osystem_and_series(self):
@@ -819,6 +864,59 @@ class TestPowerOffAction(MAASServerTestCase):
         self.assertEqual(
             expected_results, results,
             "Nodes already powered off can be powered off.")
+
+
+class TestLockAction(MAASServerTestCase):
+
+    def test_changes_locked_status(self):
+        user = factory.make_User()
+        node = factory.make_Node(status=NODE_STATUS.DEPLOYED, owner=user)
+        action = Lock(node, user)
+        self.assertTrue(action.is_permitted())
+        action.execute()
+        self.assertTrue(reload_object(node).locked)
+
+    def test_not_actionable_if_not_deployed(self):
+        user = factory.make_User()
+        node = factory.make_Node(status=NODE_STATUS.READY, owner=user)
+        action = Lock(node, user)
+        self.assertFalse(action.is_actionable())
+
+    def test_not_actionable_if_locked(self):
+        user = factory.make_User()
+        node = factory.make_Node(
+            status=NODE_STATUS.DEPLOYED, owner=user, locked=True)
+        action = Lock(node, user)
+        self.assertFalse(action.is_actionable())
+
+    def test_not_actionable_if_not_machine(self):
+        user = factory.make_User()
+        controller = factory.make_RackController()
+        action = Lock(controller, user)
+        self.assertFalse(action.is_actionable())
+
+
+class TestUnlockAction(MAASServerTestCase):
+
+    def test_changes_locked_status(self):
+        user = factory.make_User()
+        node = factory.make_Node(locked=True, owner=user)
+        action = Unlock(node, user)
+        self.assertTrue(action.is_permitted())
+        action.execute()
+        self.assertFalse(reload_object(node).locked)
+
+    def test_not_actionable_if_not_locked(self):
+        user = factory.make_User()
+        node = factory.make_Node(owner=user)
+        action = Unlock(node, user)
+        self.assertFalse(action.is_actionable())
+
+    def test_not_actionable_if_not_machine(self):
+        user = factory.make_User()
+        controller = factory.make_RackController()
+        action = Unlock(controller, user)
+        self.assertFalse(action.is_actionable())
 
 
 ACTIONABLE_STATUSES = [

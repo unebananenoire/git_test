@@ -1,4 +1,4 @@
-# Copyright 2015-2016 Canonical Ltd.  This software is licensed under the
+# Copyright 2015-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Tests for the events API."""
@@ -20,6 +20,7 @@ from urllib.parse import (
 
 from django.conf import settings
 from maasserver.api import events as events_module
+from maasserver.api.events import event_to_dict
 from maasserver.api.tests.test_nodes import RequestFixture
 from maasserver.enum import NODE_TYPE
 from maasserver.testing.api import APITestCase
@@ -28,6 +29,7 @@ from maasserver.utils import ignore_unused
 from maasserver.utils.converters import json_load_bytes
 from maasserver.utils.django_urls import reverse
 from maastesting.djangotestcase import count_queries
+from provisioningserver.events import AUDIT
 from testtools.matchers import (
     AfterPreprocessing,
     Contains,
@@ -35,6 +37,7 @@ from testtools.matchers import (
     Equals,
     HasLength,
     Is,
+    MatchesDict,
     MatchesStructure,
     Not,
 )
@@ -68,6 +71,54 @@ def AfterBeingDecoded(matcher):
     return AfterPreprocessing(
         (lambda content: content.decode(settings.DEFAULT_CHARSET)),
         matcher)
+
+
+class TestEventToDict(APITestCase.ForUser):
+    """Test for `event_to_dict` function."""
+
+    def test__node_not_None(self):
+        event = factory.make_Event()
+        self.assertThat(event_to_dict(event), MatchesDict({
+            "username": Equals(event.user.username),
+            "node": Equals(event.node.system_id),
+            "hostname": Equals(event.node.hostname),
+            "id": Equals(event.id),
+            "level": Equals(event.type.level_str),
+            "created": Equals(
+                event.created.strftime('%a, %d %b. %Y %H:%M:%S')),
+            "type": Equals(event.type.description),
+            "description": Equals(event.description),
+            }))
+
+    def test__node_and_user_is_None(self):
+        event = factory.make_Event()
+        event.node = None
+        event.user = None
+        self.assertThat(event_to_dict(event), MatchesDict({
+            "username": Equals(event.username),
+            "node": Equals(None),
+            "hostname": Equals(event.node_hostname),
+            "id": Equals(event.id),
+            "level": Equals(event.type.level_str),
+            "created": Equals(
+                event.created.strftime('%a, %d %b. %Y %H:%M:%S')),
+            "type": Equals(event.type.description),
+            "description": Equals(event.description),
+            }))
+
+    def test__type_level_AUDIT(self):
+        event = factory.make_Event()
+        self.assertThat(event_to_dict(event), MatchesDict({
+            "username": Equals(event.user.username),
+            "node": Equals(event.node.system_id),
+            "hostname": Equals(event.node.hostname),
+            "id": Equals(event.id),
+            "level": Equals(event.type.level_str),
+            "created": Equals(
+                event.created.strftime('%a, %d %b. %Y %H:%M:%S')),
+            "type": Equals(event.type.description),
+            "description": Equals(event.render_audit_description),
+            }))
 
 
 class TestEventsAPI(APITestCase.ForUser):
@@ -539,6 +590,46 @@ class TestEventsAPI(APITestCase.ForUser):
         self.assertSequenceEqual(
             default_result['events'], info_result['events'])
 
+    def test_GET_query_with_log_level_AUDIT_returns_only_that_level(self):
+        user = factory.make_User()
+        node = factory.make_Node(owner=user)
+        audit_description = "Testing audit events for '%(username)s'."
+        generic_description = factory.make_name('desc')
+        event1 = factory.make_Event(
+            type=factory.make_EventType(level=AUDIT),
+            user=user, description=audit_description)
+        factory.make_Event(
+            type=factory.make_EventType(level=logging.DEBUG), node=node,
+            user=user, description=generic_description)
+
+        response = self.client.get(
+            reverse('events_handler'), {
+                'op': 'query',
+                'level': 'AUDIT',
+            })
+        self.assertEqual(http.client.OK, response.status_code)
+        parsed_result = json_load_bytes(response.content)
+        self.assertEqual([event1.id], extract_event_ids(parsed_result))
+
+    def test_GET_query_with_owner_returns_matching_events(self):
+        # Only events for user will be returned
+        user1 = factory.make_User()
+        user2 = factory.make_User()
+        nodes = [factory.make_Node(owner=user1) for _ in range(2)]
+        events = [factory.make_Event(node=node, user=user1) for node in nodes]
+        expected_event = factory.make_Event(user=user2)
+        events.append(expected_event)
+        response = self.client.get(
+            reverse('events_handler'), {
+                'op': 'query',
+                'level': 'DEBUG',
+                'owner': user2.username,
+            })
+        parsed_result = json_load_bytes(response.content)
+        self.assertItemsEqual(
+            [expected_event.id], extract_event_ids(parsed_result))
+        self.assertEqual(1, parsed_result['count'])
+
     def make_nodes_in_group_with_events(
             self, number_nodes=2, number_events=2):
         """Make `number_events` events for `number_nodes` nodes."""
@@ -547,10 +638,8 @@ class TestEventsAPI(APITestCase.ForUser):
             make_events(number_events, node=node)
 
     def test_query_num_queries_is_independent_of_num_nodes_and_events(self):
-        # 1 query for select event +
-        # 1 query to prefetch eventtype +
-        # 1 query to prefetch node details
-        expected_queries = 3
+        # 1 query for all the select_related's.
+        expected_queries = 1
         events_per_node = 5
         num_nodes_per_group = 5
         events_per_group = num_nodes_per_group * events_per_node
@@ -692,6 +781,7 @@ class TestEventsURIsWithoutEvents(APITestCase.ForUser):
         'limit': lambda: str(randint(1, 6)),
         'mac_address': factory.make_mac_address,
         'zone': factory.make_string,
+        'owner': factory.make_string,
     }
 
     def test_GET_query_prev_next_URIs_preserve_query_params(self):

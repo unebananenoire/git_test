@@ -1,4 +1,4 @@
-# Copyright 2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2017-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Tests for maas_run_remote_scripts.py."""
@@ -7,17 +7,23 @@ __all__ = []
 
 import copy
 from datetime import timedelta
+import http.client
 from io import BytesIO
 import json
 import os
 import random
 import stat
-from subprocess import TimeoutExpired
+from subprocess import (
+    DEVNULL,
+    PIPE,
+    TimeoutExpired,
+)
 import tarfile
 import time
 from unittest.mock import (
     ANY,
     call,
+    MagicMock,
 )
 from zipfile import ZipFile
 
@@ -42,15 +48,16 @@ from snippets.maas_run_remote_scripts import (
     run_scripts_from_metadata,
 )
 
+# Unused ScriptResult id, used to make sure number is always unique.
+SCRIPT_RESULT_ID = 0
+
 
 def make_script(
         scripts_dir=None, with_added_attribs=True, name=None,
-        script_result_id=None, script_version_id=None, timeout_seconds=None,
-        parallel=None, hardware_type=None, with_output=True):
+        script_version_id=None, timeout_seconds=None, parallel=None,
+        hardware_type=None, with_output=True):
     if name is None:
         name = factory.make_name('name')
-    if script_result_id is None:
-        script_result_id = random.randint(1, 1000)
     if script_version_id is None:
         script_version_id = random.randint(1, 1000)
     if timeout_seconds is None:
@@ -59,6 +66,9 @@ def make_script(
         parallel = random.randint(0, 2)
     if hardware_type is None:
         hardware_type = random.randint(0, 4)
+    global SCRIPT_RESULT_ID
+    script_result_id = SCRIPT_RESULT_ID
+    SCRIPT_RESULT_ID += 1
     ret = {
         'name': name,
         'path': '%s/%s' % (random.choice(['commissioning', 'testing']), name),
@@ -68,6 +78,7 @@ def make_script(
         'parallel': parallel,
         'hardware_type': hardware_type,
         'args': {},
+        'has_started': factory.pick_bool(),
     }
     ret['msg_name'] = '%s (id: %s, script_version_id: %s)' % (
         name, script_result_id, script_version_id)
@@ -143,6 +154,8 @@ class TestInstallDependencies(MAASTestCase):
         super().setUp()
         self.mock_output_and_send = self.patch(
             maas_run_remote_scripts, 'output_and_send')
+        self.patch(maas_run_remote_scripts.sys.stdout, 'write')
+        self.patch(maas_run_remote_scripts.sys.stderr, 'write')
 
     def test_run_and_check(self):
         scripts_dir = self.useFixture(TempDirectory()).path
@@ -208,6 +221,16 @@ class TestInstallDependencies(MAASTestCase):
             '%s\n%s\n' % (script['stdout'], script['stderr']),
             open(script['combined_path'], 'r').read())
 
+    def test_sudo_run_and_check(self):
+        mock_popen = self.patch(maas_run_remote_scripts, 'Popen')
+        self.patch(maas_run_remote_scripts, 'capture_script_output')
+        cmd = factory.make_name('cmd')
+
+        run_and_check([cmd], MagicMock(), False, True)
+
+        self.assertThat(mock_popen, MockCalledOnceWith(
+            ['sudo', '-En', cmd], stdin=DEVNULL, stdout=PIPE, stderr=PIPE))
+
     def test_install_dependencies_does_nothing_when_empty(self):
         self.assertTrue(install_dependencies(make_scripts()))
         self.assertThat(self.mock_output_and_send, MockNotCalled())
@@ -227,8 +250,7 @@ class TestInstallDependencies(MAASTestCase):
                 'Installing apt packages for %s' % script['msg_name'],
                 True, status='INSTALLING'))
             self.assertThat(mock_run_and_check, MockCalledOnceWith(
-                ['sudo', '-n', 'apt-get', '-qy', 'install'] + packages,
-                scripts, True))
+                ['apt-get', '-qy', 'install'] + packages, scripts, True, True))
             # Verify cleanup
             self.assertFalse(os.path.exists(script['combined_path']))
             self.assertFalse(os.path.exists(script['stdout_path']))
@@ -250,8 +272,7 @@ class TestInstallDependencies(MAASTestCase):
                 'Installing apt packages for %s' % script['msg_name'],
                 True, status='INSTALLING'))
             self.assertThat(mock_run_and_check, MockCalledOnceWith(
-                ['sudo', '-n', 'apt-get', '-qy', 'install'] + packages,
-                scripts, True))
+                ['apt-get', '-qy', 'install'] + packages, scripts, True, True))
 
     def test_install_dependencies_snap_str_list(self):
         mock_run_and_check = self.patch(
@@ -274,8 +295,7 @@ class TestInstallDependencies(MAASTestCase):
 
         for package in packages:
             self.assertThat(mock_run_and_check, MockAnyCall(
-                ['sudo', '-n', 'snap', 'install', package],
-                scripts, True))
+                ['snap', 'install', package], scripts, True, True))
 
     def test_install_dependencies_snap_str_dict(self):
         mock_run_and_check = self.patch(
@@ -315,28 +335,27 @@ class TestInstallDependencies(MAASTestCase):
             self.assertFalse(os.path.exists(script['stdout_path']))
             self.assertFalse(os.path.exists(script['stderr_path']))
         self.assertThat(mock_run_and_check, MockAnyCall(
-            ['sudo', '-n', 'snap', 'install', packages[0]['name']],
-            scripts, True))
+            ['snap', 'install', packages[0]['name']], scripts, True, True))
         self.assertThat(mock_run_and_check, MockAnyCall(
             [
-                'sudo', '-n', 'snap', 'install', packages[1]['name'],
+                'snap', 'install', packages[1]['name'],
                 '--%s' % packages[1]['channel']
             ],
-            scripts, True))
+            scripts, True, True))
         self.assertThat(mock_run_and_check, MockAnyCall(
             [
-                'sudo', '-n', 'snap', 'install', packages[2]['name'],
+                'snap', 'install', packages[2]['name'],
                 '--%s' % packages[2]['channel'],
                 '--%smode' % packages[2]['mode'],
             ],
-            scripts, True))
+            scripts, True, True))
         self.assertThat(mock_run_and_check, MockAnyCall(
             [
-                'sudo', '-n', 'snap', 'install', packages[3]['name'],
+                'snap', 'install', packages[3]['name'],
                 '--%s' % packages[3]['channel'],
                 '--%smode' % packages[3]['mode'],
             ],
-            scripts, True))
+            scripts, True, True))
 
     def test_install_dependencies_snap_errors(self):
         mock_run_and_check = self.patch(
@@ -355,8 +374,7 @@ class TestInstallDependencies(MAASTestCase):
                 True, status='INSTALLING'))
 
         self.assertThat(mock_run_and_check, MockAnyCall(
-            ['sudo', '-n', 'snap', 'install', packages[0]],
-            scripts, True))
+            ['snap', 'install', packages[0]], scripts, True, True))
 
     def test_install_dependencies_url(self):
         mock_run_and_check = self.patch(
@@ -452,9 +470,9 @@ class TestInstallDependencies(MAASTestCase):
 
         self.assertTrue(install_dependencies(scripts))
         self.assertThat(mock_run_and_check, MockAnyCall(
-            ['sudo', '-n', 'dpkg', '-i', deb_file], scripts, False))
+            ['dpkg', '-i', deb_file], scripts, False, True))
         self.assertThat(mock_run_and_check, MockAnyCall(
-            ['sudo', '-n', 'apt-get', 'install', '-qyf'], scripts, True))
+            ['apt-get', 'install', '-qyf'], scripts, True, True))
 
     def test_install_dependencies_url_deb_errors(self):
         mock_run_and_check = self.patch(
@@ -471,9 +489,9 @@ class TestInstallDependencies(MAASTestCase):
 
         self.assertFalse(install_dependencies(scripts))
         self.assertThat(mock_run_and_check, MockAnyCall(
-            ['sudo', '-n', 'dpkg', '-i', deb_file], scripts, False))
+            ['dpkg', '-i', deb_file], scripts, False, True))
         self.assertThat(mock_run_and_check, MockAnyCall(
-            ['sudo', '-n', 'apt-get', 'install', '-qyf'], scripts, True))
+            ['apt-get', 'install', '-qyf'], scripts, True, True))
 
     def test_install_dependencies_url_snap(self):
         mock_run_and_check = self.patch(
@@ -489,7 +507,7 @@ class TestInstallDependencies(MAASTestCase):
 
         self.assertTrue(install_dependencies(scripts))
         self.assertThat(mock_run_and_check, MockAnyCall(
-            ['sudo', '-n', 'snap', snap_file], scripts, True))
+            ['snap', snap_file], scripts, True, True))
 
     def test_install_dependencies_url_snap_errors(self):
         mock_run_and_check = self.patch(
@@ -506,7 +524,7 @@ class TestInstallDependencies(MAASTestCase):
 
         self.assertFalse(install_dependencies(scripts))
         self.assertThat(mock_run_and_check, MockAnyCall(
-            ['sudo', '-n', 'snap', snap_file], scripts, True))
+            ['snap', snap_file], scripts, True, True))
 
 
 class TestParseParameters(MAASTestCase):
@@ -675,6 +693,7 @@ class TestRunScript(MAASTestCase):
         self.assertEquals(script['result_path'], env['RESULT_PATH'])
         self.assertEquals(script['download_path'], env['DOWNLOAD_PATH'])
         self.assertEquals(str(script['timeout_seconds']), env['RUNTIME'])
+        self.assertEquals(str(script['has_started']), env['HAS_STARTED'])
         self.assertIn('PATH', env)
 
     def test_run_script_only_sends_result_when_avail(self):
@@ -867,7 +886,8 @@ class TestRunScripts(MAASTestCase):
         single_thread = make_scripts(instance=False, parallel=0)
         instance_thread = [
             make_scripts(parallel=1)
-            for _ in range(3)]
+            for _ in range(3)
+        ]
         any_thread = make_scripts(instance=False, parallel=2)
         scripts = copy.deepcopy(single_thread)
         for instance_thread_group in instance_thread:
@@ -925,6 +945,7 @@ class TestRunScripts(MAASTestCase):
             'timeout_seconds': script['timeout_seconds'],
             'parallel': script['parallel'],
             'hardware_type': script['hardware_type'],
+            'has_started': script['has_started'],
         }]
         run_scripts(url, creds, scripts_dir, out_dir, scripts)
         scripts[0].pop('thread', None)
@@ -960,10 +981,25 @@ class TestRunScriptsFromMetadata(MAASTestCase):
             f.write(json.dumps({'1.0': index_json}))
         return index_json
 
+    def mock_download_and_extract_tar(self, url, creds, scripts_dir):
+        """Simulate redownloading a scripts tarball after finishing commiss."""
+        index_path = os.path.join(scripts_dir, 'index.json')
+        with open(index_path, 'r') as f:
+            index_json = json.loads(f.read())
+        index_json['1.0'].pop('commissioning_scripts', None)
+        os.remove(index_path)
+        with open(index_path, 'w') as f:
+            f.write(json.dumps(index_json))
+        return True
+
     def test_run_scripts_from_metadata(self):
         scripts_dir = self.useFixture(TempDirectory()).path
         self.mock_run_scripts.return_value = 0
         index_json = self.make_index_json(scripts_dir)
+        mock_download_and_extract_tar = self.patch(
+            maas_run_remote_scripts, 'download_and_extract_tar')
+        mock_download_and_extract_tar.side_effect = (
+            self.mock_download_and_extract_tar)
 
         # Don't need to give the url, creds, or out_dir as we're not running
         # the scripts and sending the results.
@@ -980,8 +1016,8 @@ class TestRunScriptsFromMetadata(MAASTestCase):
                 None, None, scripts_dir, None,
                 index_json['testing_scripts'], True))
         self.assertThat(self.mock_signal, MockAnyCall(None, None, 'TESTING'))
-        self.assertThat(self.mock_output_and_send, MockCalledOnceWith(
-            'All scripts successfully ran', True, None, None, 'OK'))
+        self.assertThat(mock_download_and_extract_tar, MockCalledOnceWith(
+            'None/maas-scripts/', None, scripts_dir))
 
     def test_run_scripts_from_metadata_doesnt_run_tests_on_commiss_fail(self):
         scripts_dir = self.useFixture(TempDirectory()).path
@@ -1000,8 +1036,8 @@ class TestRunScriptsFromMetadata(MAASTestCase):
                 index_json['commissioning_scripts'], True))
         self.assertThat(self.mock_signal, MockNotCalled())
         self.assertThat(self.mock_output_and_send, MockCalledOnceWith(
-            '%s scripts failed to run' % fail_count, True, None, None,
-            'FAILED'))
+            '%s commissioning scripts failed to run' % fail_count, True, None,
+            None, 'FAILED'))
 
     def test_run_scripts_from_metadata_redownloads_after_commiss(self):
         scripts_dir = self.useFixture(TempDirectory()).path
@@ -1035,45 +1071,6 @@ class TestRunScriptsFromMetadata(MAASTestCase):
             MockAnyCall(
                 None, None, scripts_dir, None,
                 index_json['testing_scripts'], True))
-        self.assertThat(self.mock_output_and_send, MockCalledOnceWith(
-            'All scripts successfully ran', True, None, None, 'OK'))
-
-    def test_run_scripts_from_metadata_only_redownloads_when_needed(self):
-        scripts_dir = self.useFixture(TempDirectory()).path
-        self.mock_run_scripts.return_value = 0
-        mock_download_and_extract_tar = self.patch(
-            maas_run_remote_scripts, 'download_and_extract_tar')
-        index_json = self.make_index_json(scripts_dir)
-
-        # Don't need to give the url, creds, or out_dir as we're not running
-        # the scripts and sending the results.
-        run_scripts_from_metadata(None, None, scripts_dir, None)
-
-        self.assertThat(
-            self.mock_run_scripts,
-            MockAnyCall(
-                None, None, scripts_dir, None,
-                index_json['commissioning_scripts'], True))
-        self.assertThat(self.mock_signal, MockAnyCall(None, None, 'TESTING'))
-        self.assertThat(mock_download_and_extract_tar, MockNotCalled())
-        self.assertThat(
-            self.mock_run_scripts,
-            MockAnyCall(
-                None, None, scripts_dir, None,
-                index_json['testing_scripts'], True))
-        self.assertThat(self.mock_output_and_send, MockCalledOnceWith(
-            'All scripts successfully ran', True, None, None, 'OK'))
-
-    def test_run_scripts_from_metadata_does_nothing_on_empty(self):
-        scripts_dir = self.useFixture(TempDirectory()).path
-        self.make_index_json(scripts_dir, False, False)
-
-        # Don't need to give the url, creds, or out_dir as we're not running
-        # the scripts and sending the results.
-        run_scripts_from_metadata(None, None, scripts_dir, None)
-
-        self.assertThat(self.mock_output_and_send, MockCalledOnceWith(
-            'All scripts successfully ran', True, None, None, 'OK'))
 
 
 class TestMaasRunRemoteScripts(MAASTestCase):
@@ -1089,14 +1086,29 @@ class TestMaasRunRemoteScripts(MAASTestCase):
             tarinfo.mode = 0o755
             tar.addfile(tarinfo, BytesIO(file_content))
         mock_geturl = self.patch(maas_run_remote_scripts, 'geturl')
-        mock_geturl.return_value = binary.getvalue()
+        mm = MagicMock()
+        mm.status = 200
+        mm.read.return_value = binary.getvalue()
+        mock_geturl.return_value = mm
 
         # geturl is mocked out so we don't need to give a url or creds.
-        download_and_extract_tar(None, None, scripts_dir)
+        self.assertTrue(download_and_extract_tar(None, None, scripts_dir))
 
         written_file_content = open(
             os.path.join(scripts_dir, 'test-file'), 'rb').read()
         self.assertEquals(file_content, written_file_content)
+
+    def test_download_and_extract_tar_returns_false_on_no_content(self):
+        self.patch(maas_run_remote_scripts.sys.stdout, 'write')
+        scripts_dir = self.useFixture(TempDirectory()).path
+        mock_geturl = self.patch(maas_run_remote_scripts, 'geturl')
+        mm = MagicMock()
+        mm.status = int(http.client.NO_CONTENT)
+        mm.read.return_value = b'No content'
+        mock_geturl.return_value = mm
+
+        # geturl is mocked out so we don't need to give a url or creds.
+        self.assertFalse(download_and_extract_tar(None, None, scripts_dir))
 
     def test_heartbeat(self):
         mock_signal = self.patch(maas_run_remote_scripts, 'signal')
@@ -1124,3 +1136,49 @@ class TestMaasRunRemoteScripts(MAASTestCase):
         heart_beat.stop()
         self.assertLess(time.time() - start_time, 1)
         self.assertThat(mock_signal, MockCalledOnceWith(url, creds, 'WORKING'))
+
+    def test_main_signals_success(self):
+        self.patch(
+            maas_run_remote_scripts.argparse.ArgumentParser,
+            'parse_args')
+        self.patch(maas_run_remote_scripts, 'read_config')
+        self.patch(maas_run_remote_scripts, 'os')
+        self.patch(maas_run_remote_scripts, 'open')
+        self.patch(
+            maas_run_remote_scripts,
+            'download_and_extract_tar').return_value = True
+        self.patch(
+            maas_run_remote_scripts,
+            'run_scripts_from_metadata').return_value = 0
+        self.patch(maas_run_remote_scripts, 'signal')
+        mock_output_and_send = self.patch(
+            maas_run_remote_scripts, 'output_and_send')
+
+        maas_run_remote_scripts.main()
+
+        self.assertThat(mock_output_and_send, MockCalledOnceWith(
+            'All scripts successfully ran', ANY, ANY, ANY, 'OK'))
+
+    def test_main_signals_failure(self):
+        failures = random.randint(1, 100)
+        self.patch(
+            maas_run_remote_scripts.argparse.ArgumentParser,
+            'parse_args')
+        self.patch(maas_run_remote_scripts, 'read_config')
+        self.patch(maas_run_remote_scripts, 'os')
+        self.patch(maas_run_remote_scripts, 'open')
+        self.patch(
+            maas_run_remote_scripts,
+            'download_and_extract_tar').return_value = True
+        self.patch(
+            maas_run_remote_scripts,
+            'run_scripts_from_metadata').return_value = failures
+        self.patch(maas_run_remote_scripts, 'signal')
+        mock_output_and_send = self.patch(
+            maas_run_remote_scripts, 'output_and_send')
+
+        maas_run_remote_scripts.main()
+
+        self.assertThat(mock_output_and_send, MockCalledOnceWith(
+            '%d test scripts failed to run' % failures, ANY, ANY, ANY,
+            'FAILED'))

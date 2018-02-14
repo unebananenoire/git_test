@@ -25,8 +25,9 @@ from maasserver.models.cacheset import CacheSet
 from maasserver.models.config import Config
 from maasserver.models.event import Event
 from maasserver.models.filesystemgroup import VolumeGroup
-from maasserver.models.nodeprobeddetails import get_single_probed_details
+from maasserver.models.nodeprobeddetails import script_output_nsmap
 from maasserver.models.physicalblockdevice import PhysicalBlockDevice
+from maasserver.models.resourcepool import ResourcePool
 from maasserver.models.tag import Tag
 from maasserver.models.virtualblockdevice import VirtualBlockDevice
 from maasserver.node_action import compile_node_actions
@@ -84,12 +85,15 @@ class NodeHandler(TimestampedModelHandler):
 
     default_osystem = None
     default_distro_series = None
-    _script_results = {}
 
     class Meta:
         abstract = True
         pk = 'system_id'
         pk_type = str
+
+    def __init__(self, user, cache):
+        super().__init__(user, cache)
+        self._script_results = {}
 
     def dehydrate_owner(self, user):
         """Return owners username."""
@@ -110,6 +114,21 @@ class NodeHandler(TimestampedModelHandler):
         return {
             "id": zone.id,
             "name": zone.name,
+        }
+
+    def dehydrate_pool(self, pool):
+        """Return zone name."""
+        if pool is None:
+            return None
+        return {
+            "id": pool.id,
+            "name": pool.name,
+        }
+
+    def dehydrate_pod(self, pod):
+        return {
+            "id": pod.id,
+            "name": pod.name,
         }
 
     def dehydrate_last_image_sync(self, last_image_sync):
@@ -219,6 +238,7 @@ class NodeHandler(TimestampedModelHandler):
         if obj.node_type != NODE_TYPE.DEVICE:
             commissioning_script_results = []
             testing_script_results = []
+            log_results = set()
             for hw_type in self._script_results.get(obj.id, {}).values():
                 for script_result in hw_type:
                     if (script_result.script_set.result_type ==
@@ -232,6 +252,9 @@ class NodeHandler(TimestampedModelHandler):
                     elif (script_result.script_set.result_type ==
                             RESULT_TYPE.COMMISSIONING):
                         commissioning_script_results.append(script_result)
+                        if (script_result.name in script_output_nsmap and
+                                script_result.status == SCRIPT_STATUS.PASSED):
+                            log_results.add(script_result.name)
                     elif (script_result.script_set.result_type ==
                             RESULT_TYPE.TESTING):
                         testing_script_results.append(script_result)
@@ -248,6 +271,8 @@ class NodeHandler(TimestampedModelHandler):
             data["testing_status"] = get_status_from_qs(testing_script_results)
             data["testing_status_tooltip"] = (
                 self.dehydrate_hardware_status_tooltip(testing_script_results))
+            data["has_logs"] = (
+                log_results.difference(script_output_nsmap.keys()) == set())
 
         if not for_list:
             data["on_network"] = obj.on_network()
@@ -292,10 +317,7 @@ class NodeHandler(TimestampedModelHandler):
                 data["events"] = self.dehydrate_events(obj)
 
                 # Machine logs
-                data = self.dehydrate_summary_output(obj, data)
                 data["installation_status"] = self.dehydrate_script_set_status(
-                    obj.current_installation_script_set)
-                data["installation_results"] = self.dehydrate_script_set(
                     obj.current_installation_script_set)
 
                 # Third party drivers
@@ -351,8 +373,9 @@ class NodeHandler(TimestampedModelHandler):
         if isinstance(blockdevice, PhysicalBlockDevice):
             model = blockdevice.model
             serial = blockdevice.serial
+            firmware_version = blockdevice.firmware_version
         else:
-            serial = model = ""
+            serial = model = firmware_version = ""
         partition_table = blockdevice.get_partitiontable()
         if partition_table is not None:
             partition_table_type = partition_table.table_type
@@ -377,6 +400,7 @@ class NodeHandler(TimestampedModelHandler):
             "block_size": blockdevice.block_size,
             "model": model,
             "serial": serial,
+            "firmware_version": firmware_version,
             "partition_table_type": partition_table_type,
             "used_for": blockdevice.used_for,
             "filesystem": self.dehydrate_filesystem(
@@ -552,95 +576,6 @@ class NodeHandler(TimestampedModelHandler):
 
         return data
 
-    def dehydrate_summary_output(self, obj, data):
-        """Dehydrate the machine summary output."""
-        # Produce a "clean" composite details document.
-        probed_details = merge_details_cleanly(
-            get_single_probed_details(obj))
-
-        # We check here if there's something to show instead of after
-        # the call to get_single_probed_details() because here the
-        # details will be guaranteed well-formed.
-        if len(probed_details.xpath('/*/*')) == 0:
-            data['summary_xml'] = None
-            data['summary_yaml'] = None
-        else:
-            data['summary_xml'] = etree.tostring(
-                probed_details, encoding=str, pretty_print=True)
-            data['summary_yaml'] = XMLToYAML(
-                etree.tostring(
-                    probed_details, encoding=str,
-                    pretty_print=True)).convert()
-        return data
-
-    def dehydrate_script_set(self, script_set):
-        """Dehydrate ScriptResults."""
-        if script_set is None:
-            return []
-        ret = []
-        for script_result in script_set:
-            # MAAS stores stdout, stderr, and the combined output. The
-            # metadata API determine which field uploaded data should go
-            # into based on the extention of the uploaded file. .out goes
-            # to stdout, .err goes to stderr, otherwise its assumed the
-            # data is combined. Curtin uploads the installation log as
-            # install.log so its stored as a combined result. This ensures
-            # a result is always returned. Always return the combined result
-            # for testing.
-            if (script_result.stdout == b'' or
-                    script_set.result_type == RESULT_TYPE.TESTING):
-                output = script_result.output
-            else:
-                output = script_result.stdout
-
-            if script_result.script is not None:
-                tags = ', '.join(script_result.script.tags)
-                title = script_result.script.title
-            else:
-                tags = ''
-                title = ''
-            if title == '':
-                ui_name = script_result.name
-            else:
-                ui_name = '%s (%s)' % (title, script_result.name)
-            ret.append({
-                'id': script_result.id,
-                'name': script_result.name,
-                'ui_name': ui_name,
-                'title': title,
-                'status': script_result.status,
-                'status_name': script_result.status_name,
-                'tags': tags,
-                'output': output,
-                'updated': dehydrate_datetime(script_result.updated),
-                'started': dehydrate_datetime(script_result.started),
-                'ended': dehydrate_datetime(script_result.ended),
-                'runtime': script_result.runtime,
-                'starttime': script_result.starttime,
-                'endtime': script_result.endtime,
-                'estimated_runtime': script_result.estimated_runtime,
-            })
-            if (script_result.stderr != b'' and
-                    script_set.result_type != RESULT_TYPE.TESTING):
-                ret.append({
-                    'id': script_result.id,
-                    'name': '%s.err' % script_result.name,
-                    'ui_name': ui_name,
-                    'title': title,
-                    'status': script_result.status,
-                    'status_name': script_result.status_name,
-                    'tags': tags,
-                    'output': script_result.stderr,
-                    'updated': dehydrate_datetime(script_result.updated),
-                    'started': dehydrate_datetime(script_result.started),
-                    'ended': dehydrate_datetime(script_result.ended),
-                    'runtime': script_result.runtime,
-                    'starttime': script_result.starttime,
-                    'endtime': script_result.endtime,
-                    'estimated_runtime': script_result.estimated_runtime,
-                })
-        return sorted(ret, key=lambda i: i['name'])
-
     def dehydrate_script_set_status(self, obj):
         """Dehydrate the script set status."""
         if obj is None:
@@ -718,9 +653,12 @@ class NodeHandler(TimestampedModelHandler):
         # Get the object and update update the script_result_cache.
         self._refresh_script_result_cache(obj.get_latest_script_results)
 
-        if self.user.is_superuser:
-            return obj.as_self()
-        if obj.owner is None or obj.owner == self.user:
+        can_access_node = (
+            self.user.is_superuser or obj.owner == self.user or
+            (obj.owner is None and obj.pool is not None and
+             ResourcePool.objects.user_can_access_pool(
+                 self.user, obj.pool)))
+        if can_access_node:
             return obj.as_self()
         raise HandlerDoesNotExistError(params[self._meta.pk])
 
@@ -786,3 +724,49 @@ class NodeHandler(TimestampedModelHandler):
                     "disk_type": disk_type
                 })
         return grouped_storages
+
+    def get_summary_xml(self, params):
+        """Return the node summary XML formatted."""
+        node = self.get_object(params)
+        # Produce a "clean" composite details document.
+        details_template = dict.fromkeys(script_output_nsmap.values())
+        for hw_type in self._script_results.get(node.id, {}).values():
+            for script_result in hw_type:
+                if (script_result.name in script_output_nsmap and
+                        script_result.status == SCRIPT_STATUS.PASSED):
+                    namespace = script_output_nsmap[script_result.name]
+                    details_template[namespace] = script_result.stdout
+        probed_details = merge_details_cleanly(details_template)
+
+        # We check here if there's something to show instead of after
+        # the call to get_single_probed_details() because here the
+        # details will be guaranteed well-formed.
+        if len(probed_details.xpath('/*/*')) == 0:
+            return ''
+        else:
+            return etree.tostring(
+                probed_details, encoding=str, pretty_print=True)
+
+    def get_summary_yaml(self, params):
+        """Return the node summary YAML formatted."""
+        node = self.get_object(params)
+        # Produce a "clean" composite details document.
+        details_template = dict.fromkeys(script_output_nsmap.values())
+        for hw_type in self._script_results.get(node.id, {}).values():
+            for script_result in hw_type:
+                if (script_result.name in script_output_nsmap and
+                        script_result.status == SCRIPT_STATUS.PASSED):
+                    namespace = script_output_nsmap[script_result.name]
+                    details_template[namespace] = script_result.stdout
+        probed_details = merge_details_cleanly(details_template)
+
+        # We check here if there's something to show instead of after
+        # the call to get_single_probed_details() because here the
+        # details will be guaranteed well-formed.
+        if len(probed_details.xpath('/*/*')) == 0:
+            return ''
+        else:
+            return XMLToYAML(
+                etree.tostring(
+                    probed_details, encoding=str,
+                    pretty_print=True)).convert()

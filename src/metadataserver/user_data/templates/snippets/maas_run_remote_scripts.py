@@ -5,7 +5,7 @@
 #
 # Author: Lee Trager <lee.trager@canonical.com>
 #
-# Copyright (C) 2017 Canonical
+# Copyright (C) 2017-2018 Canonical
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -20,8 +20,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import argparse
 import copy
 from datetime import timedelta
+import http.client
 from io import BytesIO
 import json
 import os
@@ -68,6 +70,7 @@ except ImportError:
 
 def fail(msg):
     sys.stderr.write("FAIL: %s" % msg)
+    sys.stderr.flush()
     sys.exit(1)
 
 
@@ -90,17 +93,26 @@ def output_and_send(error, send_result=True, *args, **kwargs):
 def download_and_extract_tar(url, creds, scripts_dir):
     """Download and extract a tar from the given URL.
 
-    The URL may contain a compressed or uncompressed tar.
+    The URL may contain a compressed or uncompressed tar. Returns false when
+    there is no content.
     """
     sys.stdout.write(
         "Downloading and extracting %s to %s\n" % (url, scripts_dir))
-    binary = BytesIO(geturl(url, creds))
+    sys.stdout.flush()
+    ret = geturl(url, creds)
+    if ret.status == int(http.client.NO_CONTENT):
+        return False
+    binary = BytesIO(ret.read())
 
     with tarfile.open(mode='r|*', fileobj=binary) as tar:
         tar.extractall(scripts_dir)
 
+    return True
 
-def run_and_check(cmd, scripts, send_result=True):
+
+def run_and_check(cmd, scripts, send_result=True, sudo=False):
+    if sudo:
+        cmd = ['sudo', '-En'] + cmd
     proc = Popen(cmd, stdin=DEVNULL, stdout=PIPE, stderr=PIPE)
     capture_script_output(
         proc, scripts[0]['combined_path'], scripts[0]['stdout_path'],
@@ -142,8 +154,8 @@ def install_dependencies(scripts, send_result=True):
                 'Installing apt packages for %s' % script['msg_name'],
                 send_result, status='INSTALLING', **script['args'])
         if not run_and_check(
-                ['sudo', '-n', 'apt-get', '-qy', 'install'] + apt,
-                scripts, send_result):
+                ['apt-get', '-qy', 'install'] + apt, scripts, send_result,
+                True):
             return False
 
     if snap is not None:
@@ -153,9 +165,9 @@ def install_dependencies(scripts, send_result=True):
                 send_result, status='INSTALLING', **script['args'])
         for pkg in snap:
             if isinstance(pkg, str):
-                cmd = ['sudo', '-n', 'snap', 'install', pkg]
+                cmd = ['snap', 'install', pkg]
             elif isinstance(pkg, dict):
-                cmd = ['sudo', '-n', 'snap', 'install', pkg['name']]
+                cmd = ['snap', 'install', pkg['name']]
                 if 'channel' in pkg:
                     cmd.append('--%s' % pkg['channel'])
                 if 'mode' in pkg:
@@ -168,7 +180,7 @@ def install_dependencies(scripts, send_result=True):
                 # string or dictionary. This should never happen but just
                 # incase it does...
                 continue
-            if not run_and_check(cmd, scripts, send_result):
+            if not run_and_check(cmd, scripts, send_result, True):
                 return False
 
     if url is not None:
@@ -208,16 +220,14 @@ def install_dependencies(scripts, send_result=True):
             elif filename.endswith('.deb'):
                 # Allow dpkg to fail incase it just needs dependencies
                 # installed.
-                run_and_check(
-                    ['sudo', '-n', 'dpkg', '-i', filename], scripts, False)
+                run_and_check(['dpkg', '-i', filename], scripts, False, True)
                 if not run_and_check(
-                        ['sudo', '-n', 'apt-get', 'install', '-qyf'], scripts,
-                        send_result):
+                        ['apt-get', 'install', '-qyf'], scripts, send_result,
+                        True):
                     return False
             elif filename.endswith('.snap'):
                 if not run_and_check(
-                        ['sudo', '-n', 'snap', filename], scripts,
-                        send_result):
+                        ['snap', filename], scripts, send_result, True):
                     return False
 
     # All went well, clean up the install logs so only script output is
@@ -324,6 +334,7 @@ def run_script(script, scripts_dir, send_result=True):
     env['RESULT_PATH'] = script['result_path']
     env['DOWNLOAD_PATH'] = script['download_path']
     env['RUNTIME'] = str(timeout_seconds)
+    env['HAS_STARTED'] = str(script.get('has_started', False))
 
     try:
         script_arguments = parse_parameters(script, scripts_dir)
@@ -381,6 +392,7 @@ def run_script(script, scripts_dir, send_result=True):
             'Failed to execute %s: %d' % (
                 script['msg_name'], args['exit_status']), **args)
         sys.stdout.write('%s\n' % stderr)
+        sys.stdout.flush()
         return False
     except TimeoutExpired:
         args['status'] = 'TIMEDOUT'
@@ -547,45 +559,38 @@ def run_scripts_from_metadata(
     commissioning_scripts = scripts.get('commissioning_scripts')
     if commissioning_scripts is not None:
         sys.stdout.write('Starting commissioning scripts...\n')
+        sys.stdout.flush()
         fail_count += run_scripts(
             url, creds, scripts_dir, out_dir, commissioning_scripts,
             send_result)
 
+    if fail_count != 0:
+        output_and_send(
+            '%d commissioning scripts failed to run' % fail_count, send_result,
+            url, creds, 'FAILED')
+        return fail_count
+
+    # After commissioning has successfully finished redownload the scripts tar
+    # in case new hardware was discovered that has an associated script with
+    # the for_hardware field.
+    if commissioning_scripts is not None and download:
+        if not download_and_extract_tar(
+                "%s/maas-scripts/" % url, creds, scripts_dir):
+            return fail_count
+        return run_scripts_from_metadata(
+            url, creds, scripts_dir, out_dir, send_result, download)
+
     testing_scripts = scripts.get('testing_scripts')
-    if fail_count == 0 and testing_scripts is not None:
+    if testing_scripts is not None:
         # If the node status was COMMISSIONING transition the node into TESTING
         # status. If the node is already in TESTING status this is ignored.
         if send_result:
             signal_wrapper(url, creds, 'TESTING')
 
-        # If commissioning previously ran and a test script uses a storage
-        # parameter redownload the script tar as the storage devices may have
-        # changed causing different ScriptResults.
-        if commissioning_scripts is not None and download:
-            for test_script in testing_scripts:
-                for param in test_script.get('parameters', {}).values():
-                    if param['type'] == 'storage':
-                        sys.stdout.write(
-                            "Commissioning complete; updating test "
-                            "scripts...\n")
-                        download_and_extract_tar(
-                            "%s/maas-scripts/" % url, creds, scripts_dir)
-                        return run_scripts_from_metadata(
-                            url, creds, scripts_dir, out_dir, send_result)
-
         sys.stdout.write("Starting testing scripts...\n")
+        sys.stdout.flush()
         fail_count += run_scripts(
             url, creds, scripts_dir, out_dir, testing_scripts, send_result)
-
-    # Signal success or failure after all scripts have ran. This tells the
-    # region to transistion the status.
-    if fail_count == 0:
-        output_and_send(
-            'All scripts successfully ran', send_result, url, creds, 'OK')
-    else:
-        output_and_send(
-            '%d scripts failed to run' % fail_count, send_result, url, creds,
-            'FAILED')
 
     return fail_count
 
@@ -636,8 +641,6 @@ class HeartBeat(Thread):
 
 
 def main():
-    import argparse
-
     parser = argparse.ArgumentParser(
         description='Download and run scripts from the MAAS metadata service.')
     parser.add_argument(
@@ -700,6 +703,11 @@ def main():
     # running.
     os.nice(-20)
 
+    # Make sure installing packages is noninteractive for this process
+    # and all subprocesses.
+    if 'DEBIAN_FRONTEND' not in os.environ:
+        os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
+
     heart_beat = HeartBeat(url, creds)
     if not args.no_send:
         heart_beat.start()
@@ -709,12 +717,25 @@ def main():
     out_dir = os.path.join(args.storage_directory, 'out')
     os.makedirs(out_dir, exist_ok=True)
 
+    has_content = True
+    fail_count = 0
     if not args.no_download:
-        download_and_extract_tar(
+        has_content = download_and_extract_tar(
             "%s/maas-scripts/" % url, creds, scripts_dir)
-    run_scripts_from_metadata(
-        url, creds, scripts_dir, out_dir, not args.no_send,
-        not args.no_download)
+    if has_content:
+        fail_count = run_scripts_from_metadata(
+            url, creds, scripts_dir, out_dir, not args.no_send,
+            not args.no_download)
+
+    # Signal success or failure after all scripts have ran. This tells the
+    # region to transistion the status.
+    if fail_count == 0:
+        output_and_send(
+            'All scripts successfully ran', not args.no_send, url, creds, 'OK')
+    else:
+        output_and_send(
+            '%d test scripts failed to run' % fail_count, not args.no_send,
+            url, creds, 'FAILED')
 
     heart_beat.stop()
 

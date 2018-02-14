@@ -23,7 +23,7 @@
                             Fabric cannot be deleted because it is the default fabric.
                         </p>
                         <div class="page-header__controls">
-                            <button class="p-button--base" data-ng-click="cancelDeleteButton()">Cancel</button>
+                            <button class="p-button--base" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
                         </div>
                     </section>
                     <section class="page-header__section ng-hide  u-align--right" data-ng-show="canBeDeleted() && !error">
@@ -31,14 +31,14 @@
                             <i class="p-icon--warning"></i> Are you sure you want to delete this fabric?
                         </p>
                         <div class="page-header__controls">
-                            <button class="p-button--base" data-ng-click="cancelDeleteButton()">Cancel</button>
+                            <button class="p-button--base" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
                             <button class="p-button--negative" data-ng-click="deleteConfirmButton()">Delete fabric</button>
                         </div>
                     </section>
                     <section class="page-header__section ng-hide u-align--right" data-ng-show="canBeDeleted() && error">
                         <p class="page-header__message page-header__message--error">{$ error $}</p>
                         <div class="page-header__controls">
-                            <button class="p-button--base" data-ng-click="cancelDeleteButton()">Cancel</button>
+                            <button class="p-button--base" type="button" data-ng-click="cancelDeleteButton()">Cancel</button>
                             <button class="p-button--neutral" data-ng-click="deleteConfirmButton()">Retry</button>
                         </div>
                     </section>
@@ -112,7 +112,7 @@
                     </div>
                     <div class="row u-no-margin--top">
                         <div class="row u-align--right">
-                            <button class="p-button--base"
+                            <button class="p-button--base" type="button"
                             data-ng-click="exitEditSummary()">Cancel</button>
                             <button class="p-button--positive" maas-obj-save>Save summary</button>
                         </div>

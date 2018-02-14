@@ -139,7 +139,7 @@ class TestTagAPI(APITestCase.ForUser):
     def test_GET_nodes_returns_nodes(self):
         tag = factory.make_Tag()
         machine = factory.make_Node()
-        device = factory.make_Device()
+        device = factory.make_Device(owner=self.user)
         rack = factory.make_RackController()
         region = factory.make_RegionController()
         # Create a second node that isn't tagged.
@@ -189,7 +189,7 @@ class TestTagAPI(APITestCase.ForUser):
         parsed_result_2 = json.loads(
             response2.content.decode(settings.DEFAULT_CHARSET))
         self.assertEqual(
-            [http.client.OK, http.client.OK, 6, 12],
+            [http.client.OK, http.client.OK, 3, 6],
             [
                 response1.status_code,
                 response2.status_code,
@@ -265,7 +265,7 @@ class TestTagAPI(APITestCase.ForUser):
     def test_GET_devices_returns_devices(self):
         tag = factory.make_Tag()
         machine = factory.make_Node()
-        device = factory.make_Device()
+        device = factory.make_Device(owner=self.user)
         rack = factory.make_RackController()
         region = factory.make_RegionController()
         # Create a second node that isn't tagged.
@@ -291,7 +291,7 @@ class TestTagAPI(APITestCase.ForUser):
 
         tag = factory.make_Tag()
         for _ in range(3):
-            device = factory.make_Device()
+            device = factory.make_Device(owner=self.user)
             device.tags.add(tag)
         num_queries1, response1 = count_queries(
             self.client.get, self.get_tag_uri(tag), {'op': 'devices'})
@@ -309,7 +309,7 @@ class TestTagAPI(APITestCase.ForUser):
         parsed_result_2 = json.loads(
             response2.content.decode(settings.DEFAULT_CHARSET))
         self.assertEqual(
-            [http.client.OK, http.client.OK, 3, 6],
+            [http.client.OK, http.client.OK, 3, 3],
             [
                 response1.status_code,
                 response2.status_code,
@@ -482,9 +482,11 @@ class TestTagAPI(APITestCase.ForUser):
         user2 = factory.make_User()
         node1 = factory.make_Node()
         node2 = factory.make_Node(status=NODE_STATUS.ALLOCATED, owner=user2)
+        node3 = factory.make_Node(pool=factory.make_ResourcePool())
         tag = factory.make_Tag()
         node1.tags.add(tag)
         node2.tags.add(tag)
+        node3.tags.add(tag)
 
         response = self.client.get(self.get_tag_uri(tag), {'op': 'nodes'})
 
@@ -493,7 +495,7 @@ class TestTagAPI(APITestCase.ForUser):
             response.content.decode(settings.DEFAULT_CHARSET))
         self.assertEqual([node1.system_id],
                          [r['system_id'] for r in parsed_result])
-        # However, for the other user, they should see the result
+        # The other user can also see his node
         client2 = MAASSensibleOAuthClient(user2)
         response = client2.get(self.get_tag_uri(tag), {'op': 'nodes'})
         self.assertEqual(http.client.OK, response.status_code)

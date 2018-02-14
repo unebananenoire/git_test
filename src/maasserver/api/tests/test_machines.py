@@ -1,4 +1,4 @@
-# Copyright 2015-2016 Canonical Ltd.  This software is licensed under the
+# Copyright 2015-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Tests for the machines API."""
@@ -24,7 +24,10 @@ from maasserver.enum import (
     POWER_STATE,
 )
 import maasserver.forms as forms_module
-from maasserver.forms.pods import ComposeMachineForPodsForm
+from maasserver.forms.pods import (
+    ComposeMachineForm,
+    ComposeMachineForPodsForm,
+)
 from maasserver.models import (
     Config,
     Domain,
@@ -345,7 +348,7 @@ class TestMachinesAPI(APITestCase.ForUser):
         # Because of fields `status_action`, `status_message`,
         # `default_gateways`, and `health_status` the number of queries is not
         # the same but it is proportional to the number of machines.
-        DEFAULT_NUM = 57
+        DEFAULT_NUM = 58
         self.assertEqual(DEFAULT_NUM + (10 * 4), num_queries1)
         self.assertEqual(DEFAULT_NUM + (20 * 4), num_queries2)
 
@@ -667,6 +670,73 @@ class TestMachinesAPI(APITestCase.ForUser):
             response.content.decode(settings.DEFAULT_CHARSET))
         self.assertEqual(machine.system_id, parsed_result['system_id'])
         self.assertThat(mock_compose, MockCalledOnceWith())
+
+    def test_POST_allocate_returns_a_composed_machine_with_pool_access(self):
+        # The "allocate" operation returns a composed machine.
+        def compose_machine(*args, **kwargs):
+            return factory.make_Node(
+                status=NODE_STATUS.READY, owner=None, with_boot_disk=True,
+                bmc=pod, hostname=pod_machine_hostname)
+
+        pod_machine_hostname = factory.make_name('pod-machine')
+        architectures = [
+            "amd64/generic", "i386/generic",
+            "armhf/generic", "arm64/generic"
+        ]
+        pool = factory.make_ResourcePool(users=[self.user])
+        pod = factory.make_Pod(
+            architectures=architectures, default_pool=pool)
+        pod.hints.cores = random.randint(8, 16)
+        pod.hints.memory = random.randint(4096, 8192)
+        pod.hints.save()
+        mock_list_all_usable_architectures = self.patch(
+            forms_module, 'list_all_usable_architectures')
+        mock_list_all_usable_architectures.return_value = sorted(
+            pod.architectures)
+        mock_compose = self.patch(ComposeMachineForm, 'compose')
+        mock_compose.side_effect = compose_machine
+        response = self.client.post(
+            reverse('machines_handler'), {
+                'op': 'allocate',
+                'cpu_count': pod.hints.cores,
+                'mem': pod.hints.memory,
+                'arch': 'amd64'
+                })
+        self.assertEqual(http.client.OK, response.status_code)
+        parsed_result = json.loads(
+            response.content.decode(settings.DEFAULT_CHARSET))
+        self.assertEqual(pod_machine_hostname, parsed_result['hostname'])
+
+    def test_POST_allocate_no_composed_machine_with_no_pool_access(self):
+        # The "allocate" operation returns a composed machine.
+        def compose_machine(*args, **kwargs):
+            return factory.make_Node(
+                status=NODE_STATUS.READY, owner=None, with_boot_disk=True,
+                bmc=pod)
+        architectures = [
+            "amd64/generic", "i386/generic",
+            "armhf/generic", "arm64/generic"
+        ]
+        pool = factory.make_ResourcePool(users=[])
+        pod = factory.make_Pod(
+            architectures=architectures, default_pool=pool)
+        pod.hints.cores = random.randint(8, 16)
+        pod.hints.memory = random.randint(4096, 8192)
+        pod.hints.save()
+        mock_list_all_usable_architectures = self.patch(
+            forms_module, 'list_all_usable_architectures')
+        mock_list_all_usable_architectures.return_value = sorted(
+            pod.architectures)
+        mock_compose = self.patch(ComposeMachineForm, 'compose')
+        mock_compose.side_effect = compose_machine
+        response = self.client.post(
+            reverse('machines_handler'), {
+                'op': 'allocate',
+                'cpu_count': pod.hints.cores,
+                'mem': pod.hints.memory,
+                'arch': 'amd64'
+                })
+        self.assertEqual(http.client.CONFLICT, response.status_code)
 
     def test_POST_allocate_returns_a_composed_machine_wildcard_arch(self):
         # The "allocate" operation returns a composed machine.
@@ -1047,7 +1117,7 @@ class TestMachinesAPI(APITestCase.ForUser):
         machine = factory.make_Node(
             status=NODE_STATUS.READY, with_boot_disk=True)
         machine_tag_names = ["fast", "stable", "cute"]
-        machine.tags = [factory.make_Tag(t) for t in machine_tag_names]
+        machine.tags.set(factory.make_Tag(t) for t in machine_tag_names)
         # Legacy call using comma-separated tags.
         response = self.client.post(reverse('machines_handler'), {
             'op': 'allocate',
@@ -1085,8 +1155,8 @@ class TestMachinesAPI(APITestCase.ForUser):
             status=NODE_STATUS.READY, with_boot_disk=True)
         machine_tag_names = ["fast", "stable", "cute"]
         tags = [factory.make_Tag(t) for t in machine_tag_names]
-        tagged_machine.tags = tags
-        partially_tagged_machine.tags = tags[:-1]
+        tagged_machine.tags.set(tags)
+        partially_tagged_machine.tags.set(tags[:-1])
         # Legacy call using comma-separated tags.
         response = self.client.post(reverse('machines_handler'), {
             'op': 'allocate',
@@ -1137,7 +1207,7 @@ class TestMachinesAPI(APITestCase.ForUser):
         machine = factory.make_Node(
             status=NODE_STATUS.READY, with_boot_disk=True)
         machine_tag_names = ["fast", "stable", "cute"]
-        machine.tags = [factory.make_Tag(t) for t in machine_tag_names]
+        machine.tags.set(factory.make_Tag(t) for t in machine_tag_names)
         # Legacy call using comma-separated tags.
         response = self.client.post(reverse('machines_handler'), {
             'op': 'allocate',
@@ -1152,7 +1222,7 @@ class TestMachinesAPI(APITestCase.ForUser):
         machine = factory.make_Node(
             status=NODE_STATUS.READY, with_boot_disk=True)
         machine_tag_names = ["fast", "stable", "cute"]
-        machine.tags = [factory.make_Tag(t) for t in machine_tag_names]
+        machine.tags.set(factory.make_Tag(t) for t in machine_tag_names)
         # Legacy call using space-separated tags.
         response = self.client.post(reverse('machines_handler'), {
             'op': 'allocate',
@@ -1167,7 +1237,7 @@ class TestMachinesAPI(APITestCase.ForUser):
         machine = factory.make_Node(
             status=NODE_STATUS.READY, with_boot_disk=True)
         machine_tag_names = ["fast", "stable", "cute"]
-        machine.tags = [factory.make_Tag(t) for t in machine_tag_names]
+        machine.tags.set(factory.make_Tag(t) for t in machine_tag_names)
         # Legacy call using comma-and-space-separated tags.
         response = self.client.post(reverse('machines_handler'), {
             'op': 'allocate',
@@ -1182,7 +1252,7 @@ class TestMachinesAPI(APITestCase.ForUser):
         machine = factory.make_Node(
             status=NODE_STATUS.READY, with_boot_disk=True)
         machine_tag_names = ["fast", "stable", "cute"]
-        machine.tags = [factory.make_Tag(t) for t in machine_tag_names]
+        machine.tags.set(factory.make_Tag(t) for t in machine_tag_names)
         # Mixed call using comma-separated tags in a list.
         response = self.client.post(reverse('machines_handler'), {
             'op': 'allocate',
@@ -1350,11 +1420,11 @@ class TestMachinesAPI(APITestCase.ForUser):
         # tags.
         machine1 = factory.make_Node(
             status=NODE_STATUS.READY, with_boot_disk=True)
-        machine1.tags = [
-            factory.make_Tag(t) for t in ("fast", "stable", "cute")]
+        machine1.tags.set(
+            factory.make_Tag(t) for t in ("fast", "stable", "cute"))
         machine2 = factory.make_Node(
             status=NODE_STATUS.READY, with_boot_disk=True)
-        machine2.tags = [factory.make_Tag("cheap")]
+        machine2.tags.set([factory.make_Tag("cheap")])
         response = self.client.post(reverse('machines_handler'), {
             'op': 'allocate',
             'tags': 'fast, cheap',
@@ -1365,7 +1435,7 @@ class TestMachinesAPI(APITestCase.ForUser):
         # Asking for a tag that does not exist gives a specific error.
         machine = factory.make_Node(
             status=NODE_STATUS.READY, with_boot_disk=True)
-        machine.tags = [factory.make_Tag("fast")]
+        machine.tags.set([factory.make_Tag("fast")])
         response = self.client.post(reverse('machines_handler'), {
             'op': 'allocate',
             'tags': 'fast, hairy, boo',

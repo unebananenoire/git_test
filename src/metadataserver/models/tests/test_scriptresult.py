@@ -23,10 +23,12 @@ from maastesting.matchers import (
     DocTestMatches,
     MockCalledOnceWith,
 )
+from metadataserver.builtin_scripts.hooks import NODE_INFO_SCRIPTS
 from metadataserver.enum import (
     RESULT_TYPE,
     SCRIPT_STATUS,
     SCRIPT_STATUS_CHOICES,
+    SCRIPT_TYPE,
 )
 from metadataserver.models import scriptresult as scriptresult_module
 from provisioningserver.events import EVENT_TYPES
@@ -67,30 +69,6 @@ class TestScriptResult(MAASServerTestCase):
         self.assertRaises(
             AssertionError, script_result.store_result, random.randint(0, 255))
 
-    def test_store_result_only_allows_when_output_is_blank(self):
-        script_result = factory.make_ScriptResult(
-            status=SCRIPT_STATUS.RUNNING, output=factory.make_bytes())
-        self.assertRaises(
-            AssertionError, script_result.store_result, random.randint(0, 255))
-
-    def test_store_result_only_allows_when_stdout_is_blank(self):
-        script_result = factory.make_ScriptResult(
-            status=SCRIPT_STATUS.RUNNING, stdout=factory.make_bytes())
-        self.assertRaises(
-            AssertionError, script_result.store_result, random.randint(0, 255))
-
-    def test_store_result_only_allows_when_stderr_is_blank(self):
-        script_result = factory.make_ScriptResult(
-            status=SCRIPT_STATUS.RUNNING, stderr=factory.make_bytes())
-        self.assertRaises(
-            AssertionError, script_result.store_result, random.randint(0, 255))
-
-    def test_store_result_only_allows_when_result_is_blank(self):
-        script_result = factory.make_ScriptResult(
-            status=SCRIPT_STATUS.RUNNING, result=factory.make_bytes())
-        self.assertRaises(
-            AssertionError, script_result.store_result, random.randint(0, 255))
-
     def test_store_result_allows_controllers_to_overwrite(self):
         node = factory.make_Node(node_type=random.choice([
             NODE_TYPE.REGION_AND_RACK_CONTROLLER, NODE_TYPE.REGION_CONTROLLER,
@@ -119,19 +97,12 @@ class TestScriptResult(MAASServerTestCase):
         script_result = factory.make_ScriptResult(status=SCRIPT_STATUS.RUNNING)
         script_result.store_result(random.randint(0, 255), timedout=True)
         self.assertEquals(SCRIPT_STATUS.TIMEDOUT, script_result.status)
-        self.assertIsNone(script_result.exit_status)
 
     def test_store_result_sets_status_to_passed_with_exit_code_zero(self):
         script_result = factory.make_ScriptResult(status=SCRIPT_STATUS.RUNNING)
         script_result.store_result(0)
         self.assertEquals(SCRIPT_STATUS.PASSED, script_result.status)
         self.assertEquals(0, script_result.exit_status)
-        self.assertEquals(b'', script_result.output)
-        self.assertEquals(b'', script_result.stdout)
-        self.assertEquals(b'', script_result.stderr)
-        self.assertEquals(b'', script_result.result)
-        self.assertEquals(
-            script_result.script.script, script_result.script_version)
 
     def test_store_result_sets_status_to_failed_with_exit_code_non_zero(self):
         script_result = factory.make_ScriptResult(status=SCRIPT_STATUS.RUNNING)
@@ -139,12 +110,6 @@ class TestScriptResult(MAASServerTestCase):
         script_result.store_result(exit_status)
         self.assertEquals(SCRIPT_STATUS.FAILED, script_result.status)
         self.assertEquals(exit_status, script_result.exit_status)
-        self.assertEquals(b'', script_result.output)
-        self.assertEquals(b'', script_result.stdout)
-        self.assertEquals(b'', script_result.stderr)
-        self.assertEquals(b'', script_result.result)
-        self.assertEquals(
-            script_result.script.script, script_result.script_version)
 
     def test_store_result_sets_status_to_install_failed_when_install(self):
         script_result = factory.make_ScriptResult(
@@ -154,12 +119,6 @@ class TestScriptResult(MAASServerTestCase):
         self.assertEquals(
             SCRIPT_STATUS.FAILED_INSTALLING, script_result.status)
         self.assertEquals(exit_status, script_result.exit_status)
-        self.assertEquals(b'', script_result.output)
-        self.assertEquals(b'', script_result.stdout)
-        self.assertEquals(b'', script_result.stderr)
-        self.assertEquals(b'', script_result.result)
-        self.assertEquals(
-            script_result.script.script, script_result.script_version)
 
     def test_store_result_stores_output(self):
         script_result = factory.make_ScriptResult(status=SCRIPT_STATUS.RUNNING)
@@ -170,11 +129,6 @@ class TestScriptResult(MAASServerTestCase):
 
         self.assertEquals(exit_status, script_result.exit_status)
         self.assertEquals(output, script_result.output)
-        self.assertEquals(b'', script_result.stdout)
-        self.assertEquals(b'', script_result.stderr)
-        self.assertEquals(b'', script_result.result)
-        self.assertEquals(
-            script_result.script.script, script_result.script_version)
 
     def test_store_result_stores_stdout(self):
         script_result = factory.make_ScriptResult(status=SCRIPT_STATUS.RUNNING)
@@ -184,12 +138,7 @@ class TestScriptResult(MAASServerTestCase):
         script_result.store_result(exit_status, stdout=stdout)
 
         self.assertEquals(exit_status, script_result.exit_status)
-        self.assertEquals(b'', script_result.output)
         self.assertEquals(stdout, script_result.stdout)
-        self.assertEquals(b'', script_result.stderr)
-        self.assertEquals(b'', script_result.result)
-        self.assertEquals(
-            script_result.script.script, script_result.script_version)
 
     def test_store_result_stores_stderr(self):
         script_result = factory.make_ScriptResult(status=SCRIPT_STATUS.RUNNING)
@@ -199,12 +148,7 @@ class TestScriptResult(MAASServerTestCase):
         script_result.store_result(exit_status, stderr=stderr)
 
         self.assertEquals(exit_status, script_result.exit_status)
-        self.assertEquals(b'', script_result.output)
-        self.assertEquals(b'', script_result.stdout)
         self.assertEquals(stderr, script_result.stderr)
-        self.assertEquals(b'', script_result.result)
-        self.assertEquals(
-            script_result.script.script, script_result.script_version)
 
     def test_store_result_stores_result(self):
         script_result = factory.make_ScriptResult(status=SCRIPT_STATUS.RUNNING)
@@ -218,12 +162,7 @@ class TestScriptResult(MAASServerTestCase):
             exit_status, result=yaml.safe_dump(result).encode())
 
         self.assertEquals(exit_status, script_result.exit_status)
-        self.assertEquals(b'', script_result.output)
-        self.assertEquals(b'', script_result.stdout)
-        self.assertEquals(b'', script_result.stderr)
         self.assertDictEqual(result, script_result.read_results())
-        self.assertEquals(
-            script_result.script.script, script_result.script_version)
 
     def test_store_result_logs_invalid_result_yaml(self):
         mock_logger = self.patch(scriptresult_module.logger, 'error')
@@ -278,10 +217,6 @@ class TestScriptResult(MAASServerTestCase):
             exit_status, script_version_id=old_version.id)
 
         self.assertEquals(exit_status, script_result.exit_status)
-        self.assertEquals(b'', script_result.output)
-        self.assertEquals(b'', script_result.stdout)
-        self.assertEquals(b'', script_result.stderr)
-        self.assertEquals(b'', script_result.result)
         self.assertEquals(old_version, script_result.script_version)
 
     def test_store_result_sets_script_version_to_latest_when_not_given(self):
@@ -293,10 +228,6 @@ class TestScriptResult(MAASServerTestCase):
         script_result.store_result(exit_status)
 
         self.assertEquals(exit_status, script_result.exit_status)
-        self.assertEquals(b'', script_result.output)
-        self.assertEquals(b'', script_result.stdout)
-        self.assertEquals(b'', script_result.stderr)
-        self.assertEquals(b'', script_result.result)
         self.assertEquals(script.script, script_result.script_version)
 
     def test_store_result_logs_missing_script_version(self):
@@ -337,7 +268,8 @@ class TestScriptResult(MAASServerTestCase):
         self.assertThat(
             mock_hook,
             MockCalledOnceWith(
-                node=script_set.node, output=b'', exit_status=exit_status))
+                node=script_set.node, output=script_result.stdout,
+                exit_status=exit_status))
 
     def test_store_result_logs_event_upon_hook_failure(self):
         script_set = factory.make_ScriptSet(
@@ -359,6 +291,50 @@ class TestScriptResult(MAASServerTestCase):
         self.assertThat(
             expected_event.description,
             DocTestMatches("...failed during post-processing."))
+
+    def test_store_result_on_recommission_script_resets_builtin_commiss(self):
+        script_set = factory.make_ScriptSet(
+            result_type=RESULT_TYPE.COMMISSIONING)
+        for script_name in NODE_INFO_SCRIPTS.keys():
+            factory.make_ScriptResult(
+                script_name=script_name, script_set=script_set,
+                status=SCRIPT_STATUS.PENDING)
+        script = factory.make_Script(
+            script_type=SCRIPT_TYPE.COMMISSIONING, recommission=True)
+        script_result = factory.make_ScriptResult(
+            script=script, script_set=script_set, status=SCRIPT_STATUS.PENDING)
+
+        script_result.store_result(0)
+
+        for script_result in script_set:
+            if script_result.name in NODE_INFO_SCRIPTS:
+                self.assertEquals(SCRIPT_STATUS.PENDING, script_result.status)
+                self.assertIsNone(script_result.started)
+                self.assertIsNone(script_result.ended)
+            else:
+                self.assertEquals(SCRIPT_STATUS.PASSED, script_result.status)
+
+    def test_store_result_on_recommission_script_failure_does_nothing(self):
+        script_set = factory.make_ScriptSet(
+            result_type=RESULT_TYPE.COMMISSIONING)
+        for script_name in NODE_INFO_SCRIPTS.keys():
+            factory.make_ScriptResult(
+                script_name=script_name, script_set=script_set,
+                status=SCRIPT_STATUS.PASSED)
+        script = factory.make_Script(
+            script_type=SCRIPT_TYPE.COMMISSIONING, recommission=True)
+        script_result = factory.make_ScriptResult(
+            script=script, script_set=script_set, status=SCRIPT_STATUS.PENDING)
+
+        script_result.store_result(1)
+
+        for script_result in script_set:
+            if script_result.name in NODE_INFO_SCRIPTS:
+                self.assertEquals(SCRIPT_STATUS.PASSED, script_result.status)
+                self.assertIsNotNone(script_result.started)
+                self.assertIsNotNone(script_result.ended)
+            else:
+                self.assertEquals(SCRIPT_STATUS.FAILED, script_result.status)
 
     def test_save_stores_start_time(self):
         script_result = factory.make_ScriptResult(status=SCRIPT_STATUS.PENDING)

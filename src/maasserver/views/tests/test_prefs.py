@@ -1,4 +1,4 @@
-# Copyright 2012-2016 Canonical Ltd.  This software is licensed under the
+# Copyright 2012-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Test maasserver preferences views."""
@@ -10,9 +10,19 @@ import http.client
 from apiclient.creds import convert_tuple_to_string
 from django.contrib.auth.models import User
 from lxml.html import fromstring
+from maasserver.models import (
+    Event,
+    SSLKey,
+)
 from maasserver.models.user import get_creds_tuple
-from maasserver.testing import get_prefixed_form_data
+from maasserver.testing import (
+    get_data,
+    get_prefixed_form_data,
+)
+from maasserver.testing.factory import factory
 from maasserver.testing.testcase import MAASServerTestCase
+from maasserver.utils.django_urls import reverse
+from provisioningserver.events import AUDIT
 
 
 class UserPrefsViewTest(MAASServerTestCase):
@@ -82,3 +92,29 @@ class UserPrefsViewTest(MAASServerTestCase):
         user = User.objects.get(id=self.logged_in_user.id)
         # The password is SHA1ized, we just make sure that it has changed.
         self.assertNotEqual(old_pw, user.password)
+        event = Event.objects.get(type__level=AUDIT)
+        self.assertIsNotNone(event)
+        self.assertEqual(
+            event.description, "Password changed for '%(username)s'.")
+
+    def test_create_ssl_key_POST(self):
+        self.client_log_in(as_admin=True)
+        key_string = get_data('data/test_x509_0.pem')
+        params = {'key': key_string}
+        response = self.client.post(reverse('prefs-add-sslkey'), params)
+        sslkey = SSLKey.objects.get(user=self.logged_in_user)
+        self.assertEqual(http.client.FOUND, response.status_code)
+        self.assertIsNotNone(sslkey)
+        self.assertEqual(key_string, sslkey.key)
+
+    def test_delete_ssl_key_POST_creates_audit_event(self):
+        self.client_log_in(as_admin=True)
+        sslkey = factory.make_SSLKey(self.logged_in_user)
+        keyid = sslkey.id
+        del_link = reverse('prefs-delete-sslkey', args=[keyid])
+        self.client.post(del_link, {'post': 'yes'})
+        event = Event.objects.get(type__level=AUDIT)
+        self.assertIsNotNone(event)
+        self.assertEqual(
+            event.description,
+            "SSL key id=%s" % keyid + " deleted by '%(username)s'.")

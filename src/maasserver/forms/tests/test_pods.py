@@ -1,4 +1,4 @@
-# Copyright 2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2017-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 """Tests for pod forms."""
@@ -782,6 +782,36 @@ class TestComposeMachineForm(MAASTransactionServerTestCase):
         # Mock start_commissioning so it doesn't use post commit hooks.
         mock_commissioning = self.patch(Machine, "start_commissioning")
 
+        form = ComposeMachineForm(
+            data={"skip_commissioning": 'true'}, request=request, pod=pod)
+        self.assertTrue(form.is_valid())
+        created_machine = form.compose()
+        self.assertThat(created_machine, MatchesAll(
+            IsInstance(Machine),
+            MatchesStructure(
+                cpu_count=Equals(1),
+                memory=Equals(1024),
+                cpu_speed=Equals(300))))
+        self.assertThat(mock_commissioning, MockNotCalled())
+
+    def test__compose_with_skip_commissioning_passed(self):
+        request = MagicMock()
+        pod = make_pod_with_hints()
+
+        # Mock the RPC client.
+        client = MagicMock()
+        mock_getClient = self.patch(pods_module, "getClientFromIdentifiers")
+        mock_getClient.return_value = succeed(client)
+
+        # Mock the result of the composed machine.
+        composed_machine, pod_hints = self.make_compose_machine_result(pod)
+        mock_compose_machine = self.patch(pods_module, "compose_machine")
+        mock_compose_machine.return_value = succeed(
+            (composed_machine, pod_hints))
+
+        # Mock start_commissioning so it doesn't use post commit hooks.
+        mock_commissioning = self.patch(Machine, "start_commissioning")
+
         form = ComposeMachineForm(data={}, request=request, pod=pod)
         self.assertTrue(form.is_valid())
         created_machine = form.compose(skip_commissioning=True)
@@ -813,9 +843,10 @@ class TestComposeMachineForm(MAASTransactionServerTestCase):
         form = ComposeMachineForm(data={
             "domain": domain.id,
             "zone": zone.id,
+            "skip_commissioning": 'true',
         }, request=request, pod=pod)
         self.assertTrue(form.is_valid())
-        created_machine = form.compose(skip_commissioning=True)
+        created_machine = form.compose()
         self.assertThat(created_machine, MatchesAll(
             IsInstance(Machine),
             MatchesStructure(

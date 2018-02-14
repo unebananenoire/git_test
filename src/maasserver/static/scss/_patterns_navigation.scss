@@ -36,8 +36,8 @@
         @extend .p-navigation__links;
 
         @media (min-width: $breakpoint-navigation-threshold) {
-          justify-content: flex-end;
-          margin-left: auto;
+          position: absolute;
+          right: 0;
         }
       }
 

@@ -1,4 +1,4 @@
-# Copyright 2015-2017 Canonical Ltd.  This software is licensed under the
+# Copyright 2015-2018 Canonical Ltd.  This software is licensed under the
 # GNU Affero General Public License version 3 (see the file LICENSE).
 
 __all__ = [
@@ -113,6 +113,7 @@ DISPLAYED_MACHINE_FIELDS = (
     'min_hwe_kernel',
     'hwe_kernel',
     'cpu_count',
+    'cpu_speed',
     'memory',
     'swap_size',
     'storage',
@@ -159,6 +160,7 @@ DISPLAYED_MACHINE_FIELDS = (
     'storage_test_status_name',
     'other_test_status',
     'other_test_status_name',
+    'hardware_info',
 )
 
 # Limited set of machine fields exposed on the anonymous API.
@@ -1406,7 +1408,7 @@ class MachinesHandler(NodesHandler, PowersMixin):
         :type tags: unicode (accepts multiple)
         :param zone: Physical zone name the machine must be located in.
         :type zone: unicode
-        :type not_in_zone: List of physical zones from which the machine must
+        :param not_in_zone: List of physical zones from which the machine must
             not be acquired.
 
             If multiple zones are specified, the machine must NOT be
@@ -1609,7 +1611,8 @@ class MachinesHandler(NodesHandler, PowersMixin):
                     "architecture": architecture,
                     "storage": storage,
                 }
-                pods = Pod.objects.all()
+                pods = Pod.objects.filter(
+                    default_pool__role__users=request.user)
                 # We don't want to compose a machine from a pod if the
                 # constraints contain tags.
                 if pods and not any(

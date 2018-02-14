@@ -14,7 +14,6 @@ override_dh_auto_test:
 
 override_dh_installinit:
 	dh_installinit -p maas-region-api --name=maas-regiond --no-start
-	dh_installinit -p maas-region-api --name=maas-regiond-worker@  --no-start
 	dh_installinit -p maas-rack-controller --name=maas-rackd
 	dh_installinit -p maas-proxy --name=maas-proxy
 	dh_installinit -p maas-dhcp --name=maas-dhcpd
@@ -60,12 +59,6 @@ override_dh_auto_install:
 	install -d -m 755 $(CURDIR)/debian/tmp/etc/apparmor.d/dhcpd.d
 	install -m 644 $(CURDIR)/debian/maas-dhcp.apparmor \
 	    $(CURDIR)/debian/tmp/etc/apparmor.d/dhcpd.d/maas
-
-	# install python3 twisted plugins
-	set -ex; for python in $(PYTHON3); do \
-		dh_install twisted/plugins/maasregiond.py usr/lib/$$python/dist-packages/twisted/plugins -pmaas-region-api; \
-		dh_install twisted/plugins/maasrackd.py usr/lib/$$python/dist-packages/twisted/plugins -pmaas-rack-controller; \
-	done
 
 	dh_install --list-missing
 

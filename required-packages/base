@@ -1,9 +1,9 @@
-apache2
 archdetect-deb
 authbind
 bind9
 bind9utils
 daemontools
+devscripts
 distro-info
 dnsutils
 freeipmi-tools
@@ -15,6 +15,7 @@ libjs-yui3-min
 libpq-dev
 lshw
 postgresql
+pxelinux
 python3-all
 python3-apt
 python3-attr
@@ -33,6 +34,7 @@ python3-hivex
 python3-httplib2
 python3-jsonschema
 python3-lxml
+python3-macaroonbakery
 python3-novaclient
 python3-netaddr
 python3-netifaces
@@ -54,9 +56,10 @@ python3-tempita
 python3-twisted
 python3-txtftp
 python3-tz
+python3-uvloop
 python3-yaml
 python3-zope.interface
+snapcraft
 syslinux-common
-tgt
-ubuntu-cloudimage-keyring
+ubuntu-keyring
 wget
