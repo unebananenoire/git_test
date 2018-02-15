@@ -26,7 +26,6 @@
                                 <td class="col-3" data-ng-click="result.showing_results = !result.showing_results" aria-label="Name">
                                     <span data-maas-script-status="script-status" data-script-status="result.status"></span>
                                     {$ result.name $}
-                                    <button class="p-button--base u-float--right" data-ng-class="{'p-icon--chevron': !result.showing_results, 'p-icon--close': result.showing_results}" data-ng-if="!result.showing_history"></button>
                                 </td>
                                 <td class="col-2" aria-label="Tags"><span data-ng-hide="result.showing_history">{$ result.tags $}</span></td>
                                 <td class="col-1" aria-label="Runtime"><span data-ng-hide="result.showing_history" data-maas-script-run-time="script-runtime" data-start-time="result.starttime" data-run-time="{{result.runtime}}" data-estimated-run-time="{{result.estimated_runtime}}" data-script-status="result.status"></span></td>
@@ -51,7 +50,7 @@
                                     </div>
                                 </td>
 
-                                <td class="p-table-expanding__panel" aria-label="results" data-ng-if="result.showing_results && !result.showing_history">
+                                <td class="p-table-expanding__panel col-12" aria-label="results" data-ng-if="result.showing_results && !result.showing_history">
                                     <div class="row">
                                         <div class="col-12" data-ng-if="result.results.length === 0">No metrics provided</div>
                                     </div>
@@ -66,7 +65,7 @@
                                     </div>
                                 </td>
 
-                                <td class="p-table-expanding__panel" aria-label="history" data-ng-if="result.showing_history">
+                                <td class="p-table-expanding__panel col-12" aria-label="history" data-ng-if="result.showing_history">
                                     <div class="row">
                                         <div class="col-12">
                                             <table>
