@@ -161,7 +161,7 @@ Y.extend(TokenWidget, Y.Widget, {
                         .set('value', token)))
             .append(Y.Node.create(
                 '<div class="col-1 u-vertically-center">' +
-                '<a class="p-tooltip p-tooltip--top-centerjs-delete-link">' +
+                '<a class="p-tooltip p-tooltip--top-center js-delete-link">' +
                 '<i class="p-icon--delete"></i>' +
                 '<span class="p-tooltip__message" role="tooltip">' +
                 'Delete API key</span></a></div>'))
