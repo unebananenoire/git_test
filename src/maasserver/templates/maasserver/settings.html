@@ -51,7 +51,7 @@
                         {% for user_item in user_list %}
                         <tr id="{{ user_item.username }}">
                             <td aria-label="User">
-                                <a href="{% url 'accounts-view' user_item.username %}">{{ user_item.username }}</a>
+                                <a class="user" href="{% url 'accounts-view' user_item.username %}">{{ user_item.username }}</a>
                             </td>
                             <td aria-label="Number of nodes in use">{{ user_item.node_set.count }}</td>
                             <td aria-label="Last seen">{{ user_item.last_login }}</td>
