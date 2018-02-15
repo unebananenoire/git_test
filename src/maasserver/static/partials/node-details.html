@@ -1752,7 +1752,7 @@
                         <table class="p-table-expanding">
                             <thead>
                                 <tr>
-                                    <th class="col-3">
+                                    <th class="col-2">
                                         <input type="checkbox" class="checkbox u-float--left" id="available-check-all"
                                             data-ng-hide="isAvailableDisabled()"
                                             data-ng-checked="availableAllSelected"
@@ -1765,12 +1765,12 @@
                                         <span class="divide"> | </span>
                                         <a data-ng-click="tableInfo.column = 'serial'" data-ng-class="{'p-link--soft': tableInfo.column === 'serial'}">Serial</a>
                                     </th>
-                                    <th class="col-1">Fireware version</th>
-                                    <th class="col-1 u-align--center">Boot</th>
+                                    <th class="col-2">Fireware version</th>
+                                    <th class="col-1"><div class="u-align--center">Boot</div></th>
                                     <th class="col-1">Size</th>
                                     <th class="col-1">Device Type</th>
                                     <th class="col-1">Filesystem</th>
-                                    <th class="col-1">Tags</th>
+                                    <th class="col-2">Tags</th>
                                     <th class="col-1">Health</th>
                                     <th class="col-1 u-align--center">Actions</th>
                                 </tr>
@@ -1783,7 +1783,7 @@
                                 </tr>
                                 <tr data-ng-repeat="item in available | removeAvailableByNew:availableNew"
                                     data-ng-class="{ 'is-active': item.$selected }">
-                                    <td class="col-3 p-form-validation" aria-label="Name"
+                                    <td class="col-2 p-form-validation" aria-label="Name"
                                         data-ng-class="{ 'is-error': isNameInvalid(item) }">
                                         <input type="checkbox" class="checkbox u-float--left" id="{$ item.name $}"
                                             data-ng-hide="isAvailableDisabled()"
@@ -1800,15 +1800,17 @@
                                             data-ng-disabled="item.type === 'partition' || isAllStorageDisabled() || !isSuperUser()"
                                             data-ng-change="nameHasChanged(item)">
                                     </td>
-                                    <td class="col-1" aria-label="Firmware Version">{$ item.firmware_version $}</td>
-                                    <td class="col-1 u-align--center" aria-label="Boot">
-                                        <input type="radio" name="boot-disk" id="{$ item.name $}-boot"
-                                            data-ng-click="setAsBootDisk(item)"
-                                            data-ng-checked="item.is_boot"
-                                            data-ng-if="item.type === 'physical'"
-                                            data-ng-disabled="isBootDiskDisabled(item, 'available')"
-                                            data-ng-hide="availableMode === 'edit' && item.$selected">
-                                        <label for="{$ item.name $}-boot" data-ng-hide="availableMode === 'edit' && item.$selected"></label>
+                                    <td class="col-2" aria-label="Firmware Version">{$ item.firmware_version $}</td>
+                                    <td class="col-1" aria-label="Boot">
+                                        <div class="u-align--center">
+                                            <input type="radio" name="boot-disk" id="{$ item.name $}-boot" class="u-no-margin--right"
+                                                data-ng-click="setAsBootDisk(item)"
+                                                data-ng-checked="item.is_boot"
+                                                data-ng-if="item.type === 'physical'"
+                                                data-ng-disabled="isBootDiskDisabled(item, 'available')"
+                                                data-ng-hide="availableMode === 'edit' && item.$selected">
+                                            <label for="{$ item.name $}-boot" data-ng-hide="availableMode === 'edit' && item.$selected"></label>
+                                        </div>
                                     </td>
                                     <td class="col-1" aria-label="Size">
                                         <span data-ng-hide="availableMode === 'edit' && item.$selected">
@@ -1818,10 +1820,10 @@
                                     <td class="col-1" aria-label="Device type">
                                         <span data-ng-hide="availableMode === 'edit' && item.$selected">{$ getDeviceType(item) $}</span>
                                     </td>
-                                    <td class="col-2" aria-label="Filesystem">
+                                    <td class="col-1" aria-label="Filesystem">
                                         <span data-ng-hide="availableMode === 'edit' && item.$selected">{$ item.fstype $}</span>
                                     </td>
-                                    <td class="col-1" aria-label="Tags">
+                                    <td class="col-2" aria-label="Tags">
                                         <span class="table__tag" data-ng-repeat="tag in item.tags" data-ng-hide="item.$options.editingTags">
                                             <a href="#/node/?query=storage_tags:({$ tag.text $})">{$ tag.text $}</a>
                                         </span>
@@ -1858,7 +1860,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="p-table-expanding__panel"
+                                    <td class="p-table-expanding__panel col-12"
                                         data-ng-if="(availableMode === 'edit' || availableMode === 'format-mount' || availableMode === 'partition' || availableMode === 'logical-volume' || availableMode === 'delete') && item.$selected">
                                         <div class="row" data-ng-if="windowWidth <= 768">
                                             <div class="col-8">
@@ -2569,18 +2571,18 @@
                     <table>
                         <thead>
                             <tr>
-                                <th class="col-3">
+                                <th class="col-2">
                                     <a data-ng-click="tableInfo.column = 'name'" data-ng-class="{'p-link--soft': tableInfo.column === 'name'}">Name</a>
                                     <span class="divide"> | </span>
                                     <a data-ng-click="tableInfo.column = 'model'" data-ng-class="{'p-link--soft': tableInfo.column === 'model'}">Model</a>
                                     <span class="divide"> | </span>
                                     <a data-ng-click="tableInfo.column = 'serial'" data-ng-class="{'p-link--soft': tableInfo.column === 'serial'}">Serial</a>
                                 </th>
-                                <th class="col-1">Fireware version</th>
-                                <th class="col-1 u-align--center">Boot</th>
-                                <th class="col-1">Device type</th>
+                                <th class="col-2">Fireware version</th>
+                                <th class="col-1"><div class="u-align--center">Boot</div></th>
+                                <th class="col-2">Device type</th>
                                 <th class="col-3">Used for</th>
-                                <th class="col-3">Health</th>
+                                <th class="col-2">Health</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2590,23 +2592,25 @@
                                 </td>
                             </tr>
                             <tr data-ng-repeat="item in used" class="table__row details__used">
-                                <td class="col-3" aria-label="Name">
+                                <td class="col-2" aria-label="Name">
                                     <span data-ng-show="tableInfo.column === 'name'">{$ item.name $}</span>
                                     <span data-ng-show="tableInfo.column === 'model'">{$ item.model $}</span>
                                     <span data-ng-show="tableInfo.column === 'serial'">{$ item.serial $}</span>
                                 </td>
-                                <td class="col-1" aria-label="Firmware version">{$ item.firmware_version $}</td>
-                                <td class="col-1 u-align--center" aria-label="Boot disk">
-                                    <input type="radio" id="{$ item.name $}-boot" name="boot-disk"
-                                        data-ng-click="setAsBootDisk(item)"
-                                        data-ng-checked="item.is_boot"
-                                        data-ng-if="item.type === 'physical'"
-                                        data-ng-disabled="isBootDiskDisabled(item, 'used')">
-                                    <label for="{$ item.name $}-boot"></label>
+                                <td class="col-2" aria-label="Firmware version">{$ item.firmware_version $}</td>
+                                <td class="col-1" aria-label="Boot disk">
+                                    <div class="u-align--center">
+                                        <input type="radio" id="{$ item.name $}-boot" name="boot-disk"
+                                            data-ng-click="setAsBootDisk(item)"
+                                            data-ng-checked="item.is_boot"
+                                            data-ng-if="item.type === 'physical'"
+                                            data-ng-disabled="isBootDiskDisabled(item, 'used')">
+                                        <label for="{$ item.name $}-boot"></label>
+                                    </div>
                                 </td>
-                                <td class="col-1" aria-label="Device type">{$ getDeviceType(item) $}</td>
+                                <td class="col-2" aria-label="Device type">{$ getDeviceType(item) $}</td>
                                 <td class="col-3" aria-label="Used for">{$ item.used_for $}</td>
-                                <td class="col-3" aria-label="Health">
+                                <td class="col-2" aria-label="Health">
                                     <span data-ng-if="item.type === 'physical'">
                                         <span data-maas-script-status="script-status" data-script-status="item.test_status"></span>
                                         <span data-ng-if="item.test_status === 0 || item.test_status === 1 || item.test_status === 2 || item.test_status === 5 || item.test_status === 7">Ok</span>
