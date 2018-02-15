@@ -878,7 +878,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="p-table-expanding__panel" data-ng-if="isShowingMembers(interface)">
+                                <td class="p-table-expanding__panel col-12" data-ng-if="isShowingMembers(interface)">
                                     <div class="row" data-ng-class="{ 'is-active': isShowingMembers(interface) }"
                                         data-ng-repeat="member in interface.members"
                                         data-ng-show="isShowingMembers(interface)">
@@ -890,7 +890,7 @@
                                     </div>
                                 </td>
 
-                                <td class="p-table-expanding__panel" data-ng-if="!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)">
+                                <td class="p-table-expanding__panel col-12" data-ng-if="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving">
                                     <div class="row" data-ng-if="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving">
                                         <div class="table__dropdown-title" data-ng-if="windowWidth <= 768">
                                             <h2 data-ng-click="cancel()" class="u-float--left">
@@ -1112,7 +1112,7 @@
                                     <label for="{$ newBondInterface $}"></label>
                                 </td>
                                 <td class="col-8"></td>
-                                <td class="p-table-expanding__panel">
+                                <td class="p-table-expanding__panel col-12">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-8">
                                             <h2 data-ng-click="cancel()" class="col-8">&lsaquo;&nbsp;&nbsp;
@@ -1227,7 +1227,7 @@
                                     <label for="{$ newBridgeInterface $}"></label>
                                 </td>
                                 <td class="col-8"></td>
-                                <td class="p-table-expanding__panel" data-ng-if="isShowingCreateBridge() && !isAllNetworkingDisabled()">
+                                <td class="p-table-expanding__panel col-12" data-ng-if="isShowingCreateBridge() && !isAllNetworkingDisabled()">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-6">
                                             <h2 data-ng-click="cancel()" class="u-float--left">&lsaquo;&nbsp;&nbsp;
@@ -1317,7 +1317,7 @@
                                         data-ng-model="newInterface.name">
                                 </td>
                                 <td class="col-10"></td>
-                                <td class="p-table-expanding__panel">
+                                <td class="p-table-expanding__panel col-12">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-8">
                                             <h2 data-ng-click="cancel()">&lsaquo;&nbsp;&nbsp;New interface</h2>
@@ -1577,7 +1577,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="p-table-expanding__panel" data-ng-if="filesystemMode === 'unmount' || filesystemMode === 'delete'">
+                                <td class="p-table-expanding__panel col-12" data-ng-if="filesystemMode === 'unmount' || filesystemMode === 'delete'">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-8">
                                             <h2 data-ng-click="filesystemCancel()">
@@ -1614,7 +1614,7 @@
 
                             <tr class="is-active" data-ng-if="dropdown" data-ng-switch="dropdown">
                                 <!-- Adding a new TMPFS or RAMFPS file system -->
-                                <td class="p-table-expanding__panel" data-ng-controller="NodeAddSpecialFilesystemController" data-ng-switch-when="special">
+                                <td class="p-table-expanding__panel col-12" data-ng-controller="NodeAddSpecialFilesystemController" data-ng-switch-when="special">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-8">
                                             <h2 data-ng-click="cancel()">Adding filesystem</h2>
@@ -1711,7 +1711,7 @@
                                                 data-ng-click="toggleMenu(); quickCacheSetDelete(cacheset)">Remove cacheset</button>
                                         </div>
                                     </td>
-                                    <td class="p-table-expanding__panel" data-ng-if="cachesetsMode === 'delete'">
+                                    <td class="p-table-expanding__panel col-12" data-ng-if="cachesetsMode === 'delete'">
                                         <div class="row" data-ng-if="windowWidth <= 768">
                                             <div class="col-8">
                                                 <h2 data-ng-click="filesystemCancel()">
@@ -1858,7 +1858,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="p-table-expanding__panel"
+                                    <td class="p-table-expanding__panel col-12"
                                         data-ng-if="(availableMode === 'edit' || availableMode === 'format-mount' || availableMode === 'partition' || availableMode === 'logical-volume' || availableMode === 'delete') && item.$selected">
                                         <div class="row" data-ng-if="windowWidth <= 768">
                                             <div class="col-8">
@@ -2194,7 +2194,7 @@
                                     <td class="col-2"></td>
                                     <td class="col-4"></td>
                                     <td class="col-1"></td>
-                                    <td class="p-table-expanding__panel">
+                                    <td class="p-table-expanding__panel col-12">
                                         <div class="row" data-ng-if="windowWidth <= 768">
                                             <div class="col-8">
                                                 <h2 data-ng-click="availableCancel()">Creating Bcache</h2>
@@ -2325,7 +2325,7 @@
                                             data-ng-model="availableNew.name">
                                     </td>
                                     <td class="col-9"></td>
-                                    <td class="p-table-expanding__panel">
+                                    <td class="p-table-expanding__panel col-12">
                                         <div class="row" data-ng-if="windowWidth <= 768">
                                             <div class="col-8">
                                                 <h2 data-ng-click="availableCancel()">Creating RAID</h2>
@@ -2460,7 +2460,7 @@
                                                 data-ng-model="availableNew.name">
                                         </td>
                                         <td class="col-9"></td>
-                                        <td class="p-table-expanding__panel">
+                                        <td class="p-table-expanding__panel col-12">
                                             <div class="row" data-ng-if="windowWidth <= 768">
                                                 <div class="col-8">
                                                     <h2 data-ng-click="availableCancel()">Creating volume group</h2>
