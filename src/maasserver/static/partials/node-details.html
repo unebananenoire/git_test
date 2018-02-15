@@ -890,7 +890,7 @@
                                     </div>
                                 </td>
 
-                                <td class="p-table-expanding__panel col-12" data-ng-if="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving">
+                                <td class="p-table-expanding__panel col-12 u-no-padding"  data-ng-if="isInterfaceSelected(interface)">
                                     <div class="row" data-ng-if="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving">
                                         <div class="table__dropdown-title" data-ng-if="windowWidth <= 768">
                                             <h2 data-ng-click="cancel()" class="u-float--left">
@@ -2646,15 +2646,15 @@
                 <table data-ng-if="node.events.length">
                     <thead>
                         <tr>
-                            <th class="col-10">Event</th>
-                            <th class="col-2">Time</th>
+                            <th class="col-9">Event</th>
+                            <th class="col-3">Time</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
                             data-ng-repeat="event in node.events | orderByDate:'created':'id' | limitTo:events.limit">
-                            <td class="col-10" aria-label="Event"><span class="p-icon--{$ event.type.level $}"></span>{$ getEventText(event) $}</td>
-                            <td class="col-2" aria-label="Created">{$ event.created $}</td>
+                            <td class="col-9" aria-label="Event"><span class="p-icon--{$ event.type.level $}"></span>{$ getEventText(event) $}</td>
+                            <td class="col-3" aria-label="Created">{$ event.created $}</td>
                         </tr>
                     </tbody>
                 </table>
