@@ -876,7 +876,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                         data-ng-model="tabs.nodes.search" data-ng-change="updateFilters('nodes')"
                         data-ng-class="{ error: !tabs.nodes.searchValid }"
                         data-ng-disabled="tabs.nodes.actionOption" />
-                    <button type="reset" class="p-search-box__reset" alt="reset" 
+                    <button type="reset" class="p-search-box__reset" alt="reset"
                         data-ng-click="clearSearch('nodes')"
                         data-ng-show="tabs.nodes.search.length > 0"><i class="p-icon--close"></i></button>
                     <button type="submit" class="p-search-box__button" alt="search"><i class="p-icon--search"></i></button>
@@ -893,9 +893,9 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                 <div class="p-search-box">
                     <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
                     <input
-                        type="search" placeholder="Search devices" 
+                        type="search" placeholder="Search devices"
                         class="p-search-boxh__input p-form-validation__input"
-                        data-ng-model="tabs.devices.search" 
+                        data-ng-model="tabs.devices.search"
                         data-ng-change="updateFilters('devices')"
                         data-ng-disabled="tabs.devices.actionOption" />
                     <button type="reset" class="p-search-box__reset" alt="reset"
@@ -1055,9 +1055,9 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                 data-ng-class="{ 'is-error': !tabs.switches.searchValid }">
             <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
             <input
-                type="search" placeholder="Search switches" 
+                type="search" placeholder="Search switches"
                 class="p-search-box__input p-form-validation__input"
-                data-ng-model="tabs.switches.search" 
+                data-ng-model="tabs.switches.search"
                 data-ng-change="updateFilters('switches')"
                 data-ng-disabled="tabs.switches.actionOption" />
             <button type="reset" class="p-search-box__reset" alt="reset"

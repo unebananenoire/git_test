@@ -89,7 +89,7 @@
                                     </button>
                                 </div>
                             </td>
-                            <td class="p-table-expanding__panel">
+                            <td class="p-table-expanding__panel col-12" data-ng-if="discovery.first_seen === selectedDevice">
                                 <maas-obj-form data-ng-if="discovery.first_seen === selectedDevice"
                                     obj="convertTo" manager="proxyManager" pre-process="preProcess"
                                     after-save="afterSave" table-form="true" save-on-blur="false">
@@ -143,9 +143,9 @@
                                                             disable-label="true" placeholder="Hostname (optional)"></maas-obj-field>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <label class="col-2">Type</label>
-                                                    <div class="col-3">
+                                                <div class="p-form__group u-clearfix">
+                                                    <label class="p-form__label col-2">Type</label>
+                                                    <div class="p-form__control col-3">
                                                         <select name="type" data-ng-model="convertTo.type">
                                                             <option value="" disabled>Choose type</option>
                                                             <option value="device">Device</option>
