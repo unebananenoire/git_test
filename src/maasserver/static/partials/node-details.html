@@ -1545,10 +1545,10 @@
                             <tr>
                                 <th class="col-3">Name</th>
                                 <th class="col-1">Size</th>
-                                <th class="col-1">File system</th>
+                                <th class="col-2">File system</th>
                                 <th class="col-3">Mount point</th>
                                 <th class="col-2">Mount options</th>
-                                <th class="col-2 u-align--right">Actions</th>
+                                <th class="col-1"><div class="u-align--center">Actions</div></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1560,20 +1560,22 @@
                             <tr data-ng-repeat="filesystem in filesystems" data-ng-class="{ 'is-active': filesystem.$selected }">
                                 <td class="col-3" aria-label="Name">{$ filesystem.name $}</td>
                                 <td class="col-1" aria-label="Size">{$ filesystem.size_human $}</td>
-                                <td class="col-1" aria-label="File system">{$ filesystem.fstype $}</td>
+                                <td class="col-2" aria-label="File system">{$ filesystem.fstype $}</td>
                                 <td class="col-3" aria-label="Mount point">{$ filesystem.mount_point $}</td>
                                 <td class="col-2" aria-label="Mount options">{$ filesystem.mount_options $}</td>
-                                <td class="col-2 u-align--right">
-                                    <div class="p-contextual-menu" toggle-ctrl data-ng-if="!isAllStorageDisabled()">
-                                        <button class="p-contextual-menu__toggle" aria-controls="#{$ item.name $}-menu"
-                                            data-ng-click="toggleMenu()" aria-haspopup="true">View actions</button>
-                                        <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled" id="{$ item.name $}-menu">
-                                            <a href="" class="p-contextual-menu__link"
-                                            aria-label="Unmount" data-ng-click="toggleMenu(); quickFilesystemUnmount(filesystem)"
-                                            data-ng-show="!isAllStorageDisabled() && usesStorage(filesystem.fstype)">Unmount</a>
-                                            <a href="" class="p-contextual-menu__link"
-                                            aria-label="Remove" data-ng-click="toggleMenu(); quickFilesystemDelete(filesystem)"
-                                            data-ng-show="!isAllStorageDisabled()">Remove&hellip;</a>
+                                <td class="col-1">
+                                    <div class="u-align--right">
+                                        <div class="p-contextual-menu" toggle-ctrl data-ng-if="!isAllStorageDisabled()">
+                                            <button class="p-button--base p-contextual-menu__toggle" aria-controls="#{$ item.name $}-menu"
+                                                data-ng-click="toggleMenu()" aria-haspopup="true"><i class="p-icon--contextual-menu"></i></button>
+                                            <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled" id="{$ item.name $}-menu">
+                                                <a href="" class="p-contextual-menu__link"
+                                                aria-label="Unmount" data-ng-click="toggleMenu(); quickFilesystemUnmount(filesystem)"
+                                                data-ng-show="!isAllStorageDisabled() && usesStorage(filesystem.fstype)">Unmount</a>
+                                                <a href="" class="p-contextual-menu__link"
+                                                aria-label="Remove" data-ng-click="toggleMenu(); quickFilesystemDelete(filesystem)"
+                                                data-ng-show="!isAllStorageDisabled()">Remove&hellip;</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
@@ -1752,7 +1754,7 @@
                         <table class="p-table-expanding">
                             <thead>
                                 <tr>
-                                    <th class="col-3">
+                                    <th class="col-2">
                                         <input type="checkbox" class="checkbox u-float--left" id="available-check-all"
                                             data-ng-hide="isAvailableDisabled()"
                                             data-ng-checked="availableAllSelected"
@@ -1765,14 +1767,14 @@
                                         <span class="divide"> | </span>
                                         <a data-ng-click="tableInfo.column = 'serial'" data-ng-class="{'p-link--soft': tableInfo.column === 'serial'}">Serial</a>
                                     </th>
-                                    <th class="col-1">Fireware version</th>
-                                    <th class="col-1 u-align--center">Boot</th>
+                                    <th class="col-2">Fireware version</th>
+                                    <th class="col-1"><div class="u-align--center">Boot</div></th>
                                     <th class="col-1">Size</th>
                                     <th class="col-1">Device Type</th>
                                     <th class="col-1">Filesystem</th>
-                                    <th class="col-1">Tags</th>
+                                    <th class="col-2">Tags</th>
                                     <th class="col-1">Health</th>
-                                    <th class="col-1 u-align--center">Actions</th>
+                                    <th class="col-1"><div class="u-align--center">Actions</div></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1783,7 +1785,7 @@
                                 </tr>
                                 <tr data-ng-repeat="item in available | removeAvailableByNew:availableNew"
                                     data-ng-class="{ 'is-active': item.$selected }">
-                                    <td class="col-3 p-form-validation" aria-label="Name"
+                                    <td class="col-2 p-form-validation" aria-label="Name"
                                         data-ng-class="{ 'is-error': isNameInvalid(item) }">
                                         <input type="checkbox" class="checkbox u-float--left" id="{$ item.name $}"
                                             data-ng-hide="isAvailableDisabled()"
@@ -1800,15 +1802,17 @@
                                             data-ng-disabled="item.type === 'partition' || isAllStorageDisabled() || !isSuperUser()"
                                             data-ng-change="nameHasChanged(item)">
                                     </td>
-                                    <td class="col-1" aria-label="Firmware Version">{$ item.firmware_version $}</td>
-                                    <td class="col-1 u-align--center" aria-label="Boot">
-                                        <input type="radio" name="boot-disk" id="{$ item.name $}-boot"
-                                            data-ng-click="setAsBootDisk(item)"
-                                            data-ng-checked="item.is_boot"
-                                            data-ng-if="item.type === 'physical'"
-                                            data-ng-disabled="isBootDiskDisabled(item, 'available')"
-                                            data-ng-hide="availableMode === 'edit' && item.$selected">
-                                        <label for="{$ item.name $}-boot" data-ng-hide="availableMode === 'edit' && item.$selected"></label>
+                                    <td class="col-2" aria-label="Firmware Version">{$ item.firmware_version $}</td>
+                                    <td class="col-1" aria-label="Boot">
+                                        <div class="u-align--center">
+                                            <input type="radio" name="boot-disk" id="{$ item.name $}-boot" class="u-no-margin--right"
+                                                data-ng-click="setAsBootDisk(item)"
+                                                data-ng-checked="item.is_boot"
+                                                data-ng-if="item.type === 'physical'"
+                                                data-ng-disabled="isBootDiskDisabled(item, 'available')"
+                                                data-ng-hide="availableMode === 'edit' && item.$selected">
+                                            <label for="{$ item.name $}-boot" data-ng-hide="availableMode === 'edit' && item.$selected"></label>
+                                        </div>
                                     </td>
                                     <td class="col-1" aria-label="Size">
                                         <span data-ng-hide="availableMode === 'edit' && item.$selected">
@@ -1818,10 +1822,10 @@
                                     <td class="col-1" aria-label="Device type">
                                         <span data-ng-hide="availableMode === 'edit' && item.$selected">{$ getDeviceType(item) $}</span>
                                     </td>
-                                    <td class="col-2" aria-label="Filesystem">
+                                    <td class="col-1" aria-label="Filesystem">
                                         <span data-ng-hide="availableMode === 'edit' && item.$selected">{$ item.fstype $}</span>
                                     </td>
-                                    <td class="col-1" aria-label="Tags">
+                                    <td class="col-2" aria-label="Tags">
                                         <span class="table__tag" data-ng-repeat="tag in item.tags" data-ng-hide="item.$options.editingTags">
                                             <a href="#/node/?query=storage_tags:({$ tag.text $})">{$ tag.text $}</a>
                                         </span>
@@ -2500,22 +2504,28 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <hr />
                                                 <table>
-                                                    <tr class="u-hide u-show--large">
-                                                        <th class="col-2">Name</th>
-                                                        <th class="col-2">Size</th>
-                                                        <th class="col-2">Device type</th>
-                                                        <th class="col-6"></th>
-                                                    </tr>
-                                                    <tr data-ng-repeat="device in availableNew.devices">
-                                                        <td class="col-2" aria-label="Name">{$ device.name $}</td>
-                                                        <td class="col-2" aria-label="Size">{$ device.size_human $}</td>
-                                                        <td class="col-2" aria-label="Device type">{$ getDeviceType(device) $}</td>
-                                                        <td class="col-6 u-hide u-show--large"></td>
-                                                    </tr>
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="col-2">Name</th>
+                                                            <th class="col-2">Size</th>
+                                                            <th class="col-2">Device type</th>
+                                                            <th class="col-6"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr data-ng-repeat="device in availableNew.devices">
+                                                            <td class="col-2" aria-label="Name">{$ device.name $}</td>
+                                                            <td class="col-2" aria-label="Size">{$ device.size_human $}</td>
+                                                            <td class="col-2" aria-label="Device type">{$ getDeviceType(device) $}</td>
+                                                            <td class="col-6"></td>
+                                                        </tr>
+                                                    </tbody>
                                                 </table>
                                             </div>
                                             <div class="row">
+                                                <hr />
                                                 <div class="col-12 u-align--right">
                                                     <button class="p-button--base"
                                                         data-ng-click="availableCancel()">Cancel</button>
@@ -2569,18 +2579,18 @@
                     <table>
                         <thead>
                             <tr>
-                                <th class="col-3">
+                                <th class="col-2">
                                     <a data-ng-click="tableInfo.column = 'name'" data-ng-class="{'p-link--soft': tableInfo.column === 'name'}">Name</a>
                                     <span class="divide"> | </span>
                                     <a data-ng-click="tableInfo.column = 'model'" data-ng-class="{'p-link--soft': tableInfo.column === 'model'}">Model</a>
                                     <span class="divide"> | </span>
                                     <a data-ng-click="tableInfo.column = 'serial'" data-ng-class="{'p-link--soft': tableInfo.column === 'serial'}">Serial</a>
                                 </th>
-                                <th class="col-1">Fireware version</th>
-                                <th class="col-1 u-align--center">Boot</th>
-                                <th class="col-1">Device type</th>
+                                <th class="col-2">Fireware version</th>
+                                <th class="col-1"><div class="u-align--center">Boot</div></th>
+                                <th class="col-2">Device type</th>
                                 <th class="col-3">Used for</th>
-                                <th class="col-3">Health</th>
+                                <th class="col-2">Health</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2590,23 +2600,25 @@
                                 </td>
                             </tr>
                             <tr data-ng-repeat="item in used" class="table__row details__used">
-                                <td class="col-3" aria-label="Name">
+                                <td class="col-2" aria-label="Name">
                                     <span data-ng-show="tableInfo.column === 'name'">{$ item.name $}</span>
                                     <span data-ng-show="tableInfo.column === 'model'">{$ item.model $}</span>
                                     <span data-ng-show="tableInfo.column === 'serial'">{$ item.serial $}</span>
                                 </td>
-                                <td class="col-1" aria-label="Firmware version">{$ item.firmware_version $}</td>
-                                <td class="col-1 u-align--center" aria-label="Boot disk">
-                                    <input type="radio" id="{$ item.name $}-boot" name="boot-disk"
-                                        data-ng-click="setAsBootDisk(item)"
-                                        data-ng-checked="item.is_boot"
-                                        data-ng-if="item.type === 'physical'"
-                                        data-ng-disabled="isBootDiskDisabled(item, 'used')">
-                                    <label for="{$ item.name $}-boot"></label>
+                                <td class="col-2" aria-label="Firmware version">{$ item.firmware_version $}</td>
+                                <td class="col-1" aria-label="Boot disk">
+                                    <div class="u-align--center">
+                                        <input type="radio" id="{$ item.name $}-boot" name="boot-disk"
+                                            data-ng-click="setAsBootDisk(item)"
+                                            data-ng-checked="item.is_boot"
+                                            data-ng-if="item.type === 'physical'"
+                                            data-ng-disabled="isBootDiskDisabled(item, 'used')">
+                                        <label for="{$ item.name $}-boot"></label>
+                                    </div>
                                 </td>
-                                <td class="col-1" aria-label="Device type">{$ getDeviceType(item) $}</td>
+                                <td class="col-2" aria-label="Device type">{$ getDeviceType(item) $}</td>
                                 <td class="col-3" aria-label="Used for">{$ item.used_for $}</td>
-                                <td class="col-3" aria-label="Health">
+                                <td class="col-2" aria-label="Health">
                                     <span data-ng-if="item.type === 'physical'">
                                         <span data-maas-script-status="script-status" data-script-status="item.test_status"></span>
                                         <span data-ng-if="item.test_status === 0 || item.test_status === 1 || item.test_status === 2 || item.test_status === 5 || item.test_status === 7">Ok</span>
