@@ -878,7 +878,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="p-table-expanding__panel" data-ng-if="isShowingMembers(interface)">
+                                <td class="p-table-expanding__panel col-12" data-ng-if="isShowingMembers(interface)">
                                     <div class="row" data-ng-class="{ 'is-active': isShowingMembers(interface) }"
                                         data-ng-repeat="member in interface.members"
                                         data-ng-show="isShowingMembers(interface)">
@@ -890,7 +890,7 @@
                                     </div>
                                 </td>
 
-                                <td class="p-table-expanding__panel" data-ng-if="!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)">
+                                <td class="p-table-expanding__panel col-12" data-ng-if="!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)">
                                     <div class="row" data-ng-if="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving">
                                         <div class="table__dropdown-title" data-ng-if="windowWidth <= 768">
                                             <h2 data-ng-click="cancel()" class="u-float--left">
@@ -1112,7 +1112,7 @@
                                     <label for="{$ newBondInterface $}"></label>
                                 </td>
                                 <td class="col-8"></td>
-                                <td class="p-table-expanding__panel">
+                                <td class="p-table-expanding__panel col-12">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-8">
                                             <h2 data-ng-click="cancel()" class="col-8">&lsaquo;&nbsp;&nbsp;
@@ -1227,7 +1227,7 @@
                                     <label for="{$ newBridgeInterface $}"></label>
                                 </td>
                                 <td class="col-8"></td>
-                                <td class="p-table-expanding__panel" data-ng-if="isShowingCreateBridge() && !isAllNetworkingDisabled()">
+                                <td class="p-table-expanding__panel col-12" data-ng-if="isShowingCreateBridge() && !isAllNetworkingDisabled()">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-6">
                                             <h2 data-ng-click="cancel()" class="u-float--left">&lsaquo;&nbsp;&nbsp;
@@ -1317,7 +1317,7 @@
                                         data-ng-model="newInterface.name">
                                 </td>
                                 <td class="col-10"></td>
-                                <td class="p-table-expanding__panel">
+                                <td class="p-table-expanding__panel col-12">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-8">
                                             <h2 data-ng-click="cancel()">&lsaquo;&nbsp;&nbsp;New interface</h2>
@@ -1545,10 +1545,10 @@
                             <tr>
                                 <th class="col-3">Name</th>
                                 <th class="col-1">Size</th>
-                                <th class="col-1">File system</th>
+                                <th class="col-2">File system</th>
                                 <th class="col-3">Mount point</th>
                                 <th class="col-2">Mount options</th>
-                                <th class="col-2 u-align--right">Actions</th>
+                                <th class="col-1"><div class="u-align--center">Actions</div></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1560,24 +1560,26 @@
                             <tr data-ng-repeat="filesystem in filesystems" data-ng-class="{ 'is-active': filesystem.$selected }">
                                 <td class="col-3" aria-label="Name">{$ filesystem.name $}</td>
                                 <td class="col-1" aria-label="Size">{$ filesystem.size_human $}</td>
-                                <td class="col-1" aria-label="File system">{$ filesystem.fstype $}</td>
+                                <td class="col-2" aria-label="File system">{$ filesystem.fstype $}</td>
                                 <td class="col-3" aria-label="Mount point">{$ filesystem.mount_point $}</td>
                                 <td class="col-2" aria-label="Mount options">{$ filesystem.mount_options $}</td>
-                                <td class="col-2 u-align--right">
-                                    <div class="p-contextual-menu" toggle-ctrl data-ng-if="!isAllStorageDisabled()">
-                                        <button class="p-contextual-menu__toggle" aria-controls="#{$ item.name $}-menu"
-                                            data-ng-click="toggleMenu()" aria-haspopup="true">View actions</button>
-                                        <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled" id="{$ item.name $}-menu">
-                                            <a href="" class="p-contextual-menu__link"
-                                            aria-label="Unmount" data-ng-click="toggleMenu(); quickFilesystemUnmount(filesystem)"
-                                            data-ng-show="!isAllStorageDisabled() && usesStorage(filesystem.fstype)">Unmount</a>
-                                            <a href="" class="p-contextual-menu__link"
-                                            aria-label="Remove" data-ng-click="toggleMenu(); quickFilesystemDelete(filesystem)"
-                                            data-ng-show="!isAllStorageDisabled()">Remove&hellip;</a>
+                                <td class="col-1">
+                                    <div class="u-align--right">
+                                        <div class="p-contextual-menu" toggle-ctrl data-ng-if="!isAllStorageDisabled()">
+                                            <button class="p-button--base p-contextual-menu__toggle" aria-controls="#{$ item.name $}-menu"
+                                                data-ng-click="toggleMenu()" aria-haspopup="true"><i class="p-icon--contextual-menu"></i></button>
+                                            <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled" id="{$ item.name $}-menu">
+                                                <a href="" class="p-contextual-menu__link"
+                                                aria-label="Unmount" data-ng-click="toggleMenu(); quickFilesystemUnmount(filesystem)"
+                                                data-ng-show="!isAllStorageDisabled() && usesStorage(filesystem.fstype)">Unmount</a>
+                                                <a href="" class="p-contextual-menu__link"
+                                                aria-label="Remove" data-ng-click="toggleMenu(); quickFilesystemDelete(filesystem)"
+                                                data-ng-show="!isAllStorageDisabled()">Remove&hellip;</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="p-table-expanding__panel" data-ng-if="filesystemMode === 'unmount' || filesystemMode === 'delete'">
+                                <td class="p-table-expanding__panel col-12" data-ng-if="filesystemMode === 'unmount' || filesystemMode === 'delete'">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-8">
                                             <h2 data-ng-click="filesystemCancel()">
@@ -1614,7 +1616,7 @@
 
                             <tr class="is-active" data-ng-if="dropdown" data-ng-switch="dropdown">
                                 <!-- Adding a new TMPFS or RAMFPS file system -->
-                                <td class="p-table-expanding__panel" data-ng-controller="NodeAddSpecialFilesystemController" data-ng-switch-when="special">
+                                <td class="p-table-expanding__panel col-12" data-ng-controller="NodeAddSpecialFilesystemController" data-ng-switch-when="special">
                                     <div class="row" data-ng-if="windowWidth <= 768">
                                         <div class="col-8">
                                             <h2 data-ng-click="cancel()">Adding filesystem</h2>
@@ -1711,7 +1713,7 @@
                                                 data-ng-click="toggleMenu(); quickCacheSetDelete(cacheset)">Remove cacheset</button>
                                         </div>
                                     </td>
-                                    <td class="p-table-expanding__panel" data-ng-if="cachesetsMode === 'delete'">
+                                    <td class="p-table-expanding__panel col-12" data-ng-if="cachesetsMode === 'delete'">
                                         <div class="row" data-ng-if="windowWidth <= 768">
                                             <div class="col-8">
                                                 <h2 data-ng-click="filesystemCancel()">
@@ -1772,7 +1774,7 @@
                                     <th class="col-1">Filesystem</th>
                                     <th class="col-2">Tags</th>
                                     <th class="col-1">Health</th>
-                                    <th class="col-1 u-align--center">Actions</th>
+                                    <th class="col-1"><div class="u-align--center">Actions</div></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -2196,7 +2198,7 @@
                                     <td class="col-2"></td>
                                     <td class="col-4"></td>
                                     <td class="col-1"></td>
-                                    <td class="p-table-expanding__panel">
+                                    <td class="p-table-expanding__panel col-12">
                                         <div class="row" data-ng-if="windowWidth <= 768">
                                             <div class="col-8">
                                                 <h2 data-ng-click="availableCancel()">Creating Bcache</h2>
@@ -2327,7 +2329,7 @@
                                             data-ng-model="availableNew.name">
                                     </td>
                                     <td class="col-9"></td>
-                                    <td class="p-table-expanding__panel">
+                                    <td class="p-table-expanding__panel col-12">
                                         <div class="row" data-ng-if="windowWidth <= 768">
                                             <div class="col-8">
                                                 <h2 data-ng-click="availableCancel()">Creating RAID</h2>
@@ -2462,7 +2464,7 @@
                                                 data-ng-model="availableNew.name">
                                         </td>
                                         <td class="col-9"></td>
-                                        <td class="p-table-expanding__panel">
+                                        <td class="p-table-expanding__panel col-12">
                                             <div class="row" data-ng-if="windowWidth <= 768">
                                                 <div class="col-8">
                                                     <h2 data-ng-click="availableCancel()">Creating volume group</h2>
@@ -2502,22 +2504,28 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <hr />
                                                 <table>
-                                                    <tr class="u-hide u-show--large">
-                                                        <th class="col-2">Name</th>
-                                                        <th class="col-2">Size</th>
-                                                        <th class="col-2">Device type</th>
-                                                        <th class="col-6"></th>
-                                                    </tr>
-                                                    <tr data-ng-repeat="device in availableNew.devices">
-                                                        <td class="col-2" aria-label="Name">{$ device.name $}</td>
-                                                        <td class="col-2" aria-label="Size">{$ device.size_human $}</td>
-                                                        <td class="col-2" aria-label="Device type">{$ getDeviceType(device) $}</td>
-                                                        <td class="col-6 u-hide u-show--large"></td>
-                                                    </tr>
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="col-2">Name</th>
+                                                            <th class="col-2">Size</th>
+                                                            <th class="col-2">Device type</th>
+                                                            <th class="col-6"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr data-ng-repeat="device in availableNew.devices">
+                                                            <td class="col-2" aria-label="Name">{$ device.name $}</td>
+                                                            <td class="col-2" aria-label="Size">{$ device.size_human $}</td>
+                                                            <td class="col-2" aria-label="Device type">{$ getDeviceType(device) $}</td>
+                                                            <td class="col-6"></td>
+                                                        </tr>
+                                                    </tbody>
                                                 </table>
                                             </div>
                                             <div class="row">
+                                                <hr />
                                                 <div class="col-12 u-align--right">
                                                     <button class="p-button--base"
                                                         data-ng-click="availableCancel()">Cancel</button>
