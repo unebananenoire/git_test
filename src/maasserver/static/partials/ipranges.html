@@ -26,7 +26,7 @@
                             data-ng-click="toggleMenu(); ipRangeEnterDeleteMode(iprange)">Remove</button>
                     </div>
                 </td>
-                <td class="is-active p-table-expanding__panel" col-span="6" data-ng-if="isIPRangeInDeleteMode(iprange)">
+                <td class="is-active p-table-expanding__panel col-12" col-span="6" data-ng-if="isIPRangeInDeleteMode(iprange)">
                     <hr />
                     <div class="row u-no-margin--top">
                         <div class="col-6">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </td>
-                <td class="is-active p-table-expanding__panel" col-span="6" data-ng-if="isIPRangeInEditMode(iprange)">
+                <td class="is-active p-table-expanding__panel col-12" col-span="6" data-ng-if="isIPRangeInEditMode(iprange)">
                     <hr />
                     <maas-obj-form obj="iprange" manager="iprangeManager" table-form="true"
                     save-on-blur="false" after-save="ipRangeClearEditMode">
@@ -82,7 +82,7 @@
             <tr data-ng-if="subnetIPRanges.length === 0 && !newRange">
                 <td class="col-12">No IP ranges have been reserved for this subnet.</td>
             </tr>
-            <tr class="p-table-expanding__panel" data-ng-if="newRange">
+            <tr class="p-table-expanding__panel col-12" data-ng-if="newRange">
                 <td class="p-form p-form--inline ">
                     <maas-obj-form obj="newRange" manager="iprangeManager" manager-method="createItem"
                         table-form="true" save-on-blur="false" after-save="cancelAddRange">

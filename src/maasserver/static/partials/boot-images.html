@@ -143,7 +143,7 @@
                         <td class="u-align--right">
                             <button data-ng-if="(isSuperUser() && canBeRemoved(image))" class="p-button--negative" aria-label="Remove" data-ng-click="deleteImage(image)">Remove</button>
                         </td>
-                        <td colspan="6" class="p-table-expanding__panel" data-ng-if="canBeRemoved(image) && ubuntuDeleteId === image.resourceId">
+                        <td colspan="6" class="p-table-expanding__panel col-12" data-ng-if="canBeRemoved(image) && ubuntuDeleteId === image.resourceId">
                             <p><i class="p-icon--warning">Warning:</i> Are you sure you want to remove this image?</p>
                             <button class="p-button--neutral is-inline" data-ng-click="deleteImage()">Cancel</button>
                             <button class="p-button--negative" data-ng-click="confirmDeleteImage()">Remove</button>
@@ -285,7 +285,7 @@
                     <td class="u-align--right">
                         <button class="p-button--negative" aria-label="Remove" data-ng-click="quickRemove(image)">Remove image</button>
                     </td>
-                    <td class="p-table-expanding__panel" data-ng-if="isShowingDeleteConfirm(image)">
+                    <td class="p-table-expanding__panel col-12" data-ng-if="isShowingDeleteConfirm(image)">
                         <h2 data-ng-click="cancelRemove()" class="u-float--left">Remove image</h2>
                         <p><i class="p-icon--warning">Warning: </i> Are you sure you want to remove this image?</p>
                         <div class="u-float--right">
@@ -330,7 +330,7 @@
                     <td class="u-align--right">
                         <a aria-label="Remove" data-ng-click="toggleMenu(); quickRemove(image)">Remove image</a>
                     </td>
-                    <td class="p-table-expanding__panel" data-ng-if="isShowingDeleteConfirm(image)">
+                    <td class="p-table-expanding__panel col-12" data-ng-if="isShowingDeleteConfirm(image)">
                         <h2 data-ng-click="cancelRemove()">Remove image</h2>
                         <p><i class="p-icon--warning">Warning: </i> Are you sure you want to remove this image?</p>
                         <button class="p-button--neutral is-inline" type="button" data-ng-click="cancelRemove()">Cancel</button>
