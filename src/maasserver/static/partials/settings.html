@@ -36,7 +36,7 @@
                 <thead>
                     <tr>
                         <th class="col-2">Name</th>
-                        <th class="col-2">Type</th> 
+                        <th class="col-2">Type</th>
                         <th class="col-4">Applies to</th>
                         <th class="col-1">Enabled</th>
                         <th class="col-3">Actions</th>
@@ -73,7 +73,7 @@
                             <button aria-label="Remove {$ snippet.name $}"
                                 data-ng-click="toggleMenu(); snippetEnterRemove(snippet)">Remove</button>
                         </td>
-                        <td class="p-table-expanding__panel" data-ng-if="editSnippet === snippet">
+                        <td class="p-table-expanding__panel col-12" data-ng-if="editSnippet === snippet">
                             <maas-obj-form obj="editSnippet" manager="snippetsManager" manager-method="updateItem"
                                 table-form="true" save-on-blur="false" after-save="snippetExitEdit">
                                 <div class="row u-equal-height">
@@ -138,7 +138,7 @@
                                 </div>
                             </maas-obj-form>
                         </td>
-                        <td class="p-table-expanding__panel u-no-margin--left" data-ng-if="deleteSnippet === snippet">
+                        <td class="p-table-expanding__panel col-12 u-no-margin--left" data-ng-if="deleteSnippet === snippet">
                             <div class="row u-hide u-show--small">
                                 <h2 data-ng-click="snippetExitRemove(snippet)" class="u-float--left">Removing {$ snippet.name $}</h2>
                                 <button data-ng-click="snippetExitRemove(snippet)" class="p-icon--close u-float--right"></button>
@@ -155,7 +155,7 @@
                         </td>
                     </tr>
                     <tr class="is-active" data-ng-if="newSnippet">
-                        <td class="p-table-expanding__panel" col-span="5">
+                        <td class="p-table-expanding__panel col-12" col-span="5">
                             <maas-obj-form obj="newSnippet" manager="snippetsManager" manager-method="createItem"
                                 table-form="true" save-on-blur="false" after-save="snippetAddCancel">
                                 <div class="row u-hide u-show--small">
@@ -374,7 +374,7 @@
                                     data-ng-click="toggleMenu(); repositoryEnterRemove(repository)">Remove</button>
                             </div>
                         </td>
-                        <td class="is-active p-table-expanding__panel" col-span="5" data-ng-if="editRepository === repository">
+                        <td class="is-active p-table-expanding__panel col-12" col-span="5" data-ng-if="editRepository === repository">
                             <maas-obj-form obj="editRepository" manager="packageRepositoriesManager" manager-method="updateItem"
                                 table-form="true" save-on-blur="false" after-save="repositoryExitEdit">
                                 <div class="row u-equal-height">
@@ -477,7 +477,7 @@
                         </td>
                     </tr>
                     <tr class="is-active" data-ng-if="newRepository">
-                        <td class="p-table-expanding__panel" col-span="5">
+                        <td class="p-table-expanding__panel col-12" col-span="5">
                             <maas-obj-form obj="newRepository" manager="packageRepositoriesManager" manager-method="createItem"
                                 table-form="true" save-on-blur="false" after-save="repositoryAddCancel">
                                 <div class="row u-equal-height">

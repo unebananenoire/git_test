@@ -27,7 +27,7 @@
                             <li data-ng-repeat="key in group.keys" data-ng-bind-html="trustAsHtml(key.display)"></li>
                         </ul>
                     </td>
-                    <td class="p-table-expanding__panel" data-ng-class="{ 'u-hide': group.id !== openRow || rowMode !== 'delete' }">
+                    <td class="p-table-expanding__panel col-12" data-ng-class="{ 'u-hide': group.id !== openRow || rowMode !== 'delete' }">
                         <div class="row u-equal-height">
                             <div class="col-8 u-vertically-center">
                                 <span data-ng-if="group.source !== 'upload'"><span class="p-icon p-icon--warning">Warning:</span> Are you sure you want to remove this key source?</span>

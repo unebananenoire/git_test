@@ -149,7 +149,7 @@
                     <tr data-ng-repeat="pod in filteredItems = (pods | nodesFilter:search | orderBy:predicate:reverse) track by pod.id" data-ng-class="{ selected: pod.$selected, 'is-active': pod.$selected && pod.action_failed }">
                         <td class="col-1" data-ng-if="isSuperUser()" aria-label="Select pod">
                             <input type="checkbox" class="checkbox" data-ng-click="toggleChecked(pod)" data-ng-checked="pod.$selected" id="{$ pod.id $}" data-ng-disabled="add.open || hasActionsInProgress()"/>
-                          <label for="{$ pod.id $}" class="checkbox-label"></label>
+                            <label for="{$ pod.id $}" class="checkbox-label"></label>
                         </td>
                         <td class="col-2" aria-label="Name">
                             <a href="#/pod/{$ pod.id $}">{$ pod.name $}</a>
@@ -172,7 +172,7 @@
                         <td class="col-2 u-align--right" aria-label="Composed machines">
                             {$ pod.composed_machines_count $}
                         </td>
-                        <td class="p-table-expanding__panel" data-ng-if="pod.$selected && pod.action_failed">
+                        <td class="p-table-expanding__panel col-12" data-ng-if="pod.$selected && pod.action_failed">
                             <div aria-label="label" class="table__data">
                                 <p><i class="p-icon--error">Error:</i> {$ pod.action_error $}</p>
                             </div>
