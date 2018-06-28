@@ -1,12 +1,12 @@
 <div data-ng-hide="loaded">
-    <header class="p-strip--light is-shallow is-bordered page-header" media-query="min-width: 769px">
+    <header class="p-strip--light is-shallow u-no-padding--bottom page-header" media-query="min-width: 769px">
         <div class="row">
             <h1 class="page-header__title">Loading...</h1>
         </div>
     </header>
 </div>
 <div class="ng-hide u-no-margin--top" data-ng-show="loaded" data-window-width>
-    <header class="p-strip--light is-shallow is-bordered page-header u-no-padding--bottom" media-query="min-width: 769px">
+    <header class="p-strip--light is-shallow u-no-padding--bottom page-header u-no-padding--bottom" media-query="min-width: 769px">
         <div class="row">
             <div class="col-8">
                 <h1 class="page-header__title">{$ pod.name $}</h1>
@@ -148,15 +148,17 @@
             </div>
         </div>
         <div class="p-strip is-shallow u-no-padding--bottom" media-query="min-width: 769px" offset="89">
-            <nav class="p-tabs">
-                <ul class="p-tabs__list" role="tablist" data-ng-class="{ 'u-hide': action.option }">
-                    <li class="p-tabs__item" role="presentation">
-                        <a href="" role="tab" class="p-tabs__link" data-ng-class="{ 'is-active': section.area === 'summary'}" data-ng-click="section.area = 'summary'">{$ pod.composed_machines_count $} composed machines</a>
-                    </li>
-                    <li class="p-tabs__item" role="presentation">
-                        <a href="" role="tab" class="p-tabs__link" data-ng-if="isSuperUser()" data-ng-class="{ 'is-active': section.area === 'configuration'}" data-ng-click="section.area= 'configuration'">Configuration</a>
-                    </li>
-                </nav>
+            <nav class="p-tabs u-hr--fixed-width">
+                <div class="row">
+                    <ul class="p-tabs__list" role="tablist" data-ng-class="{ 'u-hide': action.option }">
+                        <li class="p-tabs__item" role="presentation">
+                            <a href="" role="tab" class="p-tabs__link" data-ng-class="{ 'is-active': section.area === 'summary'}" data-ng-click="section.area = 'summary'">{$ pod.composed_machines_count $} composed machines</a>
+                        </li>
+                        <li class="p-tabs__item" role="presentation">
+                            <a href="" role="tab" class="p-tabs__link" data-ng-if="isSuperUser()" data-ng-class="{ 'is-active': section.area === 'configuration'}" data-ng-click="section.area= 'configuration'">Configuration</a>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </div>
     </header>

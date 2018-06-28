@@ -1,12 +1,12 @@
 <div data-ng-hide="loaded">
-    <header class="p-strip--light is-shallow is-bordered page-header" media-query="min-width: 769px">
+    <header class="p-strip--light is-shallow u-no-padding--bottom page-header" media-query="min-width: 769px">
         <div class="row">
             <h1 class="page-header__title">Loading...</h1>
         </div>
     </header>
 </div>
 <div class="ng-hide u-no-margin--top" data-ng-show="loaded">
-    <header class="p-strip--light is-shallow is-bordered page-header" media-query="min-width: 769px">
+    <header class="p-strip--light is-shallow u-no-padding--bottom page-header" media-query="min-width: 769px">
         <div class="row">
             <div class="col-8">
                 <h1 class="page-header__title">{$ node.fqdn $}</h1>
@@ -96,29 +96,31 @@
         <div class="row">
             <div class="col-12">
                 <h2 class="ng-binding p-heading--four">Output</h2>
-                <nav class="p-tabs">
-                    <ul class="p-tabs__list">
-                        <li class="p-tabs__item">
-                            <a href="" class="p-tabs__link"
-                                data-ng-class="{ 'is-active': output === 'combined' }"
-                                data-ng-click="get_result_data('combined')">combined</a>
-                        </li>
-                        <li class="p-tabs__item">
-                            <a href="" class="p-tabs__link"
-                                data-ng-class="{ 'is-active': output === 'stdout' }"
-                                data-ng-click="get_result_data('stdout')">stdout</a>
-                        </li>
-                        <li class="p-tabs__item">
-                            <a href="" class="p-tabs__link"
-                                data-ng-class="{ 'is-active': output === 'stderr' }"
-                                data-ng-click="get_result_data('stderr')">stderr</a>
-                        </li>
-                        <li class="p-tabs__item">
-                            <a href="" class="p-tabs__link"
-                                data-ng-class="{ 'is-active': output === 'result' }"
-                                data-ng-click="get_result_data('result')">yaml</a>
-                        </li>
-                    </ul>
+                <nav class="p-tabs u-hr--fixed-width">
+                    <div class="row">
+                        <ul class="p-tabs__list">
+                            <li class="p-tabs__item">
+                                <a href="" class="p-tabs__link"
+                                    data-ng-class="{ 'is-active': output === 'combined' }"
+                                    data-ng-click="get_result_data('combined')">combined</a>
+                            </li>
+                            <li class="p-tabs__item">
+                                <a href="" class="p-tabs__link"
+                                    data-ng-class="{ 'is-active': output === 'stdout' }"
+                                    data-ng-click="get_result_data('stdout')">stdout</a>
+                            </li>
+                            <li class="p-tabs__item">
+                                <a href="" class="p-tabs__link"
+                                    data-ng-class="{ 'is-active': output === 'stderr' }"
+                                    data-ng-click="get_result_data('stderr')">stderr</a>
+                            </li>
+                            <li class="p-tabs__item">
+                                <a href="" class="p-tabs__link"
+                                    data-ng-class="{ 'is-active': output === 'result' }"
+                                    data-ng-click="get_result_data('result')">yaml</a>
+                            </li>
+                        </ul>
+                    </div>
                 </nav>
             </div>
         </div>

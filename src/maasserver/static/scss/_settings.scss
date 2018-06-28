@@ -1,4 +1,4 @@
-$grid-max-width: 1440px;
+$grid-max-width: 1440 / 16 * 1rem; // express in rems for easier calculations
 
 $color-navigation-background: #000;
 
@@ -8,3 +8,5 @@ $color-navigation-active-bar: $color-brand;
 $breakpoint-navigation-threshold: 870px;
 
 $assets-path: '/MAAS/static/assets/fonts/';
+
+$multi: 1;
