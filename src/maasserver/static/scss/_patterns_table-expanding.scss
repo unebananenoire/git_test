@@ -1,8 +1,17 @@
 @mixin maas-table-expanding {
-  .p-table-expanding  {
+  .p-table-expanding__panel {
+    .p-form-validation .p-form-validation__input {
+      padding: .5rem .75rem;
+    }
+  }
+
+  .p-table-expanding {
     td.p-table-expanding__panel {
+      @extend %vf-card;
       background-color: $color-x-light;
       border-top: 0;
+      margin-left: 0 !important;
+      width: 100%; // overrides mobile card-table width
 
       &.is-active {
         flex-grow: 1;
