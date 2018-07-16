@@ -26,7 +26,7 @@ angular.module('MAAS').run(['$templateCache', function ($templateCache) {
                 '<div class="page-header__dropdown is-open" ',
                     'data-ng-show="error">',
                     '<div class="page-header__section twelve-col',
-                        'u-margin--bottom-none">',
+                        'u-margin--no-bottom">',
                         '<p class="page-header__message',
                                   'page-header__message--error">',
                             '{$ error $}',

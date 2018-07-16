@@ -8,7 +8,9 @@
 
 // Import local patterns
 @import 'maas';
+@import 'base_typography';
 @import 'base_tables';
+@import 'base_forms';
 @import 'base_links';
 @import 'patterns_button';
 @import 'patterns_icons';
@@ -26,12 +28,13 @@
 @import 'patterns_notification';
 @import 'patterns_footer';
 @import 'patterns_table-sortable';
-@import 'patterns_table-columns';
 @import 'tables';
 
 // Include local patterns
 @include maas;
 @include maas-tables;
+
+@include maas-b-forms;
 @include maas-b-links;
 @include maas-icons;
 @include maas-navigation;
@@ -49,5 +52,4 @@
 @include maas-p-notifications;
 @include maas-p-sticky-footer;
 @include maas-table-sortable;
-@include maas-table-columns(100);
 @include maas-table-widths;

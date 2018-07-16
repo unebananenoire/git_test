@@ -2,4 +2,25 @@
   .p-button--min-margin-bottom  {
     margin-bottom: $spv-nudge-compensation;
   }
+
+  .p-button--close {
+    margin: 0;
+    padding: $spv-intra;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+
+    [class^="p-icon"] {
+      margin-right: 0;
+    }
+  }
+
+
+  *[class*='p-button'] {
+    .p-table-expanding__panel & {
+      margin-bottom: 2 * $spv-nudge-compensation;
+      padding: $spv-nudge - $px $sph-intra;
+    }
+  }
 }

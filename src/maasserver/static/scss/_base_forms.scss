@@ -1,0 +1,29 @@
+@mixin maas-b-forms {
+  maas-obj-field {
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+  }
+  // XXX: Lyubo: override vertically-condensed an vertically narrow styling which is meant to happen only in narrow tds, not expanded ones.
+  // Can be removed once this is merged: https://github.com/vanilla-framework/vanilla-framework/pull/1920/commits/c48e325a842f5f73fc70dd1b727f70a68836fd28
+  [type='text'],
+  [type='date'],
+  [type='datetime'],
+  [type='datatime-local'],
+  [type='month'],
+  [type='time'],
+  [type='week'],
+  [type='color'],
+  [type='number'],
+  [type='search'],
+  [type='password'],
+  [type='email'],
+  [type='url'],
+  [type='tel'],
+  select {
+    table & {
+      margin-bottom: $spv-inter--scaleable + $sp-unit - $spv-nudge * 2;
+      padding-bottom: $spv-nudge - $px;
+      padding-top: $spv-nudge - $px;
+    }
+  }
+}
