@@ -31,7 +31,7 @@
 
       // XXX: 27.06.2018: apply the responsive behaviour (horizontal scroll on overflow) to desktop as well.
       // This is because overflow depends on the width and number of tabs, not on screen size.
-      overflow-x: scroll;
+      overflow-x: auto;
     }
 
     // XXX: 27.06.2018: remove the float as well when the above pr is merged into vanilla

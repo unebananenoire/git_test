@@ -659,7 +659,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
     </div>
 </div>
 <div class="p-strip is-shallow">
-    <div class="row">
+    <div class="row" ng-if="currentpage === 'machines' || currentpage === 'devices'">
         <aside class="col-3">
             <div class="maas-accordion p-navigation--sidebar">
                 <div class=" ng-hide" data-ng-show="currentpage === 'machines'"
