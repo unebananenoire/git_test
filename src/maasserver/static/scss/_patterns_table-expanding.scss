@@ -1,4 +1,5 @@
 @mixin maas-table-expanding {
+
   .p-table-expanding__panel {
     .p-form-validation .p-form-validation__input {
       padding: .5rem .75rem;
@@ -13,6 +14,7 @@
       border-top: 0;
       margin-bottom: 0;
       margin-left: 0 !important;
+      padding: $spv-inter--regular;   //XXX: card padding shouldn't be scaleable. can be removed once https://github.com/vanilla-framework/vanilla-framework/pull/1920 is merged
       width: 100%; // overrides mobile card-table width
 
       &.is-active {

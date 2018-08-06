@@ -16,6 +16,10 @@
     }
   }
 
+  [class*='p-button'] [class^="p-icon"],
+  button [class^="p-icon"] {
+      margin-right: 0;
+    }
 
   *[class*='p-button'] {
     .p-table-expanding__panel & {

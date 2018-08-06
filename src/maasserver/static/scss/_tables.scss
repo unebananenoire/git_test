@@ -222,7 +222,7 @@
 
   .p-table--machines {
     .p-table__row {
-      th, td {
+      th {
         &:nth-child(1) {
           @include table-sortable-adjust(990px);
           width: 20%;
