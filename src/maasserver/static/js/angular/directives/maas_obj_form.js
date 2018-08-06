@@ -581,8 +581,6 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                             labelElement.addClass("tablet-col-"
                                 + attrs.labelWidthTablet);
                         }
-                    } else {
-                        labelElement.addClass("u-margin--right");
                     }
                     if(attrs.labelLeft === "true") {
                         labelElement.addClass('u-padding--left');
@@ -622,7 +620,6 @@ angular.module('MAAS').directive('maasObjField', ['$compile',
                 // Add the wrapper for the input.
                 var inputWrapper = angular.element('<div></div>');
                 inputWrapper.addClass("p-form__control");
-                inputWrapper.addClass("u-no-margin--top");
 
                 if(attrs.inputWidthMobile) {
                     inputWrapper.addClass("mobile-col-"
