@@ -404,7 +404,7 @@
     <div class="page-header__dropdown" data-ng-class="{ 'u-hide': !addDeviceScope.viewable }" data-ng-controller="AddDeviceController">
         <section class="page-header__section row">
             <hr />
-            <h3 class="page-header__dropdown-title">Add device</h3>
+            <h4 class="page-header__dropdown-title">Add device</h4>
             <form class="p-form p-form--stacked">
                 <div class="col-6">
                     <div class="p-form__group">
@@ -817,7 +817,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                         data-ng-model="tabs.machines.search" data-ng-change="updateFilters('machines')"
                         data-ng-class="{ error: !tabs.machines.searchValid }"
                         data-ng-disabled="tabs.machines.actionOption" />
-                    <button type="reset" class="p-search-box__reset" alt="reset"
+                    <button type="reset" class="p-search-box__reset u-no-margin--right" alt="reset"
                         data-ng-click="clearSearch('machines')"
                         data-ng-show="tabs.machines.search.length > 0"><i class="p-icon--close"></i></button>
                     <button type="submit" class="p-search-box__button" alt="search"><i class="p-icon--search"></i></button>
@@ -841,7 +841,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                         data-ng-model="tabs.devices.search"
                         data-ng-change="updateFilters('devices')"
                         data-ng-disabled="tabs.devices.actionOption" />
-                    <button type="reset" class="p-search-box__reset" alt="reset"
+                    <button type="reset" class="p-search-box__reset u-no-margin--right" alt="reset"
                         data-ng-show="tabs.machines.search.length > 0"
                         data-ng-click="clearSearch('devices')">
                         <i class="p-icon--close">Reset</i>
@@ -912,7 +912,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="p-table__row u-no-margin--top"
+                    <tr class="p-table__row"
                         data-ng-repeat="pool in tabs.pools.filtered_items = (pools | orderBy:tabs.pools.predicate:tabs.pools.reverse) track by pool.name"
                         data-ng-class="{'is-active': tabs.pools.isPoolAction(pool)}">
                         <td class="p-table__cell col-3" aria-label="Name">
@@ -935,7 +935,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                         </td>
                         <td class="p-table__cell col-2 u-align--right" aria-label="Actions" data-ng-show="isSuperUser()">
                           <span data-ng-hide="tabs.pools.isPoolAction(pool)">
-                            <button class="p-button--base is-small">
+                            <button class="p-button--base is-small u-no-margin--right">
                               <i class="p-icon--edit" data-ng-click="tabs.pools.initiatePoolAction(pool, 'edit')">Edit</i>
                             </button>
                             <button class="p-button--base is-small" data-ng-hide="tabs.pools.isDefaultPool(pool)">
@@ -999,7 +999,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                     type="search" placeholder="Search controllers" class="p-search-box__input p-form-validation__input"
                     data-ng-model="tabs.controllers.search" data-ng-change="updateFilters('controllers')"
                     data-ng-disabled="tabs.controllers.actionOption" />
-                <button type="reset" class="p-search-box__reset" alt="reset"
+                <button type="reset" class="p-search-box__reset u-no-margin--right" alt="reset"
                     data-ng-show="tabs.controllers.search.length > 0"
                     data-ng-click="clearSearch('controllers')">
                     <i class="p-icon--close">Reset</i>
@@ -1078,7 +1078,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                 data-ng-model="tabs.switches.search"
                 data-ng-change="updateFilters('switches')"
                 data-ng-disabled="tabs.switches.actionOption" />
-            <button type="reset" class="p-search-box__reset" alt="reset"
+            <button type="reset" class="p-search-box__reset u-no-margin--right" alt="reset"
                 data-ng-show="tabs.switches.search.length > 0"
                 data-ng-click="clearSearch('switches')">
                 <i class="p-icon--close"></i>

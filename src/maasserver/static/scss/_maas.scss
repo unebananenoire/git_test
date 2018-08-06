@@ -49,6 +49,13 @@
     background-color: $color-light;
   }
 
+  maas-obj-field,
+  maas-obj-form,
+  maas-machines-table {
+    display: block;
+    position: relative;
+  }
+
   maas-obj-field[type="text"],
   maas-obj-field[type="password"] {
     background-color: transparent;
@@ -119,10 +126,11 @@
     max-width: none;
   }
 
-  // XXX Ant: 25.01.18 Can be removed when this issue is resolved
-  // https://github.com/vanilla-framework/vanilla-framework/issues/1542
-  .p-navigation--sidebar .sidebar__content {
-    position: relative;
+  .p-navigation--sidebar {
+    &::after {
+      background: transparent;
+    }
+    margin-bottom: $spv-inter--scaleable;
   }
 
   .p-contextual-menu__dropdown {

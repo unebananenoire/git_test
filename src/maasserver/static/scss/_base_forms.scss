@@ -19,6 +19,7 @@
   [type='email'],
   [type='url'],
   [type='tel'],
+  textarea,
   select {
     table & {
       margin-bottom: $spv-inter--scaleable + $sp-unit - $spv-nudge * 2;
