@@ -6,10 +6,12 @@
   }
 
   .p-table-expanding {
+
     td.p-table-expanding__panel {
       @extend %vf-card;
       background-color: $color-x-light;
       border-top: 0;
+      margin-bottom: 0;
       margin-left: 0 !important;
       width: 100%; // overrides mobile card-table width
 
