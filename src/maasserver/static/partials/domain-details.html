@@ -79,27 +79,29 @@
         <maas-obj-form obj="newObject" manager="domainsManager" manager-method="createDNSRecord" class="p-form--stacked"
             table-form="true" save-on-blur="false" after-save="cancelAction">
             <!-- pre-process="actionDNSRecordPreSave" -->
-            <section class="row">
-              <div class="col-6">
-                <maas-obj-field
-                    subtle="false" type="text" key="name" label="Name" placeholder="Name"
-                    label-width="two" input-width="three"></maas-obj-field>
-                <maas-obj-field
-                    subtle="false" type="options" key="rrtype" label="Type"
-                    options="type as type for type in supportedRecordTypes"
-                    label-width="two" input-width="three"></maas-obj-field>
-              </div>
-              <div class="col-6">
-                <maas-obj-field
-                    subtle="false" type="text" key="rrdata" label="Data"
-                    placeholder="Data"
-                    label-width="two" input-width="three"></maas-obj-field>
-                <maas-obj-field
-                    subtle="false" type="text" key="ttl" label="TTL"
-                    placeholder="TTL in seconds (optional)"
-                    label-width="two" input-width="three"></maas-obj-field>
-                <maas-obj-field type="hidden" key="domain" value="{$ domain.id $}" />
-              </div>
+            <section class="p-strip is-shallow">
+                <div class="row">
+                    <div class="col-6">
+                        <maas-obj-field
+                            subtle="false" type="text" key="name" label="Name" placeholder="Name"
+                            label-width="two" input-width="three"></maas-obj-field>
+                        <maas-obj-field
+                            subtle="false" type="options" key="rrtype" label="Type"
+                            options="type as type for type in supportedRecordTypes"
+                            label-width="two" input-width="three"></maas-obj-field>
+                    </div>
+                    <div class="col-6">
+                        <maas-obj-field
+                            subtle="false" type="text" key="rrdata" label="Data"
+                            placeholder="Data"
+                            label-width="two" input-width="three"></maas-obj-field>
+                        <maas-obj-field
+                            subtle="false" type="text" key="ttl" label="TTL"
+                            placeholder="TTL in seconds (optional)"
+                            label-width="two" input-width="three"></maas-obj-field>
+                        <maas-obj-field type="hidden" key="domain" value="{$ domain.id $}" />
+                    </div>
+                </div>
             </section>
             <section class="row">
                 <div class="col-8">
