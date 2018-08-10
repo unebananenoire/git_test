@@ -66,10 +66,14 @@
         $tick-offset-top: $box-offset-top + ( ($tick-diagonal / 2) * $angle-gamma - $tick-thickness) * $px; // $tick-offset-top == sin($angle-gamma * $tick-diagonal/2)  - half the thckness of the tick in rems
 
         float: left;
-        margin-left: -2rem;
         margin-top: $tick-offset-top;
-        position: relative;
-        top: 0; // reset top as it doesn't do anything
+        top: 7px;
+
+        table & {
+          margin-left: -2rem;
+          position: relative;
+          top: 0;
+        }
       }
     }
   }
