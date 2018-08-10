@@ -1143,15 +1143,14 @@ angular.module('MAAS').controller('NodeNetworkingController', [
 
         // Cancel the current mode go back to sinle selection mode.
         $scope.cancel = function() {
+            $scope.selectedInterfaces = [];
             $scope.newInterface = {};
             $scope.newBondInterface = {};
             $scope.newBridgeInterface = {};
             if($scope.selectedMode === SELECTION_MODE.CREATE_BOND) {
                 $scope.selectedMode = SELECTION_MODE.MULTI;
-            } else if($scope.selectedMode === SELECTION_MODE.CREATE_PHYSICAL) {
-                $scope.selectedMode = SELECTION_MODE.NONE;
             } else {
-                $scope.selectedMode = SELECTION_MODE.SINGLE;
+                $scope.selectedMode = SELECTION_MODE.NONE;
             }
         };
 
