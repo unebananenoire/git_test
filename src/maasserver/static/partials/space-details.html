@@ -64,18 +64,18 @@
         <div class="form p-form--stacked row" data-ng-if="!editSummary">
             <div class="col-6">
                 <div class="p-form__group">
-                    <div class="p-form__label">
+                    <div class="p-form__label col-2 tablet-col-2">
                         <p><strong>Name</strong></p>
                     </div>
-                    <div class="p-form__control">
+                    <div class="p-form__control col-4 tablet-col-3">
                         <p>{$ space.name $}</p>
                     </div>
                 </div>
                 <div class="p-form__group">
-                    <div class="p-form__label">
+                    <div class="p-form__label col-2 tablet-col-2">
                         <p><strong>Description</strong></p>
                     </div>
-                    <div class="p-form__control">
+                    <div class="p-form__control col-4 tablet-col-3">
                         <p>{$ space.description $}</p>
                     </div>
                 </div>
@@ -86,9 +86,9 @@
                 <div class="row">
                     <div class="col-6">
                         <maas-obj-field type="text" key="name" label="Name" placeholder="Space name"
-                            label-width="2" input-width="5" blur-on-enter="true"></maas-obj-field>
+                            blur-on-enter="true" label-width="2" label-width-tablet="2" input-width="3" input-width-tablet="4"></maas-obj-field>
                         <maas-obj-field type="textarea" key="description" label="Description" placeholder="Space description"
-                            label-width="2" input-width="5" blur-on-enter="true"></maas-obj-field>
+                            blur-on-enter="true" label-width="2" label-width-tablet="2" input-width="3" input-width-tablet="4"></maas-obj-field>
                     </div>
                 </div>
                 <div class="row">
