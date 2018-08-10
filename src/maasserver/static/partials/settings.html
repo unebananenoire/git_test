@@ -541,22 +541,25 @@
                                                         </dd>
                                                 </dl>
                                             </div>
-                                            <div class="p-form--inline">
+                                            <div>
                                                 <maas-obj-field type="textarea" key="key" label="Key"
                                                     label-width="2" input-width="3"></maas-obj-field>
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <div class="p-form--inline">
-                                                <maas-obj-field type="checkboxes" key="arches" label="Architectures"
+                                            <div>
+                                                <maas-obj-field type="checkboxes" key="arches"
+                                                    label="Architectures"
                                                     label-width="2" input-width="3" values="known_architectures"></maas-obj-field>
                                             </div>
-                                            <div class="p-form--inline" data-ng-if="!isPPA(newRepository)">
-                                                <maas-obj-field type="tags" key="distributions" label="Distributions"
+                                            <div data-ng-if="!isPPA(newRepository)">
+                                                <maas-obj-field type="tags" key="distributions"
+                                                    label="Distributions"
                                                     placeholder="Add a distribution" label-width="2" input-width="3"></maas-obj-field>
                                             </div>
-                                            <div class="p-form--inline" data-ng-if="!isPPA(newRepository)">
-                                                <maas-obj-field type="tags" key="components" label="Components"
+                                            <div data-ng-if="!isPPA(newRepository)">
+                                                <maas-obj-field type="tags" key="components"
+                                                    label="Components"
                                                     placeholder="Add a component" label-width="2" input-width="3"></maas-obj-field>
                                             </div>
                                         </div>
