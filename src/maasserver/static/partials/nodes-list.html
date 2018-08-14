@@ -831,26 +831,20 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
             </form>
         </div>
         <div class="col-9" class="ng-hide" data-ng-show="currentpage === 'devices'">
-            <div class="p-form-validation"
-                data-ng-class="{ 'is-error': !tabs.devices.searchValid }">
-                <div class="p-search-box">
-                    <!-- XXX rvba 2015-02-25 - Need to add e2e test. -->
+            <form data-ng-class="{ 'is-error': !tabs.devices.searchValid }">
+                <div id="search-bar" class="p-search-box">
+                    <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
                     <input
-                        type="search" placeholder="Search devices"
-                        class="p-search-boxh__input p-form-validation__input"
-                        data-ng-model="tabs.devices.search"
-                        data-ng-change="updateFilters('devices')"
+                        type="search" placeholder="Search devices" class="p-search-box__input"
+                        data-ng-model="tabs.devices.search" data-ng-change="updateFilters('devices')"
+                        data-ng-class="{ error: !tabs.devices.searchValid }"
                         data-ng-disabled="tabs.devices.actionOption" />
                     <button type="reset" class="p-search-box__reset u-no-margin--right" alt="reset"
-                        data-ng-show="tabs.machines.search.length > 0"
-                        data-ng-click="clearSearch('devices')">
-                        <i class="p-icon--close">Reset</i>
-                    </button>
-                    <button type="submit" class="p-search-box__button" alt="search">
-                        <i class="p-icon--search">Search</i>
-                    </button>
+                        data-ng-click="clearSearch('devices')"
+                        data-ng-show="tabs.devices.search.length > 0"><i class="p-icon--close"></i></button>
+                    <button type="submit" class="p-search-box__button" alt="search"><i class="p-icon--search"></i></button>
                 </div>
-            </div>
+            </form>
             <table class="p-table-expanding p-table--sortable p-table--devices">
                 <thead>
                     <tr class="p-table__row">
