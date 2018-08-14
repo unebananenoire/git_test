@@ -8,10 +8,10 @@
 <div class="ng-hide u-no-margin--top" data-ng-show="loaded" window-width>
     <header class="p-strip--light is-shallow u-no-padding--bottom page-header" media-query="min-width: 769px">
         <div class="row">
-            <div class="col-8">
+            <div class="tablet-col-4 col-8">
                 <h1 class="page-header__title">{$ subnet.cidr $}</h1>
             </div>
-            <div class="col-4">
+            <div class="tablet-col-2 col-4">
                 <!-- "Take action" dropdown -->
                 <div class="page-header__controls u-float--right ng-hide" data-ng-show="isSuperUser() && !isDefaultSubnet() && !loading && actionOptions.length">
                     <div data-maas-cta="actionOptions"

@@ -359,5 +359,67 @@
       }
     }
   }
+
+  .p-table--create-raid {
+    &__name {
+      @media (max-width: $breakpoint-medium) {
+        width: 50%;
+      }
+      @media (min-width: $breakpoint-medium) {
+        width: 30%;
+      }
+    }
+    &__size {
+      width: 10%;
+    }
+    &__type {
+      width: 20%;
+    }
+    &__active {
+      width: 10%;
+    }
+    &__spare {
+      width: 10%;
+    }
+  }
+
+  .p-table--create-volume-group {
+    &__name {
+      @media (max-width: $breakpoint-medium) {
+        width: 50%;
+      }
+      @media (min-width: $breakpoint-medium) {
+        width: 30%;
+      }
+    }
+    &__size {
+      width: 30%;
+    }
+    &__type {
+      width: 20%;
+    }
+    &__empty {
+      width: 10%;
+    }
+  }
+  .p-table--bcache {
+    &__name {
+      @media (max-width: $breakpoint-medium) {
+        width: 50%;
+      }
+      @media (min-width: $breakpoint-medium) {
+        width: 30%;
+      }
+    }
+    &__size {
+      width: 30%;
+    }
+    &__type {
+      width: 20%;
+    }
+    &__empty {
+      width: 10%;
+    }
+  }
 }
 

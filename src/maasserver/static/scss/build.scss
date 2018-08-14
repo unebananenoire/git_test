@@ -1,13 +1,14 @@
 // Import MAAS-specific Vanilla configuration
 @import 'settings';
-@import 'utils';
 
 // Import Vanilla framework
 @import '../../../../node_modules/vanilla-framework/scss/vanilla';
 @include vanilla;
 
+@import 'utils';
 // Import local patterns
 @import 'maas';
+@import 'patterns_inline-list';
 @import 'base_typography';
 @import 'base_tables';
 @import 'base_forms';
@@ -27,11 +28,14 @@
 @import 'patterns_hr';
 @import 'patterns_notification';
 @import 'patterns_footer';
+@import 'patterns_search-box';
 @import 'patterns_table-sortable';
 @import 'tables';
+@import 'patterns_space-between';
 
 // Include local patterns
 @include maas;
+@include maas-inline-lists;
 @include maas-tables;
 
 @include maas-b-forms;
@@ -50,6 +54,8 @@
 @include maas-p-forms;
 @include maas-p-hr;
 @include maas-p-notifications;
+@include maas-p-search-box;
 @include maas-p-sticky-footer;
 @include maas-table-sortable;
 @include maas-table-widths;
+@include patterns_space-between;

@@ -11,15 +11,39 @@
 
 @mixin maas-p-form-stacked {
   .p-form--stacked {
+    .p-form__group {
+      align-items: flex-start;
+    }
+
     .p-form__label,
     .p-form__control {
-      flex-basis: auto;
+      flex: 0 0 auto;
       max-width: none;
     }
 
-    .p-form__control > .p-control-text {
-      @extend %default-text;
-      display: block;
+    .p-form__label {
+      @extend .tablet-col-2;
+      @extend .col-2;
+    }
+
+    .p-form__control {
+      $input-v-padding-amount: $spv-nudge - $px;
+      $form-control-min-height: map-get($line-heights, default-text) + $input-v-padding-amount * 2 + 2 * $px;
+      @extend .tablet-col-4;
+      @extend .col-4;
+
+      & > .p-control-text {
+        @extend %default-text;
+        display: block;
+      }
+
+      &--placeholder {
+        display: block;
+        margin-bottom: $spv-inter--scaleable - $spv-nudge * 2 + $sp-unit;
+        min-height: $form-control-min-height;
+        padding-bottom: $input-v-padding-amount;
+        padding-top: $input-v-padding-amount;
+      }
     }
   }
 }

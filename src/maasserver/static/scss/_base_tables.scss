@@ -35,21 +35,41 @@
         overflow-x: hidden;
         overflow-y: visible;
         white-space: nowrap;
-        &:not(:last-child) {
-          padding-right: $sph-intra;
-        }
       }
 
       &:first-of-type {
-        @media (min-width: $breakpoint-small) {
-          padding-left: $sph-intra;
-        }
+        padding-left: $sph-intra--condensed;
+      }
+
+      &:not(:last-child) {
+        padding-right: $sph-intra--condensed;
       }
     }
+  }
 
-    tr.is-active {
+  tr {
+    &.is-active {
       background-color: $color-x-light;
     }
+
+    thead & {
+      border-bottom-color: $color-mid-light;
+    }
+
+    tbody & {
+      &:not(:first-child){
+        border-top-color: $color-light-new;
+      }
+      &.vs-repeat-after-content,
+      &.vs-repeat-before-content,
+      &.vs-repeat-before-content + tr {
+        border-top-color: transparent; // invisible row after the last one; doesn't need a border-top
+      }
+    }
+  }
+
+  tr.ng-hide + tr {
+    border: 0;
   }
 
   .p-table--action-cell {

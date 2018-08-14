@@ -8,7 +8,7 @@
 <div data-ng-if="loaded">
     <header class="p-strip--light is-shallow page-header u-no-padding--bottom">
         <div class="row">
-            <div class="col-8">
+            <div class="tablet-col-4 col-8">
                 <h1 class="page-header__title">
                     <span contenteditable="true"
                         data-ng-class="{ editable: canEdit(), 'is-error': editHeaderInvalid(), editmode: header.editing }"
@@ -48,7 +48,7 @@
                 </ul>
             </div>
 
-            <div class="col-4">
+            <div class="tablet-col-2 col-4">
                 <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
                 <div class="u-align--right" data-ng-show="!header.editing && action.availableOptions.length">
                     <div data-maas-cta="action.availableOptions"
@@ -1470,18 +1470,20 @@
                                     <div class="row">
                                         <div class="col-12 u-hide--medium u-hide--small">
                                             <table>
-                                                <tr class="u-no-padding">
-                                                    <td class="table-col--16">
-                                                        <input type="checkbox" class="checkbox u-float--left" id="bond-create" disabled="disabled" checked style="margin-top: 0.5rem;" />
+                                                <tr>
+                                                    <td class="p-table--add-bridge-checkbox">
+                                                        <input type="checkbox" class="checkbox u-float--left" id="bond-create" disabled="disabled" checked/>
                                                         <label for="bridge-create"></label>
+                                                    </td>
+                                                    <td class="p-table--add-bridge-name">
                                                         <span data-ng-class="{ 'is-error': isInterfaceNameInvalid(newBridgeInterface) }">
-                                                            <input type="text" class="table__input editible u-no-margin--top" data-ng-model="newBridgeInterface.name" style="width: 82%;">
+                                                            <input type="text" class="table__input editible" data-ng-model="newBridgeInterface.name">
                                                         </span>
                                                     </td>
-                                                    <td class="table-col--7 u-align--center">
+                                                    <td class="u-align--center">
                                                         <input type="radio" id="{$ newBridgeInterface.name $}" name="bridgeBootInterface" checked data-ng-if="hasBootInterface(newBridgeInterface)">
                                                     </td>
-                                                    <td class="table-col--77">&nbsp;</td>
+                                                    <td class="">&nbsp;</td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -1493,52 +1495,51 @@
                                         </div>
                                         <hr>
                                     </div>
-                                    <div class="row p-form--stacked u-no-margin--top">
-                                        <div class="col-6">
-                                            <div class="p-form__group u-vertically-center" style="min-height: 2.5rem;">
-                                                <label class="p-form__label">Primary</label>
-                                                <div class="p-form__control">
-                                                    <span>{$ newBridgeInterface.primary.name $}</span>
+                                    <div class="row p-form--stacked">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="p-form__group u-vertically-center" style="min-height: 2.5rem;">
+                                                    <label class="p-form__label">Primary</label>
+                                                    <div class="p-form__control">
+                                                        <span>{$ newBridgeInterface.primary.name $}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="p-form__group u-vertically-center" data-ng-class="{ 'is-error': isMACAddressInvalid(newBridgeInterface.mac_address) }">
-                                                <label for="mac" class="p-form__label">MAC address</label>
-                                                <div class="p-form__control">
-                                                    <input type="text" name="mac" placeholder="00:00:00:00:00:00" data-ng-model="newBridgeInterface.mac_address" data-ng-pattern="/^([0-9A-F]{2}[::]){5}([0-9A-F]{2})$/gmi" mac-address maxlength="17" data-ng-placeholder="getInterfacePlaceholderMACAddress(newBridgeInterface)">
+                                                <div class="p-form__group u-vertically-center" data-ng-class="{ 'is-error': isMACAddressInvalid(newBridgeInterface.mac_address) }">
+                                                    <label for="mac" class="p-form__label">MAC address</label>
+                                                    <div class="p-form__control">
+                                                        <input type="text" name="mac" placeholder="00:00:00:00:00:00" data-ng-model="newBridgeInterface.mac_address" data-ng-pattern="/^([0-9A-F]{2}[::]){5}([0-9A-F]{2})$/gmi" mac-address maxlength="17" data-ng-placeholder="getInterfacePlaceholderMACAddress(newBridgeInterface)">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="p-form__group u-vertically-center">
-                                                <label class="p-form__label">Tags</label>
-                                                <div class="p-form__control tags--inline">
-                                                    <tags-input data-ng-model="newBridgeInterface.tags" allow-tags-pattern="[\w-]+"></tags-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="p-form__group u-vertically-center" style="min-height: 2.5rem;">
-                                                <label for="stp" class="p-form__label">STP</label>
-                                                <div class="p-form__control">
-                                                    <div class="onoffswitch maas-p-switch">
-                                                        <input id="bridge_stp" type="checkbox" name="bridge_stp" class="onoffswitch-checkbox maas-p-switch--input"
-                                                            data-ng-model="newBridgeInterface.bridge_stp">
-                                                        <label class="onoffswitch-label u-no-margin--top maas-p-switch--mask" for="bridge_stp">
-                                                            <span class="onoffswitch-inner"></span>
-                                                            <span class="onoffswitch-switch"></span>
-                                                        </label>
+                                                <div class="p-form__group u-vertically-center">
+                                                    <label class="p-form__label">Tags</label>
+                                                    <div class="p-form__control tags--inline">
+                                                        <tags-input data-ng-model="newBridgeInterface.tags" allow-tags-pattern="[\w-]+"></tags-input>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="p-form__group u-vertically-center" data-ng-if="newBridgeInterface.bridge_stp">
-                                                <label for="fd" class="p-form__label">Forward delay</label>
-                                                <div class="p-form__control">
-                                                    <input type="text" name="mac" data-ng-model="newBridgeInterface.bridge_fd">
+                                            <div class="col-6">
+                                                <div class="p-form__group u-vertically-center" style="min-height: 2.5rem;">
+                                                    <label for="stp" class="p-form__label">STP</label>
+                                                    <div class="p-form__control">
+                                                        <div class="onoffswitch maas-p-switch">
+                                                            <input id="bridge_stp" type="checkbox" name="bridge_stp" class="onoffswitch-checkbox maas-p-switch--input"
+                                                                data-ng-model="newBridgeInterface.bridge_stp">
+                                                            <div class="maas-p-switch--mask"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="p-form__group u-vertically-center" data-ng-if="newBridgeInterface.bridge_stp">
+                                                    <label for="fd" class="p-form__label">Forward delay</label>
+                                                    <div class="p-form__control">
+                                                        <input type="text" name="mac" data-ng-model="newBridgeInterface.bridge_fd">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row u-no-margin--top">
+                                    <div class="row">
                                         <hr>
-                                        <div class="col-12 u-align--right">
+                                        <div class="u-float--right">
                                             <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
                                             <button class="p-button--positive u-no-margin--top" data-ng-click="addBridge()" data-ng-disabled="cannotAddBridge()">Save</button>
                                         </div>
@@ -1546,21 +1547,19 @@
                                 </td>
                             </tr>
                             <tr class="is-active ng-hide" data-ng-show="isShowingCreatePhysical()">
-                                <td class="col-2 p-form-validation" data-ng-if="!isDevice"
-                                    data-ng-class="{ 'is-error': isInterfaceNameInvalid(newInterface) }">
-                                    <input type="text" class="p-form-validation__input"
-                                        data-ng-model="newInterface.name">
-                                </td>
-                                <td class="col-10"></td>
-                                <td class="p-table-expanding__panel col-12">
-                                    <div class="row" data-ng-if="windowWidth <= 768">
-                                        <div class="col-8">
-                                            <h2 data-ng-click="cancel()" class="p-heading--four">&lsaquo;&nbsp;&nbsp;New interface</h2>
+                                <td class="p-table-expanding__panel">
+                                    <div class="row">
+                                        <div class="u-float--left p-form-validation" data-ng-if="!isDevice"
+                                            data-ng-class="{ 'is-error': isInterfaceNameInvalid(newInterface) }">
+                                            <input type="text" class="p-form-validation__input"
+                                                data-ng-model="newInterface.name">
                                         </div>
-                                        <div class="col-4">
-                                            <div class="u-align--right">
-                                                <i data-ng-click="cancel()" class="p-icon--close">Cancel</i>
-                                            </div>
+                                    </div>
+                                    <hr data-ng-if="!isDevice">
+                                    <div class="row" data-ng-if="windowWidth <= 768">
+                                        <div class="u-flex--no-wrap">
+                                            <h2 data-ng-click="cancel()" class="p-heading--four">New interface</h2>
+                                            <button class="p-button--close" data-ng-click="cancel()" ><i class="p-icon--close">Cancel</i></button>
                                         </div>
                                     </div>
                                     <div class="p-form p-form--stacked" data-ng-if="!isDevice">
@@ -1574,13 +1573,13 @@
                                                             data-ng-model="newInterface.name">
                                                     </div>
                                                 </div>
-                                                <div class="p-form__group" style="min-height: 2.5rem;">
+                                                <div class="p-form__group">
                                                     <label class="p-form__label">Type</label>
                                                     <div class="p-form__control">
-                                                        <span>Physical</span>
+                                                        <span class="p-form__control--placeholder">Physical</span>
                                                     </div>
                                                 </div>
-                                                <div class="p-form__group p-form-validation u-no-margin--top"
+                                                <div class="p-form__group p-form-validation"
                                                     data-ng-class="{ 'is-error': isMACAddressInvalid(newInterface.mac_address, false) || newInterface.macError }">
                                                     <label for="mac" class="p-form__label">MAC address</label>
                                                     <div class="p-form__control">
@@ -1652,10 +1651,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="p-form p-form--stacked u-no-margin--top">
+                                    <div class="p-form p-form--stacked">
                                         <div class="row" data-ng-if="isDevice">
                                             <div class="col-6">
-                                                <div class="p-form__group p-form-validation u-no-margin--top"
+                                                <div class="p-form__group p-form-validation"
                                                     data-ng-class="{ 'is-error': isMACAddressInvalid(newInterface.mac_address, true) }">
                                                     <label for="mac" class="p-form__label">MAC address</label>
                                                     <div class="p-form__control">
@@ -1716,9 +1715,9 @@
                                         <div class="u-float--left" data-ng-show="newInterface.errorMsg">
                                             <span class="p-icon--error">Error:</span> {$ newInterface.errorMsg $}
                                         </div>
-                                        <div class="u-float--right u-no-margin--top">
+                                        <div class="u-float--right">
                                             <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
-                                            <button class="p-button--positive u-no-margin--top"
+                                            <button class="p-button--positive"
                                                 data-ng-click="addPhysicalInterface()"
                                                 data-ng-disabled="cannotAddPhysicalInterface()">Save</button>
                                         </div>
@@ -1821,7 +1820,7 @@
                                                     <span data-ng-if="cachesetsMode === 'delete'">Removing {$ cacheset.name $}</span>
                                                 </h2>
                                             </div>
-                                            <div class="col-4 u-aling--right">
+                                            <div class="col-4 u-float--right">
                                                 <i data-ng-click="filesystemCancel()" class="p-icon--close">Cancel</i>
                                             </div>
                                         </div>

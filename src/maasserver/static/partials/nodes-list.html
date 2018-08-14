@@ -1,6 +1,6 @@
 <header class="p-strip--light is-shallow u-no-padding--bottom page-header" data-ng-class="{'u-no-padding--bottom': currentpage === 'machines' || currentpage === 'pools'}" media-query="min-width: 769px">
     <div class="row">
-        <div class="col-8">
+        <div class="tablet-col-4 col-8">
             <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
             <h1 class="page-header__title">{$ title $}</h1>
             <p class="page-header__status u-no-margin--top" data-ng-show="loading">
@@ -12,7 +12,7 @@
                 <ng-pluralize data-ng-if="currentpage === 'controllers'" count="controllers.length" when="{'one': '{$ controllers.length $} controller available', 'other': '{$ controllers.length $} controllers available'}"></ng-pluralize>
             </p>
         </div>
-        <div class="col-4 ng-hide" data-ng-show="currentpage === 'machines'">
+        <div class="tablet-col-2 col-4 ng-hide" data-ng-show="currentpage === 'machines'">
             <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
             <div class="page-header__controls u-float--right">
                 <div data-ng-hide="tabs.machines.selectedItems.length || !isSuperUser()">
@@ -21,7 +21,7 @@
                         data-ng-change="addHardwareOptionChanged()" data-default-title="Add hardware">
                     </div>
                 </div>
-                <ul class="p-inline-list u-no-margin--top ng-hide" data-ng-show="tabs.machines.selectedItems.length">
+                <ul class="p-inline-list u-no-margin--bottom ng-hide" data-ng-show="tabs.machines.selectedItems.length">
                     <li class="p-inline-list__item">
                         <a data-ng-click="showSelected('machines')">{$ tabs.machines.selectedItems.length $} selected</a>
                     </li>
@@ -32,8 +32,8 @@
             </div>
         </div>
 
-        <div class="page-header__controls u-no-margin--top" data-ng-show="currentpage === 'pools'">
-            <div class="page-header__controls u-no-margin--top"
+        <div class="page-header__controls" data-ng-show="currentpage === 'pools'">
+            <div class="page-header__controls"
                  data-ng-show="isSuperUser()">
               <button class="p-button--neutral"
                       data-ng-click="tabs.pools.addPool()"
@@ -46,7 +46,7 @@
 
         <div class="col-4" data-ng-show="currentpage === 'devices' || currentpage === 'controllers'">
             <!-- XXX ricgard 2016-06-16 - Need to add e2e test. -->
-            <div class="page-header__controls u-no-margin--top" data-ng-show="currentpage === 'devices'">
+            <div class="page-header__controls" data-ng-show="currentpage === 'devices'">
                 <div data-ng-hide="tabs.devices.selectedItems.length">
                     <button class="p-button--neutral"
                         data-ng-click="addDevice()"
@@ -358,7 +358,7 @@
         <hr />
         <add-machine data-ng-show="showMachine()"></add-machine>
         <section class="page-header__section col-12 ng-hide" data-ng-show="showChassis()">
-            <h3 class="page-header__dropdown-title">Add chassis</h3>
+            <h4 class="page-header__dropdown-title">Add chassis</h4>
             <form action="post" class="p-form p-form--stacked">
                 <div class="col-6"
                     data-maas-power-parameters="chassisPowerTypes"
@@ -367,7 +367,7 @@
                 <div class="col-6">
                     <div class="p-form__group">
                         <label for="domain2" class="p-form__label col-2">Domain</label>
-                        <div class="p-form__group-input col-3">
+                        <div class="p-form__control">
                             <select name="domain" id="domain2"
                                 data-ng-model="chassis.domain"
                                 data-ng-options="domain as domain.name for domain in domains">
@@ -409,7 +409,7 @@
                 <div class="col-6">
                     <div class="p-form__group">
                         <label for="device-name" class="p-form__label col-2">Name</label>
-                        <div class="p-form__group-input col-3">
+                        <div class="p-form__control">
                             <div class="p-form-validation" data-ng-class="{ 'is-error': nameHasError() }">
                                 <input type="text" id="device-name" placeholder="Name your device"
                                     class="p-form-validation__input"
@@ -419,7 +419,7 @@
                     </div>
                     <div class="p-form__group">
                         <label for="domain3" class="p-form__label col-2">Domain</label>
-                        <div class="p-form__group-input col-3">
+                        <div class="p-form__control">
                             <select name="domain" id="domain3"
                                 data-ng-model="device.domain"
                                 data-ng-options="domain as domain.name for domain in domains">
@@ -620,7 +620,7 @@
         <!-- XXX blake_r 2015-05-07 - Need to add e2e test. -->
         <div class="page-header__section col-12 ng-hide" data-ng-show="tabs.controllers.addController">
             <hr />
-            <h3 class="page-header__dropdown-title">Add rack controller</h3>
+            <h4 class="page-header__dropdown-title">Add rack controller</h4>
             <pre><code># To add a new rack controller, SSH into the rack controller.
 # Install the maas-rack-controller package.
 sudo apt install maas-rack-controller

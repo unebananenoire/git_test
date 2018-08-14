@@ -26,6 +26,10 @@
       padding-bottom: $spv-nudge - $px;
       padding-top: $spv-nudge - $px;
     }
+
+    &.u-min-margin--bottom {
+      margin-bottom: $spv-nudge-compensation * 2;
+    }
   }
 
   // fix checkbox so it doesn't get misaligned when next to a label with a different padding-top than the default label
@@ -77,6 +81,8 @@
       }
     }
   }
+
+
 }
 
 

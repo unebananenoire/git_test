@@ -12,3 +12,15 @@ $nudge--smallest: .15rem;
   margin-bottom: map-get($sp-after, small) + map-get($line-heights, default-text) - $line-height--smallest - $nudge--smallest;
   padding-top: $nudge--smallest;
 }
+
+h4,
+.p-heading--four {
+  & + & {
+    margin-top: - (map-get($sp-after, h4)) !important;
+  }
+}
+
+.default-text {
+  @extend %default-text;
+  display: block;
+}
