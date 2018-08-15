@@ -47,7 +47,7 @@
         // in maas tables, we don't need the margin bottom;
         margin-bottom: 0;
         // text in most tables is not wrapped in a block-level tag, and effectively behaves as an inline element. This makes it unstylable. To compensate, vanilla applies padding to the tr.
-        // ELements like checkboxes have the same padding-top as paragraphs, to make them stay on the baseline grid. This needs to be zeroed out as the values have already been applied to trs
+        // Elements like checkboxes have the same padding-top as paragraphs, to make them stay on the baseline grid. This needs to be zeroed out as the values have already been applied to trs
         padding-top: 0;
       }
 

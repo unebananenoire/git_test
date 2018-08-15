@@ -135,11 +135,11 @@
             </div>
             <div class="row ng-hide" data-ng-hide="isActionError() || isDeployError() || isSSHKeyError() || hasActionPowerError(action.option.name) || action.option.name !== 'commission'" data-ng-if="hasCustomCommissioningScripts()">
                 <div class="page-header__section">
-                    <form class="p-form p-form--stacked">
+                    <form class="p-form">
                         <div class="col-8">
-                            <div class="p-form__group u-vertically-center">
+                            <div class="p-form__group">
                                 <label for="commissioning-scripts">Additional commissioning scripts</label>
-                                <span id="commissioning-scripts" data-maas-script-select="script" data-script-type="0" data-ng-model="commissioningSelection"></span>
+                                <span id="commissioning-scripts" data-maas-script-select="script" data-script-type="0" data-ng-model="commissioningSelection" class="tags--inline"></span>
                             </div>
                         </div>
                     </form>
@@ -1011,7 +1011,7 @@
                                         </div>
                                         <div class="row is-active" data-ng-if="isShowingDeleteConfirm() && isInterfaceSelected(interface)">
                                             <div class="col-8">
-                                                <p><span class="p-icon--warning">Warning:</span> Are you sure you want to remove this {$ getRemoveTypeText(interface) $}?</p>
+                                                <p class="u-no-margin--bottom"><span class="p-icon--warning">Warning:</span> Are you sure you want to remove this {$ getRemoveTypeText(interface) $}?</p>
                                             </div>
                                             <div class="col-4">
                                                 <div class="u-align--right">
@@ -1050,6 +1050,7 @@
                                             data-ng-checked="isInterfaceSelected(interface)"
                                             data-ng-click="toggleInterfaceSelect(interface)"
                                             data-ng-disabled="isDisabled()">
+                                        <label class="p-form__label u-no-margin--top" for="{$ getUniqueKey(interface) $}"></label>
                                     </span>
                                     <span data-ng-if="!isEditing(interface) || (!isEditing(interface) && interface.type === 'vlan')"
                                         data-ng-show="tableInfo.column == 'name'"
@@ -1092,7 +1093,7 @@
                                 </td>
                                 <td class="p-table--action-cell">
                                     <div class="u-align--right">
-                                        <div class="p-contextual-menu" toggle-ctrl data-ng-if="(!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)) && !isEditing(interface)">
+                                        <div class="p-contextual-menu" toggle-ctrl data-ng-if="(!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)) && !isEditing(interface) && !(isShowingDeleteConfirm() && isInterfaceSelected(interface))">
                                             <button class="p-button--base is-small p-contextual-menu__toggle" data-ng-click="toggleMenu()"><i class="p-icon--contextual-menu u-no-margin--right">Actions</i></button>
                                             <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled">
                                                 <button class="p-contextual-menu__link"
@@ -1123,7 +1124,7 @@
                                     </div>
                                 </td>
 
-                                <td class="p-table-expanding__panel col-12" data-ng-class="{ 'u-no-padding': !isShowingAdd() && !isEditing(interface) && !isShowingDeleteConfirm() && !isShowingAdd() || newInterface.saving }" data-ng-if="isInterfaceSelected(interface)">
+                                <td class="p-table-expanding__panel col-12" data-ng-class="{ 'u-no-padding': !isShowingAdd() && !(isEditing(interface) || isShowingAdd()) && !isShowingDeleteConfirm() && !isShowingAdd() || newInterface.saving }" data-ng-if="isInterfaceSelected(interface)">
                                     <div class="row" data-ng-if="isShowingAdd() || isEditing(interface) || isShowingDeleteConfirm() || isShowingAdd() && !newInterface.saving">
                                         <div class="u-position-relative u-clearfix" data-ng-if="windowWidth <= 768">
                                             <h2 data-ng-click="cancel()" class="u-float--left p-heading--four">
@@ -1223,7 +1224,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-3 mobile-col-2 tablet-col-3" data-ng-if="windowWidth >= 768">
+                                                <div class="col-3 mobile-col-2 tablet-col-3" data-ng-if="windowWidth >= 768 && !isShowingDeleteConfirm() && !isShowingAdd()">
                                                     <input type="text" class="p-form-validation__input"
                                                         data-ng-if="isEditing(interface) && interface.type !== 'vlan'"
                                                         data-ng-disabled="isController"
@@ -1233,12 +1234,11 @@
                                                         title="{$ interface.name $}">{$ interface.name $}</span>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <div class="row" data-ng-if="isEditing(editInterface)">
                                                 <hr />
                                                 <div class="row">
                                                     <maas-obj-form obj="editInterface" manager="nodesManager" manager-method="updateInterfaceForm"
-                                                        table-form="true" save-on-blur="false" after-save="editSave" pre-process="preProcessInterface"
-                                                        data-ng-if="isEditing(editInterface)">
+                                                        table-form="true" save-on-blur="false" after-save="editSave" pre-process="preProcessInterface">
                                                         <div class="row">
                                                             <div class="col-6">
                                                                 <div class="p-form__group u-clearfix">
@@ -1318,13 +1318,16 @@
                                             </div>
                                         </div>
                                         <div class="row is-active" data-ng-if="isShowingDeleteConfirm() && isInterfaceSelected(interface)">
-                                            <div class="col-8">
-                                                <p><span class="p-icon--warning">Warning:</span> Are you sure you want to remove this {$ getRemoveTypeText(interface) $}?</p>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="u-align--right">
-                                                    <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
-                                                    <button class="p-button--negative u-no-margin--top" data-ng-click="confirmRemove(interface)">Remove</button>
+                                            <hr />
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <p class="u-no-margin--bottom"><span class="p-icon--warning">Warning:</span> Are you sure you want to remove this {$ getRemoveTypeText(interface) $}?</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="u-align--right">
+                                                        <button class="p-button--base" data-ng-click="editCancel()">Cancel</button>
+                                                        <button class="p-button--negative u-no-margin--top" data-ng-click="confirmRemove(interface)">Remove</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1340,7 +1343,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="u-align--right">
-                                                    <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
+                                                    <button class="p-button--base" data-ng-click="editCancel()">Cancel</button>
                                                     <button class="p-button--positive u-no-margin--top" data-ng-click="addInterface()">Add</button>
                                                 </div>
                                             </div>
@@ -1469,13 +1472,13 @@
                                 <td class="p-table-expanding__panel col-12">
                                     <div class="row">
                                         <div class="col-12 u-hide--medium u-hide--small">
-                                            <table>
-                                                <tr>
+                                            <table class="p-table-expanding u-no-margin--bottom p-table--controller-interfaces">
+                                                <tr class="p-table--is-not-device">
                                                     <td class="p-table--add-bridge-checkbox">
-                                                        <input type="checkbox" class="checkbox u-float--left" id="bond-create" disabled="disabled" checked/>
-                                                        <label for="bridge-create"></label>
-                                                    </td>
-                                                    <td class="p-table--add-bridge-name">
+                                                        <span class="u-float--left">
+                                                            <input type="checkbox" class="checkbox u-float--left" id="bond-create" disabled="disabled" checked/>
+                                                            <label for="bridge-create"></label>
+                                                        </span>
                                                         <span data-ng-class="{ 'is-error': isInterfaceNameInvalid(newBridgeInterface) }">
                                                             <input type="text" class="table__input editible" data-ng-model="newBridgeInterface.name">
                                                         </span>
@@ -1483,7 +1486,12 @@
                                                     <td class="u-align--center">
                                                         <input type="radio" id="{$ newBridgeInterface.name $}" name="bridgeBootInterface" checked data-ng-if="hasBootInterface(newBridgeInterface)">
                                                     </td>
-                                                    <td class="">&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
                                                 </tr>
                                             </table>
                                         </div>

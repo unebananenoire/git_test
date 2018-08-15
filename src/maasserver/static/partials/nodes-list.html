@@ -406,7 +406,7 @@
             <hr />
             <h4 class="page-header__dropdown-title">Add device</h4>
             <form class="p-form p-form--stacked">
-                <div class="col-6">
+                <div class="col-6 u-sv3">
                     <div class="p-form__group">
                         <label for="device-name" class="p-form__label col-2">Name</label>
                         <div class="p-form__control">
@@ -428,7 +428,7 @@
                     </div>
                 </div>
             </form>
-            <table class="p-table-nodes-list">
+            <table class="p-table-nodes-list u-no-margin--bottom">
                 <thead>
                     <tr class="p-table__row">
                         <th class="p-table__cell">MAC address</th>
@@ -443,13 +443,14 @@
                         <td class="p-table__cell" aria-label="MAC address">
                             <div class="p-form-validation u-no-margin--top" data-ng-class="{ 'is-error': macHasError(interface) }">
                                 <input type="text" id="mac-address1" placeholder="00:00:00:00:00:00"
-                                    class="p-form-validation__input"
+                                    class="p-form-validation__input u-no-margin--bottom"
                                     data-ng-model="interface.mac">
                             </div>
                         </td>
                         <td class="p-table__cell" aria-label="IP assignment">
                             <select name="ip-assignment" id="ip-assignment"
                                 data-ng-model="interface.ipAssignment"
+                                class="u-no-margin--bottom"
                                 data-ng-options="assigment.title for assigment in ipAssignments">
                                 <option value="" disabled selected>Select IP assignment</option>
                             </select>
@@ -483,7 +484,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="u-no-padding--bottom">
+                        <td>
                             <button class="p-button--neutral" data-ng-click="addInterface()">+ Add another interface</button>
                         </td>
                     </tr>
@@ -929,11 +930,11 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                         </td>
                         <td class="p-table__cell col-2 u-align--right" aria-label="Actions" data-ng-show="isSuperUser()">
                           <span data-ng-hide="tabs.pools.isPoolAction(pool)">
-                            <button class="p-button--base is-small u-no-margin--right">
-                              <i class="p-icon--edit" data-ng-click="tabs.pools.initiatePoolAction(pool, 'edit')">Edit</i>
+                            <button class="p-button--base is-small u-no-margin--right" data-ng-click="tabs.pools.initiatePoolAction(pool, 'edit')">
+                              <i class="p-icon--edit">Edit</i>
                             </button>
-                            <button class="p-button--base is-small" data-ng-hide="tabs.pools.isDefaultPool(pool)">
-                              <i class="p-icon--delete" data-ng-click="tabs.pools.initiatePoolAction(pool, 'delete')">Delete</i>
+                            <button class="p-button--base is-small" data-ng-hide="tabs.pools.isDefaultPool(pool)" data-ng-click="tabs.pools.initiatePoolAction(pool, 'delete')">
+                              <i class="p-icon--delete">Delete</i>
                             </button>
                           </span>
                         </td>
