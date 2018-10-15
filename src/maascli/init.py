@@ -15,24 +15,24 @@ from macaroonbakery import httpbakery
 
 def add_candid_options(parser):
     parser.add_argument(
-        '--idm-url', default=None,
+        '--candid-url', default=None,
         help=("The URL to the external Candid server to use for "
               "authentication."))
     parser.add_argument(
-        '--idm-domain', default=None,
+        '--candid-domain', default=None,
         help=("The authentication domain to look up users in for the external "
               "CANDID server."))
     parser.add_argument(
-        '--idm-user', default=None,
+        '--candid-user', default=None,
         help="The username to access the Candid service API.")
     parser.add_argument(
-        '--idm-key', default=None,
+        '--candid-key', default=None,
         help="The private key to access the Candid service API.")
     parser.add_argument(
-        '--idm-agent-file', type=argparse.FileType('r'),
+        '--candid-agent-file', type=argparse.FileType('r'),
         help="Agent file containing Candid authentication information")
     parser.add_argument(
-        '--idm-admin-group', default=None,
+        '--candid-admin-group', default=None,
         help="Group of users whose members are made admins in MAAS")
 
 
@@ -121,18 +121,18 @@ def create_account_external_auth(auth_config, maas_config,
 
 def configure_authentication(options):
     cmd = [get_maas_region_bin_path(), 'configauth']
-    if options.idm_url is not None:
-        cmd.extend(['--idm-url', options.idm_url])
-    if options.idm_domain is not None:
-        cmd.extend(['--idm-domain', options.idm_domain])
-    if options.idm_user is not None:
-        cmd.extend(['--idm-user', options.idm_user])
-    if options.idm_key is not None:
-        cmd.extend(['--idm-key', options.idm_key])
-    if options.idm_agent_file is not None:
-        cmd.extend(['--idm-agent-file', options.idm_agent_file.name])
-    if options.idm_admin_group is not None:
-        cmd.extend(['--idm-admin-group', options.idm_admin_group])
+    if options.candid_url is not None:
+        cmd.extend(['--candid-url', options.candid_url])
+    if options.candid_domain is not None:
+        cmd.extend(['--candid-domain', options.candid_domain])
+    if options.candid_user is not None:
+        cmd.extend(['--candid-user', options.candid_user])
+    if options.candid_key is not None:
+        cmd.extend(['--candid-key', options.candid_key])
+    if options.candid_agent_file is not None:
+        cmd.extend(['--candid-agent-file', options.candid_agent_file.name])
+    if options.candid_admin_group is not None:
+        cmd.extend(['--candid-admin-group', options.candid_admin_group])
     subprocess.call(cmd)
 
 
@@ -161,7 +161,7 @@ def print_msg(msg='', newline=True):
 
 
 def init_maas(options):
-    if options.enable_idm:
+    if options.enable_candid:
         print_msg('Configuring authentication')
         configure_authentication(options)
     if not options.skip_admin:

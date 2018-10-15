@@ -577,10 +577,10 @@ class cmd_init(SnappyCommand):
                 "Skip confirmation questions when initialization has "
                 "already been performed."))
         parser.add_argument(
-            '--enable-idm', default=False, action="store_true",
+            '--enable-candid', default=False, action="store_true",
             help=("Enable configuring the use of an external Candid server. "
                   "This feature is currently experimental. "
-                  "If this isn't enabled, all --idm-* arguments "
+                  "If this isn't enabled, all --candid-* arguments "
                   "will be ignored."))
         add_candid_options(parser)
         add_rbac_options(parser)

@@ -124,16 +124,16 @@ class Command(BaseCommand):
             raise InvalidURLError(
                 "Please enter a valid http or https URL.")
 
-        agent_file = options.get('idm_agent_file')
+        agent_file = options.get('candid_agent_file')
         if agent_file:
             update_auth_details_from_agent_file(agent_file, auth_details)
             if not auth_details.rbac_url:
                 auth_details.domain = _get_or_prompt(
-                    options, 'idm_domain',
+                    options, 'candid_domain',
                     "Users domain for external authentication backend "
                     "(leave blank for empty): ", replace_none=True)
                 auth_details.admin_group = _get_or_prompt(
-                    options, 'idm_admin_group',
+                    options, 'candid_admin_group',
                     "Group of users whose members are made admins in MAAS "
                     "(leave blank for empty): ")
         else:
@@ -142,7 +142,7 @@ class Command(BaseCommand):
             # where RBAC is used, we'll eventually generate the key and get the
             # Candid URL and username from the registration call with RBAC
             # itself.
-            auth_details.url = options.get('idm_url')
+            auth_details.url = options.get('candid_url')
             if auth_details.url is None:
                 existing_url = config_manager.get_config('external_auth_url')
                 auth_details.url = prompt_for_external_auth_url(existing_url)
@@ -156,16 +156,17 @@ class Command(BaseCommand):
                     raise InvalidURLError(
                         "Please enter a valid http or https URL.")
                 auth_details.user = _get_or_prompt(
-                    options, 'idm_user', "Username for Candid API access: ")
+                    options, 'candid_user', "Username for Candid API access: ")
                 auth_details.key = _get_or_prompt(
-                    options, 'idm_key', "Private key for Candid API access: ")
+                    options, 'candid_key',
+                    "Private key for Candid API access: ")
                 if not auth_details.rbac_url:
                     auth_details.domain = _get_or_prompt(
-                        options, 'idm_domain',
+                        options, 'candid_domain',
                         "Users domain for external authentication backend "
                         "(leave blank for empty): ", replace_none=True)
                     auth_details.admin_group = _get_or_prompt(
-                        options, 'idm_admin_group',
+                        options, 'candid_admin_group',
                         "Group of users whose members are made admins in MAAS "
                         "(leave blank for empty): ")
 
