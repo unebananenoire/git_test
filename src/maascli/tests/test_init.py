@@ -5,6 +5,7 @@
 
 __all__ = []
 
+from io import StringIO
 import os
 import tempfile
 from unittest.mock import (
@@ -23,6 +24,7 @@ class TestAddCandidOptions(MAASTestCase):
         super().setUp()
         self.parser = ArgumentParser()
         init.add_candid_options(self.parser)
+        self.mock_stderr = self.patch(init.sys, "stderr", StringIO())
 
     def test_add_candid_options_empty(self):
         options = self.parser.parse_args([])
@@ -60,6 +62,21 @@ class TestAddCandidOptions(MAASTestCase):
             ['--candid-agent-file', agent_file_name])
         self.assertEqual(
             'my-agent-file-content', options.candid_agent_file.read())
+
+    def test_add_candid_options_deprecated_idm_agent_file(self):
+        fd, agent_file_name = tempfile.mkstemp()
+        self.addCleanup(os.remove, agent_file_name)
+
+        os.write(fd, b'my-agent-file-content')
+        os.close(fd)
+        options = self.parser.parse_args(
+            ['--idm-agent-file', agent_file_name])
+        self.assertEqual(
+            'my-agent-file-content', options.candid_agent_file.read())
+        self.assertIn(
+            'Note: "--idm-agent-file" is deprecated and will be removed, '
+            'please use "--candid-agent-file" instead',
+            self.mock_stderr.getvalue())
 
     def test_add_candid_options_candid_admin_group(self):
         options = self.parser.parse_args(

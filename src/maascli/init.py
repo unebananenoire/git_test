@@ -7,21 +7,56 @@ import argparse
 import json
 import os
 import subprocess
+import sys
 from textwrap import dedent
 
 from maascli.configfile import MAASConfiguration
 from macaroonbakery import httpbakery
 
 
+def deprecated_for(new_option):
+    """Return an arparse.Action for deprecating another option.
+
+    It prints out a deprecation message and calls the new option.
+
+    """
+
+    class DeprecatedAction(argparse.Action):
+
+        _new_option = new_option
+        _deprecation_message = (
+            'Note: "{option_string}" is deprecated and will be removed, '
+            'please use "{new_option}" instead.')
+
+        def __init__(self, *args, **kwargs):
+            kwargs.setdefault('help', argparse.SUPPRESS)
+            kwargs['default'] = argparse.SUPPRESS
+            super().__init__(*args, **kwargs)
+
+        def __call__(self, parser, namespace, values, option_string=None):
+            action = parser._option_string_actions.get(self._new_option)
+            assert action, 'unknown option "{}"'.format(self._new_option)
+            assert option_string, \
+                '"deprecate_for" must be used with optional arguments'
+            print(
+                self._deprecation_message.format(
+                    option_string=option_string, new_option=self._new_option),
+                file=sys.stderr)
+            option_string = self._new_option
+            return action(
+                parser, namespace, values, option_string=option_string)
+
+    return DeprecatedAction
+
+
 def add_candid_options(parser):
+    parser.add_argument(
+        '--candid-agent-file', type=argparse.FileType('r'),
+        help="Agent file containing Candid authentication information")
     parser.add_argument(
         '--candid-url', default=None,
         help=("The URL to the external Candid server to use for "
               "authentication."))
-    parser.add_argument(
-        '--candid-domain', default=None,
-        help=("The authentication domain to look up users in for the external "
-              "CANDID server."))
     parser.add_argument(
         '--candid-user', default=None,
         help="The username to access the Candid service API.")
@@ -29,11 +64,26 @@ def add_candid_options(parser):
         '--candid-key', default=None,
         help="The private key to access the Candid service API.")
     parser.add_argument(
-        '--candid-agent-file', type=argparse.FileType('r'),
-        help="Agent file containing Candid authentication information")
+        '--candid-domain', default=None,
+        help=("The authentication domain to look up users in for the external "
+              "Candid server."))
     parser.add_argument(
         '--candid-admin-group', default=None,
         help="Group of users whose members are made admins in MAAS")
+    # deprecated aliases
+    parser.add_argument(
+        '--idm-agent-file', type=argparse.FileType('r'),
+        action=deprecated_for('--candid-agent-file'))
+    parser.add_argument(
+        '--idm-url', action=deprecated_for('--candid-url'))
+    parser.add_argument(
+        '--idm-user', action=deprecated_for('--candid-user'))
+    parser.add_argument(
+        '--idm-key', action=deprecated_for('--candid-key'))
+    parser.add_argument(
+        '--idm-domain', action=deprecated_for('--candid-domain'))
+    parser.add_argument(
+        '--idm-admin-group', action=deprecated_for('--candid-admin-group'))
 
 
 def add_rbac_options(parser):
