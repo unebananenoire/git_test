@@ -29,8 +29,8 @@ import time
 from maascli.command import Command
 from maascli.configfile import MAASConfiguration
 from maascli.init import (
+    add_candid_options,
     add_create_admin_options,
-    add_idm_options,
     add_rbac_options,
     init_maas,
     print_msg,
@@ -578,11 +578,11 @@ class cmd_init(SnappyCommand):
                 "already been performed."))
         parser.add_argument(
             '--enable-idm', default=False, action="store_true",
-            help=("Enable configuring the use of an external IDM server. "
+            help=("Enable configuring the use of an external Candid server. "
                   "This feature is currently experimental. "
                   "If this isn't enabled, all --idm-* arguments "
                   "will be ignored."))
-        add_idm_options(parser)
+        add_candid_options(parser)
         add_rbac_options(parser)
         parser.add_argument(
             '--skip-admin', action='store_true',

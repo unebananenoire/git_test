@@ -28,22 +28,22 @@ class TestConfigAuthCommand(MAASServerTestCase):
 
     def test_configauth_changes_external_auth_url_local_empty_string(self):
         Config.objects.set_config(
-            'external_auth_url', 'http://example.com/idm')
+            'external_auth_url', 'http://example.com/candid')
         call_command('configauth', idm_url='')
         self.assertEqual(
             '', Config.objects.get_config('external_auth_url'))
 
     def test_configauth_changes_external_auth_url_local_none(self):
         Config.objects.set_config(
-            'external_auth_url', 'http://example.com/idm')
+            'external_auth_url', 'http://example.com/candid')
         call_command('configauth', idm_url='none')
         self.assertEqual(
             '', Config.objects.get_config('external_auth_url'))
 
     def test_configauth_changes_external_auth_url_url(self):
-        call_command('configauth', idm_url='http://example.com/idm')
+        call_command('configauth', idm_url='http://example.com/candid')
         self.assertEqual(
-            'http://example.com/idm',
+            'http://example.com/candid',
             Config.objects.get_config('external_auth_url'))
 
     def test_configauth_changes_auth_prompts_no_rbac(self):
@@ -97,11 +97,11 @@ class TestConfigAuthCommand(MAASServerTestCase):
 
     def test_configauth_changes_auth_prompt_default_existing(self):
         Config.objects.set_config(
-            'external_auth_url', 'http://example.com/idm')
+            'external_auth_url', 'http://example.com/candid')
         self.read_input.return_value = ''
         call_command('configauth')
         self.assertEqual(
-            'http://example.com/idm',
+            'http://example.com/candid',
             Config.objects.get_config('external_auth_url'))
 
     def test_configauth_changes_auth_invalid_url(self):
@@ -313,10 +313,10 @@ class TestIsValidUrl(unittest.TestCase):
 
     def test_valid_schemes(self):
         for scheme in ['http', 'https']:
-            url = '{}://example.com/idm'.format(scheme)
+            url = '{}://example.com/candid'.format(scheme)
             self.assertTrue(configauth.is_valid_url(url))
 
     def test_invalid_schemes(self):
         for scheme in ['ftp', 'git+ssh']:
-            url = '{}://example.com/idm'.format(scheme)
+            url = '{}://example.com/candid'.format(scheme)
             self.assertFalse(configauth.is_valid_url(url))

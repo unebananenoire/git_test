@@ -17,7 +17,7 @@ from django.core.management.base import (
 from django.core.validators import URLValidator
 from django.db import DEFAULT_DB_ALIAS
 from maascli.init import (
-    add_idm_options,
+    add_candid_options,
     add_rbac_options,
 )
 from maasserver.management.commands.createadmin import read_input
@@ -43,7 +43,7 @@ def prompt_for_external_auth_url(existing_url):
     if existing_url == '':
         existing_url = 'none'
     new_url = read_input(
-        "URL to external IDM server [default={}]: ".format(existing_url))
+        "URL to external Candid server [default={}]: ".format(existing_url))
     if new_url == '':
         new_url = existing_url
     return new_url
@@ -99,7 +99,7 @@ class Command(BaseCommand):
     help = "Configure external authentication."
 
     def add_arguments(self, parser):
-        add_idm_options(parser)
+        add_candid_options(parser)
         add_rbac_options(parser)
         parser.add_argument(
             '--json', action='store_true', default=False,
@@ -149,15 +149,16 @@ class Command(BaseCommand):
             if auth_details.url == 'none':
                 auth_details.url = ''
             if auth_details.rbac_url and not auth_details.url:
-                raise CommandError('IDM URL must be specified when using RBAC')
+                raise CommandError(
+                    'Candid URL must be specified when using RBAC')
             if auth_details.url:
                 if not is_valid_url(auth_details.url):
                     raise InvalidURLError(
                         "Please enter a valid http or https URL.")
                 auth_details.user = _get_or_prompt(
-                    options, 'idm_user', "Username for IDM API access: ")
+                    options, 'idm_user', "Username for Candid API access: ")
                 auth_details.key = _get_or_prompt(
-                    options, 'idm_key', "Private key for IDM API access: ")
+                    options, 'idm_key', "Private key for Candid API access: ")
                 if not auth_details.rbac_url:
                     auth_details.domain = _get_or_prompt(
                         options, 'idm_domain',

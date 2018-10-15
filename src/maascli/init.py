@@ -13,26 +13,26 @@ from maascli.configfile import MAASConfiguration
 from macaroonbakery import httpbakery
 
 
-def add_idm_options(parser):
+def add_candid_options(parser):
     parser.add_argument(
-        '--idm-url', default=None, metavar='IDM_URL',
-        help=("The URL to the external IDM server to use for "
+        '--idm-url', default=None,
+        help=("The URL to the external Candid server to use for "
               "authentication."))
     parser.add_argument(
-        '--idm-domain', default=None, metavar='IDM_DOMAIN',
+        '--idm-domain', default=None,
         help=("The authentication domain to look up users in for the external "
-              "IDM server."))
+              "CANDID server."))
     parser.add_argument(
         '--idm-user', default=None,
-        help="The username to access the IDM server API.")
+        help="The username to access the Candid service API.")
     parser.add_argument(
         '--idm-key', default=None,
-        help="The private key to access the IDM server API.")
+        help="The private key to access the Candid service API.")
     parser.add_argument(
         '--idm-agent-file', type=argparse.FileType('r'),
-        help="Agent file containing IDM authentication information")
+        help="Agent file containing Candid authentication information")
     parser.add_argument(
-        '--idm-admin-group', default=None, metavar='IDM_ADMIN_GROUP',
+        '--idm-admin-group', default=None,
         help="Group of users whose members are made admins in MAAS")
 
 

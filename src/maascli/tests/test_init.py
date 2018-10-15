@@ -17,39 +17,39 @@ from maascli.parser import ArgumentParser
 from maastesting.testcase import MAASTestCase
 
 
-class TestAddIdmOptions(MAASTestCase):
+class TestAddCandidOptions(MAASTestCase):
 
     def setUp(self):
         super().setUp()
         self.parser = ArgumentParser()
-        init.add_idm_options(self.parser)
+        init.add_candid_options(self.parser)
 
-    def test_add_idm_options_empty(self):
+    def test_add_candid_options_empty(self):
         options = self.parser.parse_args([])
         self.assertIsNone(options.idm_url)
         self.assertIsNone(options.idm_user)
         self.assertIsNone(options.idm_key)
         self.assertIsNone(options.idm_agent_file)
 
-    def test_add_idm_options_idm_url(self):
+    def test_add_candid_options_idm_url(self):
         options = self.parser.parse_args(
-            ['--idm-url', 'http://idm.example.com/'])
-        self.assertEqual('http://idm.example.com/', options.idm_url)
+            ['--idm-url', 'http://candid.example.com/'])
+        self.assertEqual('http://candid.example.com/', options.idm_url)
 
-    def test_add_idm_options_idm_domain(self):
+    def test_add_candid_options_idm_domain(self):
         options = self.parser.parse_args(
             ['--idm-domain', 'mydomain'])
         self.assertEqual('mydomain', options.idm_domain)
 
-    def test_add_idm_options_idm_user(self):
+    def test_add_candid_options_idm_user(self):
         options = self.parser.parse_args(['--idm-user', 'my-user'])
         self.assertEqual('my-user', options.idm_user)
 
-    def test_add_idm_options_idm_key(self):
+    def test_add_candid_options_idm_key(self):
         options = self.parser.parse_args(['--idm-key', 'my-key'])
         self.assertEqual('my-key', options.idm_key)
 
-    def test_add_idm_options_idm_agent_file(self):
+    def test_add_candid_options_idm_agent_file(self):
         fd, agent_file_name = tempfile.mkstemp()
         self.addCleanup(os.remove, agent_file_name)
 
@@ -59,7 +59,7 @@ class TestAddIdmOptions(MAASTestCase):
         self.assertEqual(
             'my-agent-file-content', options.idm_agent_file.read())
 
-    def test_add_idm_options_idm_admin_group(self):
+    def test_add_candid_options_idm_admin_group(self):
         options = self.parser.parse_args(
             ['--idm-admin-group', 'admins'])
         self.assertEqual('admins', options.idm_admin_group)
@@ -178,7 +178,7 @@ class TestConfigureAuthentication(MAASTestCase):
             init.os.environ, {'SNAP': 'snap-path'}, clear=True)
         self.mock_environ.start()
         self.parser = ArgumentParser()
-        init.add_idm_options(self.parser)
+        init.add_candid_options(self.parser)
 
     def tearDown(self):
         self.mock_subprocess.stop()
@@ -195,7 +195,7 @@ class TestConfigureAuthentication(MAASTestCase):
         self.assertEqual({}, kwargs)
 
     def test_idm_url(self):
-        config_auth_args = ['--idm-url', 'http://idm.example.com/']
+        config_auth_args = ['--idm-url', 'http://candid.example.com/']
         options = self.parser.parse_args(config_auth_args)
         init.configure_authentication(options)
         [config_call] = self.mock_subprocess.mock_calls
@@ -244,9 +244,9 @@ class TestConfigureAuthentication(MAASTestCase):
         _, agent_file = tempfile.mkstemp()
         self.addCleanup(os.remove, agent_file)
         config_auth_args = [
-            '--idm-url', 'http://idm.example.com/',
-            '--idm-user', 'idm-user',
-            '--idm-key', 'idm-key',
+            '--idm-url', 'http://candid.example.com/',
+            '--idm-user', 'candid-user',
+            '--idm-key', 'candid-key',
             '--idm-agent-file', agent_file]
         options = self.parser.parse_args(config_auth_args)
         init.configure_authentication(options)
