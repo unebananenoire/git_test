@@ -54,14 +54,14 @@ def add_candid_options(parser):
         '--candid-agent-file', type=argparse.FileType('r'),
         help="Agent file containing Candid authentication information")
     parser.add_argument(
-        '--candid-url', default=None,
+        '--idm-url', default=None, dest='candid_url',
         help=("The URL to the external Candid server to use for "
               "authentication."))
     parser.add_argument(
-        '--candid-user', default=None,
+        '--idm-user', default=None, dest='candid_user',
         help="The username to access the Candid service API.")
     parser.add_argument(
-        '--candid-key', default=None,
+        '--idm-key', default=None, dest='candid_key',
         help="The private key to access the Candid service API.")
     parser.add_argument(
         '--candid-domain', default=None,
@@ -74,12 +74,6 @@ def add_candid_options(parser):
     parser.add_argument(
         '--idm-agent-file', type=argparse.FileType('r'),
         action=deprecated_for('--candid-agent-file'))
-    parser.add_argument(
-        '--idm-url', action=deprecated_for('--candid-url'))
-    parser.add_argument(
-        '--idm-user', action=deprecated_for('--candid-user'))
-    parser.add_argument(
-        '--idm-key', action=deprecated_for('--candid-key'))
     parser.add_argument(
         '--idm-domain', action=deprecated_for('--candid-domain'))
     parser.add_argument(
@@ -172,13 +166,13 @@ def create_account_external_auth(auth_config, maas_config,
 def configure_authentication(options):
     cmd = [get_maas_region_bin_path(), 'configauth']
     if options.candid_url is not None:
-        cmd.extend(['--candid-url', options.candid_url])
+        cmd.extend(['--idm-url', options.candid_url])
+    if options.candid_user is not None:
+        cmd.extend(['--idm-user', options.candid_user])
+    if options.candid_key is not None:
+        cmd.extend(['--idm-key', options.candid_key])
     if options.candid_domain is not None:
         cmd.extend(['--candid-domain', options.candid_domain])
-    if options.candid_user is not None:
-        cmd.extend(['--candid-user', options.candid_user])
-    if options.candid_key is not None:
-        cmd.extend(['--candid-key', options.candid_key])
     if options.candid_agent_file is not None:
         cmd.extend(['--candid-agent-file', options.candid_agent_file.name])
     if options.candid_admin_group is not None:
