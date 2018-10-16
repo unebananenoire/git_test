@@ -25,6 +25,14 @@ class TestConfigAuthCommand(MAASServerTestCase):
         super().setUp()
         self.read_input = self.patch(configauth, 'read_input')
         self.read_input.return_value = ''
+        self.mock_print = self.patch(configauth, 'print')
+
+    def printout(self):
+        prints = []
+        for call in self.mock_print.mock_calls:
+            _, [output], _ = call
+            prints.append(output)
+        return '\n'.join(prints)
 
     def test_configauth_changes_external_auth_url_local_empty_string(self):
         Config.objects.set_config(
@@ -32,6 +40,8 @@ class TestConfigAuthCommand(MAASServerTestCase):
         call_command('configauth', candid_url='')
         self.assertEqual(
             '', Config.objects.get_config('external_auth_url'))
+        self.assertIn(
+            'Warning: "--idm-*" options are deprecated', self.printout())
 
     def test_configauth_changes_external_auth_url_local_none(self):
         Config.objects.set_config(
@@ -46,11 +56,11 @@ class TestConfigAuthCommand(MAASServerTestCase):
             'http://example.com/candid',
             Config.objects.get_config('external_auth_url'))
 
-    def test_configauth_changes_auth_prompts_no_rbac(self):
+    def test_configauth_changes_auth_prompts_no_rbac_legacy(self):
         self.read_input.side_effect = [
-            '', 'http://candid.example.com/', 'user@admin', 'private-key',
-            'mydomain', 'admins']
-        call_command('configauth')
+            '', 'user@admin', 'private-key', 'mydomain', 'admins']
+        # legacy options are only prompted if at least one is provided
+        call_command('configauth', candid_url='http://candid.example.com/')
         self.assertEqual('', Config.objects.get_config('rbac_url'))
         self.assertEqual(
             'http://candid.example.com/',
@@ -70,9 +80,9 @@ class TestConfigAuthCommand(MAASServerTestCase):
 
     def test_configauth_changes_auth_prompts_rbac(self):
         self.read_input.side_effect = [
-            'http://rbac.example.com', 'http://candid.example.com/',
-            'user@admin', 'private-key']
-        call_command('configauth')
+            'http://rbac.example.com', 'user@admin', 'private-key']
+        # legacy options are only prompted if at least one is provided
+        call_command('configauth', candid_url='http://candid.example.com/')
         self.assertEqual(
             'http://rbac.example.com', Config.objects.get_config('rbac_url'))
         self.assertEqual(
@@ -94,12 +104,15 @@ class TestConfigAuthCommand(MAASServerTestCase):
         call_command('configauth')
         self.assertEqual('', Config.objects.get_config('rbac_url'))
         self.assertEqual('', Config.objects.get_config('external_auth_url'))
+        self.assertNotIn(
+            'Warning: "--idm-*" options are deprecated', self.printout())
 
     def test_configauth_changes_auth_prompt_default_existing(self):
         Config.objects.set_config(
             'external_auth_url', 'http://example.com/candid')
         self.read_input.return_value = ''
-        call_command('configauth')
+        # legacy options are only prompted if at least one is provided
+        call_command('configauth', candid_user='user')
         self.assertEqual(
             'http://example.com/candid',
             Config.objects.get_config('external_auth_url'))
@@ -131,18 +144,26 @@ class TestConfigAuthCommand(MAASServerTestCase):
         with tempfile.NamedTemporaryFile(mode='w+') as agent_file:
             json.dump(config, agent_file)
             agent_file.flush()
-            agent_file.seek(0)
+
             configauth.update_auth_details_from_agent_file(
-                agent_file, auth_details)
+                agent_file.name, auth_details)
             self.assertEqual(auth_details.url, 'http://example.com:1234')
             self.assertEqual(auth_details.user, 'user@admin')
             self.assertEqual(auth_details.key, 'private-key')
 
     def test_configauth_interactive(self):
-        self.read_input.side_effect = [
-            '', 'http://candid.example.com', 'user@admin', 'private-key',
-            'mydomain', 'admins']
-        call_command('configauth')
+        with tempfile.NamedTemporaryFile(mode='w+') as agent_file:
+            config = {
+                'key': {'public': 'public-key', 'private': 'private-key'},
+                'agents': [
+                    {'url': 'http://candid.example.com',
+                     'username': 'user@admin'}]}
+            json.dump(config, agent_file)
+            agent_file.flush()
+            self.read_input.side_effect = [
+                '', agent_file.name, 'mydomain', 'admins']
+
+            call_command('configauth')
         self.assertEqual('', Config.objects.get_config('rbac_url'))
         self.assertEqual(
             'http://candid.example.com',
@@ -224,10 +245,11 @@ class TestConfigAuthCommand(MAASServerTestCase):
         with tempfile.NamedTemporaryFile(mode='w+') as agent_file:
             json.dump(config, agent_file)
             agent_file.flush()
-            agent_file.seek(0)
+
             call_command(
-                'configauth', rbac_url='', candid_agent_file=agent_file,
+                'configauth', rbac_url='', candid_agent_file=agent_file.name,
                 candid_domain='mydomain', candid_admin_group='admins')
+        self.assertEqual('', Config.objects.get_config('rbac_url'))
         self.assertEqual(
             'http://example.com:1234',
             Config.objects.get_config('external_auth_url'))
@@ -240,6 +262,13 @@ class TestConfigAuthCommand(MAASServerTestCase):
         self.assertEqual(
             'admins', Config.objects.get_config('external_auth_admin_group'))
         self.read_input.assert_not_called()
+        self.assertNotIn(
+            'Warning: "--idm-*" options are deprecated', self.printout())
+
+    def test_configauth_agentfile_not_found(self):
+        self.assertRaises(
+            CommandError, call_command, 'configauth', rbac_url='',
+            candid_agent_file='/not/here')
 
     def test_configauth_domain_none(self):
         call_command(
@@ -249,10 +278,9 @@ class TestConfigAuthCommand(MAASServerTestCase):
         self.assertEqual('', Config.objects.get_config('external_auth_domain'))
 
     def test_configauth_json_empty(self):
-        mock_print = self.patch(configauth, 'print')
         call_command('configauth', json=True)
         self.read_input.assert_not_called()
-        [print_call] = mock_print.mock_calls
+        [print_call] = self.mock_print.mock_calls
         _, [output], kwargs = print_call
         self.assertEqual({}, kwargs)
         self.assertEqual(

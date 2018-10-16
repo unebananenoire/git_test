@@ -51,18 +51,8 @@ def deprecated_for(new_option):
 
 def add_candid_options(parser):
     parser.add_argument(
-        '--candid-agent-file', type=argparse.FileType('r'),
+        '--candid-agent-file',
         help="Agent file containing Candid authentication information")
-    parser.add_argument(
-        '--idm-url', default=None, dest='candid_url',
-        help=("The URL to the external Candid server to use for "
-              "authentication."))
-    parser.add_argument(
-        '--idm-user', default=None, dest='candid_user',
-        help="The username to access the Candid service API.")
-    parser.add_argument(
-        '--idm-key', default=None, dest='candid_key',
-        help="The private key to access the Candid service API.")
     parser.add_argument(
         '--candid-domain', default=None,
         help=("The authentication domain to look up users in for the external "
@@ -70,10 +60,18 @@ def add_candid_options(parser):
     parser.add_argument(
         '--candid-admin-group', default=None,
         help="Group of users whose members are made admins in MAAS")
+    parser.add_argument(
+        '--idm-url', default=None, dest='candid_url',
+        help=argparse.SUPPRESS)
+    parser.add_argument(
+        '--idm-user', default=None, dest='candid_user',
+        help=argparse.SUPPRESS)
+    parser.add_argument(
+        '--idm-key', default=None, dest='candid_key',
+        help=argparse.SUPPRESS)
     # deprecated aliases
     parser.add_argument(
-        '--idm-agent-file', type=argparse.FileType('r'),
-        action=deprecated_for('--candid-agent-file'))
+        '--idm-agent-file', action=deprecated_for('--candid-agent-file'))
     parser.add_argument(
         '--idm-domain', action=deprecated_for('--candid-domain'))
     parser.add_argument(
@@ -174,7 +172,7 @@ def configure_authentication(options):
     if options.candid_domain is not None:
         cmd.extend(['--candid-domain', options.candid_domain])
     if options.candid_agent_file is not None:
-        cmd.extend(['--candid-agent-file', options.candid_agent_file.name])
+        cmd.extend(['--candid-agent-file', options.candid_agent_file])
     if options.candid_admin_group is not None:
         cmd.extend(['--candid-admin-group', options.candid_admin_group])
     subprocess.call(cmd)
