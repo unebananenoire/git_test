@@ -53,26 +53,12 @@ class TestAddCandidOptions(MAASTestCase):
         self.assertEqual('my-key', options.candid_key)
 
     def test_add_candid_options_candid_agent_file(self):
-        fd, agent_file_name = tempfile.mkstemp()
-        self.addCleanup(os.remove, agent_file_name)
-
-        os.write(fd, b'my-agent-file-content')
-        os.close(fd)
-        options = self.parser.parse_args(
-            ['--candid-agent-file', agent_file_name])
-        self.assertEqual(
-            'my-agent-file-content', options.candid_agent_file.read())
+        options = self.parser.parse_args(['--candid-agent-file', 'agent.file'])
+        self.assertEqual(options.candid_agent_file, 'agent.file')
 
     def test_add_candid_options_deprecated_idm_agent_file(self):
-        fd, agent_file_name = tempfile.mkstemp()
-        self.addCleanup(os.remove, agent_file_name)
-
-        os.write(fd, b'my-agent-file-content')
-        os.close(fd)
-        options = self.parser.parse_args(
-            ['--idm-agent-file', agent_file_name])
-        self.assertEqual(
-            'my-agent-file-content', options.candid_agent_file.read())
+        options = self.parser.parse_args(['--idm-agent-file', 'agent.file'])
+        self.assertEqual(options.candid_agent_file, 'agent.file')
         self.assertIn(
             'Note: "--idm-agent-file" is deprecated and will be removed, '
             'please use "--candid-agent-file" instead',
